@@ -62,6 +62,7 @@ struct FastStackDefaultValue<AnyPtr>{
 #define XTAL_VM_UNLOCK XTAL_UNLOCK
 #define XTAL_VM_INC(v) (void)(XTAL_detail_is_rcpvalue(v) && (XTAL_detail_rcpvalue(v)->atomic_inc_ref_count(), 1))
 #define XTAL_VM_DEC(v) (void)(XTAL_detail_is_rcpvalue(v) && !XTAL_detail_rcpvalue(v)->atomic_dec_ref_count() && (XTAL_LOCK_DIRECT, XTAL_detail_rcpvalue(v)->object_destroy(), XTAL_UNLOCK_DIRECT, 1))
+
 #endif
 
 #define XTAL_VM_variables_top() (variables_top_ - variables_.data())

@@ -796,7 +796,7 @@ void CodeBuilder::normalize(const AnyPtr& a){
 			ExprPtr stmts = xnew<Expr>();
 			MapPtr ivar_map = xnew<Map>();
 			bool auto_initialize = false;
-			Xfor_cast(const ExprPtr& v, e->class_stmts()->clone()){
+			Xfor_cast(ExprPtr v, e->class_stmts()->clone()){
 				if(v->itag()==EXPR_CDEFINE_IVAR){
 					if(v->cdefine_ivar_term()){
 						eb_->tree_push_back(v->cdefine_ivar_name());
@@ -1472,7 +1472,7 @@ void CodeBuilder::compile_class(const ExprPtr& e, int_t stack_top, int_t result)
 
 	int_t ivar_num = 0;
 	int_t instance_variable_identifier_offset = result_->identifier_table_.size();
-	Xfor_cast(const ExprPtr& v, e->class_stmts()){
+	Xfor_cast(ExprPtr v, e->class_stmts()){
 		if(v->itag()==EXPR_CDEFINE_IVAR){
 			ClassFrame::Entry entry;
 			entry.name = v->cdefine_ivar_name();
@@ -1544,7 +1544,7 @@ int_t CodeBuilder::compile_fun(const ExprPtr& e, int_t stack_top, int_t result){
 	int_t ordered = 0;
 	int_t named = 0;
 
-	Xfor_cast(const ExprPtr& v, e->fun_params()){
+	Xfor_cast(ExprPtr v, e->fun_params()){
 		if(!v->at(0) || (ep(v->at(0))->itag()!=EXPR_LVAR && ep(v->at(0))->itag()!=EXPR_IVAR)){
 			error(Xt("XCE1004"));
 			return int_t();
@@ -1654,7 +1654,7 @@ int_t CodeBuilder::compile_fun(const ExprPtr& e, int_t stack_top, int_t result){
 	// デフォルト値を持つ引数を処理する
 	{
 		int_t i = 0;
-		Xfor_cast(const ExprPtr& v1, e->fun_params()){
+		Xfor_cast(ExprPtr v1, e->fun_params()){
 			if(const ExprPtr& v = ptr_cast<Expr>(v1->at(1))){
 				int_t label_true = reserve_label();
 				int_t label_false = reserve_label();
@@ -1679,7 +1679,7 @@ int_t CodeBuilder::compile_fun(const ExprPtr& e, int_t stack_top, int_t result){
 	}
 
 	// 引数にインスタンス変数がある場合に、特別な処理を入れる
-	Xfor_cast(const ExprPtr& v1, e->fun_params()){
+	Xfor_cast(ExprPtr v1, e->fun_params()){
 		const ExprPtr& v = ep(v1->at(0));
 		if(v->itag()==EXPR_IVAR){
 			eb_->tree_push_back(v);

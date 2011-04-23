@@ -67,44 +67,45 @@ struct VirtualMembersM{
 	static void shrink_to_fit(RefCountingBase* p){ cast(p)->on_shrink_to_fit(); }
 };
 
+
+struct VirtualMembersOverwriteCheckerFuncs{
+	static NoType rawcall(void (RefCountingBase::*)(const VMachinePtr&));
+	template<class U> static YesType rawcall(void (U::*)(const VMachinePtr&));
+
+	static NoType rawmember(const AnyPtr& (RefCountingBase::*)(const IDPtr&, const AnyPtr&, bool, int_t&, bool&));
+	template<class U> static YesType rawmember(const AnyPtr& (U::*)(const IDPtr&, const AnyPtr&, bool, int_t&, bool&));
+
+	static NoType def(void (RefCountingBase::*)(const IDPtr&, const AnyPtr&, const AnyPtr&, int_t));
+	template<class U> static YesType def(void (U::*)(const IDPtr&, const AnyPtr&, const AnyPtr&, int_t));
+
+	static NoType object_parent(const ClassPtr& (RefCountingBase::*)());
+	template<class U> static YesType object_parent(const ClassPtr& (U::*)());
+
+	static NoType set_object_parent(void (RefCountingBase::*)(const ClassPtr&));
+	template<class U> static YesType set_object_parent(void (U::*)(const ClassPtr&));
+
+	static NoType visit_members(void (RefCountingBase::*)(Visitor&));
+	template<class U> static YesType visit_members(void (U::*)(Visitor&));
+
+	static NoType finalize(void (RefCountingBase::*)());
+	template<class U> static YesType finalize(void (U::*)());
+
+	static NoType shrink_to_fit(void (RefCountingBase::*)());
+	template<class U> static YesType shrink_to_fit(void (U::*)());
+};
+
 template<class T>
 struct VirtualMembersOverwriteChecker{
-	typedef char (&yes)[2];
-	typedef char (&no)[1];
-
-	static no rawcall(void (RefCountingBase::*)(const VMachinePtr&));
-	template<class U> static yes rawcall(void (U::*)(const VMachinePtr&));
-
-	static no rawmember(const AnyPtr& (RefCountingBase::*)(const IDPtr&, const AnyPtr&, bool, int_t&, bool&));
-	template<class U> static yes rawmember(const AnyPtr& (U::*)(const IDPtr&, const AnyPtr&, bool, int_t&, bool&));
-
-	static no def(void (RefCountingBase::*)(const IDPtr&, const AnyPtr&, const AnyPtr&, int_t));
-	template<class U> static yes def(void (U::*)(const IDPtr&, const AnyPtr&, const AnyPtr&, int_t));
-
-	static no object_parent(const ClassPtr& (RefCountingBase::*)());
-	template<class U> static yes object_parent(const ClassPtr& (U::*)());
-
-	static no set_object_parent(void (RefCountingBase::*)(const ClassPtr&));
-	template<class U> static yes set_object_parent(void (U::*)(const ClassPtr&));
-
-	static no visit_members(void (RefCountingBase::*)(Visitor&));
-	template<class U> static yes visit_members(void (U::*)(Visitor&));
-
-	static no finalize(void (RefCountingBase::*)());
-	template<class U> static yes finalize(void (U::*)());
-
-	static no shrink_to_fit(void (RefCountingBase::*)());
-	template<class U> static yes shrink_to_fit(void (U::*)());
 
 	enum{
-		rawcall_overwrite = sizeof(rawcall(&T::on_rawcall))!=sizeof(no),
-		rawmember_overwrite = sizeof(rawmember(&T::on_rawmember))!=sizeof(no),
-		def_overwrite = sizeof(def(&T::on_def))!=sizeof(no),
-		object_parent_overwrite = sizeof(object_parent(&T::on_object_parent))!=sizeof(no),
-		set_object_parent_overwrite = sizeof(set_object_parent(&T::on_set_object_parent))!=sizeof(no),
-		visit_members_overwrite = sizeof(visit_members(&T::on_visit_members))!=sizeof(no),
-		finaize_overwrite = sizeof(finalize(&T::on_finalize))!=sizeof(no),
-		shrink_to_fit_overwrite = sizeof(shrink_to_fit(&T::on_shrink_to_fit))!=sizeof(no)
+		rawcall_overwrite = sizeof(VirtualMembersOverwriteCheckerFuncs::rawcall(&T::on_rawcall))!=sizeof(NoType),
+		rawmember_overwrite = sizeof(VirtualMembersOverwriteCheckerFuncs::rawmember(&T::on_rawmember))!=sizeof(NoType),
+		def_overwrite = sizeof(VirtualMembersOverwriteCheckerFuncs::def(&T::on_def))!=sizeof(NoType),
+		object_parent_overwrite = sizeof(VirtualMembersOverwriteCheckerFuncs::object_parent(&T::on_object_parent))!=sizeof(NoType),
+		set_object_parent_overwrite = sizeof(VirtualMembersOverwriteCheckerFuncs::set_object_parent(&T::on_set_object_parent))!=sizeof(NoType),
+		visit_members_overwrite = sizeof(VirtualMembersOverwriteCheckerFuncs::visit_members(&T::on_visit_members))!=sizeof(NoType),
+		finaize_overwrite = sizeof(VirtualMembersOverwriteCheckerFuncs::finalize(&T::on_finalize))!=sizeof(NoType),
+		shrink_to_fit_overwrite = sizeof(VirtualMembersOverwriteCheckerFuncs::shrink_to_fit(&T::on_shrink_to_fit))!=sizeof(NoType)
 	};
 
 /*
@@ -262,7 +263,8 @@ public:
 	int_t alive_ref_count() const{ return ref_count_; }
 	void add_ref_count(int_t n){ ref_count_ += n; }
 	void inc_ref_count(){ ++ref_count_; }
-	void dec_ref_count(){ if(!--ref_count_){ object_destroy(); } }
+	void dec_ref_count(){ --ref_count_; }
+//	void dec_ref_count(){ if(!--ref_count_){ object_destroy(); } }
 
 	void atomic_inc_ref_count(){ ++ref_count_; }
 	int_t atomic_dec_ref_count(){ return --ref_count_; }

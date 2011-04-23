@@ -708,6 +708,21 @@ int main2(int argc, char** argv){
 		CodePtr code = xnew<Code>();
 		code->def("aaa", cpp_class<Hoo>());
 		cpp_class<Hoo>()->object_orphan();
+//*
+		for(int i=0; i<alive_object_count(); i++){
+			if(AnyPtr v = alive_object(i)){ // 全ての生きてるオブジェクトを調べる
+				if(ClassPtr cls = ptr_cast<Class>(v)){ // クラスオブジェクトか？
+					if(cls->is_native()){ // ネイティブクラスか？
+						cls->p(); // クラスの情報をプリント
+
+						Xfor(v, cls->members()){ // クラスのメンバを全て列挙
+							v->p(); // メンバの情報をプリント
+						}
+					}
+				}
+			}
+		}
+//*/
 	}
 
 	full_gc();
@@ -715,15 +730,37 @@ int main2(int argc, char** argv){
 	{
 		if(CodePtr code = Xsrc((
 /////////////////////////////////
-			a: 0;
-			b: 0;
-			c: 0;
-			return true;
+		fun a(){
+			return false;
+		}
+
+		if(a()){
+			"a".p;
+		}
+		else{
+			"b".p;
+		}
 /////////////////////////////////
 		))){
 
+			code->call();
 			
 		}
+
+if(CodePtr code = Xsrc(( 
+   lib::foo: 100;
+))){
+   code->call();
+}
+
+if(CodePtr code = Xsrc(( 
+   lib::foo: 200;
+))){
+   code->enable_redefine();
+   code->call();
+}
+
+
 	}
 
 	XTAL_CATCH_EXCEPT(e){
@@ -842,11 +879,11 @@ int main2(int argc, char** argv){
 namespace xxx{
 
 class MemoryManager{
-	enum{
+	enum {
 		USED = 1<<0,
 		RED = 1<<1,
 		FLAGS_MASK = RED | USED,
-		
+
 		MIN_ALIGNMENT = 8,
 
 		GUARD_MAX = 32,
@@ -871,7 +908,7 @@ class MemoryManager{
 		DebugInfo debug;
 #endif
 		Chunk* next;
-		PtrWithFlags prev; // prevを指すポインタに、色と使用中かのフラグを埋め込む
+		PtrWithFlags prev; // prev を指すポインタに、色と使用中かのフラグを埋め込む
 	};
 
 	struct ChunkBody{
@@ -883,35 +920,35 @@ class MemoryManager{
 		ChunkHeader h;
 		ChunkBody b;
 
-		void init(){ 
-			h.next = h.prev.p = b.left = b.right = 0; 
+		void init(){
+			h.next = h.prev.p = b.left = b.right = 0;
 		}
 
 		int size(){ return (unsigned char*)h.next - (unsigned char*)buf(); }
 		void* buf(){ return (unsigned char*)(&h+1); }
 
 		Chunk* next(){
-			return h.next; 
+			return h.next;
 		}
 
-		Chunk* prev(){ 
+		Chunk* prev(){
 			PtrWithFlags u = h.prev;
 			u.u &= ~FLAGS_MASK;
-			return u.p; 
+			return u.p;
 		}
 
-		void set_next(Chunk* p){ 
-			h.next = p; 
+		void set_next(Chunk* p){
+			h.next = p;
 		}
 
 		void set_prev(Chunk* p){
 			PtrWithFlags u;
 			u.p = p;
 			u.u |= h.prev.u & FLAGS_MASK;
-			h.prev = u; 
+			h.prev = u;
 		}
 
-		void ref(){			
+		void ref(){                
 			h.prev.u |= USED;
 		}
 
@@ -919,15 +956,15 @@ class MemoryManager{
 			h.prev.u &= ~USED;
 		}
 
-		int is_used(){			
+		int is_used(){                    
 			return h.prev.u & USED;
 		}
 
-		int is_red(){ 
+		int is_red_color(){
 			return h.prev.u & RED;
 		}
 
-		void set_red(){ 
+		void set_red(){
 			h.prev.u |= RED;
 		}
 
@@ -935,23 +972,22 @@ class MemoryManager{
 			h.prev.u &= ~RED;
 		}
 
-		void flip_color(){ 
+		void flip_color(){
 			h.prev.u ^= RED;
 		}
 
-		void set_same_color(Chunk* a){ 
-			set_black(); 
-			h.prev.u |= a->h.prev.u&RED; 
+		void set_same_color(Chunk* a){
+			set_black();
+			h.prev.u |= a->h.prev.u&RED;
 		}
 	};
 
 public:
 
-
-	MemoryManager(){ 
-		head_ = begin_ = end_ = 0; 
+	MemoryManager(){
+		head_ = root_ = end_ = 0;
 	}
-	
+
 	MemoryManager(void* buffer, size_t size){
 		init(buffer, size);
 	}
@@ -961,29 +997,54 @@ public:
 	/**
 	* \brief メモリ確保
 	*/
-	void* malloc(size_t size, int alignment = sizeof(int_t), const char* file = "", int line = 0);
+	void* malloc(size_t size, int alignment = sizeof (size_t), const char* file = "" , int line = 0);
 
 	/**
 	* \brief メモリ解放
 	*/
 	void free(void* p);
 
-private:
+public :
+
+	size_t managed_size(){
+		return buffer_size_;
+	}
+
+	size_t used_size(){
+		return used_size_;
+	}
+
+	size_t free_size(){
+		return buffer_size_-used_size_;
+	}
+
+	size_t allocatable_size(){
+		Chunk* p = root_;
+		size_t sz = p->size();
+		while (p->b.right){
+			p = root_->b.right;
+			sz = p->size();
+		}
+		return sz;
+	}
+
+private :
+
+	int is_red(Chunk* ch){
+		if(!ch) return 0;
+		return ch->is_red_color();
+	}
 
 	Chunk* chunk_align(Chunk* it, int alignment);
 
-	void* malloc_inner(size_t size, int alignment = MIN_ALIGNMENT, const char* file = "", int line = 0);
+	void* malloc_inner(size_t size, int alignment = MIN_ALIGNMENT, const char* file = "" , int line = 0);
 
 	void free_inner(void* p);
 
-	Chunk* begin(){ return begin_; }
-
-	Chunk* end(){ return end_; }
-
-	Chunk* to_chunk(void* p){ 
+	Chunk* to_chunk(void* p){
 		return (Chunk*)((ChunkHeader*)p - 1);
 	}
-	
+
 private:
 
 	int compare(Chunk* a, Chunk* b){
@@ -1018,18 +1079,18 @@ private:
 
 	Chunk* move_red_right(Chunk* n);
 
-	Chunk* remove_min(Chunk* n);
+	Chunk* remove_min(Chunk* n, Chunk*& out);
 
 	Chunk* remove(Chunk* n, Chunk* key);
 
 	void remove(Chunk* key){
 		root_ = remove(root_, key);
-		root_->set_black();
+		if(root_)root_->set_black();
 	}
 
-public:
+public :
 
-	enum{
+	enum {
 		COLOR_FREE,
 		COLOR_USED
 	};
@@ -1038,47 +1099,46 @@ public:
 
 	void dump(unsigned char* dest, size_t size);
 
-private:
+private :
 	Chunk* head_;
-	Chunk* begin_;
 	Chunk* end_;
 	Chunk* root_;
 
 	size_t buffer_size_;
+	size_t used_size_;
 };
 
 void MemoryManager::init(void* buffer, size_t size){
 	buffer_size_ = size;
 
 	head_ = (Chunk*)align_p(buffer, MIN_ALIGNMENT);
-	begin_ = head_+1;
+	root_ = head_+1;
 	end_ = (Chunk*)align_p((Chunk*)((char*)buffer+size)-2, MIN_ALIGNMENT);
-	
+
 	head_->init();
-	head_->set_next(begin_);
-	head_->set_prev(head_);
+	head_->set_next(root_);
+	head_->set_prev(0);
 	head_->set_black();
 	head_->ref();
-	
-	begin_->init();
-	begin_->set_next(end_);
-	begin_->set_prev(head_);
-	begin_->set_red();
-	
+	head_->b.left = 0;
+	head_->b.right = 0;
+
+	root_->init();
+	root_->set_next(end_);
+	root_->set_prev(head_);
+	root_->set_black();
+	root_->b.left = 0;
+	root_->b.right = 0;
+
 	end_->init();
-	end_->set_next(end_);
-	end_->set_prev(begin_);
+	end_->set_next(0);
+	end_->set_prev(root_);
 	end_->set_black();
 	end_->ref();
-	end_->b.left = end();
-	end_->b.right = end();
+	end_->b.left = 0;
+	end_->b.right = 0;
 
-	begin_ = chunk_align(begin_, MIN_ALIGNMENT);
-	
-	root_ = begin_;
-	root_->b.left = end();
-	root_->b.right = end();
-	root_->set_red();
+	root_ = chunk_align(root_, MIN_ALIGNMENT);
 }
 
 void* MemoryManager::malloc(size_t size, int alignment, const char* file, int line){
@@ -1104,7 +1164,7 @@ void MemoryManager::free(void* p){
 	unsigned char* ucp = (unsigned char*)p+cp->h.debug.size;
 	for(int i=0; i<GUARD_MAX; ++i){
 		int cc = *((unsigned char*)p+cp->h.debug.size+i);
-		XTAL_ASSERT(*((unsigned char*)p+cp->h.debug.size+i)==0xcc);
+		assert(*((unsigned char*)p+cp->h.debug.size+i)==0xcc);
 	}
 
 	free_inner(p);
@@ -1151,14 +1211,15 @@ void* MemoryManager::malloc_inner(size_t size, int alignment, const char* file, 
 
 	// もっとも要求サイズに近いノードを探す
 	Chunk* it = find(find_size);
-	if(it!=end()){
+	if(it){
 		// 赤黒木から外す
 		remove(it);
 		it->ref();
 
-		// it->buf()のアドレスがアラインしているように調整
+		// it->buf() のアドレスがアラインしているように調整
 		it = chunk_align(it, alignment);
 
+		// フリーの管理領域を追加
 		Chunk* newchunk = (Chunk*)((unsigned char*)it->buf()+size);
 		newchunk = to_chunk(align_p(newchunk->buf(), MIN_ALIGNMENT));
 
@@ -1172,9 +1233,10 @@ void* MemoryManager::malloc_inner(size_t size, int alignment, const char* file, 
 			insert(newchunk);
 		}
 
+		used_size_ += it->size();
 		return it->buf();
 	}
-		
+
 	return 0;
 }
 
@@ -1183,14 +1245,18 @@ void MemoryManager::free_inner(void* p){
 		Chunk* it = to_chunk(p);
 		it->unref();
 
+		used_size_ -= it->size();
+
 		if(!it->prev()->is_used()){
+			// 前のノードを赤黒木から取り除く
 			remove(it->prev());
 			it->prev()->set_next(it->next());
 			it->next()->set_prev(it->prev());
 			it = it->prev();
 		}
-	
+
 		if(!it->next()->is_used()){
+			// 次のノードを赤黒木から取り除く
 			remove(it->next());
 			it->next()->next()->set_prev(it);
 			it->set_next(it->next()->next());
@@ -1201,14 +1267,14 @@ void MemoryManager::free_inner(void* p){
 }
 
 MemoryManager::Chunk* MemoryManager::find(Chunk* l, int key){
-	Chunk* ret = end();
-	while(l!=end()){
+	Chunk* ret = 0;
+	while (l){
 		int cmp = key - l->size();
 
 		// 探している大きさより同じか大きいノードを発見
 		if(cmp<=0){
 			// とりあえず当てはまる大きさのノードは見つけたので保存する
-			ret = l; 
+			ret = l;
 
 			// 基本的に一番左のノードを優先する
 			// 左にいくほど、サイズが小さく、小さいアドレスのノードであるため
@@ -1217,7 +1283,7 @@ MemoryManager::Chunk* MemoryManager::find(Chunk* l, int key){
 		// 探している大きさより小さいノードだった
 		else{
 			// 右のノードを検索しなくてももう既に当てはまる大きさのノードは見つかっている
-			if(ret!=end()){
+			if(ret){
 				return ret;
 			}
 
@@ -1252,53 +1318,37 @@ MemoryManager::Chunk* MemoryManager::rotate_right(Chunk* n){
 	return x;
 }
 
-MemoryManager::Chunk* MemoryManager::fixup(Chunk* n){
-	if(n->b.right->is_red()){
-		n = rotate_left(n);
-	}
-	
-	if(n->b.left->is_red() && n->b.left->b.left->is_red()){
-		n = rotate_right(n);
-	}
-	
-	if(n->b.left->is_red() && n->b.right->is_red()){
-		flip_colors(n);
-	}
-
-	return n;
-}
-
 MemoryManager::Chunk* MemoryManager::insert(Chunk* n, Chunk* key){
-	if(n==end()){
+	if(!n){
 		return key;
 	}
 
 	int cmp = compare(key, n);
-	
+
 	if(cmp<0){
 		n->b.left = insert(n->b.left, key);
 	}
 	else{
 		n->b.right = insert(n->b.right, key);
 	}
-	
-	if(n->b.right->is_red() && !n->b.left->is_red()){
+
+	if(is_red(n->b.right) && !is_red(n->b.left)){
 		n = rotate_left(n);
 	}
-	
-	if(n->b.left->is_red() && n->b.left->b.left->is_red()){
+
+	if(is_red(n->b.left) && is_red(n->b.left->b.left)){
 		n = rotate_right(n);
 	}
-	
-	if(n->b.left->is_red() && n->b.right->is_red()){
+
+	if(is_red(n->b.left) && is_red(n->b.right)){
 		flip_colors(n);
 	}
-	
+
 	return n;
 }
 
 void MemoryManager::insert(Chunk* key){
-	key->b.right = key->b.left = end();
+	key->b.right = key->b.left = 0;
 	key->set_red();
 
 	root_ = insert(root_, key);
@@ -1306,15 +1356,17 @@ void MemoryManager::insert(Chunk* key){
 }
 
 MemoryManager::Chunk* MemoryManager::minv(Chunk* n){
-	while(n->b.left!=end()){
+	while ( true ){
+		if(!n->b.left){
+			return n;
+		}
 		n = n->b.left;
 	}
-	return n;
 }
 
 MemoryManager::Chunk* MemoryManager::move_red_left(Chunk* n){
 	flip_colors(n);
-	if(n->b.right->b.left->is_red()){
+	if(is_red(n->b.right->b.left)){
 		n->b.right = rotate_right(n->b.right);
 		n = rotate_left(n);
 		flip_colors(n);
@@ -1324,51 +1376,69 @@ MemoryManager::Chunk* MemoryManager::move_red_left(Chunk* n){
 
 MemoryManager::Chunk* MemoryManager::move_red_right(Chunk* n){
 	flip_colors(n);
-	
-	if(n->b.left->b.left->is_red()){
+
+	if(is_red(n->b.left->b.left)){
 		n = rotate_right(n);
 		flip_colors(n);
 	}
 	return n;
 }
 
-MemoryManager::Chunk* MemoryManager::remove_min(Chunk* n){
-	if(n->b.left==end()){
-		return end();
+MemoryManager::Chunk* MemoryManager::fixup(Chunk* n){
+	if(is_red(n->b.right)){
+		n = rotate_left(n);
 	}
-	
-	if(!n->b.left->is_red() && !n->b.left->b.left->is_red()){
+
+	if(is_red(n->b.left) && is_red(n->b.left->b.left)){
+		n = rotate_right(n);
+	}
+
+	if(is_red(n->b.left) && is_red(n->b.right)){
+		flip_colors(n);
+	}
+
+	return n;
+}
+
+MemoryManager::Chunk* MemoryManager::remove_min(Chunk* n, Chunk*& out){
+	if(!n->b.left){
+		out = n;
+		return 0;
+	}
+
+	if(!is_red(n->b.left) && !is_red(n->b.left->b.left)){
 		n = move_red_left(n);
 	}
 
-	n->b.left = remove_min(n->b.left);
+	n->b.left = remove_min(n->b.left, out);
 	return fixup(n);
 }
 
 MemoryManager::Chunk* MemoryManager::remove(Chunk* n, Chunk* key){
 	if(compare(key, n) < 0){
-		if(!n->b.left->is_red() && !n->b.left->b.left->is_red()){
+		if(!is_red(n->b.left) && !is_red(n->b.left->b.left)){
 			n = move_red_left(n);
 		}
-		
+
 		n->b.left = remove(n->b.left, key);
 	}
 	else{
-		if(n->b.left->is_red()){
+		if(is_red(n->b.left)){
 			n = rotate_right(n);
 		}
-		
-		if(n==key && n->b.right==end()){
-			return end();
+
+		if(n==key && !n->b.right){
+			return 0;
 		}
-		
-		if(!n->b.right->is_red() && !n->b.right->b.left->is_red()){
+
+		if(!is_red(n->b.right) && !is_red(n->b.right->b.left)){
 			n = move_red_right(n);
 		}
-		
+
 		if(n==key){
-			Chunk* x = minv(n->b.right);
-			x->b.right = remove_min(n->b.right);
+			Chunk* x;
+			Chunk* r = remove_min(n->b.right, x);
+			x->b.right = r;
 			x->b.left = n->b.left;
 			x->set_same_color(n);
 			n = x;
@@ -1388,8 +1458,8 @@ void MemoryManager::dump(unsigned char* dest, size_t size, unsigned char* marks)
 	size -= 1;
 
 	size_t n = 0;
-	while(p!=end()){
-		double sz = p->size()*size/(double)buffer_size_;
+	while (p){
+		double sz = p->size()*size/( double )buffer_size_;
 		size_t szm = (size_t)sz+1;
 		if(szm!=0){
 			memset(dest+(size_t)n, marks[!p->is_used()], szm);
@@ -1404,7 +1474,7 @@ void MemoryManager::dump(unsigned char* dest, size_t size, unsigned char* marks)
 }
 
 void MemoryManager::dump(unsigned char* dest, size_t size){
-	unsigned char marks[] = {'O', 'X'};
+	unsigned char marks[] = { 'O' , 'X' };
 	dump(dest, size, marks);
 }
 

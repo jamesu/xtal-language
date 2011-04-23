@@ -67,7 +67,7 @@ void IntRangeIter::block_next(const VMachinePtr& vm){
 }
 
 Values::Values(const AnyPtr& head)
-	:head_(head), tail_((ValuesPtr&)undefined){
+	:head_(head), tail_(unchecked_ptr_cast<Values>(undefined)){
 }
 
 Values::Values(const AnyPtr& head, const ValuesPtr& tail)

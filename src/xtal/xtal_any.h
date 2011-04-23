@@ -473,6 +473,11 @@ public: // 性能確保のためpublicにするが、基本的に直接触ることはよろしくない
 	public: // 性能確保のためpublicにするが、基本的に直接触るのはよろしくない
 
 		union{
+			int_t type;
+			uint_t utype;
+		};
+
+		union{
 			int_t ivalue;
 			uint_t uvalue;
 			float_t fvalue;
@@ -482,11 +487,6 @@ public: // 性能確保のためpublicにするが、基本的に直接触ることはよろしくない
 			char_t svalue[SMALL_STRING_MAX];
 			void* vpvalue;
 			const param_types_holder_n* pthvalue;
-		};
-
-		union{
-			int_t type;
-			uint_t utype;
 		};
 	};
 
@@ -519,7 +519,8 @@ public: // 性能確保のためpublicにするが、基本的に直接触ることはよろしくない
 #define XTAL_detail_is_ivalue(v) (XTAL_detail_urawtype(v)==::xtal::TYPE_INT)
 #define XTAL_detail_is_fvalue(v) (XTAL_detail_urawtype(v)==::xtal::TYPE_FLOAT)
 #define XTAL_detail_is_pvalue(v) (XTAL_detail_type(v)==::xtal::TYPE_BASE)
-#define XTAL_detail_is_rcpvalue(v) (XTAL_detail_type(v)>=::xtal::TYPE_BASE)
+//#define XTAL_detail_is_rcpvalue(v) (XTAL_detail_type(v)>=::xtal::TYPE_BASE)
+#define XTAL_detail_is_rcpvalue(v) (XTAL_detail_rawtype(v)&::xtal::TYPE_BASE)
 
 #define XTAL_detail_copy(a, b) (XTAL_detail_rawvalue(a) = XTAL_detail_rawvalue(b))
 #define XTAL_detail_swap(a, b) (std::swap(XTAL_detail_rawvalue(a), XTAL_detail_rawvalue(b)))

@@ -60,6 +60,8 @@ enum{
 #define XTAL_UNLIKELY(x) x
 #endif
 
+#define XTAL_STRUCT_TAIL(x) (((char*)(void*)x)+sizeof(*x))
+
 ///////////////////////////////////////////////
 // Thread
 
@@ -122,7 +124,7 @@ private:
 // スレッドを使わない場合、単なるポインタ型にする
 #define XTAL_TLS_PTR(x) x*
 
-#endif
+#endif 
 
 /////////////////////////////////////////////////////
 
@@ -238,34 +240,36 @@ struct If{
 	typedef typename IfHelper<N>::template inner<T, U>::type type;
 };
 
+typedef char (&YesType)[2];
+typedef char (&NoType)[1];
 
 template<int>
 struct TypeIntType{};
 
 template<class T, class U>
 struct Convertible{
-	typedef char (&yes)[2];
-	typedef char (&no)[1];
-	static yes test(U);
-	static no test(...);
+	static YesType test(U);
+	static NoType test(...);
 	static T makeT();
 
-	enum{ value = sizeof(test(makeT()))==sizeof(yes) };
+	enum{ value = sizeof(test(makeT()))==sizeof(YesType) };
+};
+
+template<class U>
+struct IsInheritedFuncs{
+	static YesType test(const U*);
+	static NoType test(...);
 };
 
 template<class T, class U>
 struct IsInherited{
-	typedef char (&yes)[2];
-	typedef char (&no)[1];
-	static yes test(const U*);
-	static no test(...);
 	static T* makeT();
 
 	enum{ 
 		// 完全型チェック
 		CHECK = sizeof(T) + sizeof(U),
 		
-		value = sizeof(test(makeT()))==sizeof(yes) 
+		value = sizeof(IsInheritedFuncs<U>::test(makeT()))==sizeof(YesType) 
 	};
 };
 
@@ -795,6 +799,10 @@ struct LongLivedStringN : public LongLivedString{
 	uint_t size() const{ return N; }	
 };
 
+template<class T>
+inline const SmartPtr<T>&
+unchecked_ptr_cast(const AnyPtr& a);
+
 //
 ////////////////////////////////////////////
 
@@ -825,14 +833,18 @@ enum PrimitiveType{
 	TYPE_SMALL_STRING,
 	TYPE_LONG_LIVED_STRING,
 	TYPE_INTERNED_STRING,
-	// ここから上はimmutableな値型である
 
-	TYPE_PRIMITIVE_TYPE_MAX
+	TYPE_PADDING_0, // 14
+	TYPE_PADDING_1, // 15
+
+	// ここから上はimmutableな値型である
 };
 
 enum PrimitiveTypeRef{
+	TYPE_REF_SHIFT = 4,
+
 	// ここから下は参照型である
-	TYPE_BASE = TYPE_PRIMITIVE_TYPE_MAX,
+	TYPE_BASE = 16,
 
 	TYPE_STRING,
 	

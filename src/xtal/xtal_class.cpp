@@ -183,7 +183,7 @@ void Class::overwrite(const ClassPtr& p){
 	for(uint_t i=0; i<alive_object_count(); ++i){
 		AnyPtr obj = alive_object(i);
 		if(XTAL_detail_type(obj)==TYPE_BASE){
-			if(const ClassPtr& cp = ptr_cast<Class>(obj)){
+			if(ClassPtr cp = ptr_cast<Class>(obj)){
 				cp->overwrite_now_ = false;
 			}
 		}
@@ -382,7 +382,7 @@ IDPtr Class::find_near_member2(const IDPtr& primary_key, const AnyPtr& secondary
 
 	AnyPtr value = vm->result_and_cleanup_call();
 
-	Xfor_cast(const ValuesPtr& v, value){
+	Xfor_cast(ValuesPtr v, value){
 		IDPtr id = ptr_cast<ID>(v->at(0));
 		int_t dist = edit_distance(primary_key, id);
 		if(dist<minv){

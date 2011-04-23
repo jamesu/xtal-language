@@ -27,17 +27,17 @@ inline void ixmemset(void* s, int_t c, size_t n){
 
 template<class T>
 inline void xmemmove(T* s1, const T* s2, size_t n){
-	xxmemmove((int_t*)s1, (const int_t*)s2, n*(sizeof(T)/sizeof(int_t)));
+	ixmemmove((void*)s1, (const void*)s2, n*sizeof(T));
 }
 
 template<class T>
 inline void xmemcpy(T* s1, const T* s2, size_t n){
-	xxmemcpy((int_t*)s1, (const int_t*)s2, n*(sizeof(T)/sizeof(int_t)));
+	ixmemcpy((void*)s1, (const void*)s2, n*sizeof(T));
 }
 
 template<class T>
 inline void xmemset(T* s, int_t c, size_t n){
-	xxmemset((int_t*)s, c, n*(sizeof(T)/sizeof(int_t)));
+	ixmemset((void*)s, c, n*sizeof(T));
 }
 
 class xarray{

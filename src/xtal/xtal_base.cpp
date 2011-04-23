@@ -52,7 +52,7 @@ void RefCountingBase::object_destroy(){
 
 void Base::special_initialize(){
 	value_.init_base(this);
-	class_ = (Class*)&null;
+	class_ = nul<Class>().get();
 	instance_variables_ = &empty_instance_variables; 
 }
 

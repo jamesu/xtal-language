@@ -61,6 +61,8 @@ const ClassPtr& Any::get_class() const{
 		&CppClassSymbol<String>::value,
 		&CppClassSymbol<String>::value,
 		&CppClassSymbol<String>::value,
+		&CppClassSymbol<Any>::value, //pading 0
+		&CppClassSymbol<Any>::value, //pading 1
 		&CppClassSymbol<Any>::value,
 		&CppClassSymbol<String>::value,
 		&CppClassSymbol<Array>::value,
@@ -1414,7 +1416,7 @@ zerodiv3:
 		call_state.need_result_count = 1;
 		call_state.next_pc = pc + inst.ISIZE;
 		call_state.flags = flags;
-		call_state.primary = (flags&MEMBER_FLAG_P_BIT) ? (const IDPtr&)XTAL_VM_local_variable(inst.primary) : XTAL_VM_ff().identifiers[inst.primary];
+		call_state.primary = (flags&MEMBER_FLAG_P_BIT) ? unchecked_ptr_cast<ID>(XTAL_VM_local_variable(inst.primary)) : XTAL_VM_ff().identifiers[inst.primary];
 		call_state.secondary = (flags&MEMBER_FLAG_S_BIT) ? XTAL_VM_local_variable(inst.secondary) : undefined;
 		call_state.cls = XTAL_VM_local_variable(inst.target);
 		call_state.self = XTAL_VM_ff().self;
@@ -1452,7 +1454,7 @@ zerodiv3:
 		int_t flags = inst.flags;
 		call_state.set(pc, pc + inst.ISIZE, inst.result, inst.need_result, inst.stack_base, inst.ordered, inst.named, flags);
 		call_state.target = XTAL_VM_local_variable(inst.target);
-		call_state.primary = (flags&MEMBER_FLAG_P_BIT) ? (IDPtr&)XTAL_VM_local_variable(inst.primary) : XTAL_VM_ff().identifiers[inst.primary];
+		call_state.primary = (flags&MEMBER_FLAG_P_BIT) ? unchecked_ptr_cast<ID>(XTAL_VM_local_variable(inst.primary)) : XTAL_VM_ff().identifiers[inst.primary];
 		call_state.secondary = (flags&MEMBER_FLAG_S_BIT) ? XTAL_VM_local_variable(inst.secondary) : undefined;
 		call_state.self = XTAL_VM_ff().self;
 		goto send_common;
@@ -1885,7 +1887,7 @@ const inst_t* VMachine::FunInstDefineClassMember(const inst_t* pc){
 const inst_t* VMachine::FunInstDefineMember(const inst_t* pc){
 		XTAL_VM_DEF_INST(InstDefineMember);
 		XTAL_VM_FUN;
-		IDPtr primary = (inst.flags&MEMBER_FLAG_P_BIT) ? (const IDPtr&)XTAL_VM_local_variable(inst.primary) : XTAL_VM_ff().identifiers[inst.primary];
+		IDPtr primary = (inst.flags&MEMBER_FLAG_P_BIT) ? unchecked_ptr_cast<ID>(XTAL_VM_local_variable(inst.primary)) : XTAL_VM_ff().identifiers[inst.primary];
 		AnyPtr secondary = (inst.flags&MEMBER_FLAG_S_BIT) ? XTAL_VM_local_variable(inst.secondary) : undefined;
 		AnyPtr cls = XTAL_VM_local_variable(inst.target);
 		AnyPtr value = XTAL_VM_local_variable(inst.value);

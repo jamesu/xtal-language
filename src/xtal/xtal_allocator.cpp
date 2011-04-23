@@ -7,7 +7,11 @@
 
 namespace xtal{
 
-void expand_simple_dynamic_pointer_array(void*** begin, void*** end, void*** current, int addsize){
+void expand_simple_dynamic_pointer_array(void* abegin, void* aend, void* acurrent, int addsize){
+	void*** begin = (void***)abegin;
+	void*** end = (void***)aend;
+	void*** current = (void***)acurrent;
+
 	uint_t size = (uint_t)(*end-*begin);
 	uint_t newsize = size+addsize;
 	void** newbegin=(void**)xmalloc(sizeof(void*)*newsize);
@@ -18,7 +22,11 @@ void expand_simple_dynamic_pointer_array(void*** begin, void*** end, void*** cur
 	*begin = newbegin;	
 }
 
-void fit_simple_dynamic_pointer_array(void*** begin, void*** end, void*** current){
+void fit_simple_dynamic_pointer_array(void* abegin, void* aend, void* acurrent){
+	void*** begin = (void***)abegin;
+	void*** end = (void***)aend;
+	void*** current = (void***)acurrent;
+
 	uint_t size = (uint_t)(*end-*begin);
 	uint_t newsize = (uint_t)(*current-*begin);
 	if(newsize){

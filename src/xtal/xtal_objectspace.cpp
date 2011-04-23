@@ -448,7 +448,12 @@ uint_t ObjectSpace::alive_object_count(){
 
 RefCountingBase* ObjectSpace::alive_object(uint_t i){
 	ConnectedPointer current(i, objects_list_begin_);
-	return *current;
+	if((*current)->ref_count()){
+		return *current;
+	}
+	else{
+		return 0;
+	}
 }
 
 ConnectedPointer ObjectSpace::sweep_dead_objects(ConnectedPointer first, ConnectedPointer last, ConnectedPointer end){

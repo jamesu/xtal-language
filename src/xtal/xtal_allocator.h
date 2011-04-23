@@ -9,7 +9,7 @@
 
 namespace xtal{
 
-void expand_simple_dynamic_pointer_array(void*** begin, void*** end, void*** current, int addsize);
+void expand_simple_dynamic_pointer_array(void* begin, void* end, void* current, int addsize);
 
 /**
 * \internal
@@ -22,10 +22,10 @@ void expand_simple_dynamic_pointer_array(void*** begin, void*** end, void*** cur
 */
 template<class T>
 inline void expand_simple_dynamic_pointer_array(T*** begin, T*** end, T*** current, int addsize=1024){
-	expand_simple_dynamic_pointer_array((void***)begin, (void***)end, (void***)current, addsize);
+	expand_simple_dynamic_pointer_array((void*)begin, (void*)end, (void*)current, addsize);
 }
 
-void fit_simple_dynamic_pointer_array(void*** begin, void*** end, void*** current);
+void fit_simple_dynamic_pointer_array(void* begin, void* end, void* current);
 
 /**
 * \internal
@@ -38,7 +38,7 @@ void fit_simple_dynamic_pointer_array(void*** begin, void*** end, void*** curren
 */
 template<class T>
 inline void fit_simple_dynamic_pointer_array(T*** begin, T*** end, T*** current){
-	fit_simple_dynamic_pointer_array((void***)begin, (void***)end, (void***)current);
+	fit_simple_dynamic_pointer_array((void*)begin, (void*)end, (void*)current);
 }
 
 #ifndef XTAL_NO_SMALL_ALLOCATOR
@@ -108,7 +108,7 @@ public:
 		data_t dummy;
 
 		data_t* buf(){
-			return reinterpret_cast<data_t*>(this+1);
+			return reinterpret_cast<data_t*>(XTAL_STRUCT_TAIL(this));
 		}
 	};
 

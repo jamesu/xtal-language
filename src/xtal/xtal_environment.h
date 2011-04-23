@@ -286,7 +286,7 @@ void set_gc_stress(bool b);
 
 uint_t alive_object_count();
 
-const AnyPtr& alive_object(uint_t i);
+AnyPtr alive_object(uint_t i);
 
 /////////////////////////////////////////////////////
 

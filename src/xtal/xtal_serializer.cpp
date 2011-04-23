@@ -102,7 +102,7 @@ void Serializer::inner_serialize(const AnyPtr& v){
 		XTAL_DEFAULT;
 
 		XTAL_CASE4(TYPE_SMALL_STRING, TYPE_LONG_LIVED_STRING, TYPE_INTERNED_STRING, TYPE_STRING){
-			const StringPtr& a = unchecked_ptr_cast<String>(v);
+			StringPtr a = unchecked_ptr_cast<String>(v);
 			uint_t sz = a->data_size();
 			const char_t* str = a->data();
 
@@ -131,7 +131,7 @@ void Serializer::inner_serialize(const AnyPtr& v){
 		}
 
 		XTAL_CASE(TYPE_ARRAY){
-			const ArrayPtr& a = unchecked_ptr_cast<Array>(v);
+			ArrayPtr a = unchecked_ptr_cast<Array>(v);
 			stream_->put_u8(TARRAY);
 			stream_->put_u32be(a->size());
 			for(uint_t i=0; i<a->size(); ++i){
@@ -141,7 +141,7 @@ void Serializer::inner_serialize(const AnyPtr& v){
 		}
 
 		XTAL_CASE(TYPE_VALUES){
-			const ValuesPtr& a = unchecked_ptr_cast<Values>(v);
+			ValuesPtr a = unchecked_ptr_cast<Values>(v);
 			stream_->put_u8(TVALUES);
 			inner_serialize(a->head());
 			inner_serialize(a->tail());
@@ -246,7 +246,7 @@ void Serializer::inner_serialize(const AnyPtr& v){
 		stream_->put_u8(NAME);
 		inner_serialize(name_list);
 
-		Xfor_cast(const ValuesPtr& mv, name_list){
+		Xfor_cast(ValuesPtr mv, name_list){
 			if(first_step){
 				if(XTAL_detail_raweq(mv->at(0), Xid(lib))){
 					break;
@@ -557,7 +557,7 @@ AnyPtr Serializer::inner_deserialize(){
 
 AnyPtr Serializer::demangle(const AnyPtr& n){
 	AnyPtr ret;
-	Xfor_cast(const ValuesPtr& mv, n){
+	Xfor_cast(ValuesPtr mv, n){
 		if(first_step){
 			if(XTAL_detail_raweq(mv->at(0), Xid(lib))){
 				ret = lib();
@@ -567,7 +567,7 @@ AnyPtr Serializer::demangle(const AnyPtr& n){
 			}
 		}
 		else{
-			if(const IDPtr& id = ptr_cast<ID>(mv->at(0))){
+			if(IDPtr id = ptr_cast<ID>(mv->at(0))){
 				ret = ret->member(id, mv->at(1)); 
 			}
 			else{

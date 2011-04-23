@@ -96,7 +96,7 @@ class StatelessNativeMethod : public Any{
 public:
 	StatelessNativeMethod(const param_types_holder_n& pth);
 public:
-	void on_rawcall(const VMachinePtr& vm);
+	void on_rawcall(const VMachinePtr& vm) const;
 };
 
 class NativeMethod : public RefCountingBase{

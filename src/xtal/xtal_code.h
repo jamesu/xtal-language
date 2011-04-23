@@ -64,7 +64,7 @@ public:
 	}
 
 	const IDPtr* identifier_data(){
-		return (IDPtr*)identifier_table_.data();
+		return &identifier(0);
 	}
 
 	uint_t identifier_size(){

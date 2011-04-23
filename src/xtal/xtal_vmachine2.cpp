@@ -360,7 +360,7 @@ void VMachine::return_result_mv(const ValuesPtr& values){
 
 void VMachine::return_result(const char_t* s){ return_result(xnew<String>(s)); }
 void VMachine::return_result(const LongLivedString& s){ return_result(xnew<String>(s)); }
-void VMachine::return_result(const IDPtr& s){ return_result((AnyPtr&)s); }
+void VMachine::return_result(const IDPtr& s){ return_result(unchecked_ptr_cast<Any>(s)); }
 
 void VMachine::return_result(char v){ return_result(Int(v)); }
 void VMachine::return_result(signed char v){ return_result(Int(v)); }
@@ -546,7 +546,7 @@ ArgumentsPtr VMachine::inner_make_arguments(const NamedParam* params, int_t num)
 	}
 
 	for(int_t i = 0, size = XTAL_VM_ff().named_arg_count; i<size; ++i){
-		IDPtr& name = (IDPtr&)XTAL_VM_local_variable(XTAL_VM_ff().ordered_arg_count+i*2+0);
+		IDPtr name = unchecked_ptr_cast<ID>(XTAL_VM_local_variable(XTAL_VM_ff().ordered_arg_count+i*2+0));
 		bool found = false;
 		for(int_t j = 0; j<param_size; ++j){
 			if(XTAL_detail_raweq(params[j].name, name)){
@@ -573,7 +573,7 @@ ArgumentsPtr VMachine::inner_make_arguments(Method* fun){
 	}
 
 	for(int_t i = 0, size = XTAL_VM_ff().named_arg_count; i<size; ++i){
-		IDPtr& name = (IDPtr&)XTAL_VM_local_variable(XTAL_VM_ff().ordered_arg_count+i*2+0);
+		IDPtr name = unchecked_ptr_cast<ID>(XTAL_VM_local_variable(XTAL_VM_ff().ordered_arg_count+i*2+0));
 		bool found = false;
 		for(int_t j = 0; j<param_size; ++j){
 			if(XTAL_detail_raweq(fun->param_name_at(j), name)){
@@ -775,7 +775,7 @@ AnyPtr VMachine::eval_instance_variable(const AnyPtr& self, const IDPtr& key){
 	ary->push_back(klass);
 
 	if(InstanceVariables* iv = XTAL_detail_pvalue(self)->instance_variables()){
-		Xfor_cast(const ClassPtr& p, ary){
+		Xfor_cast(ClassPtr p, ary){
 			if(!p->is(cpp_class<Code>())){
 				if(const CodePtr& code = p->code()){
 					ClassInfo* info = p->info();
@@ -800,9 +800,9 @@ bool VMachine::eval_set_instance_variable(const AnyPtr& self, const IDPtr& key, 
 	ArrayPtr ary = klass->ancestors()->to_a();
 	ary->push_back(klass);
 
-	Xfor_cast(const ClassPtr& p, ary){
+	Xfor_cast(ClassPtr p, ary){
 		if(InstanceVariables* iv = XTAL_detail_pvalue(self)->instance_variables()){
-			if(const CodePtr& code = p->code()){
+			if(CodePtr code = p->code()){
 				ClassInfo* info = p->info();
 				for(uint_t i=0; i<info->instance_variable_size; ++i){
 					if(XTAL_detail_raweq(key, code->identifier(info->instance_variable_identifier_offset+i))){

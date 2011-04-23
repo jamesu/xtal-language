@@ -98,7 +98,7 @@ void Any::rawcall(const VMachinePtr& vm) const{
 			return;
 		}
 
-		set_unsupported_error(ap(*this)->get_class(), XTAL_DEFINED_ID(op_call), undefined, vm);
+		set_unsupported_error(get_class(), XTAL_DEFINED_ID(op_call), undefined, vm);
 		return;
 	}
 }

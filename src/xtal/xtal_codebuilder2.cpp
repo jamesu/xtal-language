@@ -174,7 +174,7 @@ int_t CodeBuilder::compile_member(const AnyPtr& eterm, const AnyPtr& eprimary, c
 	int_t primary = 0;
 	int_t secondary = 0;
 
-	if(const IDPtr& id = ptr_cast<ID>(eprimary)){
+	if(IDPtr id = ptr_cast<ID>(eprimary)){
 		primary = register_identifier(id);
 	}
 	else{
@@ -228,7 +228,7 @@ int_t CodeBuilder::compile_send(const AnyPtr& eterm, const AnyPtr& eprimary, con
 	int_t primary = 0;
 	int_t secondary = 0;
 
-	if(const IDPtr& id = ptr_cast<ID>(eprimary)){
+	if(IDPtr id = ptr_cast<ID>(eprimary)){
 		primary = register_identifier(id);
 	}
 	else{
@@ -257,7 +257,7 @@ int_t CodeBuilder::compile_send(const AnyPtr& eterm, const AnyPtr& eprimary, con
 		}
 		
 		if(ordered==0){
-			Xfor_cast(const ExprPtr& v, args){
+			Xfor_cast(ExprPtr v, args){
 				if(v->at(0)){
 					named++;
 				}
@@ -519,7 +519,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 		XTAL_CASE_N(case EXPR_MAP:){
 			if(result_count!=0){
 				put_inst(InstMakeMap(result));
-				Xfor_cast(const ArrayPtr& v, e->map_values()){
+				Xfor_cast(ArrayPtr v, e->map_values()){
 					compile_expr(v->at(0), stack_top+1, stack_top);
 					compile_expr(v->at(1), stack_top+2, stack_top+1);
 					put_inst(InstMapInsert(result, stack_top, stack_top+1));
@@ -527,7 +527,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 				return 1;
 			}
 			else{
-				Xfor_cast(const ArrayPtr& v, e->map_values()){
+				Xfor_cast(ArrayPtr v, e->map_values()){
 					compile_expr(v->at(0), stack_top+1, stack_top);
 					compile_expr(v->at(1), stack_top+2, stack_top+1);
 				}
@@ -1316,7 +1316,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 				else if(term->itag()==EXPR_MEMBER){
 					int_t nterm = stack_top++; compile_expr(term->member_term(), stack_top, nterm);
 
-					if(ptr_cast<ID>(term->member_name())){
+					if(can_cast<ID>(term->member_name())){
 					
 					}
 					else{
@@ -1390,7 +1390,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 					int_t nterm = lhs_stack_base++;
 
 					int_t primary;
-					if(const IDPtr& id = ptr_cast<ID>(term->member_name())){
+					if(IDPtr id = ptr_cast<ID>(term->member_name())){
 						primary = register_identifier(id);
 					}
 					else{
@@ -1485,7 +1485,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 				int_t primary = 0;
 				int_t secondary = 0;
 
-				if(const IDPtr& id = ptr_cast<ID>(e->bin_lhs()->member_name())){
+				if(IDPtr id = ptr_cast<ID>(e->bin_lhs()->member_name())){
 					primary = register_identifier(id);
 				}
 				else{
@@ -1579,14 +1579,14 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 			ArrayPtr case_array = xnew<Array>();
 			ArrayPtr jump_array = xnew<Array>();
 			ExprPtr default_case = e->switch_default();
-			Xfor_cast(const ExprPtr& v, e->switch_cases()){
+			Xfor_cast(ExprPtr v, e->switch_cases()){
 				// vはcase ひとつが入っている
 				// v->at(0) には条件のリスト
 				// v->at(1) には条件がマッチした場合の実行文が入っている
 
 				case_array->push_back(v->at(1));
 				jump_array->push_back(reserve_label());
-				Xfor_cast(const ExprPtr& k, v->at(0)){
+				Xfor_cast(ExprPtr k, v->at(0)){
 					case_map->set_at(k, case_array->size()-1);
 				}
 			}

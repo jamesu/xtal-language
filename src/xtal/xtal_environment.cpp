@@ -551,8 +551,8 @@ void Environment::initialize(const Setting& setting){
 	string_space_.initialize();
 	object_space_.initialize();
 
-	lib_ = *(SmartPtr<Lib>*)&cpp_class<Lib>();
-	global_ = *(SmartPtr<Global>*)&cpp_class<Global>();
+	lib_ = unchecked_ptr_cast<Lib>(cpp_class<Lib>());
+	global_ = unchecked_ptr_cast<Global>(cpp_class<Global>());
 	builtin_ = cpp_class<Builtin>();
 	builtin_->def(Xid(global), global_);
 	builtin_->def(Xid(lib), lib_);
@@ -670,8 +670,13 @@ uint_t alive_object_count(){
 	return environment_->object_space_.alive_object_count();
 }
 
-const AnyPtr& alive_object(uint_t i){
-	return to_smartptr(environment_->object_space_.alive_object(i));
+AnyPtr alive_object(uint_t i){
+	if(RefCountingBase* p = environment_->object_space_.alive_object(i)){
+		return p;
+	}
+	else{
+		return null;
+	}
 }
 
 const ClassPtr& cpp_class(CppClassSymbolData* key){

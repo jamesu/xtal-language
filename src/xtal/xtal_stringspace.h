@@ -132,10 +132,10 @@ public:
 		u16 hash;
 		u16 flags;
 
-		void set_pointer(char_t* str){ *(char_t**)(this+1) = str; }
-		char_t* pointer(){ return *(char_t**)(this+1); }
-		char_t* buf(){ return (char_t*)(this+1); }
-		char_t* data() const{ return flags ? *(char_t**)(this+1) : (char_t*)(this+1); }
+		void set_pointer(char_t* str){ *(char_t**)XTAL_STRUCT_TAIL(this) = str; }
+		char_t* pointer(){ return *(char_t**)XTAL_STRUCT_TAIL(this); }
+		char_t* buf(){ return (char_t*)XTAL_STRUCT_TAIL(this); }
+		char_t* data() const{ return flags ? *(char_t**)XTAL_STRUCT_TAIL(this) : (char_t*)XTAL_STRUCT_TAIL(this); }
 	};
 
 public:

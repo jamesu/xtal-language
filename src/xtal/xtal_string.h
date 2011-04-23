@@ -397,9 +397,9 @@ public:
 
 public:
 
-	const StringPtr& left(){ return unchecked_ptr_cast<String>(left_); }
+	StringPtr left(){ return unchecked_ptr_cast<String>(left_); }
 
-	const StringPtr& right(){ return unchecked_ptr_cast<String>(right_); }
+	StringPtr right(){ return unchecked_ptr_cast<String>(right_); }
 
 	AnyPtr each();
 };

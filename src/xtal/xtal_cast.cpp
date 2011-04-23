@@ -12,9 +12,11 @@ const char_t* cast_const_char_t_ptr(const AnyPtr& a){
 IDPtr cast_IDPtr(const AnyPtr& a){
 	if(a){
 		const StringPtr& s = unchecked_ptr_cast<String>(a);
-		return s->is_interned() ? *(IDPtr*)&a : s->intern();
+		if(!s->is_interned()){
+			return s->intern();
+		}
 	}
-	return *(IDPtr*)&a;
+	return unchecked_ptr_cast<ID>(a);
 }
 
 }

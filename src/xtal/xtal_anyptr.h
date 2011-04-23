@@ -389,6 +389,12 @@ inline bool operator!=(const AnyPtr& a, const AnyPtr& b){
 
 ///////////////////////////////////////////
 
+template<class T, class U>
+inline T* dangerous_cast(const U* a){
+	char* cp = (char*)a;
+	return (T*)cp;
+}
+
 template<int N, class T>
 struct Extract{};
 
@@ -408,15 +414,15 @@ struct Extract<INHERITED_RCBASE, T>{
 
 template<class T>
 struct Extract<INHERITED_ANY, T>{
-	static T* extract(const AnyPtr& a){
-		return reinterpret_cast<T*>(const_cast<AnyPtr*>(&a));
+	static T* extract(const Any& a){
+		return (T*)((Any*)&a);
 	}
 };
 
 template<class T>
 struct Extract<INHERITED_ANYPTR, T>{
 	static T* extract(const AnyPtr& a){
-		return reinterpret_cast<T*>(const_cast<AnyPtr*>(&a));
+		return static_cast<T*>((AnyPtr*)&a);
 	}
 };
 
@@ -424,7 +430,7 @@ template<class T>
 struct Extract<INHERITED_OTHER, T>{
 	static T* extract(const AnyPtr& a){
 		if(XTAL_detail_type(a)==TYPE_BASE){
-			return static_cast<T*>((static_cast<UserTypeHolder*>(XTAL_detail_pvalue(a)))->ptr); 
+			return static_cast<T*>((dangerous_cast<UserTypeHolder>(XTAL_detail_pvalue(a)))->ptr); 
 		}
 		else{
 			return static_cast<T*>(XTAL_detail_vpvalue(a));
@@ -458,7 +464,7 @@ public:
 };
 
 inline const AnyPtr& ap(const Any& v){
-	return (const AnyPtr&)v;
+	return *dangerous_cast<AnyPtr>(&v);
 }
 
 void ap(const AnyPtr& v);

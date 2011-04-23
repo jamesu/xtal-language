@@ -115,7 +115,7 @@ const char_t* StringSpace::register_string(const char_t* str, uint_t size, uint_
 void* StringSpace::Block::alloc(int size){
 	size = align(size, sizeof(int_t));
 	if(pos+size>=LIMIT){ return 0; }
-	void* ret = ((char*)(this+1) + pos);
+	void* ret = ((char*)XTAL_STRUCT_TAIL(this) + pos);
 	pos += size;
 	return ret;
 }

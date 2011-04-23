@@ -43,7 +43,7 @@ public:
 	template<class U>
 	SmartPtr<T>& operator =(const SmartPtr<U>& p){
 		check_inherit<U>();
-		SmartPtr<Any>::operator =((AnyPtr&)p);
+		(AnyPtr&)(*this) = p;
 		return *this;
 	}
 
@@ -129,7 +129,7 @@ private:
 	* AnyPtrからの暗黙の変換を拒否するために、privateで定義されている。
 	* AnyPtrからSmartPtr<T>に変換するにはptr_cast関数、ptr_cast関数を使用すること。
 	*/
-	//SmartPtr(const AnyPtr&);
+	SmartPtr(const AnyPtr&);
 
 	/**
 	* \brief 暗黙の変換を抑えるためのコンストラクタ。
@@ -667,21 +667,27 @@ struct ToSmartPtr{};
 template<class T>
 struct ToSmartPtr<INHERITED_BASE, T>{
 	static const SmartPtr<T>& to(const T* p){
-		return *static_cast<SmartPtr<T>*>(static_cast<Any*>(const_cast<T*>(p)));
+		const Any* p1 = p;
+		const SmartPtr<T>* p3 = (const SmartPtr<T>*)p1;
+		return *p3;
 	}
 };
 
 template<class T>
 struct ToSmartPtr<INHERITED_RCBASE, T>{
 	static const SmartPtr<T>& to(const T* p){
-		return *static_cast<SmartPtr<T>*>(static_cast<Any*>(const_cast<T*>(p)));
+		const Any* p1 = p;
+		const SmartPtr<T>* p3 = (const SmartPtr<T>*)p1;
+		return *p3;
 	}
 };
 
 template<class T>
 struct ToSmartPtr<INHERITED_ANY, T>{
 	static const SmartPtr<T>& to(const T* p){
-		return *static_cast<SmartPtr<T>*>(static_cast<Any*>(const_cast<T*>(p)));
+		const Any* p1 = p;
+		const SmartPtr<T>* p3 = (const SmartPtr<T>*)p1;
+		return *p3;
 	}
 };
 
@@ -695,20 +701,12 @@ inline const SmartPtr<T>& to_smartptr(const T* p){
 
 /////////////////////////////////////////////////////////////
 
-template<class T>
-struct Nul{
-	static SmartPtr<T>* value;
-};
-
-template<class T>
-SmartPtr<T>* Nul<T>::value = (SmartPtr<T>*)&null;
-
 /**
 * \brief SmartPtr<T>型のnullを取得する関数
 */
 template<class T>
 inline const SmartPtr<T>& nul(){
-	return *Nul<T>::value;
+	return unchecked_ptr_cast<T>(null);
 }
 
 //////////////////////////////////////////////////////////////
@@ -719,6 +717,7 @@ class SmartPtr< SmartPtr<T> >;
 
 //////////////////////////////////////////////////////////////
 
+#if 1
 template<>
 class SmartPtr<ID> : public Any{
 public:
@@ -794,6 +793,8 @@ public:
 		return !is_true();
 	}
 };
+
+#endif
 
 //////////////////////////////////////////////////
 

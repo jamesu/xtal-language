@@ -1,8 +1,11 @@
 
 CC = g++
-OPT = -O2 -DNDEBUG -fno-rtti -fno-exceptions -Wall -DXTAL_USE_PTHREAD_TLS -Wstrict-aliasing=1
-
-# -fno-strict-aliasing
+OPT += -fno-rtti -fno-exceptions
+OPT += -O2 
+OPT +=-DNDEBUG -DXTAL_USE_PTHREAD_TLS
+OPT += -Wall -Wno-unused-parameter -Wno-unused
+OPT += -Wstrict-aliasing=2
+#OPT += -fno-strict-aliasing
 
 LOPT = -lpthread -lstdc++
 
@@ -16,7 +19,7 @@ SRC = $(shell ls $(SRCDIR)/xtal_*.cpp)
 OBJ = $(patsubst $(SRCDIR)/%.cpp,%.o,$(SRC))
 HED = $(shell ls $(SRCDIR)/xtal_*.h)
 
-all: libxtal ix xtal
+all: libxtal xtal
 
 %.o: $(SRCDIR)/%.cpp
 	$(CC) -o $@ -c $< $(OPT)

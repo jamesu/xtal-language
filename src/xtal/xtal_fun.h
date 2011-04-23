@@ -118,7 +118,7 @@ public:
 public:
 
 	operator const AnyPtr&() const{
-		return *reinterpret_cast<const AnyPtr*>(this);
+		return ap(*this);
 	}
 };
 
@@ -144,7 +144,7 @@ public:
 public:
 
 	operator const AnyPtr&() const{
-		return *reinterpret_cast<const AnyPtr*>(this);
+		return ap(*this);
 	}
 };
 /**

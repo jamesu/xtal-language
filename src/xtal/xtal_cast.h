@@ -47,13 +47,13 @@ struct Caster<T*>{
 template<class T>
 struct Caster<const T&>{
 	typedef const T& type;
-	static type cast(const AnyPtr& a){ return *reinterpret_cast<const SmartPtr<T>*>(&a)->get(); }
+	static type cast(const AnyPtr& a){ return *unchecked_ptr_cast<T>(a).get(); }
 };
 
 template<class T>
 struct Caster<const SmartPtr<T>&>{
 	typedef const SmartPtr<T>& type;
-	static type cast(const AnyPtr& a){ return *reinterpret_cast<const SmartPtr<T>*>(&a); }
+	static type cast(const AnyPtr& a){ return unchecked_ptr_cast<T>(a); }
 };
 
 template<>
@@ -153,7 +153,9 @@ cast(const AnyPtr& a){
 template<class T>
 inline const SmartPtr<T>&
 unchecked_ptr_cast(const AnyPtr& a){
-	return *reinterpret_cast<const SmartPtr<T>*>(&a);
+	const Any* a1 = &a;
+	const SmartPtr<T>* a3 = (const SmartPtr<T>*)a1;
+	return *a3;
 }
 
 /**

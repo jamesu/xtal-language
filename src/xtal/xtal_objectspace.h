@@ -46,7 +46,7 @@ public:
 	}
 
 	const ClassPtr& cpp_class(uint_t key){
-		return to_smartptr((Class*)value_map_.find(key));
+		return to_smartptr((Class*)value_map_.find(key)->value().get());
 	}
 
 	RefCountingBase* make_cpp_value(CppValueSymbolData* key);

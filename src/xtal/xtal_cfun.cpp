@@ -15,7 +15,7 @@ StatelessNativeMethod::StatelessNativeMethod(const param_types_holder_n& pth){
 	value_.init_stateless_native_method(&pth);
 }
 
-void StatelessNativeMethod::on_rawcall(const VMachinePtr& vm){
+void StatelessNativeMethod::on_rawcall(const VMachinePtr& vm) const{
 	const param_types_holder_n& pth = *XTAL_detail_pthvalue(*this);
 	int_t param_n = pth.param_n;
 

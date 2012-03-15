@@ -26,7 +26,7 @@ InstanceVariables* InstanceVariables::create(ClassInfo* class_info){
 		char* buf = (char*)(this + 1);
 		AnyPtr* values = (AnyPtr*)buf;
 
-		int_t sum = info_->instance_variable_size+class_info->instance_variable_size;
+		int_t sum = sum_ + class_info->instance_variable_size;
 		InstanceVariables* ret = (InstanceVariables*)xmalloc(
 			sizeof(InstanceVariables) + sizeof(int_t) +
 			sizeof(AnyPtr)*(2+sum));
@@ -50,11 +50,7 @@ InstanceVariables* InstanceVariables::create(ClassInfo* class_info){
 		int_t install_count = *(int_t*)buf; buf += sizeof(int_t);
 		AnyPtr* values = (AnyPtr*)buf;
 
-		int_t oldsum = 0;
-		for(int_t i=0; i<install_count; ++i){
-			oldsum += ((ClassInfo*)XTAL_detail_rawvalue(values[i]).immediate_second_vpvalue())->instance_variable_size;
-		}
-		int_t sum = oldsum + class_info->instance_variable_size;
+		int_t sum = sum_ + class_info->instance_variable_size;
 
 		InstanceVariables* ret = (InstanceVariables*)xmalloc(
 			sizeof(InstanceVariables) + sizeof(int_t) +
@@ -66,11 +62,11 @@ InstanceVariables* InstanceVariables::create(ClassInfo* class_info){
 		int_t& retinstall_count = *(int_t*)retbuf; retbuf += sizeof(int_t);
 		retinstall_count = install_count+1;
 		AnyPtr* retvalues = (AnyPtr*)retbuf;
-		XTAL_detail_copy(retvalues[0], ImmediateValue(oldsum, class_info));
-		xmemcpy(retvalues+1, values, install_count+oldsum);
-		xmemset(retvalues+1+install_count+oldsum, 0, class_info->instance_variable_size);	
+		XTAL_detail_copy(retvalues[0], ImmediateValue(sum_, class_info));
+		xmemcpy(retvalues+1, values, install_count+sum_);
+		xmemset(retvalues+1+install_count+sum_, 0, class_info->instance_variable_size);	
 
-		xfree(this, sizeof(InstanceVariables)+sizeof(int_t)+sizeof(AnyPtr)*(oldsum+install_count));
+		xfree(this, sizeof(InstanceVariables)+sizeof(int_t)+sizeof(AnyPtr)*(sum_+install_count));
 		return ret;
 	}
 }
@@ -222,10 +218,15 @@ void Class::overwrite_inner(const ClassPtr& p){
 		for(uint_t i=0; i<alive_object_count(); ++i){
 			AnyPtr obj = alive_object(i);
 			if(XTAL_detail_type(obj)==TYPE_BASE){
-				if(obj->is(to_smartptr(this))){
+				if(obj->is(to_smartptr(this))){ // リロードされたクラスのインスタンスを発見した
 
+					// インスタンスの状態を保存する
 					AnyPtr data = obj->save_instance_variables(to_smartptr(this));
+
+					// 新しいClassInfoで初期化する
 					XTAL_detail_pvalue(obj)->init_instance_variables(p->info());
+					
+					// インスタンスの状態を復帰する
 					obj->load_instance_variables(p, data);
 
 					if(Node* it = find_node(Xid(reloaded), undefined)){
@@ -242,6 +243,9 @@ void Class::overwrite_inner(const ClassPtr& p){
 		set_code(p->code());
 		set_info(p->info());
 	}
+
+	overwrite_now_ = false;
+
 }
 
 void Class::inherit(const ClassPtr& cls){

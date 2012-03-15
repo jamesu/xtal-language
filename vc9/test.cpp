@@ -641,13 +641,36 @@ struct Vec128{
 	}
 };
 
+enum eType{
+	EEE = 1,
+	EEE2 = 2
+};
+
+XTAL_BIND(eType){
+	Xdef(EEE, xnew<eType>(EEE));
+	Xdef(EEE2, xnew<eType>(EEE2));
+}
+
 struct Spr{
 	Vec128 v;
+	void foo(eType e){
+		e = e;
+	}
 };
 
 XTAL_BIND(Spr){
 	it->def_var("v", &Spr::v);
+	it->def_method("foo", &Spr::foo);
 }
+
+
+namespace std{
+	struct testa;
+}
+
+class std::testa{
+
+};
 
 struct SLp : public Base{
 	virtual void foo(){}
@@ -730,6 +753,8 @@ int main2(int argc, char** argv){
 	{
 		if(CodePtr code = Xsrc((
 /////////////////////////////////
+		Spr.foo(eType::EEE);
+
 		fun a(){
 			return false;
 		}
@@ -742,21 +767,17 @@ int main2(int argc, char** argv){
 		}
 /////////////////////////////////
 		))){
-
+			code->def("Spr", xnew<Spr>());
+			code->def("eType", cpp_class<eType>());
 			code->call();
-			
 		}
 
 if(CodePtr code = Xsrc(( 
-   lib::foo: 100;
+	for ( i:0 ; i<100 ; i++ ) {
+		t : "StaticTextMode007-03-00-1-" ~ (i+1).to_s();
+	}
+return false;
 ))){
-   code->call();
-}
-
-if(CodePtr code = Xsrc(( 
-   lib::foo: 200;
-))){
-   code->enable_redefine();
    code->call();
 }
 
@@ -852,6 +873,12 @@ if(CodePtr code = Xsrc((
 		stderr_stream()->println(e);
 		return 1;
 	}
+
+	load("../test/ReloadTest.xtal");
+	load("../test/ReloadTest2.xtal");
+	load("../test/ReloadTest2.xtal");
+	load("../test/ReloadTest2.xtal");
+	load("../test/ReloadTest2.xtal");
 
 #ifdef XTAL_USE_WCHAR
 	lib()->member("test")->send("run_dir", "../utf16le-test");
@@ -1356,7 +1383,7 @@ void MemoryManager::insert(Chunk* key){
 }
 
 MemoryManager::Chunk* MemoryManager::minv(Chunk* n){
-	while ( true ){
+	while(true){
 		if(!n->b.left){
 			return n;
 		}

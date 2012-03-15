@@ -58,6 +58,11 @@ public:
 	virtual void lock_mutex(void* /*mutex_object*/){}
 	virtual void unlock_mutex(void* /*mutex_object*/){}
 
+	virtual void* new_event(){ return 0; }
+	virtual void delete_event(void* /*event_object*/){}
+	virtual void wait_event(void* /*event_object*/){}
+	virtual void signal_event(void* /*event_object*/){}
+
 	virtual void yield(){}
 	virtual void sleep(float_t /*sec*/){}
 };
@@ -90,6 +95,7 @@ public:
 	virtual ~FilesystemLib(){}
 
 	virtual bool is_directory(const char_t* /*path*/){ return false; }
+	virtual uint_t mtime(const char_t*){ return 0; }
 
 	virtual void* new_file_stream(const char_t* /*path*/, const char_t* /*flags*/){ return 0; }
 	virtual void delete_file_stream(void* /*file_stream_object*/){}

@@ -48,6 +48,12 @@ public:
 		stat(path, &sb);
 		return stat(path, &sb)!=-1 && (sb.st_mode & S_IFMT)==S_IFDIR;
 	}
+	
+	virtual uint_t mtime(const char_t* path){ 
+		struct stat sb;
+		stat(path, &sb);
+		return stat(path, &sb)!=-1 && sb.st_mtime;
+	}
 
 	virtual void* new_file_stream(const char_t* path, const char_t* flags){
 		return fopen(path, flags);

@@ -87,6 +87,15 @@ void VMachine::push_named_args(const MapPtr& p){
 		push_arg(ptr_cast<ID>(k), v);
 	}
 }
+	
+void VMachine::insert_arg(int_t index, const AnyPtr& value){
+	for(int i=XTAL_VM_ff().ordered_arg_count+XTAL_VM_ff().named_arg_count*2 - 1; i>index; --i){
+		set_local_variable(i, local_variable(i-1));
+	}
+
+	set_local_variable(index, value);
+	XTAL_VM_ff().ordered_arg_count++;
+}
 
 void VMachine::push_arg(const char_t* s){ push_arg(AnyPtr(s)); }
 void VMachine::push_arg(const LongLivedString& s){ push_arg(AnyPtr(s)); }

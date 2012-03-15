@@ -83,7 +83,7 @@ struct Caster<const Type&>{\
 template<>struct Caster<Type&>{\
 	typedef Type& type;\
 private:\
-	static type cast(const AnyPtr& a);\
+	static type cast(const ::xtal::AnyPtr& a);\
 }
 
 // 以下の型は参照型にキャストできない。const参照型にはキャストできる。
@@ -101,7 +101,7 @@ XTAL_CAST_HELPER(float, Float, XTAL_detail_fvalue);
 XTAL_CAST_HELPER(double, Float, XTAL_detail_fvalue);
 XTAL_CAST_HELPER(long double, Float, XTAL_detail_fvalue);
 
-#undef XTAL_CAST_HELPER
+//#undef XTAL_CAST_HELPER
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -182,6 +182,12 @@ template<class T>
 inline typename Caster<T>::type 
 tricky_cast(const AnyPtr& a, void (*)(T)){
 	return cast<T>(a);
+}
+
+template<class T>
+inline typename Caster<T>::type 
+tricky_unchecked_cast(const AnyPtr& a, void (*)(T)){
+	return unchecked_cast<T>(a);
 }
 
 }

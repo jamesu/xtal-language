@@ -142,6 +142,8 @@ public:
 		XTAL_VM_ff().self = self;
 	}
 
+	void insert_arg(int_t index, const AnyPtr& value);
+
 // 
 	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·—pˆÓ‚ğ‚·‚é
 	void setup_call(int_t need_result_count = 1);

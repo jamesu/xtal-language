@@ -7,18 +7,24 @@
 
 #include "xtal_cstdiostream.h"
 
+#ifdef XTAL_USE_WCHAR
+#define XTAL_TC(x) x##W
+#else
+#define XTAL_TC(x) x##A
+#endif
+
 namespace xtal{
 
 class WinFindNextFile{
 	HANDLE h_;
-	WIN32_FIND_DATA fd_;
+	XTAL_TC(WIN32_FIND_DATA) fd_;
 	bool first_;
 public:
 
 	WinFindNextFile(const char_t* path){
 		char_t path2[MAX_PATH];
 		XTAL_SPRINTF(path2, MAX_PATH, XTAL_STRING("%s/*").str(), path);
-		h_ = FindFirstFile(path2, &fd_);
+		h_ = XTAL_TC(FindFirstFile)(path2, &fd_);
 		first_ = true;
 	}
 	
@@ -36,7 +42,7 @@ public:
 			return fd_.cFileName;
 		}
 		else{	
-			if(!FindNextFile(h_, &fd_)){
+			if(!XTAL_TC(FindNextFile)(h_, &fd_)){
 				stop();
 				return 0;
 			}
@@ -57,8 +63,8 @@ class WinFilesystemLib : public FilesystemLib{
 public:
 
 	virtual bool is_directory(const char_t* path){
-		WIN32_FIND_DATA fd;
-		HANDLE h = FindFirstFile(path, &fd);
+		XTAL_TC(WIN32_FIND_DATA) fd;
+		HANDLE h = XTAL_TC(FindFirstFile)(path, &fd);
 		if(h==INVALID_HANDLE_VALUE){
 			return false;
 		}
@@ -66,6 +72,23 @@ public:
 		FindClose(h);
 		return ret;
 	}
+	
+	time_t FileTimeToUnixTime(const FILETIME& ft){
+ 		LONGLONG ll = ((LONGLONG)ft.dwHighDateTime << 32) + ft.dwLowDateTime;
+		return (time_t)((ll - 116444736000000000) / 10000000);
+	}
+	
+	virtual uint_t mtime(const char_t* path){ 
+		XTAL_TC(WIN32_FIND_DATA) fd;
+		HANDLE h = XTAL_TC(FindFirstFile)(path, &fd);
+		if(h==INVALID_HANDLE_VALUE){
+			return 0;
+		}
+		uint_t ret = FileTimeToUnixTime(fd.ftLastWriteTime);
+		FindClose(h);
+		return ret;
+	}
+	
 
 	virtual void* new_file_stream(const char_t* path, const char_t* flags){
 		return _tfopen(path, flags);

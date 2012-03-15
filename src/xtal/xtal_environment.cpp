@@ -317,7 +317,8 @@ Environment* environment(){
 }
 
 void set_environment(Environment* environment){
-	last_environment_ = environment_ = environment;
+	environment_ = environment;
+	last_environment_ = environment;
 }
 
 const VMachinePtr& vmachine(){

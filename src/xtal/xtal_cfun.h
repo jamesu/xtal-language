@@ -220,6 +220,17 @@ inline NativeFunPtr method(const Fun& f){
 }
 
 /**
+* \brief C++のメンバ関数をXtalから呼び出せるオブジェクトに変換するための関数
+*
+* 普通の関数をメソッドとして変換したい場合、第一引数をその型にすること。
+* \param this_ thisにバインドしたいオブジェクトを指定する
+*/
+template<class Fun>
+inline NativeFunPtr method(const Fun& f, const AnyPtr& this_){
+	return new_native_fun(fun_param_holder<dmemfun<Fun> >::value, &f, this_);
+}
+
+/**
 * \brief メンバ変数へのポインタからゲッター関数を生成する
 *
 */
@@ -227,7 +238,12 @@ template<class T, class C>
 inline NativeFunPtr getter(T C::* f){
 	return new_native_fun(fun_param_holder<getter_functor<C, T> >::value, &f);
 }
-	
+
+template<class T, class C>
+inline NativeFunPtr getter(T C::* f, const AnyPtr& this_){
+	return new_native_fun(fun_param_holder<getter_functor<C, T> >::value, &f, this_);
+}
+
 /**
 * \brief メンバ変数へのポインタからセッター関数を生成する
 *
@@ -235,6 +251,11 @@ inline NativeFunPtr getter(T C::* f){
 template<class T, class C>
 inline NativeFunPtr setter(T C::* f){
 	return new_native_fun(fun_param_holder<getter_functor<C, T> >::value(), &f);
+}
+
+template<class T, class C>
+inline NativeFunPtr setter(T C::* f, const AnyPtr& this_){
+	return new_native_fun(fun_param_holder<getter_functor<C, T> >::value(), &f, this_);
 }
 
 /**

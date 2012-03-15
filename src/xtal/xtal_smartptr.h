@@ -717,7 +717,6 @@ class SmartPtr< SmartPtr<T> >;
 
 //////////////////////////////////////////////////////////////
 
-#if 1
 template<>
 class SmartPtr<ID> : public Any{
 public:
@@ -793,8 +792,6 @@ public:
 		return !is_true();
 	}
 };
-
-#endif
 
 //////////////////////////////////////////////////
 

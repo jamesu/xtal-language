@@ -46,12 +46,12 @@ struct FunctorParamR<void> : public FunctorParam{
 };
 
 #define XTAL_FP_HELPER(Type, XType, InitFun) \
-template<> struct FunctorParamR<Type> : public FunctorParam{\
+template<> struct FunctorParamR<Type> : public ::xtal::FunctorParam{\
 	typedef Type type;\
 	void return_result(type r){ result.value_.InitFun((XType::value_type)r); }\
 };\
-template<> struct FunctorParamR<Type&> : public FunctorParamR<Type>{};\
-template<> struct FunctorParamR<const Type&> : public FunctorParamR<Type>{}
+template<> struct FunctorParamR<Type&> : public ::xtal::FunctorParamR<Type>{};\
+template<> struct FunctorParamR<const Type&> : public ::xtal::FunctorParamR<Type>{}
 
 XTAL_FP_HELPER(bool, Bool, init_bool);
 
@@ -68,7 +68,12 @@ XTAL_FP_HELPER(float, Float, init_float);
 XTAL_FP_HELPER(double, Float, init_float);
 XTAL_FP_HELPER(long double, Float, init_float);
 
-#undef XTAL_FP_HELPER
+//#undef XTAL_FP_HELPER
+
+#define XTAL_BIND_ENUM(enum_type) \
+	XTAL_CAST_HELPER(enum_type, Int, XTAL_detail_ivalue);\
+	XTAL_FP_HELPER(enum_type, Int, init_int);\
+	template<> struct ::xtal::CppClassSymbol<enum_type> : public ::xtal::CppClassSymbol<Int>{}
 
 
 template<class R>

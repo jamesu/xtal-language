@@ -37,6 +37,26 @@ public:
 	}
 };
 
+class WinEvent{
+	HANDLE handle_;
+public:
+	WinEvent(){
+		handle_ = CreateEvent(NULL, FALSE, FALSE, NULL);
+	}
+	
+	~WinEvent(){
+		CloseHandle(handle_);
+	}
+	
+	void wait(){
+		WaitForSingleObject(handle_, INFINITE);
+	}
+	
+	void signal(){
+		SetEvent(handle_); 
+	}
+};
+
 class WinThread{
 	HANDLE id_;
 	void (*callback_)(void*);
@@ -112,6 +132,25 @@ public:
 	virtual void unlock_mutex(void* mutex_object){
 		((WinMutex*)mutex_object)->unlock();
 	}
+
+	virtual void* new_event(){ 
+		void* p = xmalloc(sizeof(WinEvent));
+		return new(p) WinEvent();
+	}
+
+	virtual void delete_event(void* event_object){
+		((WinEvent*)event_object)->~WinEvent();
+		xfree(event_object, sizeof(WinEvent));	
+	}
+
+	virtual void wait_event(void* event_object){
+		((WinEvent*)event_object)->wait();
+	}
+
+	virtual void signal_event(void* event_object){
+		((WinEvent*)event_object)->signal();
+	}
+
 
 	virtual void yield(){
 		Sleep(0);

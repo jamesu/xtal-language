@@ -62,7 +62,7 @@
 *
 * 各要素を受け取る変数に型をつけることが出来る。
 * \code
-* Xfor_cast(const StringPtr& value, array){
+* Xfor_cast(StringPtr value, array){
 *   // valueはStringPtrにキャストされている
 * }
 * else{
@@ -75,6 +75,26 @@
 	for(::xtal::BlockValueHolder1 block_value_holder(target, not_end); not_end; not_end=false)\
 	for(bool first_step=not_end=::xtal::block_next(block_value_holder, true); XTAL_UNUSED_VAR(first_step), not_end; not_end=::xtal::block_next(block_value_holder, false), first_step=false)\
 	if(var = ::xtal::tricky_cast(block_value_holder.values[0], (void (*)(var##e))0))
+
+/**
+* \hideinitializer
+* \brief foreachを簡単に記述するためのマクロ
+*
+* 各要素を受け取る変数に型をつけることが出来る。
+* \code
+* Xfor_unchecked_cast(StringPtr value, array){
+*   // valueはStringPtrにキャストされている
+* }
+* else{
+*   // elseをつけると、キャストに失敗したら実行される
+* }
+* \endcode
+*/
+#define Xfor_unchecked_cast(var, target) \
+	if(bool not_end = true)\
+	for(::xtal::BlockValueHolder1 block_value_holder(target, not_end); not_end; not_end=false)\
+	for(bool first_step=not_end=::xtal::block_next(block_value_holder, true); XTAL_UNUSED_VAR(first_step), not_end; not_end=::xtal::block_next(block_value_holder, false), first_step=false)\
+	if(var = ::xtal::tricky_unchecked_cast(block_value_holder.values[0], (void (*)(var##e))0))
 
 /**
 * \hideinitializer

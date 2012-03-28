@@ -35,7 +35,7 @@ Code::~Code(){
 
 void Code::generated(){
 	set_code(to_smartptr(this));
-	if(scope_info_table_.size()>2){
+	if(scope_info_table_.size()>1){
 		set_info(&scope_info_table_[1]);
 		resize_member_direct(scope_info_table_[1].variable_size);
 		make_members_force(Frame::FLAG_NOCACHE);

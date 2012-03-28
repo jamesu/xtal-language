@@ -477,45 +477,47 @@ XTAL_DEF_INST_2(1, InstLoadValue,
 *
 */
 XTAL_DEF_INST_2(2, InstLoadConstant,
-		inst_i8_t, result,
-        inst_u16_t, value_number
+		inst_i8_t, result, // 値を代入するローカル変数番号
+        inst_u16_t, value_number // 値を取り出すテーブル番号
 );
 
 /**
 * \internal
-* \brief スタックにint値をプッシュする。
+* \brief ローカル変数にint値をプッシュする。
 *
 */
 XTAL_DEF_INST_2(3, InstLoadInt1Byte,
-		inst_i8_t, result,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
         inst_i8_t, value
 );
 
 /**
 * \internal
-* \brief スタックにfloat値をプッシュする。
+* \brief ローカル変数にfloat値をプッシュする。
 *
 */
 XTAL_DEF_INST_2(4, InstLoadFloat1Byte,
-		inst_i8_t, result,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
         inst_i8_t, value
 );
 
 /**
 * \internal
-* \brief スタックに現在実行中の関数をプッシュする。
+* \brief ローカル変数に現在実行中の関数をプッシュする。
 *
 */
 XTAL_DEF_INST_1(5, InstLoadCallee,
-	inst_i8_t, result);
+	inst_i8_t, result  // 値を代入するローカル変数番号
+);
 
 /**
 * \internal
-* \brief 現在のthisをスタックに積む。
+* \brief ローカル変数に現在のthisを入れる。
 *
 */
 XTAL_DEF_INST_1(6, InstLoadThis,
-	inst_i8_t, result);
+	inst_i8_t, result  // 値を代入するローカル変数番号
+);
 
 /**
 * \internal
@@ -523,36 +525,37 @@ XTAL_DEF_INST_1(6, InstLoadThis,
 *
 */
 XTAL_DEF_INST_2(7, InstCopy,
-	inst_i8_t, result,
-	inst_i8_t, target);
+	inst_i8_t, result,  // 値を代入するローカル変数番号
+	inst_i8_t, target // 値を取り出すローカル変数番号
+);
 
 XTAL_DEF_INST_3(8, InstInc,
-	inst_i8_t, result,
-	inst_i8_t, target,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
+	inst_i8_t, target, // 値を取り出すローカル変数番号
 	inst_i8_t, stack_base);
 
 XTAL_DEF_INST_3(9, InstDec,
-	inst_i8_t, result,
-	inst_i8_t, target,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
+	inst_i8_t, target, // 値を取り出すローカル変数番号
 	inst_i8_t, stack_base);
 
 XTAL_DEF_INST_3(10, InstPos,
-	inst_i8_t, result,
-	inst_i8_t, target,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
+	inst_i8_t, target, // 値を取り出すローカル変数番号
 	inst_i8_t, stack_base);
 
 XTAL_DEF_INST_3(11, InstNeg,
-	inst_i8_t, result,
-	inst_i8_t, target,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
+	inst_i8_t, target, // 値を取り出すローカル変数番号
 	inst_i8_t, stack_base);
 
 XTAL_DEF_INST_3(12, InstCom,
-	inst_i8_t, result,
-	inst_i8_t, target,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
+	inst_i8_t, target, // 値を取り出すローカル変数番号
 	inst_i8_t, stack_base);
 
 XTAL_DEF_INST_5(13, InstAdd,
-	inst_i8_t, result,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
 	inst_i8_t, lhs,
 	inst_i8_t, rhs,
 	inst_i8_t, stack_base,
@@ -560,7 +563,7 @@ XTAL_DEF_INST_5(13, InstAdd,
 	);
 
 XTAL_DEF_INST_5(14, InstSub,
-	inst_i8_t, result,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
 	inst_i8_t, lhs,
 	inst_i8_t, rhs,
 	inst_i8_t, stack_base,
@@ -568,7 +571,7 @@ XTAL_DEF_INST_5(14, InstSub,
 	);
 
 XTAL_DEF_INST_5(15, InstCat,
-	inst_i8_t, result,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
 	inst_i8_t, lhs,
 	inst_i8_t, rhs,
 	inst_i8_t, stack_base,
@@ -576,7 +579,7 @@ XTAL_DEF_INST_5(15, InstCat,
 	);
 
 XTAL_DEF_INST_5(16, InstMul,
-	inst_i8_t, result,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
 	inst_i8_t, lhs,
 	inst_i8_t, rhs,
 	inst_i8_t, stack_base,
@@ -584,7 +587,7 @@ XTAL_DEF_INST_5(16, InstMul,
 	);
 
 XTAL_DEF_INST_5(17, InstDiv,
-	inst_i8_t, result,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
 	inst_i8_t, lhs,
 	inst_i8_t, rhs,
 	inst_i8_t, stack_base,
@@ -592,7 +595,7 @@ XTAL_DEF_INST_5(17, InstDiv,
 	);
 
 XTAL_DEF_INST_5(18, InstMod,
-	inst_i8_t, result,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
 	inst_i8_t, lhs,
 	inst_i8_t, rhs,
 	inst_i8_t, stack_base,
@@ -600,7 +603,7 @@ XTAL_DEF_INST_5(18, InstMod,
 	);
 
 XTAL_DEF_INST_5(19, InstAnd,
-	inst_i8_t, result,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
 	inst_i8_t, lhs,
 	inst_i8_t, rhs,
 	inst_i8_t, stack_base,
@@ -608,7 +611,7 @@ XTAL_DEF_INST_5(19, InstAnd,
 	);
 
 XTAL_DEF_INST_5(20, InstOr,
-	inst_i8_t, result,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
 	inst_i8_t, lhs,
 	inst_i8_t, rhs,
 	inst_i8_t, stack_base,
@@ -616,7 +619,7 @@ XTAL_DEF_INST_5(20, InstOr,
 	);
 
 XTAL_DEF_INST_5(21, InstXor,
-	inst_i8_t, result,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
 	inst_i8_t, lhs,
 	inst_i8_t, rhs,
 	inst_i8_t, stack_base,
@@ -624,7 +627,7 @@ XTAL_DEF_INST_5(21, InstXor,
 	);
 
 XTAL_DEF_INST_5(22, InstShl,
-	inst_i8_t, result,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
 	inst_i8_t, lhs,
 	inst_i8_t, rhs,
 	inst_i8_t, stack_base,
@@ -632,7 +635,7 @@ XTAL_DEF_INST_5(22, InstShl,
 	);
 
 XTAL_DEF_INST_5(23, InstShr,
-	inst_i8_t, result,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
 	inst_i8_t, lhs,
 	inst_i8_t, rhs,
 	inst_i8_t, stack_base,
@@ -640,7 +643,7 @@ XTAL_DEF_INST_5(23, InstShr,
 	);
 
 XTAL_DEF_INST_5(24, InstUshr,
-	inst_i8_t, result,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
 	inst_i8_t, lhs,
 	inst_i8_t, rhs,
 	inst_i8_t, stack_base,
@@ -648,14 +651,14 @@ XTAL_DEF_INST_5(24, InstUshr,
 	);
 
 XTAL_DEF_INST_4(25, InstAt,
-	inst_i8_t, result,
-	inst_i8_t, target,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
+	inst_i8_t, target, // 値を取り出すローカル変数番号
 	inst_i8_t, index,
 	inst_i8_t, stack_base
 );
 
 XTAL_DEF_INST_4(26, InstSetAt,
-	inst_i8_t, target,
+	inst_i8_t, target, // 値を取り出すローカル変数番号
 	inst_i8_t, index,
 	inst_i8_t, value,
 	inst_i8_t, stack_base
@@ -671,7 +674,7 @@ XTAL_DEF_INST_1(27, InstGoto,
 );
 
 XTAL_DEF_INST_2(28, InstNot,
-	inst_i8_t, result,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
 	inst_i8_t, target);
 
 /**
@@ -680,7 +683,7 @@ XTAL_DEF_INST_2(28, InstNot,
 *
 */
 XTAL_DEF_INST_3(29, InstIf,
-		inst_i8_t, target,
+		inst_i8_t, target, // 値を取り出すローカル変数番号
         inst_address_t, address_true,
 		inst_address_t, address_false
 );
@@ -714,7 +717,7 @@ XTAL_DEF_INST_3(34, InstIfIn,
 	);
 
 XTAL_DEF_INST_3(35, InstIfUndefined,
-	inst_i8_t, target,
+	inst_i8_t, target, // 値を取り出すローカル変数番号
     inst_address_t, address_true,
 	inst_address_t, address_false
 );
@@ -724,7 +727,8 @@ XTAL_DEF_INST_1(36, InstIfDebug,
 
 
 XTAL_DEF_INST_1(37, InstPush,
-	inst_i8_t, target);
+	inst_i8_t, target // 値を取り出すローカル変数番号
+);
 
 XTAL_DEF_INST_1(38, InstPop,
 	inst_i8_t, result);
@@ -746,7 +750,7 @@ XTAL_DEF_INST_3(39, InstAdjustValues,
 *
 */
 XTAL_DEF_INST_3(40, InstLocalVariable,
-		inst_i8_t, result,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
         inst_u16_t, number,
 		inst_u8_t, depth
 );
@@ -768,7 +772,7 @@ XTAL_DEF_INST_3(41, InstSetLocalVariable,
 *
 */
 XTAL_DEF_INST_3(42, InstInstanceVariable,
-		inst_i8_t, result,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
         inst_u8_t, number,
         inst_u16_t, info_number
 );
@@ -790,7 +794,7 @@ XTAL_DEF_INST_3(43, InstSetInstanceVariable,
 *
 */
 XTAL_DEF_INST_2(44, InstInstanceVariableByName,
-		inst_i8_t, result,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
         inst_u16_t, identifier_number
 );
 
@@ -810,7 +814,7 @@ XTAL_DEF_INST_2(45, InstSetInstanceVariableByName,
 *
 */
 XTAL_DEF_INST_2(46, InstFilelocalVariable,
-		inst_i8_t, result,
+		inst_i8_t, result, // 値を代入するローカル変数番号
         inst_u16_t, value_number
 );
 
@@ -830,7 +834,7 @@ XTAL_DEF_INST_2(47, InstSetFilelocalVariable,
 *
 */
 XTAL_DEF_INST_2(48, InstFilelocalVariableByName,
-		inst_i8_t, result,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
         inst_u16_t, identifier_number
 );
 
@@ -868,31 +872,31 @@ enum{
 *
 */
 XTAL_DEF_INST_3(50, InstMember,
-		inst_i8_t, result,
-		inst_i8_t, target,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
+		inst_i8_t, target, // 値を取り出すローカル変数番号
 		inst_i16_t, primary
 );
 
 XTAL_DEF_INST_5(51, InstMemberEx,
-		inst_i8_t, result,
-		inst_i8_t, target,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
+		inst_i8_t, target, // 値を取り出すローカル変数番号
 		inst_i16_t, primary,
 		inst_i8_t, secondary,
 		inst_u8_t, flags
 );
 
 XTAL_DEF_INST_5(52, InstCall,
-		inst_i8_t, result,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
         inst_u8_t, need_result,
-		inst_i8_t, target,
+		inst_i8_t, target, // 値を取り出すローカル変数番号
 		inst_i8_t, stack_base,
         inst_u8_t, ordered
 );
 
 XTAL_DEF_INST_8(53, InstCallEx,
-		inst_i8_t, result,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
         inst_u8_t, need_result,
-		inst_i8_t, target,
+		inst_i8_t, target, // 値を取り出すローカル変数番号
 		inst_i8_t, self,
 		inst_i8_t, stack_base,
         inst_u8_t, ordered,
@@ -901,9 +905,9 @@ XTAL_DEF_INST_8(53, InstCallEx,
 );
 
 XTAL_DEF_INST_7(54, InstSend,
-		inst_i8_t, result,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
         inst_u8_t, need_result,
-		inst_i8_t, target,
+		inst_i8_t, target, // 値を取り出すローカル変数番号
 		inst_i16_t, primary,
 		inst_i8_t, secondary,
 		inst_i8_t, stack_base,
@@ -911,9 +915,9 @@ XTAL_DEF_INST_7(54, InstSend,
 );
 
 XTAL_DEF_INST_9(55, InstSendEx,
-		inst_i8_t, result,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
         inst_u8_t, need_result,
-		inst_i8_t, target,
+		inst_i8_t, target, // 値を取り出すローカル変数番号
 		inst_i16_t, primary,
 		inst_i8_t, secondary,
 		inst_i8_t, stack_base,
@@ -923,14 +927,14 @@ XTAL_DEF_INST_9(55, InstSendEx,
 );
 
 XTAL_DEF_INST_4(56, InstProperty,
-		inst_i8_t, result,
-		inst_i8_t, target,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
+		inst_i8_t, target, // 値を取り出すローカル変数番号
         inst_i16_t, primary,
 		inst_i8_t, stack_base
 );
 
 XTAL_DEF_INST_3(57, InstSetProperty,
-		inst_i8_t, target,
+		inst_i8_t, target, // 値を取り出すローカル変数番号
         inst_i16_t, primary,
 		inst_i8_t, stack_base
 );
@@ -957,7 +961,7 @@ XTAL_DEF_INST_2(60, InstReturn,
 *
 */
 XTAL_DEF_INST_4(61, InstYield,
-		inst_i8_t, result,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
 		inst_u8_t, need_result_count,
  		inst_u8_t, base,
 	    inst_i8_t, result_count
@@ -971,7 +975,7 @@ XTAL_DEF_INST_4(61, InstYield,
 XTAL_DEF_INST_0(62, InstExit);
 
 XTAL_DEF_INST_5(63, InstRange,
-	inst_i8_t, result,
+	inst_i8_t, result,  // 値を代入するローカル変数番号
 	inst_u8_t, kind,
 	inst_i8_t, lhs,
 	inst_i8_t, rhs,
@@ -979,37 +983,39 @@ XTAL_DEF_INST_5(63, InstRange,
 );
 
 XTAL_DEF_INST_3(64, InstOnce,
-		inst_i8_t, result,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
         inst_address_t, address,
         inst_u16_t, value_number
 );
 
 XTAL_DEF_INST_2(65, InstSetOnce,
-		inst_i8_t, target,
+		inst_i8_t, target, // 値を取り出すローカル変数番号
         inst_u16_t, value_number
 );
 
 XTAL_DEF_INST_1(66, InstMakeArray,
-		inst_i8_t, result
+		inst_i8_t, result  // 値を代入するローカル変数番号
 );
 
 XTAL_DEF_INST_2(67, InstArrayAppend,
-		inst_i8_t, target,
+		inst_i8_t, target, // 値を取り出すローカル変数番号
 		inst_i8_t, value
 );
 
 XTAL_DEF_INST_1(68, InstMakeMap,
-		inst_i8_t, result);
+		inst_i8_t, result  // 値を代入するローカル変数番号
+);
 
 XTAL_DEF_INST_3(69, InstMapInsert,
-		inst_i8_t, target,
+		inst_i8_t, target, // 値を取り出すローカル変数番号
 		inst_i8_t, key,
 		inst_i8_t, value
 );
 
 XTAL_DEF_INST_2(70, InstMapSetDefault,
-		inst_i8_t, target,
-		inst_i8_t, value);
+		inst_i8_t, target, // 値を取り出すローカル変数番号
+		inst_i8_t, value
+);
 
 XTAL_DEF_INST_2(71, InstClassBegin,
         inst_u16_t, info_number,
@@ -1017,7 +1023,8 @@ XTAL_DEF_INST_2(71, InstClassBegin,
 );
 
 XTAL_DEF_INST_1(72, InstClassEnd,
-		inst_i8_t, result);
+		inst_i8_t, result  // 値を代入するローカル変数番号
+);
 
 XTAL_DEF_INST_5(73, InstDefineClassMember,
         inst_u16_t, number,
@@ -1041,13 +1048,13 @@ XTAL_DEF_INST_5(74, InstDefineMember,
 );
 
 XTAL_DEF_INST_3(75, InstMakeFun,
-		inst_i8_t, result,
+		inst_i8_t, result,  // 値を代入するローカル変数番号
         inst_u16_t, info_number,
 		inst_address_t, address
 );
 
 XTAL_DEF_INST_4(76, InstMakeInstanceVariableAccessor,
-		inst_i8_t, result,        
+		inst_i8_t, result,  // 値を代入するローカル変数番号
 		inst_u8_t, type,
 		inst_u8_t, number,
         inst_u16_t, info_number

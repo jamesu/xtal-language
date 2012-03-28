@@ -28,8 +28,8 @@ public:
 	* \param vm 仮想マシン
 	* \param primary_key メンバ名
 	* \param secondary_key セカンダリキー
-	* \param self 可触性に影響するオブジェクト
 	* \param inherited_too 継承元クラスからもメソッド検索をするかどうか
+	* \param q もし見つからないなら例外を設定するならtrue
 	*/
 	void rawsend(const VMachinePtr& vm, const IDPtr& primary_key, const AnyPtr& secondary_key, bool inherited_too, bool q) const;
 	void rawsend(const VMachinePtr& vm, const IDPtr& primary_key) const;
@@ -38,10 +38,16 @@ public:
 
 	/**
 	* \brief メンバを取得する。
+	* \param primary_key メンバ名
+	* \param secondary_key セカンダリキー
+	* \param inherited_too 継承元クラスからもメソッド検索をするかどうか
 	* \retval undefined そのメンバは存在しない
 	* \retval 非undefined nameに対応したメンバ  
 	*/
-	const AnyPtr& member(const IDPtr& primary_key, const AnyPtr& secondary_key = (const AnyPtr&)undefined, bool inherited_too = true, int_t& accessibility = Temp()) const;
+	const AnyPtr& member(const IDPtr& primary_key, const AnyPtr& secondary_key, bool inherited_too, int_t& accessibility) const;
+	const AnyPtr& member(const IDPtr& primary_key) const;
+	const AnyPtr& member(const IDPtr& primary_key, const AnyPtr& secondary_ke) const;
+	const AnyPtr& member(const IDPtr& primary_key, const AnyPtr& secondary_key, bool inherited_too) const;
 
 	/**
 	* \brief メンバを定義する。

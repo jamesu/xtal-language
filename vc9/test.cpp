@@ -727,11 +727,11 @@ int main2(int argc, char** argv){
 
 	full_gc();
 
-	{
+/*	{
 		CodePtr code = xnew<Code>();
 		code->def("aaa", cpp_class<Hoo>());
 		cpp_class<Hoo>()->object_orphan();
-//*
+
 		for(int i=0; i<alive_object_count(); i++){
 			if(AnyPtr v = alive_object(i)){ // 全ての生きてるオブジェクトを調べる
 				if(ClassPtr cls = ptr_cast<Class>(v)){ // クラスオブジェクトか？
@@ -745,13 +745,13 @@ int main2(int argc, char** argv){
 				}
 			}
 		}
-//*/
 	}
+*/
 
 	full_gc();
 
 	{
-		if(CodePtr code = Xsrc((
+		/*if(CodePtr code = Xsrc((
 /////////////////////////////////
 		Spr.foo(eType::EEE);
 
@@ -770,18 +770,17 @@ int main2(int argc, char** argv){
 			code->def("Spr", xnew<Spr>());
 			code->def("eType", cpp_class<eType>());
 			code->call();
+		}*/
+
+		if(CodePtr code = Xsrc(( 
+			test: 100;
+			//filelocal.members[].p;
+			filelocal::test.p;
+		))){
+			code->inspect()->p();
+		   code->call();
+		   //code->member(Xid(test))->p();
 		}
-
-if(CodePtr code = Xsrc(( 
-	for ( i:0 ; i<100 ; i++ ) {
-		t : "StaticTextMode007-03-00-1-" ~ (i+1).to_s();
-	}
-return false;
-))){
-   code->call();
-}
-
-
 	}
 
 	XTAL_CATCH_EXCEPT(e){

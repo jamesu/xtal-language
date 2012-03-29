@@ -267,12 +267,12 @@ void ObjectSpace::initialize(){
 	for(uint_t i=0; i<nsize; ++i){
 		Class* p = classes[i];
 		new(p) Class(Class::cpp_class_t());
+		p->inc_ref_count();
 	}
 	
 	for(uint_t i=0; i<nsize; ++i){
 		Class* p = classes[i];
 		p->special_initialize(&VirtualMembersT<Class>::value);
-		p->inc_ref_count();
 	}
 
 	for(uint_t i=0; i<nsize; ++i){

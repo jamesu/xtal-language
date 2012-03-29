@@ -259,15 +259,12 @@ void ObjectSpace::initialize(){
 
 	for(uint_t i=0; i<nsize; ++i){
 		Class* p = object_xmalloc<Class>();
-		p->special_initialize();
-		classes[i] = p;
-		value_map_.insert(symbols[i]->key(), p);
-	}
 
-	for(uint_t i=0; i<nsize; ++i){
-		Class* p = classes[i];
+		p->special_initialize();
 		new(p) Class(Class::cpp_class_t());
-		p->inc_ref_count();
+
+		value_map_.insert(symbols[i]->key(), p);
+		classes[i] = p;
 	}
 	
 	for(uint_t i=0; i<nsize; ++i){

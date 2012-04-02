@@ -21,22 +21,11 @@ namespace xpeg{
 */
 class Executor : public Base{
 public:
-
-	/**
-	* \xbind
-	* \brief ストリームかイテレータを受け取り構築する
-	*/
-	Executor(const AnyPtr& source = null, const StringPtr& source_name = empty_string){
-		reset(source, source_name);
-	}
+	Executor(const StringPtr& source_name = empty_string);
 
 	~Executor();
 
-	/**
-	* \brief 設定をリセットする。
-	*/
-	void reset(const AnyPtr& source, const StringPtr& source_name = empty_string);
-
+public:
 	/**
 	* \brief 渡されたパターンがマッチするか調べる。
 	*/
@@ -180,29 +169,30 @@ public:
 	const StringPtr& peek_s(int_t n = 0);
 
 	int_t peek_ascii(int_t n = 0);
-	
+
+	/**
+	* \brief 最後にreadした値を取得する
+	*/
+	const AnyPtr& last(){
+		return last_;
+	}
+
+public:
 	struct State{
 		uint_t lineno;
 		uint_t pos;
+		AnyPtr ch;
 	};
 
 	/**
 	* \brief 現在の位置状態を取得する
 	*/
-	State save(){
-		State state;
-		state.lineno = lineno_;
-		state.pos = pos_;
-		return state;
-	}
+	State save();
 
 	/**
 	* \brief 指定した位置状態に戻る
 	*/
-	void load(const State& state){
-		pos_ = state.pos;
-		lineno_ = state.lineno;
-	}
+	void load(const State& state);
 
 	/**
 	* \brief 現在の位置を返す
@@ -257,6 +247,9 @@ public:
 	bool eat(const AnyPtr& v);
 
 	bool eat_ascii(int_t ch);
+
+protected:
+	virtual int_t on_read(AnyPtr* buf, int_t size){ return 0; }
 
 private:
 	
@@ -315,7 +308,7 @@ public:
 
 	void on_visit_members(Visitor& m){
 		Base::on_visit_members(m);
-		m & tree_ & errors_ & cap_;
+		m & tree_ & errors_ & cap_ & last_;
 		m & mm_;
 		for(uint_t i=base_, sz=num_; i<sz; ++i){
 			for(int j=0; j<ONE_BLOCK_SIZE; ++j){
@@ -376,7 +369,6 @@ protected:
 	}
 
 protected:
-	StreamPtr stream_;
 	StringPtr source_name_;
 
 	IDPtr n_ch_;
@@ -394,7 +386,48 @@ protected:
 
 	uint_t lineno_;
 	int_t record_pos_;
+	AnyPtr last_;
 };
+
+class StreamExecutor : public Executor{
+public:
+	StreamExecutor(const StreamPtr& stream, const StringPtr& source_name)
+		:Executor(source_name), stream_(stream){}
+
+protected:
+	virtual int_t on_read(AnyPtr* buf, int_t size){
+		return stream_->read_charactors(buf, size);
+	}
+
+public:
+	void on_visit_members(Visitor& m){
+		Executor::on_visit_members(m);
+		m & stream_;
+	}
+
+private:
+	StreamPtr stream_;
+};
+
+class IteratorExecutor : public Executor{
+public:
+	IteratorExecutor(const AnyPtr& iterator, const StringPtr& source_name)
+		:Executor(source_name), iterator_(iterator), first_(true){}
+
+protected:
+	virtual int_t on_read(AnyPtr* buf, int_t size);
+
+public:
+	void on_visit_members(Visitor& m){
+		Executor::on_visit_members(m);
+		m & iterator_;
+	}
+
+private:
+	AnyPtr iterator_;
+	bool first_;
+};
+
 
 struct Element : public Base{
 

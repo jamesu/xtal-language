@@ -102,7 +102,7 @@ void interactive_compile(){
 	))){
 		code->def_fun(XTAL_STRING("interactive_compile_loop"), &interactive_compile_loop);
 		StreamPtr stream = xnew<InteractiveStream>();
-		xpeg::ExecutorPtr exec = xnew<xpeg::Executor>(stream, XTAL_STRING("ix"));
+		xpeg::ExecutorPtr exec = xnew<xpeg::StreamExecutor>(stream, XTAL_STRING("ix"));
 		code->call(stream, exec);
 	}
 }

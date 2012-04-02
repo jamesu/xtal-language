@@ -632,7 +632,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 				result_->except_info_table_[n].catch_pc = code_size();
 
 				// 例外を受け取るために変数スコープを構築
-				scope_begin();
+				scope_begin(e);
 
 				put_inst(InstPop(stack_top));
 				compile_lassign(stack_top, e->catch_catch_var());
@@ -641,7 +641,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 				compile_expr(e->catch_catch(), stack_top+1, stack_top);
 				put_inst(InstPush(stack_top));
 				
-				scope_end();
+				scope_end(e);
 
 				put_inst(InstPop(result));
 			}
@@ -1001,7 +1001,6 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 
 			// catch節のコードを埋め込む
 			if(e->try_catch()){
-
 				result_->except_info_table_[n].catch_pc = code_size();
 				
 				// catch節の中での例外に備え、例外フレームを構築。
@@ -1016,14 +1015,14 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 				ff().finallies.push(exc);
 
 				// 例外を受け取るために変数スコープを構築
-				scope_begin();
+				scope_begin(e);
 				scope_chain(1);
 
 				put_inst(InstPop(stack_top));
 				compile_lassign(stack_top, e->try_catch_var());
 				compile_stmt(e->try_catch());
 				
-				scope_end();
+				scope_end(e);
 
 				put_inst(InstTryEnd());
 				ff().finallies.pop();
@@ -1049,7 +1048,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 		}
 
 		XTAL_CASE_N(case EXPR_IF:){		
-			scope_begin();
+			scope_begin(e);
 
 			ExprPtr cond = e->if_cond();
 			if(cond->itag()==EXPR_DEFINE && cond->bin_lhs()->itag()==EXPR_LVAR){
@@ -1099,13 +1098,13 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 				set_label(label_end);
 			}
 
-			scope_end();
+			scope_end(e);
 			
 			return 0;
 		}
 
 		XTAL_CASE_N(case EXPR_FOR:){
-			scope_begin();
+			scope_begin(e);
 			
 			VariableInfo first_step_info = var_find(Xid(first_step));
 
@@ -1184,7 +1183,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 
 			set_label(label_break);
 
-			scope_end();
+			scope_end(e);
 			return 0;
 		}
 
@@ -1532,18 +1531,18 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 		}
 
 		XTAL_CASE_N(case EXPR_SCOPE:){
-			scope_begin();{
+			scope_begin(e);{
 				XTAL_FOR_EXPR(v, e->scope_stmts()){
 					compile_stmt(v);
 				}
-			}scope_end();
+			}scope_end(e);
 			return 0;
 		}
 
 		XTAL_CASE_N(case EXPR_SWITCH:){
 			ExprPtr cond = e->switch_cond();
 				
-			scope_begin();
+			scope_begin(e);
 
 			if(cond->itag()==EXPR_DEFINE && cond->bin_lhs()->itag()==EXPR_LVAR){
 				VariableInfo var = var_find(cond->bin_lhs()->lvar_name(), true);
@@ -1639,16 +1638,16 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 
 			set_label(label_end);	
 
-			scope_end();
+			scope_end(e);
 			return 0;
 		}
 
 		XTAL_CASE_N(case EXPR_TOPLEVEL:){
-			scope_begin();{
+			scope_begin(e);{
 				XTAL_FOR_EXPR(v, e->toplevel_stmts()){
 					compile_stmt(v);
 				}
-			}scope_end();
+			}scope_end(e);
 			return 0;
 		}
 	}

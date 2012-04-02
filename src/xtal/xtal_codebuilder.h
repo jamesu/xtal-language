@@ -151,7 +151,8 @@ private:
 			CLASS,
 			FRAME,
 			FUN,
-			TOPLEVEL
+			TOPLEVEL,
+			CATCH
 		};
 
 		struct Entry{
@@ -204,6 +205,9 @@ private:
 
 		// åªç›éwÇµÇƒÇ¢ÇÈéqãüÇÃà íu
 		int_t children_pos;
+
+		// ëŒâûÇ∑ÇÈéÆ
+		ExprPtr expr;
 	};
 
 	struct VariableInfo{
@@ -238,24 +242,24 @@ private:
 	VariableInfo var_find(const IDPtr& key, bool force = false);
 	void var_visible(const IDPtr& key, bool visible);
 	void var_refere(const IDPtr& key);
-	void var_begin(int_t kind);
+	void var_begin(const ExprPtr& e, int_t kind);
 	//void var_define_stmts(const ExprPtr& stmts, bool visible);
 	//void var_define_stmt(const AnyPtr& stmt, bool visible);
 	void var_define(const IDPtr& name, bool visible);
 	void var_assign(const IDPtr& name);
 	void var_define_class_member(const IDPtr& name, int_t accessibility, bool visible);
-	void var_end();
+	void var_end(const ExprPtr& e);
 
-	void scope_begin();
-	void scope_end();
+	int_t calc_variable_offset(Scope& socpe);
+	void scope_begin(const ExprPtr& e);
+	void scope_end(const ExprPtr& e);
 	void scope_skip();
 	void scope_chain(int_t var_frame_size);
 
-	void scope_optimize_begin();
-	void scope_optimize_end();
+	void scope_optimize_begin(const ExprPtr& e);
+	void scope_optimize_end(const ExprPtr& e);
 
 	PODStack<Scope*> scope_stack_;
-	Scope* root_;
 	Scope& current_scope(){ return *scope_stack_.top(); }
 
 	void build_scope(const AnyPtr& a);
@@ -265,11 +269,7 @@ private:
 	void delete_scope(Scope* scope);
 	void normalize(const AnyPtr& a);
 
-	bool scope_exist(Scope* scope){
-		return scope->entries.size()!=0 && scope->kind==Scope::FRAME && 
-			(scope->scope_chain_have_possibilities || debug::is_debug_compile_enabled());
-	}
-
+	bool scope_exist(Scope* scope);
 public:
 
 	FunFrame& ff(){ return *fun_frame_stack_.top(); }

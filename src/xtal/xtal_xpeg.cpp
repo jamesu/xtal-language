@@ -1,22 +1,13 @@
 #include "xtal.h"
 #include "xtal_bind.h"
 #include "xtal_macro.h"
+#include "xtal_stringspace.h"
 
 namespace xtal{ namespace xpeg{
 
 enum{ NFA_STATE_START = 0, NFA_STATE_FINAL = 1 };
 
-void Executor::reset(const AnyPtr& source, const StringPtr& source_name){
-	if(const StreamPtr& stream = ptr_cast<Stream>(source)){
-		stream_ = stream;
-	}
-	else if(const StringPtr& string = ptr_cast<String>(source)){
-		stream_ = XNew<StringStream>(string);
-	}
-	else{
-		stream_ = null;	
-	}
-
+Executor::Executor(const StringPtr& source_name){
 	source_name_ = source_name;
 
 	cap_ = XNew<Map>();
@@ -498,10 +489,6 @@ bool Executor::test(const ElementPtr& e){
 /////
 
 const AnyPtr& Executor::peek(int_t n){
-	if(!stream_){
-		return undefined;
-	}
-
 	while(pos_+n >= read_){
 		int_t now_read = 0;
 
@@ -509,9 +496,9 @@ const AnyPtr& Executor::peek(int_t n){
 			expand();
 		}
 
-		now_read = stream_->read_charactors(&access(read_), ONE_BLOCK_SIZE-(read_&ONE_BLOCK_MASK));
+		now_read = on_read(&access(read_), ONE_BLOCK_SIZE-(read_&ONE_BLOCK_MASK));
 
-		if(now_read==0){
+		if(now_read<=0){
 			return undefined;
 		}
 
@@ -521,8 +508,24 @@ const AnyPtr& Executor::peek(int_t n){
 	return access(pos_+n);
 }
 
+Executor::State Executor::save(){
+	State state;
+	state.lineno = lineno_;
+	state.pos = pos_;
+	state.ch = last_;
+	return state;
+}
+
+void Executor::load(const State& state){
+	pos_ = state.pos;
+	lineno_ = state.lineno;
+	last_ = state.ch;
+}
+
 const AnyPtr& Executor::read(){
 	const AnyPtr& ret = peek();
+	last_ = ret;
+
 	if(XTAL_detail_raweq(ret, n_ch_)){
 		lineno_++;
 	}
@@ -845,6 +848,29 @@ void NFA::gen_nfa(int entry, const AnyPtr& a, int exit, int depth){
 			add_transition(after, e_, exit);
 		}
 	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+int_t IteratorExecutor::on_read(AnyPtr* buf, int_t size){
+	if(iterator_){
+		return 0;
+	}
+
+	for(int_t i=0; i<size; ++i){
+		const VMachinePtr& vm = setup_call();
+		iterator_->rawsend(vm, first_ ? XTAL_DEFINED_ID(block_first) : XTAL_DEFINED_ID(block_next));
+		first_ = false;
+		iterator_ = vm->result(0);
+		if(!iterator_){
+			vm->cleanup_call();
+			return i;
+		}
+		buf[i] = vm->result(1);
+		vm->cleanup_call();
+	}
+
+	return size;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

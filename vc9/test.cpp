@@ -772,13 +772,24 @@ int main2(int argc, char** argv){
 			code->call();
 		}*/
 
-		if(CodePtr code = Xsrc(( 
-			test: 100;
-			//filelocal.members[].p;
-			filelocal::test.p;
+		if(CodePtr code = Xsrc((
+{
+	{ 
+		i: 60;
+		fun foo(...k){ k.p; }
+		foo(8);
+		i.p;
+	}
+
+	{
+		10.times{}
+	}
+}
+
+
 		))){
-			code->inspect()->p();
 		   code->call();
+		   code->inspect()->p();
 		   //code->member(Xid(test))->p();
 		}
 	}
@@ -791,7 +802,8 @@ int main2(int argc, char** argv){
 	}
 
 	full_gc();
-
+	return 0;
+	
 //*/
 
 #if 1
@@ -873,11 +885,13 @@ int main2(int argc, char** argv){
 		return 1;
 	}
 
+	/*
 	load("../test/ReloadTest.xtal");
 	load("../test/ReloadTest2.xtal");
 	load("../test/ReloadTest2.xtal");
 	load("../test/ReloadTest2.xtal");
 	load("../test/ReloadTest2.xtal");
+	*/
 
 #ifdef XTAL_USE_WCHAR
 	lib()->member("test")->send("run_dir", "../utf16le-test");

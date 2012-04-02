@@ -2,6 +2,7 @@
 #include "xtal_macro.h"
 
 #include "xtal_parser.h"
+#include "xtal_stringspace.h"
 
 #ifndef XTAL_NO_PARSER
 
@@ -48,60 +49,16 @@ struct KeywordIntPair{
 	int value;
 };
 
-
-Parser::Parser(){
+Tokenizer::Tokenizer(const xpeg::ExecutorPtr& e){
+	executor_ = e;
 	token_read_ = 0;
 	token_pos_ = 0;
 
 	ms_ = XNew<MemoryStream>();
 
-	identifier_map_ = XNew<Map>();
-
-	static KeywordIntPair keywords[] = {
-		{ XTAL_L("if"), (int_t)Token::KEYWORD_IF}, 
-		{ XTAL_L("for"), (int_t)Token::KEYWORD_FOR}, 
-		{ XTAL_L("else"), (int_t)Token::KEYWORD_ELSE}, 
-		{ XTAL_L("fun"), (int_t)Token::KEYWORD_FUN}, 
-		{ XTAL_L("method"), (int_t)Token::KEYWORD_METHOD}, 
-		{ XTAL_L("do"), (int_t)Token::KEYWORD_DO}, 
-		{ XTAL_L("while"), (int_t)Token::KEYWORD_WHILE}, 
-		{ XTAL_L("continue"), (int_t)Token::KEYWORD_CONTINUE}, 
-		{ XTAL_L("break"), (int_t)Token::KEYWORD_BREAK}, 
-		{ XTAL_L("fiber"), (int_t)Token::KEYWORD_FIBER}, 
-		{ XTAL_L("yield"), (int_t)Token::KEYWORD_YIELD}, 
-		{ XTAL_L("return"), (int_t)Token::KEYWORD_RETURN}, 
-		{ XTAL_L("once"), (int_t)Token::KEYWORD_ONCE}, 
-		{ XTAL_L("null"), (int_t)Token::KEYWORD_NULL}, 
-		{ XTAL_L("undefined"), (int_t)Token::KEYWORD_UNDEFINED}, 
-		{ XTAL_L("false"), (int_t)Token::KEYWORD_FALSE}, 
-		{ XTAL_L("true"), (int_t)Token::KEYWORD_TRUE}, 
-		{ XTAL_L("xtal"), (int_t)Token::KEYWORD_XTAL}, 
-		{ XTAL_L("try"), (int_t)Token::KEYWORD_TRY}, 
-		{ XTAL_L("catch"), (int_t)Token::KEYWORD_CATCH}, 
-		{ XTAL_L("finally"), (int_t)Token::KEYWORD_FINALLY}, 
-		{ XTAL_L("throw"), (int_t)Token::KEYWORD_THROW}, 
-		{ XTAL_L("class"), (int_t)Token::KEYWORD_CLASS}, 
-		{ XTAL_L("callee"), (int_t)Token::KEYWORD_CALLEE}, 
-		{ XTAL_L("this"), (int_t)Token::KEYWORD_THIS}, 
-		{ XTAL_L("dofun"), (int_t)Token::KEYWORD_DOFUN}, 
-		{ XTAL_L("is"), (int_t)Token::KEYWORD_IS}, 
-		{ XTAL_L("in"), (int_t)Token::KEYWORD_IN}, 
-		{ XTAL_L("assert"), (int_t)Token::KEYWORD_ASSERT}, 
-		{ XTAL_L("nobreak"), (int_t)Token::KEYWORD_NOBREAK}, 
-		{ XTAL_L("switch"), (int_t)Token::KEYWORD_SWITCH}, 
-		{ XTAL_L("case"), (int_t)Token::KEYWORD_CASE}, 
-		{ XTAL_L("default"), (int_t)Token::KEYWORD_DEFAULT}, 
-		{ XTAL_L("singleton"), (int_t)Token::KEYWORD_SINGLETON}, 
-		{ XTAL_L("public"), (int_t)Token::KEYWORD_PUBLIC}, 
-		{ XTAL_L("protected"), (int_t)Token::KEYWORD_PROTECTED}, 
-		{ XTAL_L("private"), (int_t)Token::KEYWORD_PRIVATE}, 
-	};
-
-	identifiers_ = XNew<Array>(Token::KEYWORD_MAX);
-	for(uint_t i=0; i<sizeof(keywords)/sizeof(*keywords); ++i){
-		IDPtr id = intern(*(LongLivedString*)(keywords[i].key));
-		identifier_map_->set_at(id, keywords[i].value);
-		identifiers_->set_at(keywords[i].value, id);
+	keyword_map_ = XNew<Map>();
+	for(uint_t i=DefinedID::id_keyword_begin; i<DefinedID::id_keyword_end; ++i){
+		keyword_map_->set_at(fetch_defined_id(i), i);
 	}
 
 	/*
@@ -169,59 +126,63 @@ Parser::Parser(){
 	*/
 }	
 
-const Token& Parser::read_token(){
-	const Token& ret = peek_token();
+const AnyPtr& Tokenizer::read(){
+	const AnyPtr& ret = peek();
 	++token_pos_;
 	return ret;
 }
 
-const Token& Parser::peek_token(int_t n){
+const AnyPtr& Tokenizer::peek(){
+	int_t n = 0;
 	while(token_pos_+n >= token_read_){
 		int_t prev = token_read_;
 		tokenize();
 		if(token_read_==prev){
-			static Token end(Token::TYPE_TOKEN, (int_t)0, (int_t)0);
-			return end;
+			return undefined;
 		}
 	}
 	return token_buf_[(token_pos_+n) & TOKEN_BUF_MASK];
 }
 
-void Parser::push_token(int_t v){
+uint_t Tokenizer::read_charactors(AnyPtr* buffer, uint_t max){
+	for(uint_t i=0; i<max; ++i){
+		const AnyPtr& a = peek();
+		if(a==undefined){
+			return i;
+		}
+		buffer[i] = a;
+	}
+	return max;
+}
+
+void Tokenizer::push_token(int_t v){
 	token_buf_[token_read_ & TOKEN_BUF_MASK] = Token(Token::TYPE_TOKEN, left_space_ | test_right_space(executor_->peek_ascii()), v);
 	token_read_++;
 }
 	
-void Parser::push_int_token(int_t v){
+void Tokenizer::push_int_token(int_t v){
 	token_buf_[token_read_ & TOKEN_BUF_MASK] = Token(Token::TYPE_INT, left_space_ | test_right_space(executor_->peek_ascii()), v);
 	token_read_++;
 }
 
-void Parser::push_float_token(float_t v){
+void Tokenizer::push_float_token(float_t v){
 	token_buf_[token_read_ & TOKEN_BUF_MASK] = Token(Token::TYPE_FLOAT, left_space_ | test_right_space(executor_->peek_ascii()), v);
 	token_read_++;
 }
 	
-void Parser::push_keyword_token(int_t num){
+void Tokenizer::push_keyword_token(int_t num){
 	token_buf_[token_read_ & TOKEN_BUF_MASK] = Token(Token::TYPE_KEYWORD, left_space_ | test_right_space(executor_->peek_ascii()), num);
 	token_read_++;
 }
 	
-void Parser::push_identifier_token(int_t num){
-	token_buf_[token_read_ & TOKEN_BUF_MASK] = Token(Token::TYPE_IDENTIFIER, left_space_ | test_right_space(executor_->peek_ascii()), num);
+void Tokenizer::push_identifier_token(const IDPtr& identifier){
+	token_buf_[token_read_ & TOKEN_BUF_MASK] = Token(Token::TYPE_IDENTIFIER, left_space_ | test_right_space(executor_->peek_ascii()), 0);
+	token_read_++;
+	token_buf_[token_read_ & TOKEN_BUF_MASK] = identifier;
 	token_read_++;
 }
 
-void Parser::putback_token(){
-	token_pos_--;
-}
-
-void Parser::putback_token(const Token& ch){
-	token_pos_--;
-	token_buf_[token_pos_ & TOKEN_BUF_MASK] = ch;
-}
-
-float_t Parser::read_finteger(){
+float_t Tokenizer::read_finteger(){
 	float_t ret = 0;
 	for(;;){
 		if(test_digit(executor_->peek_ascii())){
@@ -238,7 +199,7 @@ float_t Parser::read_finteger(){
 	return ret;
 }
 
-int_t Parser::read_integer(int_t base){
+int_t Tokenizer::read_integer(int_t base){
 	int_t ret = 0;
 	for(;;){
 		int_t num = 0;
@@ -274,7 +235,7 @@ int_t Parser::read_integer(int_t base){
 	return ret;		
 }
 
-bool Parser::is_integer_literal(){
+bool Tokenizer::is_integer_literal(){
 	int_t i = 0;
 	while(test_digit(executor_->peek_ascii(i)) || executor_->peek_ascii(i)=='_'){
 		i++;
@@ -291,7 +252,7 @@ bool Parser::is_integer_literal(){
 	return true;
 }
 
-void Parser::tokenize_number(){
+void Tokenizer::tokenize_number(){
 	if(executor_->eat_ascii('0')){
 		if(executor_->eat_ascii('x') || executor_->eat_ascii('X')){
 			push_int_token(read_integer(16));
@@ -366,7 +327,7 @@ void Parser::tokenize_number(){
 	
 //////////////////////////////////////////
 
-void Parser::tokenize(){
+void Tokenizer::tokenize(){
 	left_space_ = 0;
 	
 	do{
@@ -383,21 +344,13 @@ void Parser::tokenize(){
 					while(test_ident_rest(executor_->peek_ascii())){
 						ms_->put_s(executor_->read());
 					}
+
 					IDPtr identifier = ms_->to_s()->intern();
-					if(const AnyPtr& key = identifier_map_->at(identifier)){
-						int_t n = XTAL_detail_ivalue(key);
-						if(n<Token::KEYWORD_MAX){
-							push_keyword_token(n);
-						}
-						else{
-							push_identifier_token(n);
-						}
+					if(const AnyPtr& key = keyword_map_->at(identifier)){
+						push_keyword_token(XTAL_detail_ivalue(key));
 					}
 					else{
-						int_t n = identifiers_->size();
-						identifier_map_->set_at(identifier, n);
-						identifiers_->push_back(identifier);
-						push_identifier_token(n);
+						push_identifier_token(identifier);
 					}
 				}
 				else if(test_digit(ch)){
@@ -666,18 +619,7 @@ void Parser::tokenize(){
 
 			XTAL_CASE('\''){ 
 				executor_->skip();
-				IDPtr identifier = read_string('\'', '\'')->intern();
-
-				if(const AnyPtr& key = identifier_map_->at(identifier)){
-					int_t n = XTAL_detail_ivalue(key);
-					push_identifier_token(n);
-				}
-				else{
-					int_t n = identifiers_->size();
-					identifier_map_->set_at(identifier, n);
-					identifiers_->push_back(identifier);
-					push_identifier_token(n);
-				}
+				push_identifier_token(read_string('\'', '\'')->intern());
 			}
 
 			XTAL_CASE4(' ', '\t', '\r', '\n'){
@@ -720,7 +662,7 @@ void Parser::tokenize(){
 
 }
 
-void Parser::deplete_space(){
+void Tokenizer::deplete_space(){
 	for(;;){
 		int_t ch = executor_->peek_ascii();
 		if(ch=='\r'){
@@ -739,14 +681,14 @@ void Parser::deplete_space(){
 	}
 }
 
-int_t Parser::test_right_space(int_t ch){
+int_t Tokenizer::test_right_space(int_t ch){
 	if(test_space(ch)){
 		return Token::FLAG_RIGHT_SPACE;
 	}
 	return 0;
 }
 
-StringPtr Parser::read_string(int_t open, int_t close){
+StringPtr Tokenizer::read_string(int_t open, int_t close){
 	ms_->clear();
 
 	int_t depth = 1;
@@ -830,7 +772,6 @@ StringPtr Parser::read_string(int_t open, int_t close){
 	return ms_->to_s();
 }
 
-
 enum{//Expressions priority
 	
 	PRI_BEGIN_ = 0x1000,
@@ -893,35 +834,16 @@ enum{//Expressions priority
 	PRI_MAX = PRI_END_-PRI_BEGIN_
 };
 
-
-
 void Parser::parse(const xpeg::ExecutorPtr& executor){
 	executor_ = executor;
+	tokenizer_ = xnew<Tokenizer>(executor);
 	parse_toplevel();
 }
 
 void Parser::parse_eval(const xpeg::ExecutorPtr& executor){
 	executor_ = executor;
+	tokenizer_ = xnew<Tokenizer>(executor);
 	parse_stmt();
-}
-
-StringPtr Parser::token_to_string(const Token& ch){
-	if(ch.type()==Token::TYPE_IDENTIFIER || ch.type()==Token::TYPE_KEYWORD){
-		return identifier(ch.identifier_number());
-	}
-	else if(ch.type()==Token::TYPE_INT || ch.type()==Token::TYPE_FLOAT){
-		return XTAL_STRING("<number>");
-	}
-	else{
-		int_t n = ch.ivalue();
-		char_t buf[] = {((n>>0)&0xff), ((n>>8)&0xff), ((n>>16)&0xff), ((n>>24)&0xff), 0};
-
-		if(buf[0]==0){
-			return XTAL_STRING("<end of stream>");			
-		}
-
-		return xnew<String>(buf);
-	}
 }
 
 void Parser::expect(int_t ach){
@@ -930,23 +852,52 @@ void Parser::expect(int_t ach){
 		return;
 	}
 
-	const Token& ch = peek_token();
-	Token rch(Token::TYPE_TOKEN, 0, ach);
-	executor_->error(Xt("XCE1002")->call(Named(Xid(required), token_to_string(rch)), Named(Xid(char), token_to_string(ch))));
+	StringPtr str;
+	const Token& ch = read_token();
+	if(ch.type()==Token::TYPE_IDENTIFIER){
+		str = ptr_cast<String>(read_token());
+	}
+	else if(ch.type()==Token::TYPE_KEYWORD){
+		str = XTAL_STRING("<keyword>");
+	}
+	else if(ch.type()==Token::TYPE_INT || ch.type()==Token::TYPE_FLOAT){
+		str = XTAL_STRING("<number>");
+	}
+	else{
+		int_t n = ch.ivalue();
+		char_t buf[] = {((n>>0)&0xff), ((n>>8)&0xff), ((n>>16)&0xff), ((n>>24)&0xff), 0};
+
+		if(buf[0]==0){
+			str = XTAL_STRING("<end of stream>");			
+		}
+		else{
+			str = xnew<String>(buf);
+		}
+	}
+
+	char_t buf2[] = {((ach>>0)&0xff), ((ach>>8)&0xff), ((ach>>16)&0xff), ((ach>>24)&0xff), 0};
+	executor_->error(Xt("XCE1002")->call(Named(Xid(required), xnew<String>(buf2)), Named(Xid(char), str)));
 }
 
-bool Parser::eat(int_t ch){
+bool Parser::check(int_t ch){
 	const Token& n = peek_token();
 	if(n.type() == Token::TYPE_TOKEN){
 		if(n.ivalue()==ch){
-			read_token();
 			return true;
 		}
 	}
 	return false;
 }
 
-bool Parser::eat(Token::Keyword kw){
+bool Parser::eat(int_t ch){
+	if(check(ch)){
+		read_token();
+		return true;
+	}
+	return false;
+}
+
+bool Parser::eat_keyword(int_t kw){
 	const Token& n = peek_token();
 	if(n.type() == Token::TYPE_KEYWORD){
 		if(n.keyword_number()==kw){
@@ -958,6 +909,8 @@ bool Parser::eat(Token::Keyword kw){
 }
 
 bool Parser::parse_term(){
+	State pos = save();
+
 	const Token& ch = read_token();
 	int_t r_space = ch.right_space() ? PRI_MAX : 0;
 
@@ -996,7 +949,7 @@ bool Parser::parse_term(){
 
 				XTAL_CASE('"'){ 
 					executor_->tree_push_back(KIND_STRING);
-					executor_->tree_push_back(read_string('"', '"'));
+					executor_->tree_push_back(tokenizer_->read_string('"', '"'));
 					executor_->tree_splice(EXPR_STRING, 2);
 					return true; 
 				}
@@ -1037,7 +990,7 @@ bool Parser::parse_term(){
 					}
 
 					executor_->tree_push_back(kind);
-					executor_->tree_push_back(read_string(open, close));
+					executor_->tree_push_back(tokenizer_->read_string(open, close));
 					executor_->tree_splice(EXPR_STRING, 2);
 					return true; 
 				}
@@ -1056,21 +1009,21 @@ bool Parser::parse_term(){
 
 				XTAL_DEFAULT{}
 				
-				XTAL_CASE(Token::KEYWORD_ONCE){ expect_parse_expr(PRI_ONCE - r_space*2, 0); executor_->tree_splice(EXPR_ONCE, 1); return true; }
-				XTAL_CASE(Token::KEYWORD_CLASS){ parse_class(KIND_CLASS); return true; }
-				XTAL_CASE(Token::KEYWORD_SINGLETON){ parse_class(KIND_SINGLETON); return true; }
-				XTAL_CASE(Token::KEYWORD_FUN){ parse_fun(KIND_FUN); return true; }
-				XTAL_CASE(Token::KEYWORD_METHOD){ parse_fun(KIND_METHOD); return true; }
-				XTAL_CASE(Token::KEYWORD_FIBER){ parse_fun(KIND_FIBER); return true; }
-				XTAL_CASE(Token::KEYWORD_CALLEE){ executor_->tree_splice(EXPR_CALLEE, 0); return true; }
-				XTAL_CASE(Token::KEYWORD_NULL){ executor_->tree_splice(EXPR_NULL, 0); return true; }
-				XTAL_CASE(Token::KEYWORD_UNDEFINED){ executor_->tree_splice(EXPR_UNDEFINED, 0); return true; }
-				XTAL_CASE(Token::KEYWORD_TRUE){ executor_->tree_splice(EXPR_TRUE, 0); return true; }
-				XTAL_CASE(Token::KEYWORD_FALSE){ executor_->tree_splice(EXPR_FALSE, 0); return true; }
-				XTAL_CASE(Token::KEYWORD_THIS){ executor_->tree_splice(EXPR_THIS, 0); return true; }
-				XTAL_CASE(Token::KEYWORD_YIELD){ parse_exprs(); executor_->tree_splice(EXPR_YIELD, 1); return true; }
+				XTAL_CASE(DefinedID::id_once){ expect_parse_expr(PRI_ONCE - r_space*2, 0); executor_->tree_splice(EXPR_ONCE, 1); return true; }
+				XTAL_CASE(DefinedID::id_class){ parse_class(KIND_CLASS); return true; }
+				XTAL_CASE(DefinedID::id_singleton){ parse_class(KIND_SINGLETON); return true; }
+				XTAL_CASE(DefinedID::id_fun){ parse_fun(KIND_FUN); return true; }
+				XTAL_CASE(DefinedID::id_method){ parse_fun(KIND_METHOD); return true; }
+				XTAL_CASE(DefinedID::id_fiber){ parse_fun(KIND_FIBER); return true; }
+				XTAL_CASE(DefinedID::id_callee){ executor_->tree_splice(EXPR_CALLEE, 0); return true; }
+				XTAL_CASE(DefinedID::id_null){ executor_->tree_splice(EXPR_NULL, 0); return true; }
+				XTAL_CASE(DefinedID::id_undefined){ executor_->tree_splice(EXPR_UNDEFINED, 0); return true; }
+				XTAL_CASE(DefinedID::id_true){ executor_->tree_splice(EXPR_TRUE, 0); return true; }
+				XTAL_CASE(DefinedID::id_false){ executor_->tree_splice(EXPR_FALSE, 0); return true; }
+				XTAL_CASE(DefinedID::id_this){ executor_->tree_splice(EXPR_THIS, 0); return true; }
+				XTAL_CASE(DefinedID::id_yield){ parse_exprs(); executor_->tree_splice(EXPR_YIELD, 1); return true; }
 
-				XTAL_CASE(Token::KEYWORD_DOFUN){ 
+				XTAL_CASE(DefinedID::id_dofun){ 
 					parse_fun(KIND_FUN);
 					executor_->tree_push_back(null);
 					executor_->tree_push_back(null);
@@ -1082,10 +1035,15 @@ bool Parser::parse_term(){
 		
 		XTAL_CASE(Token::TYPE_INT){ executor_->tree_push_back(ch.ivalue()); executor_->tree_splice(EXPR_NUMBER, 1); return true; }
 		XTAL_CASE(Token::TYPE_FLOAT){ executor_->tree_push_back(ch.fvalue()); executor_->tree_splice(EXPR_NUMBER, 1); return true; }
-		XTAL_CASE(Token::TYPE_IDENTIFIER){ executor_->tree_push_back(identifier(ch.identifier_number())); executor_->tree_splice(EXPR_LVAR, 1); return true; }
+
+		XTAL_CASE(Token::TYPE_IDENTIFIER){ 
+			executor_->tree_push_back(ptr_cast<ID>(tokenizer_->read())); 
+			executor_->tree_splice(EXPR_LVAR, 1); 
+			return true; 
+		}
 	}
 
-	putback_token(ch);
+	load(pos);
 	return false;
 }
 
@@ -1099,7 +1057,7 @@ bool Parser::cmp_pri(int_t pri, int_t op, int_t l_space, int_t r_space){
 }
 
 bool Parser::expr_end(){
-	const Token& prevch = peek_token(-1);
+	const Token& prevch = (Token&)last_;
 	return prevch.type()==Token::TYPE_TOKEN && prevch.ivalue()=='}';
 }
 
@@ -1111,7 +1069,6 @@ bool Parser::make_bin_expr(const Token& ch, int_t space, int_t pri, int_t PRI, i
 		executor_->tree_splice(EXPR, 2); 
 		return true; 
 	}
-	putback_token(ch);
 	return false;
 }
 
@@ -1127,7 +1084,16 @@ bool Parser::parse_post(int_t pri, int_t space){
 		}
 	}
 
+	State pos = save();
 	Token ch = read_token();
+	if(parse_post2(ch, pri, space)){
+		return true;
+	}
+	load(pos);
+	return false;
+}
+
+bool Parser::parse_post2(const Token& ch, int_t pri, int_t space){
 	int_t r_space = (ch.right_space()) ? PRI_MAX : 0;
 	int_t l_space = (ch.left_space()) ? PRI_MAX : 0;
 	switch(ch.type()){
@@ -1138,9 +1104,9 @@ bool Parser::parse_post(int_t pri, int_t space){
 			switch(ch.keyword_number()){
 				XTAL_DEFAULT{}
 				
-				XTAL_CASE(Token::KEYWORD_IS){ return make_bin_expr(ch, space, pri, PRI_IS, EXPR_IS); }
-				XTAL_CASE(Token::KEYWORD_IN){ return make_bin_expr(ch, space, pri, PRI_IN, EXPR_IN); }
-				XTAL_CASE(Token::KEYWORD_CATCH){ 
+				XTAL_CASE(DefinedID::id_is){ return make_bin_expr(ch, space, pri, PRI_IS, EXPR_IS); }
+				XTAL_CASE(DefinedID::id_in){ return make_bin_expr(ch, space, pri, PRI_IN, EXPR_IN); }
+				XTAL_CASE(DefinedID::id_catch){ 
 					if(cmp_pri(pri, PRI_CATCH, space, l_space)){
 						expect('(');
 						expect_parse_identifier();
@@ -1269,16 +1235,15 @@ bool Parser::parse_post(int_t pri, int_t space){
 		}
 	}
 
-	putback_token(ch);
 	return false;
 }
 
 void Parser::parse_else_or_nobreak(){
-	if(eat(Token::KEYWORD_ELSE)){
+	if(eat_keyword(DefinedID::id_else)){
 		expect_parse_stmt();
 		executor_->tree_push_back(null);
 	}
-	else if(eat(Token::KEYWORD_NOBREAK)){
+	else if(eat_keyword(DefinedID::id_nobreak)){
 		executor_->tree_push_back(null);
 		expect_parse_stmt();
 	}
@@ -1300,10 +1265,9 @@ void Parser::parse_each(){
 
 	if(eat('|')){ // ブロックパラメータ
 		for(;;){
-			const Token& ch = peek_token();
-			if(ch.type()==ch.TYPE_IDENTIFIER){
+			if(peek_token().type()==Token::TYPE_IDENTIFIER){
 				read_token();
-				executor_->tree_push_back(identifier(ch.identifier_number()));
+				executor_->tree_push_back(ptr_cast<ID>(tokenizer_->read()));
 				executor_->tree_splice(EXPR_LVAR, 1);
 				params->push_back(executor_->tree_pop_back());
 				if(!eat(',')){
@@ -1452,16 +1416,20 @@ void Parser::parse_while(){
 bool Parser::parse_loop(){
 	// label: while(true){ // というパターンかをチェック
 	if(parse_var()){
-		const Token& ch = read_token(); // :の次を読み取る
-		if(ch.type()==Token::TYPE_KEYWORD){
-			switch(ch.keyword_number()){
-				XTAL_DEFAULT{}
-				XTAL_CASE(Token::KEYWORD_FOR){ parse_for(); return true; }
-				XTAL_CASE(Token::KEYWORD_WHILE){ parse_while(); return true; }
+		{
+			State pos = save();
+			const Token& ch = read_token(); // :の次を読み取る
+			if(ch.type()==Token::TYPE_KEYWORD){
+				switch(ch.keyword_number()){
+					XTAL_DEFAULT{}
+					XTAL_CASE(DefinedID::id_for){ parse_for(); return true; }
+					XTAL_CASE(DefinedID::id_while){ parse_while(); return true; }
+				}
 			}
+			load(pos);
 		}
 
-		putback_token(ch);
+		State pos = save();
 		if(parse_expr()){
 			if(!expr_end() && eat('{')){
 				parse_each();
@@ -1477,8 +1445,7 @@ bool Parser::parse_loop(){
 			}
 		}
 
-		putback_token();
-		putback_token();
+		load(pos);
 	}
 
 	return false;
@@ -1486,6 +1453,7 @@ bool Parser::parse_loop(){
 
 bool Parser::parse_assign_stmt(){
 	{
+		State pos = save();
 		const Token& ch = read_token();
 
 		switch(ch.type()){
@@ -1502,35 +1470,35 @@ bool Parser::parse_assign_stmt(){
 			XTAL_CASE(Token::TYPE_KEYWORD){
 				switch(ch.keyword_number()){
 					XTAL_DEFAULT{}
-					XTAL_CASE(Token::KEYWORD_METHOD){
+					XTAL_CASE(DefinedID::id_method){
 						expect_parse_expr(PRI_CALL, 0);
 						parse_fun(KIND_METHOD);
 						executor_->tree_splice(EXPR_DEFINE, 2);
 						return true;
 					}
 
-					XTAL_CASE(Token::KEYWORD_FUN){
+					XTAL_CASE(DefinedID::id_fun){
 						expect_parse_expr(PRI_CALL, 0);
 						parse_fun(KIND_FUN);
 						executor_->tree_splice(EXPR_DEFINE, 2);
 						return true;
 					}
 
-					XTAL_CASE(Token::KEYWORD_FIBER){
+					XTAL_CASE(DefinedID::id_fiber){
 						expect_parse_expr(PRI_CALL, 0);
 						parse_fun(KIND_FIBER);
 						executor_->tree_splice(EXPR_DEFINE, 2);
 						return true;
 					}
 
-					XTAL_CASE(Token::KEYWORD_CLASS){
+					XTAL_CASE(DefinedID::id_class){
 						expect_parse_expr(PRI_CALL, 0);
 						parse_class(KIND_CLASS);
 						executor_->tree_splice(EXPR_DEFINE, 2);
 						return true;
 					}
 
-					XTAL_CASE(Token::KEYWORD_SINGLETON){
+					XTAL_CASE(DefinedID::id_singleton){
 						expect_parse_expr(PRI_CALL, 0);
 						parse_class(KIND_SINGLETON);
 						executor_->tree_splice(EXPR_DEFINE, 2);
@@ -1540,7 +1508,7 @@ bool Parser::parse_assign_stmt(){
 			}
 		}
 
-		putback_token();
+		load(pos);
 	}
 
 	if(parse_expr()){
@@ -1548,6 +1516,7 @@ bool Parser::parse_assign_stmt(){
 			return true;
 		}
 		
+		State pos = save();
 		const Token& ch = read_token();
 
 		switch(ch.type()){
@@ -1556,10 +1525,7 @@ bool Parser::parse_assign_stmt(){
 			XTAL_CASE(Token::TYPE_TOKEN){
 				switch(ch.ivalue()){
 
-					XTAL_DEFAULT{
-						putback_token();
-						return true; 
-					}
+					XTAL_DEFAULT{}
 
 					XTAL_CASE(','){
 						parse_exprs(true);
@@ -1609,7 +1575,7 @@ bool Parser::parse_assign_stmt(){
 			}
 		}
 
-		putback_token();
+		load(pos);
 		return true;
 	}
 
@@ -1630,8 +1596,8 @@ bool Parser::parse_stmt(){
 		return true;
 	}
 
+	State pos = save();
 	const Token& ch = read_token();
-
 	switch(ch.type()){
 		XTAL_DEFAULT{}
 
@@ -1639,33 +1605,33 @@ bool Parser::parse_stmt(){
 			switch(ch.keyword_number()){
 				XTAL_DEFAULT{}
 		
-				XTAL_CASE(Token::KEYWORD_WHILE){ executor_->tree_push_back(null); parse_while(); return true; }
-				XTAL_CASE(Token::KEYWORD_FOR){ executor_->tree_push_back(null); parse_for(); return true; }
-				XTAL_CASE(Token::KEYWORD_SWITCH){ parse_switch(); return true; }
-				XTAL_CASE(Token::KEYWORD_IF){ parse_if(); return true; }
-				XTAL_CASE(Token::KEYWORD_TRY){ parse_try(); return true; }
+				XTAL_CASE(DefinedID::id_while){ executor_->tree_push_back(null); parse_while(); return true; }
+				XTAL_CASE(DefinedID::id_for){ executor_->tree_push_back(null); parse_for(); return true; }
+				XTAL_CASE(DefinedID::id_switch){ parse_switch(); return true; }
+				XTAL_CASE(DefinedID::id_if){ parse_if(); return true; }
+				XTAL_CASE(DefinedID::id_try){ parse_try(); return true; }
 
-				XTAL_CASE(Token::KEYWORD_THROW){ 
+				XTAL_CASE(DefinedID::id_throw){ 
 					expect_parse_expr(); 
 					executor_->tree_splice(EXPR_THROW, 1);
 					expect_stmt_end(); 
 					return true; 
 				}	
 
-				XTAL_CASE(Token::KEYWORD_ASSERT){ 
+				XTAL_CASE(DefinedID::id_assert){ 
 					parse_assert(); 
 					expect_stmt_end(); 
 					return true; 
 				}
 
-				XTAL_CASE(Token::KEYWORD_RETURN){ 
+				XTAL_CASE(DefinedID::id_return){ 
 					parse_exprs(); 
 					executor_->tree_splice(EXPR_RETURN, 1); 
 					expect_stmt_end(); 
 					return true; 
 				}
 				
-				XTAL_CASE(Token::KEYWORD_CONTINUE){ 
+				XTAL_CASE(DefinedID::id_continue){ 
 					if(!parse_identifier()){
 						executor_->tree_push_back(null); 
 					}
@@ -1674,7 +1640,7 @@ bool Parser::parse_stmt(){
 					return true; 
 				}
 
-				XTAL_CASE(Token::KEYWORD_BREAK){ 
+				XTAL_CASE(DefinedID::id_break){ 
 					if(!parse_identifier()){
 						executor_->tree_push_back(null); 
 					}
@@ -1695,7 +1661,7 @@ bool Parser::parse_stmt(){
 		}
 	}
 	
-	putback_token();
+	load(pos);
 	if(parse_assign_stmt()){
 		expect_stmt_end();
 		return true;
@@ -1761,7 +1727,8 @@ void Parser::expect_parse_identifier(){
 
 bool Parser::parse_identifier(){
 	if(peek_token().type()==Token::TYPE_IDENTIFIER){
-		executor_->tree_push_back(identifier(read_token().identifier_number()));
+		read_token();
+		executor_->tree_push_back(ptr_cast<ID>(tokenizer_->read())); 
 		return true;
 	}
 	return false;
@@ -1769,10 +1736,11 @@ bool Parser::parse_identifier(){
 
 void Parser::parse_identifier_or_keyword(){
 	if(peek_token().type()==Token::TYPE_IDENTIFIER){
-		executor_->tree_push_back(identifier(read_token().identifier_number()));
+		read_token();
+		executor_->tree_push_back(ptr_cast<ID>(tokenizer_->read())); 
 	}
 	else if(peek_token().type()==Token::TYPE_KEYWORD){
-		executor_->tree_push_back(identifier(read_token().identifier_number()));
+		executor_->tree_push_back(fetch_defined_id(read_token().keyword_number()));
 	}
 	else{
 		expect('i');
@@ -1780,13 +1748,14 @@ void Parser::parse_identifier_or_keyword(){
 }
 
 bool Parser::parse_var(){
+	State pos = save();
 	if(parse_identifier()){
 		if(eat(':')){ 
 			return true; 
 		}
 		else{
 			executor_->tree_pop_back();
-			putback_token();
+			load(pos);
 		}
 	}
 	return false;
@@ -1846,32 +1815,32 @@ void Parser::parse_class(int_t kind){
 	expect('{');
 	for(;;){
 		
-		if(eat('#') || eat(Token::KEYWORD_PROTECTED)){// 可触性 protected 指定
+		if(eat('#') || eat_keyword(DefinedID::id_protected)){// 可触性 protected 指定
 			executor_->tree_push_back(KIND_PROTECTED);
 		}
-		else if(eat('-') || eat(Token::KEYWORD_PRIVATE)){// 可触性 private 指定
+		else if(eat('-') || eat_keyword(DefinedID::id_private)){// 可触性 private 指定
 			executor_->tree_push_back(KIND_PRIVATE);
 		}
-		else if(eat('+') || eat(Token::KEYWORD_PUBLIC)){// 可触性 public 指定
+		else if(eat('+') || eat_keyword(DefinedID::id_public)){// 可触性 public 指定
 			executor_->tree_push_back(KIND_PUBLIC);
 		}
 		else{
 			executor_->tree_push_back(null);
 		}
 
-		if(eat(Token::KEYWORD_METHOD)){
+		if(eat_keyword(DefinedID::id_method)){
 			parse_fun2(KIND_METHOD);
 		}
-		else if(eat(Token::KEYWORD_FUN)){
+		else if(eat_keyword(DefinedID::id_fun)){
 			parse_fun2(KIND_FUN);
 		}
-		else if(eat(Token::KEYWORD_FIBER)){
+		else if(eat_keyword(DefinedID::id_fiber)){
 			parse_fun2(KIND_FIBER);
 		}
-		else if(eat(Token::KEYWORD_CLASS)){
+		else if(eat_keyword(DefinedID::id_class)){
 			parse_class2(KIND_CLASS);
 		}
-		else if(eat(Token::KEYWORD_SINGLETON)){
+		else if(eat_keyword(DefinedID::id_singleton)){
 			parse_class2(KIND_SINGLETON);
 		}
 		else if(parse_identifier()){ // メンバ定義
@@ -1918,7 +1887,7 @@ void Parser::parse_class(int_t kind){
 void Parser::parse_try(){	
 	expect_parse_stmt();
 	
-	if(eat(Token::KEYWORD_CATCH)){
+	if(eat_keyword(DefinedID::id_catch)){
 		expect('(');
 		expect_parse_identifier();
 		expect(')');
@@ -1929,7 +1898,7 @@ void Parser::parse_try(){
 		executor_->tree_push_back(null);
 	}
 
-	if(eat(Token::KEYWORD_FINALLY)){
+	if(eat_keyword(DefinedID::id_finally)){
 		expect_parse_stmt();
 	}
 	else{
@@ -1986,8 +1955,7 @@ void Parser::parse_fun(int_t kind){
 
 		xpeg::Executor::TreeNodeState state = executor_->tree_node_begin();
 		for(;;){
-			if(eat(c3('.','.','.'))){ // extendable
-				putback_token();
+			if(check(c3('.','.','.'))){ // extendable
 				break;
 			}
 			else{
@@ -2041,8 +2009,7 @@ void Parser::parse_call(){
 	// 順番引数のループ
 	xpeg::Executor::TreeNodeState state = executor_->tree_node_begin();
 	for(;;){
-		if(eat(c3('.','.','.'))){ // extendable
-			putback_token();
+		if(check(c3('.','.','.'))){ // extendable
 			break;
 		}
 		else{
@@ -2118,7 +2085,7 @@ void Parser::parse_if(){
 
 	expect(')');
 	expect_parse_stmt();
-	if(eat(Token::KEYWORD_ELSE)){
+	if(eat_keyword(DefinedID::id_else)){
 		expect_parse_stmt();
 	}
 	else{
@@ -2145,7 +2112,7 @@ void Parser::parse_switch(){
 	ExprPtr cases = xnew<Expr>(EXPR_LIST);
 	ExprPtr default_case;
 	for(;;){
-		if(eat(Token::KEYWORD_CASE)){
+		if(eat_keyword(DefinedID::id_case)){
 			expect('(');
 			parse_exprs();
 			expect(')');
@@ -2153,7 +2120,7 @@ void Parser::parse_switch(){
 			executor_->tree_splice(EXPR_LIST, 2);
 			cases->push_back(executor_->tree_pop_back());
 		}
-		else if(eat(Token::KEYWORD_DEFAULT)){
+		else if(eat_keyword(DefinedID::id_default)){
 			expect_parse_stmt();
 			default_case = ep(executor_->tree_pop_back());
 		}
@@ -2225,6 +2192,27 @@ void Parser::parse_array(){
 		executor_->tree_node_end(0, state);
 		executor_->tree_splice(EXPR_ARRAY, 1);
 	}
+}
+
+Parser::State Parser::save(){
+	State s;
+	s.ch = last_;
+	s.pos = tokenizer_->save();
+	return s;
+}
+
+void Parser::load(const State& s){
+	last_ = s.ch;
+	tokenizer_->load(s.pos);
+}
+
+const Token& Parser::read_token(){
+	last_ = tokenizer_->read();
+	return *ptr_cast<Token>(last_);
+}
+
+const Token& Parser::peek_token(){
+	return *ptr_cast<Token>(tokenizer_->peek());
 }
 
 }

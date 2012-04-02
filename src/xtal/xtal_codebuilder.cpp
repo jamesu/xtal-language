@@ -27,7 +27,7 @@ void CodeBuilder::error(const AnyPtr& message){
 }
 
 CodePtr CodeBuilder::compile(const StreamPtr& stream, const StringPtr& source_file_name){
-	xpeg::ExecutorPtr executor = xnew<xpeg::Executor>(stream, source_file_name);
+	xpeg::ExecutorPtr executor = xnew<xpeg::StreamExecutor>(stream, source_file_name);
 	eb_ = executor;
 	parser_.parse(executor);
 
@@ -119,8 +119,13 @@ CodePtr CodeBuilder::compile_toplevel(const ExprPtr& e, const StringPtr& source_
 	normalize(e);
 	build_scope(e);
 	build_scope2(e);
-	optimize_scope(root_);
-	calc_scope(root_, root_, 0);
+
+	XTAL_ASSERT(scope_stack_.empty());
+	scope_stack_.upsize(1);
+	Scope* root = scope_stack_.top();
+	scope_stack_.downsize(1);
+	optimize_scope(root);
+	calc_scope(root, root, 0);
 
 	result_ = XNew<Code>();
 
@@ -152,7 +157,8 @@ CodePtr CodeBuilder::compile_toplevel(const ExprPtr& e, const StringPtr& source_
 	info.variable_size = 0;
 	info.variable_identifier_offset = 0;
 
-	scope_begin();
+	int esize = scope_stack_.size();
+	scope_begin(null);
 
 	info.max_variable = (u16)current_scope().register_max;
 	int_t fun_info_table_number = 0;
@@ -179,8 +185,9 @@ CodePtr CodeBuilder::compile_toplevel(const ExprPtr& e, const StringPtr& source_
 		result_->xfun_info_table_[fun_info_table_number].flags |= FunInfo::FLAG_SCOPE_CHAIN;
 	}
 
-	scope_end();
-	delete_scope(root_);
+	int eesize = scope_stack_.size();
+	scope_end(null);
+	delete_scope(root);
 
 	XTAL_ASSERT(scope_stack_.empty());
 
@@ -429,6 +436,10 @@ void CodeBuilder::calc_scope(Scope* scope, Scope* fun_scope, int_t base){
 		scope->fun_scope = fun_scope;
 		scope->register_base = 0;
 	}
+	else if(scope->kind==Scope::CATCH){
+		scope->fun_scope = fun_scope;
+		scope->register_base = base + scope->entries.size();
+	}
 	else{
 		scope->fun_scope = fun_scope;
 		scope->register_base = base + scope->entries.size();
@@ -449,9 +460,9 @@ void CodeBuilder::delete_scope(Scope* scope){
 	for(uint_t i=0; i<scope->children.size(); ++i){
 		delete_scope(scope->children[i]);
 	}
+	scope->children.clear();
 
-	scope->~Scope();
-	object_xfree<Scope>(scope);
+	delete_object_xfree<Scope>(scope);
 }
 
 void CodeBuilder::optimize_scope(Scope* scope){
@@ -469,6 +480,11 @@ void CodeBuilder::optimize_scope(Scope* scope){
 	scope->scope_chain_have_possibilities = scope_chain_have_possibilities;
 }
 
+bool CodeBuilder::scope_exist(Scope* scope){
+	return scope->entries.size()!=0 && scope->kind==Scope::FRAME && 
+		(scope->scope_chain_have_possibilities || debug::is_debug_compile_enabled());
+}
+
 void CodeBuilder::build_scope(const AnyPtr& a){
 	ExprPtr e = ep(a);
 	if(!e){ return; }
@@ -481,12 +497,12 @@ void CodeBuilder::build_scope(const AnyPtr& a){
 		}
 
 		XTAL_CASE_N(case EXPR_FOR:){
-			var_begin(Scope::FRAME);
+			var_begin(e, Scope::FRAME);
 			var_define(Xid(first_step), true);
 			XTAL_FOR_EXPR(v, e){
 				build_scope(v);
 			}	
-			var_end();
+			var_end(e);
 		}
 	
 		XTAL_CASE_N(
@@ -494,15 +510,15 @@ void CodeBuilder::build_scope(const AnyPtr& a){
 			case EXPR_SWITCH:
 			case EXPR_IF:
 		){
-			var_begin(Scope::FRAME);
+			var_begin(e, Scope::FRAME);
 			XTAL_FOR_EXPR(v, e){
 				build_scope(v);
 			}	
-			var_end();
+			var_end(e);
 		}
 
 		XTAL_CASE_N(case EXPR_FUN:){
-			var_begin(Scope::FUN);
+			var_begin(e, Scope::FUN);
 			XTAL_FOR_EXPR(v1, e->fun_params()){
 				if(const ExprPtr& v = ep(v1)){
 					if(const ExprPtr& e2 = ep(v->at(0))){
@@ -522,17 +538,17 @@ void CodeBuilder::build_scope(const AnyPtr& a){
 			}
 
 			build_scope(e->fun_body());
-			var_end();
+			var_end(e);
 		}
 
 		XTAL_CASE_N(case EXPR_TOPLEVEL:){
-			var_begin(Scope::FUN);
-			var_begin(Scope::TOPLEVEL);
+			var_begin(null, Scope::FUN);
+			var_begin(e, Scope::TOPLEVEL);
 			XTAL_FOR_EXPR(v, e->toplevel_stmts()){
 				build_scope(v);
 			}
-			var_end();
-			var_end();
+			var_end(e);
+			var_end(null);
 		}
 
 		XTAL_CASE_N(case EXPR_DEFINE:){
@@ -542,6 +558,7 @@ void CodeBuilder::build_scope(const AnyPtr& a){
 			else{
 				build_scope(e->bin_lhs());
 			}
+
 			build_scope(e->bin_rhs());
 		}
 
@@ -555,25 +572,26 @@ void CodeBuilder::build_scope(const AnyPtr& a){
 					build_scope(e2);
 				}
 			}
+
 			build_scope(e->mdefine_rhs_exprs());
 		}
 
 		XTAL_CASE_N(case EXPR_CATCH:){
 			build_scope(e->catch_body());
-			var_begin(Scope::FRAME);
+			var_begin(e, Scope::FRAME);
 			var_define(e->catch_catch_var(), true);
 			build_scope(e->catch_catch());
-			var_end();
+			var_end(e);
 		}
 
 		XTAL_CASE_N(case EXPR_TRY:){
 			build_scope(e->try_body());
 
 			if(e->try_catch()){
-				var_begin(Scope::FRAME);
+				var_begin(e, Scope::FRAME);
 				var_define(e->try_catch_var(), true);
 				build_scope(e->try_catch());
-				var_end();
+				var_end(e);
 			}
 
 			build_scope(e->try_finally());
@@ -582,7 +600,7 @@ void CodeBuilder::build_scope(const AnyPtr& a){
 		XTAL_CASE_N(case EXPR_CLASS:){
 			build_scope(e->class_mixins());
 
-			var_begin(Scope::CLASS);
+			var_begin(e, Scope::CLASS);
 			
 			XTAL_FOR_EXPR(v, e->class_stmts()){
 				ExprPtr e2 = ep(v);
@@ -597,7 +615,7 @@ void CodeBuilder::build_scope(const AnyPtr& a){
 			}
 
 			build_scope(e->class_stmts());
-			var_end();
+			var_end(e);
 		}
 	}
 }
@@ -618,11 +636,11 @@ void CodeBuilder::build_scope2(const AnyPtr& a){
 		}
 
 		XTAL_CASE_N(case EXPR_FOR:){
-			scope_optimize_begin();
+			scope_optimize_begin(e);
 			XTAL_FOR_EXPR(v, e){
 				build_scope2(v);
 			}	
-			scope_optimize_end();
+			scope_optimize_end(e);
 		}
 	
 		XTAL_CASE_N(
@@ -630,15 +648,15 @@ void CodeBuilder::build_scope2(const AnyPtr& a){
 			case EXPR_SWITCH:
 			case EXPR_IF:
 		){
-			scope_optimize_begin();
+			scope_optimize_begin(e);
 			XTAL_FOR_EXPR(v, e){
 				build_scope2(v);
 			}	
-			scope_optimize_end();
+			scope_optimize_end(e);
 		}
 
 		XTAL_CASE_N(case EXPR_FUN:){
-			scope_optimize_begin();
+			scope_optimize_begin(e);
 			XTAL_FOR_EXPR(v1, e->fun_params()){
 				if(const ExprPtr& v = ep(v1)){
 					build_scope2(v->at(1));
@@ -646,17 +664,17 @@ void CodeBuilder::build_scope2(const AnyPtr& a){
 			}
 
 			build_scope2(e->fun_body());
-			scope_optimize_end();
+			scope_optimize_end(e);
 		}
 
 		XTAL_CASE_N(case EXPR_TOPLEVEL:){
-			scope_optimize_begin();
-			scope_optimize_begin();
+			scope_optimize_begin(null);
+			scope_optimize_begin(e);
 			XTAL_FOR_EXPR(v, e->toplevel_stmts()){
 				build_scope2(v);
 			}
-			scope_optimize_end();
-			scope_optimize_end();
+			scope_optimize_end(e);
+			scope_optimize_end(null);
 		}
 
 		XTAL_CASE_N(case EXPR_DEFINE:){
@@ -748,20 +766,20 @@ void CodeBuilder::build_scope2(const AnyPtr& a){
 
 		XTAL_CASE_N(case EXPR_CATCH:){
 			build_scope2(e->catch_body());
-			scope_optimize_begin();
+			scope_optimize_begin(e);
 			var_assign(e->catch_catch_var());
 			build_scope2(e->catch_catch());
-			scope_optimize_end();
+			scope_optimize_end(e);
 		}
 
 		XTAL_CASE_N(case EXPR_TRY:){
 			build_scope2(e->try_body());
 
 			if(e->try_catch()){
-				scope_optimize_begin();
+				scope_optimize_begin(e);
 				var_assign(e->try_catch_var());
 				build_scope2(e->try_catch());
-				scope_optimize_end();
+				scope_optimize_end(e);
 			}
 
 			build_scope2(e->try_finally());
@@ -770,9 +788,9 @@ void CodeBuilder::build_scope2(const AnyPtr& a){
 		XTAL_CASE_N(case EXPR_CLASS:){
 			build_scope2(e->class_mixins());
 
-			scope_optimize_begin();
+			scope_optimize_begin(e);
 			build_scope2(e->class_stmts());
-			scope_optimize_end();
+			scope_optimize_end(e);
 		}
 	}
 }
@@ -879,6 +897,132 @@ void CodeBuilder::normalize(const AnyPtr& a){
 	}
 }
 
+
+void CodeBuilder::scope_skip(){
+	if(scope_stack_.empty()){
+		scope_stack_.upsize(1);
+	}
+	else{
+		Scope* p = scope_stack_[0];
+		scope_stack_.push(p->children[p->children_pos++]);
+	}
+
+	if(current_scope().scope_chain && current_scope().scope_info_num>=0){
+		result_->scope_info_table_[current_scope().scope_info_num].flags |= FunInfo::FLAG_SCOPE_CHAIN;
+	}
+
+	current_scope().children_pos = 0;
+	scope_stack_.pop();
+}
+
+int_t CodeBuilder::calc_variable_offset(Scope& scope){
+	return ((scope.register_max - scope.register_base) + (int_t)scope.entries.size());
+	//return -(scope.register_base - scope.register_max - (int_t)scope.entries.size());
+}
+
+void CodeBuilder::scope_begin(const ExprPtr& e){
+	if(scope_stack_.empty()){
+		scope_stack_.upsize(1);
+	}
+	else{
+		Scope* p = scope_stack_[0];
+		scope_stack_.push(p->children[p->children_pos++]);
+	}
+
+	XTAL_ASSERT(current_scope().expr==e);
+	
+	Scope& scope = current_scope();
+	if(scope_exist(&scope)){
+		int_t scope_info_num = result_->scope_info_table_.size();
+		current_scope().scope_info_num = scope_info_num;
+
+		ScopeInfo info;
+		info.pc = code_size();
+		info.variable_offset = (u16)calc_variable_offset(scope);
+		info.variable_size = (u16)current_scope().entries.size();
+		info.variable_identifier_offset = (u16)result_->identifier_table_.size();
+		for(uint_t i=0; i<scope.entries.size(); ++i){
+			Scope::Entry& entry = scope.entries[i];
+			result_->identifier_table_.push_back(entry.name);
+		}
+
+		put_inst(InstScopeBegin(scope_info_num));
+
+		result_->scope_info_table_.push_back(info);
+	}
+	else if(scope.kind==Scope::FUN || scope.kind==Scope::CLASS || scope.kind==Scope::TOPLEVEL){
+		int_t scope_info_num = result_->scope_info_table_.size();
+		current_scope().scope_info_num = scope_info_num;
+
+		ScopeInfo info;
+		info.pc = code_size();
+		info.variable_offset = (u16)calc_variable_offset(scope);
+		info.variable_size = (u16)current_scope().entries.size();
+		info.variable_identifier_offset = (u16)result_->identifier_table_.size();
+		for(uint_t i=0; i<scope.entries.size(); ++i){
+			Scope::Entry& entry = scope.entries[i];
+			result_->identifier_table_.push_back(entry.name);
+		}
+
+		result_->scope_info_table_.push_back(info);
+	}
+}
+
+void CodeBuilder::scope_end(const ExprPtr& e){
+	XTAL_ASSERT(current_scope().expr==e);
+
+	if(scope_exist(&current_scope())){
+		put_inst(InstScopeEnd());
+	}
+		
+	if(current_scope().scope_chain && current_scope().scope_info_num>=0){
+		result_->scope_info_table_[current_scope().scope_info_num].flags |= FunInfo::FLAG_SCOPE_CHAIN;
+	}
+
+	current_scope().children_pos = 0;
+	scope_stack_.pop();
+}
+	
+void CodeBuilder::scope_optimize_begin(const ExprPtr& e){
+	if(scope_stack_.empty()){
+		scope_stack_.upsize(1);
+	}
+	else{
+		Scope* p = scope_stack_[0];
+		scope_stack_.push(p->children[p->children_pos++]);
+	}
+		
+	XTAL_ASSERT(current_scope().expr==e);
+	Scope* p = scope_stack_[0];
+
+	for(uint_t i=0; i<p->entries.size(); ++i){
+		p->entries[i].visible2 = p->entries[i].visible;
+	}
+}
+	
+void CodeBuilder::scope_optimize_end(const ExprPtr& e){
+	XTAL_ASSERT(current_scope().expr==e);
+	Scope* p = scope_stack_[0];
+
+	for(uint_t i=0; i<p->entries.size(); ++i){
+		p->entries[i].visible = p->entries[i].visible2;
+	}
+
+	if(p->kind==Scope::FRAME){
+		for(uint_t i=0; i<p->entries.size();){
+			if(!p->entries[i].refered){
+				p->entries.erase(i);
+			}
+			else{
+				++i;
+			}
+		}
+	}
+
+	p->children_pos = 0;
+	scope_stack_.pop();
+}
+
 CodeBuilder::VariableInfo CodeBuilder::var_find(const IDPtr& key, bool force){
 	VariableInfo ret;
 	ret.depth = 0;
@@ -890,16 +1034,16 @@ CodeBuilder::VariableInfo CodeBuilder::var_find(const IDPtr& key, bool force){
 	ret.constant= false;
 	ret.entry = 0;
 
-	for(size_t i = 0, last = scope_stack_.size(); i<last; ++i){
+	for(size_t i=0, last=scope_stack_.size(); i<last; ++i){
 		Scope& scope = *scope_stack_[i];
 
 		for(size_t j = 0, jlast = scope.entries.size(); j<jlast; ++j){
-			Scope::Entry& entry = scope.entries[scope.entries.size()-1-j];
+			Scope::Entry& entry = scope.entries[j];
 
 			if(XTAL_detail_raweq(entry.name, key)){
 				if(ret.out_of_fun || entry.visible || force){
 
-					ret.member_number = scope.entries.size()-1-j;
+					ret.member_number = j;
 
 					if(ret.depth==0 && scope.kind==Scope::CLASS){
 						ret.out_of_fun = true;
@@ -915,7 +1059,7 @@ CodeBuilder::VariableInfo CodeBuilder::var_find(const IDPtr& key, bool force){
 					}
 
 					if(ret.found && !ret.out_of_fun){
-						ret.register_number = scope.register_base - scope.fun_scope->register_max - j - 1;
+						ret.register_number = -calc_variable_offset(scope) + (int_t)j;
 					}
 
 					ret.entry = &entry;
@@ -972,7 +1116,6 @@ void CodeBuilder::var_refere(const IDPtr& key){
 	}
 }
 
-
 void CodeBuilder::var_visible(const IDPtr& key, bool visible){
 	for(size_t i = 0, last = scope_stack_.size(); i<last; ++i){
 		Scope& vf = *scope_stack_[i];
@@ -988,161 +1131,32 @@ void CodeBuilder::var_visible(const IDPtr& key, bool visible){
 	}
 }
 
-void CodeBuilder::var_begin(int_t kind){
-	Scope* p = new(object_xmalloc<Scope>()) Scope();
+void CodeBuilder::var_begin(const ExprPtr& e, int_t kind){
+	Scope* p = new_object_xmalloc<Scope>();
+	p->expr = e;
 	p->kind = kind;
 	p->scope_info_num = -1;
 	p->scope_chain = false;
 	p->scope_chain_have_possibilities = true;
 	p->children_pos = 0;
 	p->register_base = 0;
+	p->register_max = 0;
 
 	if(!scope_stack_.empty()){
-		scope_stack_[0]->children.push_back(p);
+		scope_stack_.top()->children.push_back(p);
 	}
 
 	scope_stack_.push(p);
 }
 
-void CodeBuilder::var_end(){
-	root_ = scope_stack_[0];
+void CodeBuilder::var_end(const ExprPtr& e){
+	XTAL_ASSERT(scope_stack_.top()->expr==e);
 	scope_stack_.downsize(1);
-}
-
-void CodeBuilder::scope_skip(){
-	if(scope_stack_.empty()){
-		scope_stack_.push(root_);
-	}
-	else{
-		Scope* p = scope_stack_[0];
-		scope_stack_.push(p->children[p->children_pos++]);
-	}
-
-	if(current_scope().scope_chain && current_scope().scope_info_num>=0){
-		result_->scope_info_table_[current_scope().scope_info_num].flags |= FunInfo::FLAG_SCOPE_CHAIN;
-	}
-
-	scope_stack_.pop();
-}
-
-void CodeBuilder::scope_begin(){
-	if(scope_stack_.empty()){
-		scope_stack_.push(root_);
-	}
-	else{
-		Scope* p = scope_stack_[0];
-		scope_stack_.push(p->children[p->children_pos++]);
-	}
-	
-	Scope& scope = current_scope();
-	if(scope.kind!=Scope::FRAME || scope_exist(&scope)){
-		int_t scope_info_num = result_->scope_info_table_.size();
-		current_scope().scope_info_num = scope_info_num;
-
-		ScopeInfo info;
-		info.pc = code_size();
-		info.variable_offset = (u16) -(scope.register_base - scope.register_max - (int_t)scope.entries.size());
-		info.variable_size = (u16)current_scope().entries.size();
-		info.variable_identifier_offset = (u16)result_->identifier_table_.size();
-		for(uint_t i=0; i<scope.entries.size(); ++i){
-			Scope::Entry& entry = scope.entries[i];
-			result_->identifier_table_.push_back(entry.name);
-		}
-
-		if(scope_exist(&current_scope())){
-			put_inst(InstScopeBegin(scope_info_num));
-		}
-
-		result_->scope_info_table_.push_back(info);
-	}
-}
-
-void CodeBuilder::scope_end(){
-	if(scope_exist(&current_scope())){
-		put_inst(InstScopeEnd());
-	}
-		
-	if(current_scope().scope_chain && current_scope().scope_info_num>=0){
-		result_->scope_info_table_[current_scope().scope_info_num].flags |= FunInfo::FLAG_SCOPE_CHAIN;
-	}
-
-	scope_stack_.pop();
-}
-	
-void CodeBuilder::scope_optimize_begin(){
-	if(scope_stack_.empty()){
-		scope_stack_.push(root_);
-	}
-	else{
-		Scope* p = scope_stack_[0];
-		scope_stack_.push(p->children[p->children_pos++]);
-	}
-
-	Scope* p = scope_stack_[0];
-
-	for(uint_t i=0; i<p->entries.size(); ++i){
-		p->entries[i].visible2 = p->entries[i].visible;
-	}
-}
-	
-void CodeBuilder::scope_optimize_end(){
-	Scope* p = scope_stack_[0];
-
-	for(uint_t i=0; i<p->entries.size(); ++i){
-		p->entries[i].visible = p->entries[i].visible2;
-	}
-
-	if(p->kind==Scope::FRAME){
-		for(uint_t i=0; i<p->entries.size();){
-			if(!p->entries[i].refered){
-				p->entries.erase(i);
-			}
-			else{
-				++i;
-			}
-		}
-	}
-
-	p->children_pos = 0;
-	scope_stack_.pop();
 }
 
 void CodeBuilder::var_assign(const IDPtr& name){
 	var_refere(name);
 }
-
-/*
-void CodeBuilder::var_define_stmts(const ExprPtr& stmts, bool visible){
-	XTAL_FOR_EXPR(v, stmts){
-		var_define_stmt(v, visible);
-	}
-}
-
-void CodeBuilder::var_define_stmt(const AnyPtr& stmt, bool visible){
-	if(ExprPtr v = ptr_cast<Expr>(stmt)){
-		if(v->itag()==EXPR_DEFINE){
-			if(v->bin_lhs()->itag()==EXPR_LVAR){
-				var_define(v->bin_lhs()->lvar_name(), visible);
-
-				if(v->bin_rhs()->itag()==EXPR_CLASS){
-					v->bin_rhs()->set_class_name(v->bin_lhs()->lvar_name());
-				}
-				else if(v->bin_rhs()->itag()==EXPR_FUN){
-					v->bin_rhs()->set_fun_name(v->bin_lhs()->lvar_name());
-				}
-			}
-		}
-		else if(v->itag()==EXPR_MDEFINE){
-			XTAL_FOR_EXPR(v1, v->mdefine_lhs_exprs()){
-				ExprPtr vv = ep(v1);
-				if(vv->itag()==EXPR_LVAR){
-					var_define(vv->lvar_name(), visible);
-				}			
-			}
-		}
-	}
-}
-*/
 
 void CodeBuilder::var_define(const IDPtr& name, bool visible){
 	for(size_t j = 0, jlast = current_scope().entries.size(); j<jlast; ++j){
@@ -1466,7 +1480,7 @@ void CodeBuilder::compile_class(const ExprPtr& e, int_t stack_top, int_t result)
 		mixins++;
 	}
 
-	scope_begin();
+	scope_begin(e);
 
 	push_cf();
 
@@ -1536,7 +1550,7 @@ void CodeBuilder::compile_class(const ExprPtr& e, int_t stack_top, int_t result)
 	put_inst(InstClassEnd(result));
 
 	pop_cf();
-	scope_end();
+	scope_end(e);
 	pop_ff();
 }
 
@@ -1632,12 +1646,12 @@ int_t CodeBuilder::compile_fun(const ExprPtr& e, int_t stack_top, int_t result){
 	fun.name_number = (u16)register_identifier(e->fun_name());
 	fun.flags = e->fun_extendable_param() ? (u16)FunInfo::FLAG_EXTENDABLE_PARAM : (u16)0;
 
-	scope_begin();
+	scope_begin(e);
 
 	fun.max_variable = (u16)current_scope().register_max;
 
 	// 引数の名前を識別子テーブルに順番に乗せる
-	fun.variable_offset = (u16) (-(current_scope().register_base - current_scope().register_max - (int_t)current_scope().entries.size()));
+	fun.variable_offset = (u16)calc_variable_offset(current_scope());
 	fun.variable_size = (u16)current_scope().entries.size();
 	fun.variable_identifier_offset = (u16)result_->identifier_table_.size();
 	for(uint_t i=0; i<current_scope().entries.size(); ++i){
@@ -1704,7 +1718,7 @@ int_t CodeBuilder::compile_fun(const ExprPtr& e, int_t stack_top, int_t result){
 		result_->xfun_info_table_[fun_info_table_number].flags |= FunInfo::FLAG_SCOPE_CHAIN;
 	}
 
-	scope_end();
+	scope_end(e);
 	pop_ff();
 
 	return 1;

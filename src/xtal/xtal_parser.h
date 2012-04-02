@@ -26,50 +26,6 @@ public:
 		TYPE_IDENTIFIER = 3,
 		TYPE_KEYWORD = 4
 	};
-	
-	enum Keyword{
-		KEYWORD_NONE,
-		
-		KEYWORD_IF,
-		KEYWORD_FOR,
-		KEYWORD_ELSE,
-		KEYWORD_FUN,
-		KEYWORD_METHOD,
-		KEYWORD_DO,
-		KEYWORD_WHILE,
-		KEYWORD_CONTINUE,
-		KEYWORD_BREAK,
-		KEYWORD_FIBER,
-		KEYWORD_YIELD,
-		KEYWORD_RETURN,
-		KEYWORD_ONCE,
-		KEYWORD_NULL,
-		KEYWORD_UNDEFINED,
-		KEYWORD_FALSE,
-		KEYWORD_TRUE,
-		KEYWORD_XTAL,
-		KEYWORD_TRY,
-		KEYWORD_CATCH,
-		KEYWORD_FINALLY,
-		KEYWORD_THROW,
-		KEYWORD_CLASS,
-		KEYWORD_CALLEE,
-		KEYWORD_THIS,
-		KEYWORD_DOFUN,
-		KEYWORD_IS,
-		KEYWORD_IN,
-		KEYWORD_ASSERT,
-		KEYWORD_NOBREAK,
-		KEYWORD_SWITCH,
-		KEYWORD_CASE,
-		KEYWORD_DEFAULT,
-		KEYWORD_SINGLETON,
-		KEYWORD_PUBLIC,
-		KEYWORD_PROTECTED,
-		KEYWORD_PRIVATE,
-
-		KEYWORD_MAX
-	};
 
 	Token()
 		:ImmediateValue(0, 0){}
@@ -89,26 +45,86 @@ public:
 	int_t ivalue() const{ return second_ivalue(); }
 	
 	float_t fvalue() const{ return second_fvalue(); }
-	
-	int_t identifier_number() const{ return second_ivalue(); }
-	
+		
 	int_t keyword_number() const{ return second_ivalue(); }
+
+	bool is_end(){ return type()==TYPE_TOKEN && ivalue()==0; }
+};
+
+template<> struct CppClassSymbol<Token> : public CppClassSymbol<ImmediateValue>{};
+
+
+class Tokenizer : public xpeg::Executor{
+public:
+	Tokenizer(const xpeg::ExecutorPtr& e);
+
+	const AnyPtr& peek();
+
+	const AnyPtr& read();
+
+	StringPtr read_string(int_t open, int_t close);
+
+	int save(){
+		return token_pos_;
+	}
+
+	void load(int pos){
+		token_pos_ = pos;
+	}
+		
+private:
+	void tokenize();
+	void push_token(int_t v);
+	void push_int_token(int_t v);
+	void push_float_token(float_t v);
+	void push_keyword_token(int_t num);
+	void push_identifier_token(const IDPtr& identifier);
+
+	void deplete_space();
+
+	float_t read_finteger();
+	int_t read_integer(int_t base);
+	bool is_integer_literal();
+	void tokenize_number();
+	
+	int_t test_right_space(int_t ch);
+
+public:
+	virtual uint_t read_charactors(AnyPtr* buffer, uint_t max);
+
+	void on_visit_members(Visitor& m){
+		xpeg::Executor::on_visit_members(m);
+		m & keyword_map_ & ms_;
+		for(int_t i=0; i<TOKEN_BUF_SIZE; ++i){
+			m & token_buf_[i];
+		}
+	}
+
+private:
+	MapPtr keyword_map_;
+	MemoryStreamPtr ms_;
+
+	enum{ TOKEN_BUF_SIZE = 8, TOKEN_BUF_MASK = TOKEN_BUF_SIZE-1 };
+	AnyPtr token_buf_[TOKEN_BUF_SIZE];
+	int_t token_pos_;
+	int_t token_read_;
+
+	uint_t left_space_;
+
+	xpeg::ExecutorPtr executor_;
 };
 
 class Parser{
 public:
-
-	Parser();
-
 	void parse(const xpeg::ExecutorPtr& scanner);
 
 	void parse_eval(const xpeg::ExecutorPtr& scanner);
 
 private:
-	
 	void expect(int_t ch);
+	bool check(int_t ch);
 	bool eat(int_t ch);
-	bool eat(Token::Keyword kw);
+	bool eat_keyword(int_t kw);
 
 	bool cmp_pri(int_t pri, int_t op, int_t r_space, int_t l_space);
 
@@ -118,6 +134,7 @@ private:
 	bool parse_expr();
 	void expect_parse_expr(int_t pri, int_t space);
 	bool parse_post(int_t pri, int_t space);
+	bool parse_post2(const Token& ch, int_t pri, int_t space);
 	void expect_parse_expr();
 	void expect_parse_identifier();
 	bool parse_identifier();
@@ -150,55 +167,25 @@ private:
 	bool expr_end();
 	bool make_bin_expr(const Token& ch, int_t space, int_t pri, int_t PRI, int_t EXPR);
 	void expect_stmt_end();
+public:
+	SmartPtr<Tokenizer> tokenizer_;
+	xpeg::ExecutorPtr executor_;
 
 private:
+	AnyPtr last_;
+
+	struct State{
+		AnyPtr ch;
+		int_t pos;
+	};
+
+	State save();
+
+	void load(const State& s);
 
 	const Token& read_token();
-	const Token& peek_token(int_t n = 0);
-	void putback_token();
-	void putback_token(const Token& ch);
-	StringPtr token_to_string(const Token& ch);
-		
-	StringPtr read_string(int_t open, int_t close);
 
-	const IDPtr& identifier(int_t n){
-		return unchecked_ptr_cast<ID>(identifiers_->at(n));
-	}
-
-private:
-
-	void tokenize();
-	void push_token(int_t v);
-	void push_int_token(int_t v);
-	void push_float_token(float_t v);
-	void push_keyword_token(int_t num);
-	void push_identifier_token(int_t num);
-
-	void deplete_space();
-
-	float_t read_finteger();
-	int_t read_integer(int_t base);
-	bool is_integer_literal();
-	void tokenize_number();
-	
-	int_t test_right_space(int_t ch);
-
-private:
-
-	MapPtr identifier_map_;
-	ArrayPtr identifiers_;
-	MemoryStreamPtr ms_;
-
-	enum{ TOKEN_BUF_SIZE = 8, TOKEN_BUF_MASK = TOKEN_BUF_SIZE-1 };
-	Token token_buf_[TOKEN_BUF_SIZE];
-	int_t token_pos_;
-	int_t token_read_;
-
-	uint_t left_space_;
-
-public:
-
-	xpeg::ExecutorPtr executor_;
+	const Token& peek_token();
 };
 
 }

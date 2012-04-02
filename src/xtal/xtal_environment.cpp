@@ -879,11 +879,22 @@ struct GCer{
 };
 
 namespace{
+
+	xpeg::ExecutorPtr create_xpeg(const AnyPtr& source, const StringPtr& file_name = empty_string){
+		if(const StreamPtr& stream = ptr_cast<Stream>(source)){
+			return xnew<xpeg::StreamExecutor>(stream, file_name);
+		}
+		else if(const StringPtr& string = ptr_cast<String>(source)){
+			return xnew<xpeg::StreamExecutor>(XNew<StringStream>(string), file_name);
+		}
+		return nul<xpeg::Executor>();
+	}
+	
 	CodePtr compile_detail(const AnyPtr& source, const StringPtr& file_name){
 #ifndef XTAL_NO_PARSER
 		GCer gc(0);
 		CodeBuilder cb;
-		return cb.compile(xnew<xpeg::Executor>(source), file_name);
+		return cb.compile(create_xpeg(source, file_name));
 #else
 		return nul<Code>();
 #endif
@@ -892,7 +903,7 @@ namespace{
 	CodePtr eval_compile_detail(const AnyPtr& source){
 #ifndef XTAL_NO_PARSER
 		CodeBuilder cb;
-		return cb.eval_compile(xnew<xpeg::Executor>(source));
+		return cb.eval_compile(create_xpeg(source));
 #else
 		return nul<Code>();
 #endif

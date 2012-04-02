@@ -1,6 +1,5 @@
 inherit(lib::test);
 
-
 class ScopeTest{
 
 	same_name#Test{
@@ -18,6 +17,19 @@ class ScopeTest{
 		{
 			x: fun x;
 			assert x()===x;
+		}
+	}
+	
+	test#Test{
+		{
+			i: 0;
+			fun foo(){ i = 10; }
+			foo();
+			assert i==10;
+		}
+
+		{
+			10.times{}
 		}
 	}
 }

@@ -53,7 +53,7 @@ const ClassPtr& Any::get_class() const{
 		&CppClassSymbol<Bool>::value,
 		&CppClassSymbol<Int>::value,
 		&CppClassSymbol<Float>::value,
-		&CppClassSymbol<Any>::value,
+		&CppClassSymbol<ImmediateValue>::value,
 		&CppClassSymbol<Any>::value,
 		&CppClassSymbol<StatelessNativeMethod>::value,
 		&CppClassSymbol<InstanceVariableGetter>::value,
@@ -354,15 +354,15 @@ void VMachine::pop_scope(){
 	if(scope.flags==Scope::NONE){
 		scope.frame->detach();
 	}
-	else if(scope.flags==Scope::FRAME){
-		scope.frame->members_.reflesh();
-		scope.frame->set_orphan();
-		scope.frame = null;
-	}
 	else{
+		if(scope.flags==Scope::FRAME){
+			scope.frame->members_.reflesh();
+		}
+
 		scope.frame->set_orphan();
 		scope.frame = null;
 	}
+
 	scopes_.downsize(1);
 }
 
@@ -372,7 +372,7 @@ const FramePtr& VMachine::make_outer_outer(uint_t i, uint_t call_n, bool force){
 	FunFrame& ff = *fun_frames_[call_n];
 	if(i < scope_upper-ff.scope_lower){
 		Scope& scope = scopes_.reverse_at(scope_upper - i - 1);
-		if(scope.flags==0){
+		if(scope.flags==Scope::NONE){
 			scope.flags = Scope::FRAME;
 			if(force || scope.frame->info()->flags&ScopeInfo::FLAG_SCOPE_CHAIN){
 				scope.frame->set_outer(make_outer_outer(i+1, call_n, force));

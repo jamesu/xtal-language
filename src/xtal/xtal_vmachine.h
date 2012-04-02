@@ -534,7 +534,7 @@ public: // ƒ[ƒJƒ‹•Ï”Œn
 	void set_local_variable_out_of_fun(uint_t pos, uint_t depth, const AnyPtr& value);
 	AnyPtr& local_variable_out_of_fun(uint_t pos, uint_t depth);
 
-	void set_local_variable(int_t pos, const AnyPtr& value){ XTAL_VM_set_local_variable(pos, value); }
+	void set_local_variable(int_t pos, const AnyPtr& value){ /*XTAL_ASSERT(pos<variables_.size());*/ XTAL_VM_set_local_variable(pos, value); }
 	AnyPtr& local_variable(int_t pos){ return XTAL_VM_local_variable(pos); }
 
 private: // —áŠOŒn

@@ -10,16 +10,23 @@ namespace xtal{
 
 #define XTAL_DEFINE_ID(x) id_##x,
 #define XTAL_DEFINE_ID2(x, y) id_##x = id_##y,
+
 struct DefinedID{ enum type{
 	id_,
+
 #else
 
 #ifdef XTAL_DEFINE_ID
 #undef XTAL_DEFINE_ID
 #endif
 
+#ifdef XTAL_DEFINE_ID2
+#undef XTAL_DEFINE_ID2
+#endif
+
 #define XTAL_DEFINE_ID(x) XTAL_L(#x),
-#define XTAL_DEFINE_ID2(x, y)
+#define XTAL_DEFINE_ID2(x, y) 
+
 static const char_t* id_list[] = {
 
 #endif

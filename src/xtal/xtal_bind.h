@@ -2978,12 +2978,12 @@ template<class TFun> inline static_setter_meker<TFun> generate_static_setter(TFu
 /**
 * \brief メンバ変数のゲッターをバインドする
 */
-#define Xdef_getter(fun) it->define(XTAL_STRING(#fun), XTAL_GETTER(&Self::fun))
+#define Xdef_getter(var) it->define(XTAL_STRING(#var), XTAL_GETTER(&Self::var))
 
 /**
 * \brief メンバ変数のセッターをバインドする
 */
-#define Xdef_setter(fun) it->define(XTAL_LONG_LIVED_STRING(XTAL_L("set_") XTAL_L(#fun)), XTAL_SETTER(&Self::fun))
+#define Xdef_setter(var) it->define(XTAL_LONG_LIVED_STRING(XTAL_L("set_") XTAL_L(#var)), XTAL_SETTER(&Self::var))
 
 #endif
 
@@ -2992,7 +2992,7 @@ template<class TFun> inline static_setter_meker<TFun> generate_static_setter(TFu
 /**
 * \brief メンバ変数のゲッターとセッターをバインドする
 */
-#define Xdef_var(fun) Xdef_getter(fun), Xdef_setter(fun)
+#define Xdef_var(var) Xdef_getter(var), Xdef_setter(var)
 
 /**
 * \brief Xdef_methodやXdef_funなどで定義したメソッドや関数のオプショナル引数を定義する
@@ -3017,7 +3017,7 @@ template<class TFun> inline static_setter_meker<TFun> generate_static_setter(TFu
 /**
 * \brief クラス定数をセカンダリキー付きで定義する
 */
-#define Xdef_const2(name) it->define(XTAL_STRING(#name), (int_t)Self::name)
+#define Xdef_const2(name, secondary_key) it->define(XTAL_STRING(#name), (int_t)Self::name, ::xtal::cpp_class< secondary_key >())
 
 /**
 * \brief クラスを他のクラスに登録する

@@ -114,6 +114,19 @@ public:
 };
 
 /**
+* \brief デバッグライブラリ
+*/
+class DebugLib{
+public:
+	virtual ~DebugLib(){}
+
+	virtual void* new_debug_stream(){ return 0; }
+	virtual void delete_debug_stream(void* /*debug_stream_object*/){}
+	virtual uint_t read_debug_stream(void* /*debug_stream_object*/, void* /*dest*/, uint_t /*size*/){ return 0; }
+	virtual uint_t write_debug_stream(void* /*debug_stream_object*/, const void* /*src*/, uint_t /*size*/){ return 0; }
+};
+
+/**
 * \brief 使用ライブラリの指定のための構造体
 */
 struct Setting{
@@ -122,6 +135,7 @@ struct Setting{
 	ThreadLib* thread_lib;
 	StdStreamLib* std_stream_lib;
 	FilesystemLib* filesystem_lib;
+	DebugLib* debug_lib;
 
 	/**
 	* \brief ほとんど何もしない動作を設定する。
@@ -156,6 +170,8 @@ ThreadLib* thread_lib();
 StdStreamLib* std_stream_lib();
 
 FilesystemLib* filesystem_lib();
+
+DebugLib* debug_lib();
 
 /////////////////////////////////////////////////////
 
@@ -622,8 +638,29 @@ void exec_source(const char_t* src, int_t size);
 CodePtr compiled_source(const void* src, int_t size);
 void exec_compiled_source(const void* src, int_t size);
 
+/**
+* \brief requireの実行をhookする関数を登録する
+* \param hook フックする関数
+*/
 void set_require_source_hook(const AnyPtr& hook);
+
+/**
+* \xbind lib::builtin
+* \brief nameスクリプトを要求し、Codeオブジェクトの状態で返す
+* \param nameスクリプト名
+* 例えば、test.xtalを読み込みたい場合、require_source("test")とする。test.xtalcがあればそちらを読み、なければtest.xtalを読もうとする
+* ただし、set_require_source_hookでフックされた関数がある場合、
+* \return nameスクリプトのCodeオブジェクト
+*/
 CodePtr require_source(const StringPtr& name);
+
+/**
+* \xbind lib::builtin
+* \brief nameスクリプトを要求し、実行した結果を返す
+* \param nameスクリプト名
+* 例えば、test.xtalを読み込みたい場合、require("test")とする。test.xtalcがあればそちらを読み、なければtest.xtalを読もうとする
+* \return nameスクリプトが返すオブジェクト。nameスクリプトが明示的に値を返さない場合、Codeオブジェクトが返る。
+*/
 AnyPtr require(const StringPtr& name);
 
 #ifndef XTAL_NO_PARSER

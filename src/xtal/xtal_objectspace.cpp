@@ -280,6 +280,7 @@ void ObjectSpace::initialize(){
 
 	SmartPtr<Lib> lib = XNew<Lib>();
 	lib->inherit(cpp_class(&CppClassSymbol<AutoLoader>::value));
+	lib->append_load_path(empty_string);
 	lib->append_load_path(XTAL_STRING("."));
 	lib->set_cpp_singleton();
 

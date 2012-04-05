@@ -345,6 +345,487 @@ void call_breakpoint_hook(int_t kind, const HookInfoPtr& ainfo){
 	}
 }
 
+/**
+* \brief デバッガをアタッチする
+* \param stream デバッガと通信するためのストリーム
+*/
+bool CommandReciver::start(const StreamPtr& stream){
+	stream_ = stream;
+	debug::set_breakpoint_hook(bind_this(method(&CommandReciver::linehook), this));
+	set_require_source_hook(bind_this(method(&CommandReciver::require_source_hook), this));
+	eval_exprs_ = xnew<Map>();
+	code_map_ = xnew<Map>();
+
+	while(ArrayPtr cmd = recv_command()){
+		AnyPtr type = cmd->at(0);
+		if(XTAL_detail_raweq(type, Xid(start))){
+			break;
+		}
+		exec_command(cmd);
+	}
+
+	return true;
+}
+
+/**
+* デバッガを更新する
+* 
+*/
+void CommandReciver::update(){
+	// 次のコマンドが到着していたらコマンドをデシリアライズして実行する
+	while(stream_->available()){
+		exec_command(ptr_cast<Array>(stream_->deserialize()));
+	}
+}
+
+ArrayPtr CommandReciver::recv_command(){
+	return ptr_cast<Array>(stream_->deserialize());
+}
+
+CodePtr CommandReciver::require_source_hook(const StringPtr& name){
+	ArrayPtr a = xnew<Array>();
+	a->push_back(Xid(require));
+	a->push_back(name);
+	stream_->serialize(a);
+
+	CodePtr ret;
+	while(ArrayPtr cmd = recv_command()){
+		AnyPtr type = cmd->at(0);
+		if(XTAL_detail_raweq(type, Xid(required_source))){
+			ret = ptr_cast<Code>(cmd->at(1));
+			if(ret){
+				MapPtr map = xnew<Map>();
+				map->set_at(Xid(code), ret);
+				code_map_->set_at(ret->source_file_name(), map);
+			}
+			else{
+				break;
+			}
+
+			continue;
+		}
+
+		if(XTAL_detail_raweq(type, Xid(start))){
+			break;
+		}
+
+		exec_command(cmd);
+	}
+
+	return ret;
+}
+
+void CommandReciver::exec_command(const ArrayPtr& cmd){
+	if(!cmd){
+		return;
+	}
+
+	AnyPtr type = cmd->at(0);
+
+	if(XTAL_detail_raweq(type, Xid(add_breakpoint))){
+		AnyPtr ddd = cmd->at(1);
+		if(MapPtr value = ptr_cast<Map>(code_map_->at(cmd->at(1)))){
+			if(CodePtr code = ptr_cast<Code>(value->at(Xid(code)))){
+				code->add_breakpoint(cmd->at(2)->to_i());
+				value->set_at(cmd->at(2)->to_i(), cmd->at(3));
+			}
+		}
+
+		return;
+	}
+
+	if(XTAL_detail_raweq(type, Xid(remove_breakpoint))){
+		if(MapPtr value = ptr_cast<Map>(code_map_->at(cmd->at(1)))){
+			if(CodePtr code = ptr_cast<Code>(value->at(Xid(code)))){
+				code->remove_breakpoint(cmd->at(2)->to_i());
+			}
+		}
+
+		return;
+	}
+
+	if(XTAL_detail_raweq(type, Xid(add_eval_expr))){
+		eval_exprs_->set_at(cmd->at(1), cmd->at(2));
+		return;
+	}
+
+	if(XTAL_detail_raweq(type, Xid(remove_eval_expr))){
+		eval_exprs_->erase(cmd->at(1));
+		return;
+	}
+}
+
+ArrayPtr CommandReciver::make_debug_object(const AnyPtr& v, int depth){
+	ArrayPtr ret = xnew<Array>(3);
+	ret->set_at(0, v->get_class()->to_s());
+	ret->set_at(1, v->to_s());
+
+	// 基本型かチェック
+	switch(XTAL_detail_type(v)){
+		case TYPE_NULL:
+		case TYPE_UNDEFINED:
+		case TYPE_INT:
+		case TYPE_FLOAT:
+		case TYPE_FALSE:
+		case TYPE_TRUE:
+		case TYPE_SMALL_STRING:
+		case TYPE_LONG_LIVED_STRING:
+		case TYPE_INTERNED_STRING:
+		case TYPE_STRING:
+			return ret;
+	}
+
+	if(depth<=0){
+		ret->set_at(2, "...");
+		return ret;
+	}
+
+	switch(XTAL_detail_type(v)){
+		XTAL_DEFAULT{}
+
+		XTAL_CASE(TYPE_ARRAY){
+			ArrayPtr children = xnew<Array>();
+			Xfor(it, v){
+				children->push_back(make_debug_object(it, depth-1));
+			}
+			ret->set_at(2, children);
+			return ret;
+		}
+
+		XTAL_CASE(TYPE_VALUES){
+			ArrayPtr children = xnew<Array>();
+			Xfor(it, v){
+				children->push_back(make_debug_object(it, depth-1));
+			}
+			ret->set_at(2, children);
+			return ret;
+		}
+	}
+
+	if(const MapPtr& a = ptr_cast<Map>(v)){
+		MapPtr children = xnew<Map>();
+		Xfor2(key, val, v){
+			children->set_at(key->to_s(), make_debug_object(val, depth-1));
+		}
+		ret->set_at(2, children);
+		return ret;
+	}
+
+	if(const ClassPtr& a = ptr_cast<Class>(v)){
+		MapPtr children = xnew<Map>();
+		Xfor3(key, skey, val, a->members()){
+			children->set_at(key->to_s(), make_debug_object(val, depth-1));
+		}
+		ret->set_at(2, children);
+		return ret;
+	}
+
+	AnyPtr data = v->s_save();
+	if(const MapPtr& a = ptr_cast<Map>(data)){
+		MapPtr children = xnew<Map>();
+		Xfor2(key, val, a){
+			Xfor2(key2, val2, val){
+				children->set_at(key2->to_s(), make_debug_object(val2, depth-1));
+			}
+		}
+		ret->set_at(2, children);
+		return ret;
+	}
+
+	return ret;
+}
+
+ArrayPtr CommandReciver::make_call_stack_info(const debug::HookInfoPtr& info){
+	ArrayPtr ret = xnew<Array>();
+
+	{
+		ArrayPtr record = xnew<Array>(3);
+		record->set_at(0, info->fun_name());
+		record->set_at(1, info->file_name());
+		record->set_at(2, info->lineno());
+		ret->push_back(record);
+	}
+
+	for(int i=2; i<info->call_stack_size(); ++i){
+		ArrayPtr record = xnew<Array>(3);
+		if(debug::CallerInfoPtr caller = info->caller(i)){
+			record->set_at(0, caller->fun_name());
+			record->set_at(1, caller->file_name());
+			record->set_at(2, caller->lineno());
+		}
+		ret->push_back(record);
+	}
+
+	return ret;
+}
+
+MapPtr CommandReciver::make_eval_expr_info(const debug::HookInfoPtr& info, int level){
+	MapPtr ret = xnew<Map>();
+	Xfor2(key, value, eval_exprs_){
+		if(CodePtr code = ptr_cast<Code>(value)){
+			AnyPtr val = info->vm()->eval(code, level);
+			
+			if(AnyPtr e = info->vm()->catch_except()){
+				ret->set_at(key, null);
+			}
+			else{
+				ret->set_at(key, make_debug_object(val));
+			}
+		}
+		else{
+			ret->set_at(key, null);
+		}
+	}
+
+	return ret;
+}
+
+void CommandReciver::send_break(debug::HookInfoPtr info, int level){
+	ArrayPtr data = xnew<Array>();
+	data->push_back(Xid(break));
+	data->push_back(make_eval_expr_info(info, level));
+	data->push_back(make_call_stack_info(info));
+	data->push_back(level);
+	stream_->serialize(data);
+}
+
+int CommandReciver::linehook(debug::HookInfoPtr info){
+	if(info->kind()==BREAKPOINT){
+		if(MapPtr value = ptr_cast<Map>(code_map_->at(info->file_name()))){
+			if(CodePtr eval = ptr_cast<Code>(value->at(info->lineno()))){
+				AnyPtr val = info->vm()->eval(eval);
+				info->vm()->catch_except();
+				if(!val){
+					return debug::REDO;
+				}
+			}
+		}
+	}
+
+	int level = 0;
+	send_break(info, level);
+	while(true){
+		if(ArrayPtr cmd = ptr_cast<Array>(stream_->deserialize())){
+			AnyPtr type = cmd->at(0);
+
+			if(XTAL_detail_raweq(type, Xid(move_callstack))){
+				level = cmd->at(1)->to_i();
+				send_break(info, level);
+				continue;
+			}
+
+			if(XTAL_detail_raweq(type, Xid(nostep))){
+				send_break(info, level);
+				continue;
+			}
+
+			if(XTAL_detail_raweq(type, Xid(run))){
+				return debug::RUN;
+			}
+
+			if(XTAL_detail_raweq(type, Xid(step_into))){
+				return debug::STEP_INTO;
+			}
+
+			if(XTAL_detail_raweq(type, Xid(step_over))){
+				return debug::STEP_OVER;
+			}
+
+			if(XTAL_detail_raweq(type, Xid(step_out))){
+				return debug::STEP_OUT;
+			}
+
+			exec_command(cmd);
+			continue;
+		}
+	}
+}
+
+
+////////////////////////////////////////////////////////
+
+CommandSender::CommandSender(){
+	level_ = 0;
+	prev_command_ = Xid(run);
+	exprs_ = xnew<Map>();
+}
+
+void CommandSender::add_eval_expr(const StringPtr& expr){
+	exprs_->set_at(expr, xnew<ExprValue>());
+	
+	ArrayPtr a = xnew<Array>();
+	a->push_back(Xid(add_eval_expr));
+	a->push_back(expr->intern());
+	a->push_back(eval_compile(expr));
+	stream_->serialize(a);
+}
+
+void CommandSender::remove_eval_expr(const StringPtr& expr){
+	ArrayPtr a = xnew<Array>();
+	a->push_back(Xid(remove_eval_expr));
+	a->push_back(expr->intern());
+	stream_->serialize(a);
+}
+
+ArrayPtr CommandSender::eval_expr_result(const StringPtr& expr){
+	return ptr_cast<ExprValue>(exprs_->at(expr))->result;
+}
+
+int CommandSender::call_stack_size(){
+	return call_stack_.size();
+}
+
+StringPtr CommandSender::call_stack_fun_name(int n){
+	return call_stack_[n].fun_name;
+}
+
+StringPtr CommandSender::call_stack_file_name(int n){
+	return call_stack_[n].file_name;
+}
+
+int CommandSender::call_stack_lineno(int n){
+	return call_stack_[n].lineno;
+}
+
+StringPtr CommandSender::call_stack_fun_name(){
+	return call_stack_[level_].fun_name;
+}
+
+StringPtr CommandSender::call_stack_file_name(){
+	return call_stack_[level_].file_name;
+}
+
+int CommandSender::call_stack_lineno(){
+	return call_stack_[level_].lineno;
+}
+
+StringPtr CommandSender::required_file(){
+	return required_file_;
+}
+
+void CommandSender::run(){
+	send_command(Xid(run));
+}
+
+void CommandSender::step_over(){
+	send_command(Xid(step_over));
+}
+
+void CommandSender::step_into(){
+	send_command(Xid(step_into));
+}
+
+void CommandSender::step_out(){
+	send_command(Xid(step_out));
+}
+
+void CommandSender::redo(){
+	send_command(prev_command_);
+}
+
+void CommandSender::add_breakpoint(const StringPtr& path, int n, const StringPtr& cond){
+	ArrayPtr a = xnew<Array>();
+	a->push_back(Xid(add_breakpoint));
+	a->push_back(path);
+	a->push_back(n);
+	if(!cond || cond->empty()){
+		a->push_back(null);
+	}
+	else{
+		a->push_back(eval_compile(cond));
+	}
+	stream_->serialize(a);
+}
+
+void CommandSender::remove_breakpoint(const StringPtr& path, int n){
+	ArrayPtr a = xnew<Array>();
+	a->push_back(Xid(remove_breakpoint));
+	a->push_back(path);
+	a->push_back(n);
+	stream_->serialize(a);
+}
+
+void CommandSender::move_call_stack(int n){
+	ArrayPtr a = xnew<Array>();
+	a->push_back(Xid(move_callstack));
+	a->push_back(n);
+	stream_->serialize(a);
+}
+
+void CommandSender::nostep(){
+	ArrayPtr a = xnew<Array>();
+	a->push_back(Xid(nostep));
+	stream_->serialize(a);
+}
+
+void CommandSender::start(){
+	ArrayPtr a = xnew<Array>();
+	a->push_back(Xid(start));
+	stream_->serialize(a);
+}
+
+void CommandSender::required_source(const CodePtr& code){
+	ArrayPtr a = xnew<Array>();
+	a->push_back(Xid(required_source));
+	a->push_back(code);
+	stream_->serialize(a);
+}
+
+void CommandSender::send_command(const IDPtr& id){
+	prev_command_ = id;
+	ArrayPtr a = xnew<Array>();
+	a->push_back(id);
+	stream_->serialize(a);
+}
+
+void CommandSender::update(){
+	while(stream_->available()!=0){
+		ArrayPtr command = ptr_cast<Array>(stream_->deserialize());
+		AnyPtr type = command->at(0);
+
+		if(raweq(type, Xid(break))){
+			MapPtr exprs = ptr_cast<Map>(command->at(1));
+			ArrayPtr callStack = ptr_cast<Array>(command->at(2));
+
+			Xfor2(key, value, exprs){
+				if(SmartPtr<ExprValue> ev = ptr_cast<ExprValue>(exprs_->at(key->to_s()))){
+					ev->result = ptr_cast<Array>(value);
+				}
+			}
+
+			call_stack_.resize(callStack->size());
+			for(uint_t i=0; i<callStack->size(); ++i){
+				ArrayPtr record = ptr_cast<Array>(callStack->at(i));
+				call_stack_[i].fun_name = record->at(0)->to_s();
+				call_stack_[i].file_name = record->at(1)->to_s();
+				call_stack_[i].lineno = record->at(2)->to_i();
+			}
+
+			level_ = command->at(3).to_i();
+
+			on_breaked();
+			continue;
+		}
+
+		if(raweq(type, Xid(require))){
+			required_file_ = command->at(1)->to_s();
+			on_required();
+			continue;
+		}
+	}
+}
+void CommandSender::start(const StreamPtr& stream){
+	stream_ = stream;
+
+	Xfor2(k, v, exprs_){
+		add_eval_expr(ptr_cast<String>(k));
+	}
+
+	send_command(Xid(start));
+
+	update();
+}
+
 }
 
 }

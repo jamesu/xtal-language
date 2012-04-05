@@ -151,8 +151,7 @@ private:
 			CLASS,
 			FRAME,
 			FUN,
-			TOPLEVEL,
-			CATCH
+			TOPLEVEL
 		};
 
 		struct Entry{

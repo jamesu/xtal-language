@@ -20,7 +20,16 @@ const AnyPtr& AutoLoader::on_rawmember(const IDPtr& primary_key, const AnyPtr& s
 		Xfor(var, load_path_list_){
 			value = undefined;
 
-			if(CodePtr code = require_source(Xf2("%s/%s", 0, var, 1, primary_key))){
+			CodePtr code;
+
+			if(XTAL_detail_raweq(var, empty_string)){
+				code = require_source(primary_key);
+			}
+			else{
+				code = require_source(Xf2("%s/%s", 0, var, 1, primary_key));
+			}
+
+			if(code){
 				value = code->call();
 			}
 			else{

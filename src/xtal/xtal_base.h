@@ -209,9 +209,9 @@ public:
 
 	void finalize(){
 		if(!object_destroyed()){
-			inc_ref_count(); 
+			++ref_count_;
 			virtual_members()->finalize(this);
-			dec_ref_count(); 
+			--ref_count_;
 		}
 	}
 

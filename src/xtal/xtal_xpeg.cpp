@@ -17,7 +17,6 @@ Executor::Executor(const StringPtr& source_name){
 	match_begin_ = 0;
 	match_end_ = 0;
 
-
 	num_ = 0;
 	begin_ = 0;
 	max_ = 0;

@@ -13,6 +13,7 @@ namespace xtal{
 * \xbind lib::builtin
 * \xinherit lib::builtin::Any
 * \brief ストリーム
+* 各メンバの中でエラーが起こった場合、xtalの例外が設定される
 */
 class Stream : public Base{
 public:
@@ -70,7 +71,9 @@ public:
 	* \xbind
 	* \brief length文字分ストリームから取り出し、文字列として返す。
 	*/
-	virtual StringPtr get_s(uint_t length);
+	StringPtr get_s(uint_t length){
+		return on_get_s(length);
+	}
 
 	StringPtr get_ch();
 
@@ -78,9 +81,13 @@ public:
 	* \xbind
 	* \brief ストリームからすべての文字を取り出し、文字列として返す
 	*/
-	virtual StringPtr get_s_all();
+	StringPtr get_s_all(){
+		return on_get_s_all();
+	}
 
-	virtual uint_t read_charactors(AnyPtr* buffer, uint_t max);
+	uint_t read_charactors(AnyPtr* buffer, uint_t max){
+		return on_read_charactors(buffer, max);
+	}
 
 	/**
 	* \xbind
@@ -100,60 +107,90 @@ public:
 	*/
 	void printf(const StringPtr& format_string, const ArgumentsPtr& args);
 
-	/**
-	* \xbind
-	* \brief ストリームの先頭からの位置を返す
-	*/
-	virtual uint_t tell();
+	uint_t write(const void* p, uint_t size){
+		return on_write(p, size);
+	}
 
-	virtual uint_t write(const void* p, uint_t size);
-
-	virtual uint_t read(void* p, uint_t size);
+	uint_t read(void* p, uint_t size){
+		return on_read(p, size);
+	}
 
 	void read_strict(void* p, uint_t size);
 
 	/**
 	* \xbind
-	* \brief ストリームの先頭からoffsetの位置に移動する
+	* \brief ストリームの先頭からの位置を返す
 	*/
-	virtual void seek(uint_t offset);
+	uint_t tell(){
+		return on_tell();
+	}
+
+	/**
+	* \xbind
+	* \brief ストリームの先頭からoffsetの位置に移動する
+	* ストリームの種類によってはシークできない場合もある。
+	*/
+	void seek(uint_t offset){
+		on_seek(offset);
+	}
+	
+	/**
+	* \xbind
+	* \brief ストリームで利用可能なバイト数を取得する
+	* ストリームの種類によっては利用できない可能性がある
+	*/
+	uint_t available(){
+		return on_available();
+	}
 
 	/**
 	* \xbind
 	* \brief ストリームをクローズする
 	*/
-	virtual void close(){}
+	void close(){
+		on_close();
+	}
 
 	/**
 	* \xbind
 	* \brief ストリームをフラッシュする
 	*/
-	virtual void flush(){}
+	void flush(){
+		on_flush();
+	}
 
 	/**
 	* \xbind
 	* \brief ストリームからストリームにsizeバイト流し込む 
 	*/
-	virtual uint_t pour(const StreamPtr& in_stream, uint_t size);
+	uint_t pour(const StreamPtr& in_stream, uint_t size){
+		return on_pour(in_stream, size);
+	}
 
 	/**
 	* \xbind
 	* \brief ストリームからストリームにすべて流し込む 
 	*/
-	virtual uint_t pour_all(const StreamPtr& in_stream);
+	uint_t pour_all(const StreamPtr& in_stream){
+		return on_pour_all(in_stream);
+	}
 
 	/**
 	* \xbind
 	* \brief ストリームの全サイズを返す
 	* ストリームの種類によっては、サイズを得ることは不可能である。
 	*/
-	virtual uint_t size();
+	virtual uint_t size(){
+		return on_size();
+	}
 
 	/**
 	* \xbind
 	* \brief ストリームが終わっているか返す
 	*/
-	virtual bool eos(){ return false; }
+	bool eos(){
+		return on_eos();
+	}
 
 	void block_first(const VMachinePtr& vm);
 
@@ -176,6 +213,8 @@ public:
 	* \return 復元されたオブジェクト
 	*/	
 	AnyPtr deserialize();
+
+	void skip_bom();
 
 public:
 
@@ -476,6 +515,83 @@ public:
 	template<class T>
 	void put_t_le(const T& v){ return put_t_le(v, (T*)0); }
 
+
+protected:
+	/**
+	* \xbind
+	* \brief length文字分ストリームから取り出し、文字列として返す。
+	*/
+	virtual StringPtr on_get_s(uint_t length);
+
+	/**
+	* \xbind
+	* \brief ストリームからすべての文字を取り出し、文字列として返す
+	*/
+	virtual StringPtr on_get_s_all();
+
+	virtual uint_t on_read_charactors(AnyPtr* buffer, uint_t max);
+
+	virtual uint_t on_write(const void* p, uint_t size);
+
+	virtual uint_t on_read(void* p, uint_t size);
+
+	/**
+	* \xbind
+	* \brief ストリームの先頭からの位置を返す
+	*/
+	virtual uint_t on_tell();
+
+	/**
+	* \xbind
+	* \brief ストリームの先頭からoffsetの位置に移動する
+	* ストリームの種類によってはシークできない場合もある。
+	*/
+	virtual void on_seek(uint_t offset);
+	
+	/**
+	* \xbind
+	* \brief ストリームで利用可能なバイト数を取得する
+	* ストリームの種類によっては利用できない可能性がある
+	*/
+	virtual uint_t on_available();
+
+	/**
+	* \xbind
+	* \brief ストリームをクローズする
+	*/
+	virtual void on_close(){}
+
+	/**
+	* \xbind
+	* \brief ストリームをフラッシュする
+	*/
+	virtual void on_flush(){}
+
+	/**
+	* \xbind
+	* \brief ストリームからストリームにsizeバイト流し込む 
+	*/
+	virtual uint_t on_pour(const StreamPtr& in_stream, uint_t size);
+
+	/**
+	* \xbind
+	* \brief ストリームからストリームにすべて流し込む 
+	*/
+	virtual uint_t on_pour_all(const StreamPtr& in_stream);
+
+	/**
+	* \xbind
+	* \brief ストリームの全サイズを返す
+	* ストリームの種類によっては、サイズを得ることは不可能である。
+	*/
+	virtual uint_t on_size();
+
+	/**
+	* \xbind
+	* \brief ストリームが終わっているか返す
+	*/
+	virtual bool on_eos(){ return false; }
+
 private:
 
 	i8 get_t_be(i8*){ return get_i8(); }
@@ -531,29 +647,34 @@ class PointerStream : public Stream{
 public:
 
 	PointerStream(const void* data = 0, uint_t size = 0);
-		
-	virtual uint_t tell();
 
-	virtual uint_t read(void* p, uint_t size);
-
-	virtual void seek(uint_t offset);
-
-	virtual void close(){}
-
-	virtual bool eos();
-
-	virtual StringPtr get_s(uint_t length);
-
-	virtual StringPtr get_s_all();
-
-	virtual uint_t size(){
-		return size_;
-	}
-	
 	const void* data(){
 		return data_;
 	}
 
+protected:
+	virtual uint_t on_tell();
+
+	virtual uint_t on_read(void* p, uint_t size);
+
+	virtual void on_seek(uint_t offset);
+
+	virtual uint_t on_available(){
+		return size() - tell();
+	}
+
+	virtual void on_close(){}
+
+	virtual bool on_eos();
+
+	virtual StringPtr on_get_s(uint_t length);
+
+	virtual StringPtr on_get_s_all();
+
+	virtual uint_t on_size(){
+		return size_;
+	}
+	
 protected:
 
 	const u8* data_;
@@ -574,18 +695,19 @@ public:
 	MemoryStream(const void* data, uint_t data_size);
 
 	virtual ~MemoryStream();
-	
-	virtual uint_t write(const void* p, uint_t size);
-
-	virtual uint_t pour(const StreamPtr& in_stream, uint_t size);
-
-	virtual uint_t pour_all(const StreamPtr& in_stream);
 
 	void clear();
 
 	void resize(uint_t size);
 
 	const StringPtr& to_s();
+
+protected:
+	virtual uint_t on_write(const void* p, uint_t size);
+
+	virtual uint_t on_pour(const StreamPtr& in_stream, uint_t size);
+
+	virtual uint_t on_pour_all(const StreamPtr& in_stream);
 
 protected:
 	StringPtr str_;
@@ -608,6 +730,7 @@ public:
 		return str_;
 	}
 
+public:
 	void on_visit_members(Visitor& m){
 		PointerStream::on_visit_members(m);
 		m & str_;
@@ -624,9 +747,10 @@ public:
 
 	virtual ~CompressEncoder();
 
-	virtual uint_t write(const void* p, uint_t size);
+protected:
+	virtual uint_t on_write(const void* p, uint_t size);
 
-	virtual void close();
+	virtual void on_close();
 
 private:
 
@@ -643,9 +767,10 @@ public:
 
 	virtual ~CompressDecoder();
 
-	virtual uint_t read(void* p, uint_t size);
+protected:
+	virtual uint_t on_read(void* p, uint_t size);
 
-	virtual void close();
+	virtual void on_close();
 
 private:
 
@@ -687,55 +812,60 @@ public:
 		return impl_!=0;
 	}
 
-	virtual void close(){
+protected:
+	virtual void on_close(){
 		if(impl_){
 			filesystem_lib()->delete_file_stream(impl_);
 			impl_ = 0;
 		}
 	}
 
-	virtual uint_t read(void* dest, uint_t size){
+	virtual uint_t on_available(){
+		return size() - tell();
+	}
+
+	virtual uint_t on_read(void* dest, uint_t size){
 		if(impl_){
 			return filesystem_lib()->read_file_stream(impl_, dest, size);
 		}
 		return 0;
 	}
 
-	virtual uint_t write(const void* src, uint_t size){
+	virtual uint_t on_write(const void* src, uint_t size){
 		if(impl_){
 			return filesystem_lib()->write_file_stream(impl_, src, size);
 		}
 		return 0;
 	}
 
-	virtual void seek(uint_t offset){
+	virtual void on_seek(uint_t offset){
 		if(impl_){
 			filesystem_lib()->seek_file_stream(impl_, offset);
 		}
 	}
 
-	virtual uint_t tell(){
+	virtual uint_t on_tell(){
 		if(impl_){
 			return filesystem_lib()->tell_file_stream(impl_);
 		}
 		return 0;
 	}
 
-	virtual bool eos(){
+	virtual bool on_eos(){
 		if(impl_){
 			return filesystem_lib()->end_file_stream(impl_);
 		}
 		return true;
 	}
 
-	virtual uint_t size(){
+	virtual uint_t on_size(){
 		if(impl_){
 			return filesystem_lib()->size_file_stream(impl_);
 		}
 		return 0;
 	}
 
-	virtual void flush(){
+	virtual void on_flush(){
 		if(impl_){
 			filesystem_lib()->flush_file_stream(impl_);
 		}
@@ -755,11 +885,12 @@ public:
 		std_stream_lib()->delete_stdin_stream(impl_);
 	}
 
-	virtual uint_t read(void* p, uint_t size){
+protected:
+	virtual uint_t on_read(void* p, uint_t size){
 		return std_stream_lib()->read_stdin_stream(impl_, p, size);
 	}
 
-	virtual uint_t read_charactors(AnyPtr* buffer, uint_t max){
+	virtual uint_t on_read_charactors(AnyPtr* buffer, uint_t max){
 		return Stream::read_charactors(buffer, max);
 	}
 
@@ -777,9 +908,11 @@ public:
 		std_stream_lib()->delete_stdout_stream(impl_);
 	}
 
-	virtual uint_t write(const void* p, uint_t size){
+protected:
+	virtual uint_t on_write(const void* p, uint_t size){
 		return std_stream_lib()->write_stdout_stream(impl_, p, size);
 	}
+
 private:
 	void* impl_;
 };
@@ -794,9 +927,11 @@ public:
 		std_stream_lib()->delete_stderr_stream(impl_);
 	}
 
-	virtual uint_t write(const void* p, uint_t size){
+protected:
+	virtual uint_t on_write(const void* p, uint_t size){
 		return std_stream_lib()->write_stderr_stream(impl_, p, size);
 	}
+
 private:
 	void* impl_;
 };

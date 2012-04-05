@@ -5,7 +5,7 @@
 
 namespace xtal{
 
-uint_t Stream::tell(){
+uint_t Stream::on_tell(){
 	XTAL_SET_EXCEPT(unsupported_error(get_class(), Xid(tell), null));
 	return 0;
 }
@@ -18,21 +18,27 @@ void Stream::put_s(const char_t* str, uint_t length){
 	write(str, length*sizeof(char_t));
 }
 
-uint_t Stream::write(const void*, uint_t){
+uint_t Stream::on_write(const void*, uint_t){
 	XTAL_SET_EXCEPT(unsupported_error(get_class(), Xid(write), null));
 	return 0;
 }
 
-uint_t Stream::read(void*, uint_t){
+uint_t Stream::on_read(void*, uint_t){
 	XTAL_SET_EXCEPT(unsupported_error(get_class(), Xid(read), null));
 	return 0;
 }
 
-void Stream::seek(uint_t){
+void Stream::on_seek(uint_t){
 	XTAL_SET_EXCEPT(unsupported_error(get_class(), Xid(seek), null));
 }
 
-StringPtr Stream::get_s(uint_t length){
+uint_t Stream::on_available(){
+	XTAL_SET_EXCEPT(unsupported_error(get_class(), Xid(available), null));
+	return 0;
+}
+
+
+StringPtr Stream::on_get_s(uint_t length){
 	if(eos()){
 		return empty_string;
 	}
@@ -59,7 +65,7 @@ StringPtr Stream::get_ch(){
 	return chm.to_s();
 }
 
-StringPtr Stream::get_s_all(){
+StringPtr Stream::on_get_s_all(){
 	if(eos()){
 		return empty_string;
 	}
@@ -72,7 +78,7 @@ StringPtr Stream::get_s_all(){
 	return ms->to_s();
 }
 
-uint_t Stream::read_charactors(AnyPtr* buffer, uint_t max){
+uint_t Stream::on_read_charactors(AnyPtr* buffer, uint_t max){
 	int nn = 0;
 	for(uint_t i=0; i<max; ++i){
 		if(eos()){
@@ -128,7 +134,7 @@ void Stream::printf(const StringPtr& format_string, const ArgumentsPtr& args){
 	put_s(format_string->call(args));
 }
 
-uint_t Stream::pour(const StreamPtr& in_stream, uint_t size){
+uint_t Stream::on_pour(const StreamPtr& in_stream, uint_t size){
 	XMallocGuard umg(size*sizeof(xtal::u8));
 	xtal::u8* buf = (xtal::u8*)umg.get();
 	uint_t len = in_stream->read(buf, size);
@@ -136,7 +142,7 @@ uint_t Stream::pour(const StreamPtr& in_stream, uint_t size){
 	return len;
 }
 
-uint_t Stream::pour_all(const StreamPtr& in_stream){
+uint_t Stream::on_pour_all(const StreamPtr& in_stream){
 	uint_t size = 1024*10, len, sum = 0;
 	XMallocGuard umg(size*sizeof(xtal::u8));
 	xtal::u8* buf = (xtal::u8*)umg.get();
@@ -147,8 +153,36 @@ uint_t Stream::pour_all(const StreamPtr& in_stream){
 	}while(len==size);
 	return sum;
 }
+	
+void Stream::skip_bom(){
+	return;
 
-uint_t Stream::size(){
+#ifdef XTAL_USE_WCHAR
+	char_t head[1] = {0};
+	int_t pos = tell();
+	int_t n = read(head, 1*sizeof(char_t));
+
+	if(n==1*sizeof(char_t) && (uchar_t)head[0]==(uchar_t)0xFEFF || (uchar_t)head[0]==(uchar_t)0xFFFE){
+		return;
+	}	
+
+	seek(pos);
+
+#else
+
+	char_t head[3] = {0};
+	int_t pos = tell();
+	int_t n = read(head, 3*sizeof(char_t));
+
+	if(n==3*sizeof(char_t) && (uchar_t)head[0]==(uchar_t)239 && (uchar_t)head[1]==(uchar_t)187 && (uchar_t)head[2]==(uchar_t)191){
+		return;
+	}	
+
+	seek(pos);
+#endif	
+}
+
+uint_t Stream::on_size(){
 	XTAL_SET_EXCEPT(unsupported_error(get_class(), Xid(size), null));
 	return 0;
 }
@@ -290,11 +324,11 @@ PointerStream::PointerStream(const void* data, uint_t size){
 	pos_ = 0;
 }
 	
-uint_t PointerStream::tell(){
+uint_t PointerStream::on_tell(){
 	return pos_;
 }
 
-uint_t PointerStream::read(void* p, uint_t size){
+uint_t PointerStream::on_read(void* p, uint_t size){
 	if(pos_+size>size_){ 
 		size = size_-pos_;
 	}
@@ -307,11 +341,11 @@ uint_t PointerStream::read(void* p, uint_t size){
 	return size;
 }
 
-void PointerStream::seek(uint_t offset){
+void PointerStream::on_seek(uint_t offset){
 	pos_ = offset;
 }
 
-StringPtr PointerStream::get_s(uint_t length){
+StringPtr PointerStream::on_get_s(uint_t length){
 	if(pos_ >= size_)
 		return empty_string;
 
@@ -336,7 +370,7 @@ StringPtr PointerStream::get_s(uint_t length){
 	return xnew<String>((char_t*)&data_[saved], (pos_ - saved)/sizeof(char_t));	
 }
 
-StringPtr PointerStream::get_s_all(){
+StringPtr PointerStream::on_get_s_all(){
 	if(pos_ >= size_)
 		return empty_string;
 
@@ -346,7 +380,7 @@ StringPtr PointerStream::get_s_all(){
 	return ret;
 }
 
-bool PointerStream::eos(){
+bool PointerStream::on_eos(){
 	return pos_>=size_;
 }
 
@@ -370,7 +404,7 @@ MemoryStream::~MemoryStream(){
 	}
 }
 
-uint_t MemoryStream::write(const void* p, uint_t size){
+uint_t MemoryStream::on_write(const void* p, uint_t size){
 	if(pos_+size>capa_){
 		resize(pos_+size);
 	}
@@ -385,7 +419,7 @@ uint_t MemoryStream::write(const void* p, uint_t size){
 	return size;	
 }
 
-uint_t MemoryStream::pour(const StreamPtr& in_stream, uint_t size){
+uint_t MemoryStream::on_pour(const StreamPtr& in_stream, uint_t size){
 	if(size==0){
 		return 0;
 	}
@@ -398,7 +432,7 @@ uint_t MemoryStream::pour(const StreamPtr& in_stream, uint_t size){
 	return len;
 }
 
-uint_t MemoryStream::pour_all(const StreamPtr& in_stream){
+uint_t MemoryStream::on_pour_all(const StreamPtr& in_stream){
 	uint_t size = 1024*10, len, sum = 0;
 	do{
 		if(size_ <= pos_ + size){
@@ -767,7 +801,7 @@ CompressEncoder::~CompressEncoder(){
 	destroy();
 }
 
-uint_t CompressEncoder::write(const void* data, uint_t size){
+uint_t CompressEncoder::on_write(const void* data, uint_t size){
 	if(impl_){
 		LZEncoder* p = (LZEncoder*)impl_;
 		p->encode((u8*)data, (u8*)data + size);
@@ -776,7 +810,7 @@ uint_t CompressEncoder::write(const void* data, uint_t size){
 	return 0;
 }
 
-void CompressEncoder::close(){
+void CompressEncoder::on_close(){
 	if(impl_){
 		LZEncoder* p = (LZEncoder*)impl_;
 		p->finish();
@@ -906,7 +940,7 @@ CompressDecoder::~CompressDecoder(){
 	destroy();
 }
 
-uint_t CompressDecoder::read(void* data, uint_t size){
+uint_t CompressDecoder::on_read(void* data, uint_t size){
 	if(impl_){
 		LZDecoder* p = (LZDecoder*)impl_;
 		u8* out = p->decode((u8*)data, (u8*)data + size);
@@ -924,7 +958,7 @@ void CompressDecoder::destroy(){
 	}
 }
 
-void CompressDecoder::close(){
+void CompressDecoder::on_close(){
 	destroy();
 }
 

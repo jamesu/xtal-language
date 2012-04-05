@@ -158,7 +158,7 @@ private:
 #	define XTAL_DEBUG_ONLY(x) 
 #endif
 
-#define XTAL_UNUSED_VAR(x) ((void)x)
+#define XTAL_UNUSED_VAR(x) ((void)&x)
 
 #define XTAL_DISALLOW_COPY_AND_ASSIGN(ClassName) ClassName(const ClassName&); void operator=(const ClassName&)
 

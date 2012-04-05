@@ -115,7 +115,8 @@ CodePtr CodeBuilder::eval_compile(const xpeg::ExecutorPtr& executor){
 	return compile_toplevel(e, XTAL_STRING("<eval>"));
 }
 
-CodePtr CodeBuilder::compile_toplevel(const ExprPtr& e, const StringPtr& source_file_name){
+CodePtr CodeBuilder::compile_toplevel(const ExprPtr& ae, const StringPtr& source_file_name){
+	ExprPtr e = ae;
 	normalize(e);
 	build_scope(e);
 	build_scope2(e);
@@ -294,22 +295,36 @@ void CodeBuilder::put_inst2(const Inst& t, uint_t sz){
 }
 
 int_t CodeBuilder::register_identifier(const IDPtr& v){
-	if(!v){ return 0; }
-	if(const AnyPtr& pos = identifier_map_->at(v)){ return pos->to_i(); }
+	if(!v){ 
+		return 0; 
+	}
+
+	if(const AnyPtr& pos = identifier_map_->at(v)){ 
+		return pos->to_i(); 
+	}
+
 	result_->identifier_table_.push_back(v);
 	identifier_map_->set_at(v, result_->identifier_table_.size()-1);
 	return result_->identifier_table_.size()-1;
 }
 
 int_t CodeBuilder::register_value(const AnyPtr& v){
-	if(const AnyPtr& pos = value_map_->at(v)){ return pos->to_i(); }
+	if(const AnyPtr& pos = value_map_->at(v)){ 
+		return pos->to_i(); 
+	}
+
 	result_->value_table_.push_back(v);
 	value_map_->set_at(v, result_->value_table_.size()-1);
 	return result_->value_table_.size()-1;
 }
 
-int_t CodeBuilder::append_identifier(const IDPtr& identifier){
-	result_->identifier_table_.push_back(identifier);
+int_t CodeBuilder::append_identifier(const IDPtr& v){
+	result_->identifier_table_.push_back(v);
+
+	if(!identifier_map_->at(v)){
+		identifier_map_->set_at(v, result_->identifier_table_.size()-1);
+	}
+
 	return result_->identifier_table_.size()-1;
 }
 
@@ -435,10 +450,6 @@ void CodeBuilder::calc_scope(Scope* scope, Scope* fun_scope, int_t base){
 	else if(scope->kind==Scope::CLASS){
 		scope->fun_scope = fun_scope;
 		scope->register_base = 0;
-	}
-	else if(scope->kind==Scope::CATCH){
-		scope->fun_scope = fun_scope;
-		scope->register_base = base + scope->entries.size();
 	}
 	else{
 		scope->fun_scope = fun_scope;
@@ -809,6 +820,67 @@ void CodeBuilder::normalize(const AnyPtr& a){
 			}	
 		}
 
+		XTAL_CASE_N(case EXPR_CDEFINE_MEMBER:){
+			if(e->cdefine_member_term()->itag()==EXPR_FUN){
+				ExprPtr f = e->cdefine_member_term();
+				if(!f->fun_name()){
+					f->set_fun_name(e->cdefine_member_name());
+				}
+			}
+			else if(e->cdefine_member_term()->itag()==EXPR_CLASS){
+				ExprPtr f = e->cdefine_member_term();
+				if(!f->class_name()){
+					f->set_class_name(e->cdefine_member_name());
+				}
+			}
+
+			XTAL_FOR_EXPR(v, e){
+				normalize(v);
+			}	
+		}
+
+		XTAL_CASE_N(case EXPR_DEFINE:){
+			if(e->bin_lhs()->itag()==EXPR_LVAR){
+				if(e->bin_rhs()->itag()==EXPR_FUN){
+					ExprPtr f = e->bin_rhs();
+					if(!f->fun_name()){
+						f->set_fun_name(e->bin_lhs()->lvar_name());
+					}
+				}
+				else if(e->bin_rhs()->itag()==EXPR_CLASS){
+					ExprPtr f = e->bin_rhs();
+					if(!f->class_name()){
+						f->set_class_name(e->bin_lhs()->lvar_name());
+					}
+				}
+			}
+
+			XTAL_FOR_EXPR(v, e){
+				normalize(v);
+			}	
+		}
+
+		XTAL_CASE_N(case EXPR_ASSIGN:){
+			if(e->bin_lhs()->itag()==EXPR_LVAR){
+				if(e->bin_rhs()->itag()==EXPR_FUN){
+					ExprPtr f = e->bin_rhs();
+					if(!f->fun_name()){
+						f->set_fun_name(e->bin_lhs()->lvar_name());
+					}
+				}
+				else if(e->bin_rhs()->itag()==EXPR_CLASS){
+					ExprPtr f = e->bin_rhs();
+					if(!f->class_name()){
+						f->set_class_name(e->bin_lhs()->lvar_name());
+					}
+				}
+			}
+
+			XTAL_FOR_EXPR(v, e){
+				normalize(v);
+			}	
+		}
+
 		XTAL_CASE_N(case EXPR_CLASS:){
 			int_t method_kind = e->class_kind()==KIND_SINGLETON ? KIND_FUN : KIND_METHOD;
 			ExprPtr stmts = xnew<Expr>();
@@ -839,7 +911,8 @@ void CodeBuilder::normalize(const AnyPtr& a){
 						eb_->tree_splice(EXPR_IVAR, 1);
 						eb_->tree_splice(0, 1);
 						eb_->tree_splice(EXPR_RETURN, 1);
-						eb_->tree_splice(EXPR_FUN, 4);
+						eb_->tree_push_back(var);
+						eb_->tree_splice(EXPR_FUN, 5);
 
 						eb_->tree_splice(EXPR_CDEFINE_MEMBER, 4);
 
@@ -862,7 +935,8 @@ void CodeBuilder::normalize(const AnyPtr& a){
 						eb_->tree_push_back(Xid(value));
 						eb_->tree_splice(EXPR_LVAR, 1);
 						eb_->tree_splice(EXPR_ASSIGN, 2);
-						eb_->tree_splice(EXPR_FUN, 4);
+						eb_->tree_push_back(var2);
+						eb_->tree_splice(EXPR_FUN, 5);
 
 						eb_->tree_splice(EXPR_CDEFINE_MEMBER, 4);
 
@@ -881,7 +955,8 @@ void CodeBuilder::normalize(const AnyPtr& a){
 				eb_->tree_push_back(null);
 				eb_->tree_push_back(stmts);
 				eb_->tree_splice(EXPR_SCOPE, 1);
-				eb_->tree_splice(EXPR_FUN, 4);
+				eb_->tree_push_back(Xid(auto_initialize));
+				eb_->tree_splice(EXPR_FUN, 5);
 			}
 			else{
 				eb_->tree_splice(EXPR_NULL, 0);

@@ -307,6 +307,255 @@ enum{
 
 void call_breakpoint_hook(int_t kind, const HookInfoPtr& info);
 
+
+#if 0
+
+/**
+* \biref デバッガとやりとりするためのストリームクラス
+*/
+class DebugStream : public Stream{
+public:
+
+	DebugStream(){
+		socket_ = -1;
+	}
+
+	DebugStream(int s){
+		socket_ = s;
+	}
+
+	DebugStream(const StringPtr& path, const StringPtr& port){
+		socket_ = -1;
+		open(path, port);
+	}
+
+	virtual ~DebugStream(){
+		close();
+	}
+
+	void open(const StringPtr& host, const StringPtr& port){
+		close();
+		socket_ = socket(AF_INET, SOCK_STREAM, 0);
+
+		if(is_open()){
+			struct addrinfo hints = {0};
+			hints.ai_family = AF_UNSPEC;
+			hints.ai_socktype = SOCK_STREAM;
+			hints.ai_flags = 0;
+
+			struct addrinfo* res = 0;
+			int err = getaddrinfo(host->c_str(), port->c_str(), &hints, &res);
+			if(err!=0){
+				return;
+			}
+
+			for(struct addrinfo* ai= res; ai; ai=ai->ai_next){
+				socket_ = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
+				if(socket_<0){
+					break;
+				}
+
+				if(connect(socket_, ai->ai_addr, ai->ai_addrlen)<0){
+					close();
+					continue;
+				}
+				else{
+					break;
+				}
+			}
+
+			freeaddrinfo(res);
+		}
+	}
+
+	bool is_open(){
+		return socket_>=0;
+	}
+
+	virtual void close(){
+		if(socket_>=0){
+			::close(socket_);
+			socket_ = -1;
+		}
+	}
+
+	virtual uint_t read(void* dest, uint_t size){
+		int read = recv(socket_, (char*)dest, size, 0);
+		if(read<0){
+			close();
+			return 0;
+		}
+		return read;
+	}
+
+	virtual uint_t write(const void* src, uint_t size){
+		int temp = ::send(socket_, (char*)src, size, 0);
+		if(temp<0){
+			close();
+			return 0;
+		}
+		return temp;
+	}
+
+private:
+	void* debug_stream_;
+};
+
+#endif
+
+////////////////////////////////////////////////////////////////////////////////////
+
+/**
+* \brief デバッガの受信側
+*/
+class CommandReciver : public Base{
+public:
+
+	/**
+	* \brief デバッガをスタートする
+	* \param stream デバッガと通信するためのストリーム
+	*/
+	bool start(const StreamPtr& stream);
+
+	/**
+	* デバッガを更新する
+	* 
+	*/
+	void update();
+
+private:
+
+	ArrayPtr recv_command();
+
+	CodePtr require_source_hook(const StringPtr& name);
+
+	void exec_command(const ArrayPtr& cmd);
+
+	ArrayPtr make_debug_object(const AnyPtr& v, int depth = 3);
+
+	ArrayPtr make_call_stack_info(const debug::HookInfoPtr& info);
+
+	MapPtr make_eval_expr_info(const debug::HookInfoPtr& info, int level);
+
+	void send_break(debug::HookInfoPtr info, int level);
+
+	int linehook(debug::HookInfoPtr info);
+
+private:
+	StreamPtr stream_;
+	MapPtr eval_exprs_;
+	MapPtr code_map_;
+};
+
+////////////////////////////////////////////////////////////////////////////////////
+
+/**
+* \brief デバッガの送信側
+*/
+class CommandSender : public Base{
+public:
+
+	CommandSender();
+
+	void start(const StreamPtr& stream);
+
+	void update();
+
+public:
+	// 評価式に関する設定と取得
+
+	void add_eval_expr(const StringPtr& expr);
+
+	void remove_eval_expr(const StringPtr& expr);
+
+	ArrayPtr eval_expr_result(const StringPtr& expr);
+
+public:
+	// コールスタックに関する設定と取得
+
+	int call_stack_size();
+
+	StringPtr call_stack_fun_name(int n);
+	StringPtr call_stack_fun_name();
+
+	StringPtr call_stack_file_name(int n);
+	StringPtr call_stack_file_name();
+
+	int call_stack_lineno(int n);
+	int call_stack_lineno();
+
+	void move_call_stack(int n);
+
+public:
+	// 要求されたスクリプトファイルに関する設定と取得
+
+	StringPtr required_file();
+
+	void required_source(const CodePtr& code);
+
+	int level(){ return level_;	}
+
+public:
+	// ブレークポイントに関する設定と取得
+
+	void add_breakpoint(const StringPtr& path, int n, const StringPtr& cond);
+	void remove_breakpoint(const StringPtr& path, int n);
+
+public:
+	void nostep();
+	void start();
+
+	void run();
+	void step_over();
+	void step_into();
+	void step_out();
+	void redo();
+
+protected:
+
+	// ブレークした際のシグナル
+	virtual void on_breaked(){}
+
+	// ブレークした際のシグナル
+	virtual void on_required(){}
+
+	// コンパイルエラーが起こった際のシグナル
+	virtual void on_compile_error(){}
+
+	// キャッチされない例外が起こった際のシグナル
+	virtual void on_uncatched_exception(){}
+
+protected:
+	void send_command(const IDPtr& id);
+
+private:
+	StreamPtr stream_;
+
+	struct CallInfo{
+		StringPtr fun_name;
+		StringPtr file_name;
+		int lineno;
+	};
+
+	TArray<CallInfo> call_stack_;
+
+	struct ExprValue{
+		ExprValue(){
+			count = 0;
+		}
+
+		int count;
+		CodePtr code;
+		ArrayPtr result;
+	};
+
+	MapPtr exprs_;
+	StringPtr required_file_;
+	int level_;
+
+	IDPtr prev_command_;
+};
+
 }
 
 }

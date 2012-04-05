@@ -122,7 +122,7 @@ public:
 	* \param value 設定する値
 	* \param secondary_key セカンダリキー
 	*/
-	bool set_member(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key);
+	bool set_member(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key = undefined);
 
 	/**
 	* \xbind

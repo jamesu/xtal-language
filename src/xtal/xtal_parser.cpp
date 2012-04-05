@@ -628,30 +628,6 @@ void Tokenizer::tokenize(){
 				continue;
 			}
 
-#ifdef XTAL_USE_WCHAR
-
-			XTAL_CASE((uchar_t)0xFEFF){
-				executor_->skip();
-				continue;
-			}
-
-			XTAL_CASE((uchar_t)0xFFFE){
-				executor_->skip();
-				continue;
-			}
-
-#else
-			XTAL_CASE((uchar_t)239){
-				if((uchar_t)executor_->peek_ascii(1)==(uchar_t)187 && (uchar_t)executor_->peek_ascii(2)==(uchar_t)191){
-					executor_->skip();
-					executor_->skip();
-					executor_->skip();
-					continue;
-				}
-				push_token(ch);
-			}
-#endif
-
 			XTAL_CASE(0){
 				push_token(0);
 			}

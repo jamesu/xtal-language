@@ -4,6 +4,7 @@
 #include "xtal_details.h"
 #include "xtal_codebuilder.h"
 #include "xtal_filesystem.h"
+#include "xtal_lib/xtal_chcode.h"
 
 //#define XTAL_DEBUG_ALLOC
 
@@ -278,7 +279,8 @@ namespace{
 	StdStreamLib empty_std_stream_lib;
 	FilesystemLib empty_filesystem_lib;
 	AllocatorLib cstd_allocator_lib;
-	ChCodeLib ascii_ch_code_lib;
+	UTF8ChCodeLib utf8_ch_code_lib;
+	DebugLib empty_debug_lib;
 }
 
 void* AllocatorLib::malloc_align(std::size_t size, std::size_t alignment){
@@ -500,7 +502,8 @@ Setting::Setting(){
 	std_stream_lib = &empty_std_stream_lib;
 	filesystem_lib = &empty_filesystem_lib;
 	allocator_lib = &cstd_allocator_lib;
-	ch_code_lib = &ascii_ch_code_lib;
+	ch_code_lib = &utf8_ch_code_lib;
+	debug_lib = &empty_debug_lib;
 }
 
 
@@ -830,6 +833,11 @@ FilesystemLib* filesystem_lib(){
 	return environment_->setting_.filesystem_lib;
 }
 
+DebugLib* debug_lib(){
+	return environment_->setting_.debug_lib;
+}
+
+
 const StreamPtr& stdin_stream(){
 	return environment_->stdin_;
 }
@@ -882,6 +890,7 @@ namespace{
 
 	xpeg::ExecutorPtr create_xpeg(const AnyPtr& source, const StringPtr& file_name = empty_string){
 		if(const StreamPtr& stream = ptr_cast<Stream>(source)){
+			stream->skip_bom();
 			return xnew<xpeg::StreamExecutor>(stream, file_name);
 		}
 		else if(const StringPtr& string = ptr_cast<String>(source)){

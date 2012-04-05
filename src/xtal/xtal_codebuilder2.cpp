@@ -401,8 +401,9 @@ void CodeBuilder::compile_stmt(const AnyPtr& p){
 
 	ExprPtr e = ep(p);
 
+	linenos_.push(e->lineno());
+
 	if(debug::is_debug_compile_enabled() && e->lineno()!=0){
-		linenos_.push(e->lineno());
 		if(result_->set_lineno_info(e->lineno())){
 			put_inst(InstLine());
 		}
@@ -412,8 +413,9 @@ void CodeBuilder::compile_stmt(const AnyPtr& p){
 
 	if(debug::is_debug_compile_enabled() && e->lineno()!=0){
 		result_->set_lineno_info(e->lineno());
-		linenos_.pop();
 	}
+
+	linenos_.pop();
 }
 
 int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, int_t result_count){
@@ -1502,7 +1504,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 				put_inst(InstDefineMember(lhs, primary, secondary, flags, rhs));
 			}
 			else{
-				error(Xt("XCE1012"));
+				error(Xt("XCE1030"));
 			}
 
 			return 0;

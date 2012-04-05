@@ -155,8 +155,6 @@ uint_t Stream::on_pour_all(const StreamPtr& in_stream){
 }
 	
 void Stream::skip_bom(){
-	return;
-
 #ifdef XTAL_USE_WCHAR
 	char_t head[1] = {0};
 	int_t pos = tell();

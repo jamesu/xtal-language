@@ -457,8 +457,16 @@ public:
 
 	CommandSender();
 
+	/**
+	* \brief デバッガをスタートする
+	* \param stream デバッガと通信するためのストリーム
+	*/
 	void start(const StreamPtr& stream);
 
+	/**
+	* デバッガを更新する
+	* 
+	*/
 	void update();
 
 public:

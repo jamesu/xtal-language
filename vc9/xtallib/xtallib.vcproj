@@ -51,7 +51,7 @@
 				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="xtal.h"
-				WarningLevel="3"
+				WarningLevel="4"
 				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
@@ -518,10 +518,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\xtal\xtal_lib\xtal_debugger.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\src\xtal\xtal_lib\xtal_errormessage.h"
 					>
 				</File>
@@ -531,6 +527,10 @@
 				</File>
 				<File
 					RelativePath="..\..\src\xtal\xtal_lib\xtal_pthread.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\xtal\xtal_lib\xtal_tcpdebug.h"
 					>
 				</File>
 				<File

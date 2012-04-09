@@ -29,6 +29,7 @@ public:
 	StringSpace string_space_;
 	ThreadSpace thread_space_;
 	MemberCacheTable member_cache_table_;
+	MemberCacheTable2 member_cache_table2_;
 	IsCacheTable is_cache_table_;
 
 	ClassPtr builtin_;

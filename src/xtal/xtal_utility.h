@@ -900,7 +900,10 @@ enum AccessibilityKind{
 	/**
 	* \brief private
 	*/
-	KIND_PRIVATE = 1<<1
+	KIND_PRIVATE = 1<<1,
+
+	
+	KIND_DEFAULT = -1,
 };
 
 /**

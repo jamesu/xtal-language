@@ -10,7 +10,6 @@
 #include "../src/xtal/xtal_lib/xtal_winfilesystem.h"
 #include "../src/xtal/xtal_lib/xtal_chcode.h"
 #include "../src/xtal/xtal_lib/xtal_errormessage.h"
-#include "../src/xtal/xtal_lib/xtal_debugger.h"
 
 #include "time.h"
 
@@ -716,6 +715,53 @@ void benchmark(const char* file, const AnyPtr& arg){
 
 class Hoo;
 
+
+enum eflag{
+  FLAG_0,
+  FLAG_1,
+  FLAG_2,
+};
+
+
+XTAL_PREBIND(eflag){
+	Xregister(Lib);
+	Xdef(FLAG_0, FLAG_0);
+	Xdef(FLAG_1, FLAG_1);
+	Xdef(FLAG_2, FLAG_2);
+}
+
+// プレイヤークラス
+class SmashPlayer : public Base{
+public:
+
+	SmashPlayer(){
+		x = 0;
+		y = 0;
+	}
+
+	void foo(){
+		undefined->p();
+		null->p();
+	}
+
+	float x, y;
+};
+
+XTAL_PREBIND(SmashPlayer){
+	Xregister(Lib);
+
+	Xdef_ctor0();
+}
+
+XTAL_BIND(SmashPlayer){
+	Xdef_var(x);
+	Xdef_var(y);
+
+	Xprotected();
+	Xdef_method(foo);
+}
+
+
 int main2(int argc, char** argv){
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | /*_CRTDBG_CHECK_ALWAYS_DF |*/ _CRTDBG_DELAY_FREE_MEM_DF);
 
@@ -771,26 +817,33 @@ int main2(int argc, char** argv){
 			code->def("eType", cpp_class<eType>());
 			code->call();
 		}*/
+	//debug::enable_debug_compile();
 
 		if(CodePtr code = Xsrc((
-{
-	{ 
-		i: 60;
-		fun foo(...k){ k.p; }
-		foo(8);
-		i.p;
-	}
+			class A(lib::SmashPlayer){
+				foo2{
+					"aa".p;
+				}
+			}
 
-	{
-		10.times{}
-	}
-}
-
-
+			A().foo;
 		))){
+		   //code->inspect()->p();
+		   //code->def(Xid(AA), 20);
+
+
+			XTAL_CATCH_EXCEPT(e){
+				StringPtr str = e->to_s();
+				const char_t* cstr = str->data();
+				stderr_stream()->println(e);
+				return 1;
+			}
+
 		   code->call();
-		   code->inspect()->p();
-		   //code->member(Xid(test))->p();
+
+		   //code->set_member(Xid(AA), 10, undefined);
+		   //code->member(Xid(AA))->p();
+			  //code->member(Xid(test))->p();
 		}
 	}
 
@@ -802,6 +855,16 @@ int main2(int argc, char** argv){
 	}
 
 	full_gc();
+
+	//compile_file("../test/compile_error/test.xtal");
+
+	XTAL_CATCH_EXCEPT(e){
+		StringPtr str = e->to_s();
+		const char_t* cstr = str->data();
+		stderr_stream()->println(e);
+		return 1;
+	}
+
 	return 0;
 	
 //*/
@@ -811,9 +874,9 @@ int main2(int argc, char** argv){
 	int c;	
 	
 	/*		
-	//c = clock();
+	c = clock();
 	//load("../bench/ao.xtal");
-	//printf("ao %g\n\n", (clock()-c)/1000.0f);	
+	printf("ao %g\n\n", (clock()-c)/1000.0f);	
 
 	c = clock();
 	load("../bench/sum_fiber.xtal");
@@ -876,7 +939,6 @@ int main2(int argc, char** argv){
 		stderr_stream()->println(e);
 		return 1;
 	}
-
 
 	code->call();
 

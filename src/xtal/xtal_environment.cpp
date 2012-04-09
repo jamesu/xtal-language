@@ -280,7 +280,6 @@ namespace{
 	FilesystemLib empty_filesystem_lib;
 	AllocatorLib cstd_allocator_lib;
 	UTF8ChCodeLib utf8_ch_code_lib;
-	DebugLib empty_debug_lib;
 }
 
 void* AllocatorLib::malloc_align(std::size_t size, std::size_t alignment){
@@ -503,7 +502,6 @@ Setting::Setting(){
 	filesystem_lib = &empty_filesystem_lib;
 	allocator_lib = &cstd_allocator_lib;
 	ch_code_lib = &utf8_ch_code_lib;
-	debug_lib = &empty_debug_lib;
 }
 
 
@@ -590,8 +588,8 @@ void Environment::uninitialize(){
 //#ifdef XTAL_DEBUG_PRINT
 	{
 //		printf("member hit=%d miss=%d rate=%g\n", member_cache_table_.hit_count(), member_cache_table_.miss_count(), member_cache_table_.hit_count()/(float)(member_cache_table_.hit_count()+member_cache_table_.miss_count()));
+//		printf("member2 hit=%d miss=%d rate=%g\n", member_cache_table2_.hit_count(), member_cache_table2_.miss_count(), member_cache_table2_.hit_count()/(float)(member_cache_table2_.hit_count()+member_cache_table2_.miss_count()));
 //		printf("is hit=%d miss=%d rate=%g\n", is_cache_table_.hit_count(), is_cache_table_.miss_count(), is_cache_table_.hit_count()/(float)(is_cache_table_.hit_count()+is_cache_table_.miss_count()));
-//		printf("ctor hit=%d miss=%d rate=%g\n", ctor_cache_table_.hit_count(), ctor_cache_table_.miss_count(), ctor_cache_table_.hit_count()/(float)(ctor_cache_table_.hit_count()+ctor_cache_table_.miss_count()));
 	}
 //#endif
 
@@ -701,16 +699,19 @@ void set_cpp_class(CppClassSymbolData* key, const ClassPtr& cls){
 
 void clear_cache(){
 	environment_->member_cache_table_.clear();
+	environment_->member_cache_table2_.clear();
 	environment_->is_cache_table_.clear();
 }
 
 void invalidate_cache_member(){
 	environment_->member_cache_table_.invalidate();
+	environment_->member_cache_table2_.invalidate();
 }
 
 void invalidate_cache_is(){
 	environment_->is_cache_table_.invalidate();
 	environment_->member_cache_table_.invalidate();
+	environment_->member_cache_table2_.invalidate();
 }
 
 
@@ -833,11 +834,6 @@ FilesystemLib* filesystem_lib(){
 	return environment_->setting_.filesystem_lib;
 }
 
-DebugLib* debug_lib(){
-	return environment_->setting_.debug_lib;
-}
-
-
 const StreamPtr& stdin_stream(){
 	return environment_->stdin_;
 }
@@ -851,7 +847,6 @@ const StreamPtr& stderr_stream(){
 }
 
 const MapPtr& text_map(){
-	Environment* e = environment_;
 	return environment_->text_map_;
 }
 

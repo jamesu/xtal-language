@@ -1,5 +1,5 @@
 
-/** \page usepage C++�g�ݍ��݃T���v��
+/** \page usepage C++組み込みサンプル
 - \subpage useinitialize
 - \subpage useexcept
 - \subpage usehelloworld
@@ -19,201 +19,201 @@
 */
 
 /** \page usemain
-Lua�Ȃǂ̃X�N���v�g����́AC/C++�Ƃ̂���肪�ώG�ł�����̂������B\n
-���̂��ߌ�������҈ȊO�ɃX�N���v�g�����C++�Ƃ̊Ԃ���莝�A�u�o�C���_�v�ƌĂ΂����̂��悭�����B\n
+Luaなどのスクリプト言語は、C/C++とのやり取りが煩雑であるものが多い。\n
+そのため言語実装者以外にスクリプト言語とC++との間を取り持つ、「バインダ」と呼ばれるものがよく作られる。\n
 \n
-Xtal�ł͍ŏ�����X�N���v�g����Ɩ��ڂ����o�C���_��������Ă��邽�߁A\n
-�킴�킴�o�C���_��T�����Ƃ��A�܂��I���W�i���̃o�C���_�����K�v�������A�����ɑg�ݍ��ނ��Ƃ��ł���B\n
+Xtalでは最初からスクリプト言語と密接したバインダを内蔵しているため、\n
+わざわざバインダを探すことも、またオリジナルのバインダを作る必要も無く、すぐに組み込むことができる。\n
 */
 
-/** \page useinitialize Xtal�̏�����
-�����ł͗�Ƃ���Windows�ł̏��������@�������B\n
-��Ƃ��āAWindows�ł̏��������@��������܂��B\n
+/** \page useinitialize Xtalの初期化
+ここでは例としてWindowsでの初期化方法を示す。\n
+例として、Windowsでの初期化方法を説明します。\n
 \code
 #include <xtal.h>
-#include <xtal_macro.h> // Xid�ȂǕ֗��ȃ}�N������`����Ă���
+#include <xtal_macro.h> // Xidなど便利なマクロが定義されている
 
-#include <xtal_lib/xtal_cstdiostream.h> // CStdioStdStreamLib�̂���
-#include <xtal_lib/xtal_winthread.h> // WinThreadLib�̂���
-#include <xtal_lib/xtal_winfilesystem.h> // WinFilesystemLib�̂���
-#include <xtal_lib/xtal_chcode.h> // SJISChCodeLib�̂���
-#include <xtal_lib/xtal_errormessage.h> // bind_error_message()�̂���
+#include <xtal_lib/xtal_cstdiostream.h> // CStdioStdStreamLibのため
+#include <xtal_lib/xtal_winthread.h> // WinThreadLibのため
+#include <xtal_lib/xtal_winfilesystem.h> // WinFilesystemLibのため
+#include <xtal_lib/xtal_chcode.h> // SJISChCodeLibのため
+#include <xtal_lib/xtal_errormessage.h> // bind_error_message()のため
 
 int main(int argc, char** argv){
     using namespace xtal;
 
-    CStdioStdStreamLib cstd_std_stream_lib; // stdin, stdout, stderr��C�̕W�����C�u�������g��
-    WinThreadLib win_thread_lib; // Windows�̃X���b�h���g��
-    WinFilesystemLib win_filesystem_lib; // Windows�̃t�@�C���V�X�e�����g�� 
-    SJISChCodeLib sjis_ch_code_lib; // SJIS���g��
+    CStdioStdStreamLib cstd_std_stream_lib; // stdin, stdout, stderrはCの標準ライブラリを使う
+    WinThreadLib win_thread_lib; // Windowsのスレッドを使う
+    WinFilesystemLib win_filesystem_lib; // Windowsのファイルシステムを使う 
+    SJISChCodeLib sjis_ch_code_lib; // SJISを使う
 
-    // ���ˑ��ł���@�\�ɂ��Ăǂ���g������ݒ�
+    // 環境依存である機能についてどれを使うかを設定
     Setting setting; 
     setting.thread_lib = &win_thread_lib;
     setting.std_stream_lib = &cstd_std_stream_lib;
     setting.filesystem_lib = &win_filesystem_lib;
     setting.ch_code_lib = &sjis_ch_code_lib;
     
-    // �����Ŏw�肵��thread_lib�Ȃǂ̃|�C���^��������̃I�u�W�F�N�g�́A
-    // uninitialize���Ăяo���܂ő��݂��Ă���K�v������܂��B
+    // ここで指定したthread_libなどのポインタが示す先のオブジェクトは、
+    // uninitializeを呼び出すまで存在している必要があります。
 
-    // Xtal��������
+    // Xtalを初期化
     initialize(setting);
 
-    // �G���[���b�Z�[�W���o�C���h
+    // エラーメッセージをバインド
     bind_error_message();
 
 	{
-	    // �����ŃX�N���v�g�̎��s���s��
+	    // ここでスクリプトの実行を行う
 	}
 	
-    // Xtal��j��
+    // Xtalを破棄
     uninitialize();
 
     return 0;
 }
 \endcode
 
-Xtal�ł͊��ˑ��̋@�\�͊ȒP�Ɏ��ւ��邱�Ƃ��ł���悤�ɂȂ��Ă���B\n
-Windows��Linux�ɂ��ẮA�ŏ�����@�\���p�ӂ���Ă��邽�߁A������g�����Ƃ��ł���B\n
-�e������xtal_lib�f�B���N�g�����ɃN���X�Œ񋟂���Ă���B\n
-�g�������@�\��include���Ainitialize����uninitialize�܂Ő�������ϐ��Ƃ��Ē�`���A\n
-Setting�̊e�����o�ɂ��̃|�C���^�������Ainitailize�֐��ɓn�����ƁB\n
+Xtalでは環境依存の機能は簡単に取り替えることができるようになっている。\n
+WindowsとLinuxについては、最初から機能が用意されているため、それを使うことができる。\n
+各実装はxtal_libディレクトリ内にクラスで提供されている。\n
+使いたい機能をincludeし、initializeからuninitializeまで生存する変数として定義し、\n
+Settingの各メンバにそのポインタを代入し、initailize関数に渡すこと。\n
 \n
-bind_error_message�ŃG���[���b�Z�[�W�̃o�C���h���ł���B\n
-����ɂ��AXRE1001�Ƃ������G���[���b�Z�[�W���A�Ӗ��̂���e�L�X�g�Ƃ��ē�����悤�ɂȂ�B\n
-�����[�X���ȂǁA�G���[���b�Z�[�W���K�v�Ȃ��̂ł���΂�����Ăяo���Ȃ����ƂŎ኱�̃������ߖ�ɂȂ�B\n
+bind_error_messageでエラーメッセージのバインドができる。\n
+これにより、XRE1001といったエラーメッセージが、意味のあるテキストとして得られるようになる。\n
+リリース時など、エラーメッセージが必要ないのであればこれを呼び出さないことで若干のメモリ節約になる。\n
 \n
-uninitialize���ɎQ�ƃJ�E���g��͂񂾂܂܂̃I�u�W�F�N�g�������assert�Œ�~���邽�߁A\n
-�X�N���v�g�̎��s�̕����̓u���b�N�ň͂ނ��A�ʊ֐��ōs���A���[�J���ϐ��Œ�`����AnyPtr�Ȃǂ��m���Ƀf�X�g���N�^����Ă���悤�ɂ��悤�B\n
+uninitialize時に参照カウントを掴んだままのオブジェクトがあるとassertで停止するため、\n
+スクリプトの実行の部分はブロックで囲むか、別関数で行い、ローカル変数で定義したAnyPtrなどが確実にデストラクタされているようにしよう。\n
 */
 
 
 
-/** \page usehelloworld �t�@�C���ɏ�����Ă���Xtal�����s
-���̂悤��Hello, World���o�͂���X�N���v�g�AHelloWorld.xtal������Ƃ���\n
+/** \page usehelloworld ファイルに書かれているXtalを実行
+次のようなHello, Worldを出力するスクリプト、HelloWorld.xtalがあるとする\n
 \code
 // HelloWorld.xtal
 println("Hello, World");
 \endcode
-�����C++����Ăяo���ɂ�load�֐����g���B\n
+これをC++から呼び出すにはload関数を使う。\n
 \code
 // C++
 load(XTAL_STRING("HelloWorld.xtal"));
 
-// xtal_macro.h��include���Ă���ꍇ�A���̂悤�ɋL�q���Ă��悢
+// xtal_macro.hをincludeしている場合、次のように記述してもよい
 // load(Xs("HelloWorld.xtal"))
 
-// �R���p�C���G���[����s���G���[����������ߑ�����B
+// コンパイルエラーや実行時エラーがあったら捕捉する。
 XTAL_CATCH_EXCEPT(e){
-    stderr_stream()->println(e); // stderr�ɗ�O�I�u�W�F�N�g���o�͂���
+    stderr_stream()->println(e); // stderrに例外オブジェクトを出力する
 }
 \endcode
 */
 
-/** \page useexcept Xtal�Ŕ���������O��ߑ�����
-XTAL_CATCH_EXCEPT(e)�}�N�����g�����ƂŁAXtal�����n�Ŕ���������O��⑫���邱�Ƃ��ł���B\n
+/** \page useexcept Xtalで発生した例外を捕捉する
+XTAL_CATCH_EXCEPT(e)マクロを使うことで、Xtal処理系で発生した例外を補足することができる。\n
 \code
 any->call();
 
 XTAL_CATCH_EXCEPT(e){
-    // call���ŗ�O���Z�b�g���ꂽ�炱����ʂ�
-    // e�ɗ�O�I�u�W�F�N�g���Z�b�g�����B
-	stderr_stream()->println(e); // stderr�ɗ�O�I�u�W�F�N�g���o�͂���
+    // call内で例外がセットされたらここを通る
+    // eに例外オブジェクトがセットされる。
+	stderr_stream()->println(e); // stderrに例外オブジェクトを出力する
 }
 else{
-    // ��O���������Ă��Ȃ��Ȃ炱����ʂ�
+    // 例外が発生していないならここを通る
 }
 \endcode
 */
 
-/** \page usestring �������Xtal�\�[�X�����s
-�t�@�C���Ƃ��Ăł͂Ȃ��A������Ƃ��ă\�[�X��ێ����Ă��Ă�������s�������ꍇ�́Acompile�֐����g���A���ʂ��Ăяo���B \n
+/** \page usestring 文字列のXtalソースを実行
+ファイルとしてではなく、文字列としてソースを保持していてそれを実行したい場合は、compile関数を使い、結果を呼び出す。 \n
 \code
 const char* source = " println(\"Hello, World\"); ";
 
-// �R���p�C���G���[������΁Acode��null���Ԃ�
+// コンパイルエラーがあれば、codeはnullが返る
 if(CodePtr code = compile(source)){
-    code->call(); // �R���p�C�������R�[�h�����s����
+    code->call(); // コンパイルしたコードを実行する
 }
 
 XTAL_CATCH_EXCEPT(e){
-    stderr_stream()->println(e); // stderr�ɗ�O�I�u�W�F�N�g���o�͂���
+    stderr_stream()->println(e); // stderrに例外オブジェクトを出力する
 }
 \endcode
 */
 
 /** \page useanyptr AnyPtr
-AnyPtr�͂�����Xtal�̃I�u�W�F�N�g��ێ��ł���A�X�}�[�g�|�C���^�^�ł���B \n   
-AnyPtr�́A���m�ɂ�SmartPtr<Any>�^��typedef�ƂȂ��Ă���B \n
+AnyPtrはあらゆるXtalのオブジェクトを保持できる、スマートポインタ型である。 \n   
+AnyPtrは、正確にはSmartPtr<Any>型のtypedefとなっている。 \n
 
-\section int2anyptr �����╂�������_���^��AnyPtr�𑊌ݕϊ����� 
-AnyPtr�͑S�Ă̐����╂�������_�����󂯎��R���X�g���N�^����`����Ă���̂ŁAC++�̐�������AnyPtr�ւ̕ϊ��͎����I�ɍs����B\n
+\section int2anyptr 整数や浮動小数点数型とAnyPtrを相互変換する 
+AnyPtrは全ての整数や浮動小数点数を受け取るコンストラクタが定義されているので、C++の整数からAnyPtrへの変換は自動的に行われる。\n
 \code
 AnyPtr any = 100;
 AnyPtr value = 10.0f;
 \endcode
-�t��AnyPtr�^�ɓ��ꂽ���̂𐮐��ɕϊ��������ꍇ�AAny::to_i�����o�֐���Any::to_f�����o�֐����g���B\n
+逆にAnyPtr型に入れたものを整数に変換したい場合、Any::to_iメンバ関数やAny::to_fメンバ関数を使う。\n
 \code
 int i = any->to_i();
 float f = value->to_f();
 \endcode
-����́A�I�u�W�F�N�g�ɂ���ẮAXtal���x����to_i���\�b�h���Ă΂�邽�߁A��O���������邩������Ȃ����Ƃɒ��ӂ���B\n
+これは、オブジェクトによっては、Xtalレベルでto_iメソッドが呼ばれるため、例外が発生するかもしれないことに注意する。\n
 
-\section str2anyptr �������AnyPtr�𑊌ݕϊ����� 
-AnyPtr��const char_t*���󂯎��R���X�g���N�^����`����Ă��邽�߁A�����񃊃e��������AnyPtr�ւ̕ϊ��͎����I�ɍs����B\n
-�������AUNICODE�Ȃǂ̉��������߂邽�߂ɁAXTAL_STRING�}�N���ň͂ޕ����]�܂����B\n
+\section str2anyptr 文字列とAnyPtrを相互変換する 
+AnyPtrはconst char_t*を受け取るコンストラクタが定義されているため、文字列リテラルからAnyPtrへの変換は自動的に行われる。\n
+ただし、UNICODEなどの可搬性を高めるために、XTAL_STRINGマクロで囲む方が望ましい。\n
 \code
 AnyPtr str = "string";
 AnyPtr str2 = XTAL_STRING("string");
 \endcode
-�t��AnyPtr����C++�̕�����ɒ����ɂ́AAny::to_s�����o�֐����g���܂��B\n
-to_s��StringPtr��Ԃ��Ă���̂ŁAStringPtr�Ŏ󂯎��܂��B\n
-StringPtr��SmartPtr<String>��typedef�ł��B\n    
+逆にAnyPtrからC++の文字列に直すには、Any::to_sメンバ関数を使います。\n
+to_sはStringPtrを返してくるので、StringPtrで受け取ります。\n
+StringPtrはSmartPtr<String>のtypedefです。\n    
 \code
 StringPtr s = str->to_s();
 \endcode
-�����āAString::c_str�֐��ŁAconst char_t*�Ƃ��Ď󂯎��܂��B\n
+そして、String::c_str関数で、const char_t*として受け取れます。\n
 \code
 const char* ccp = s->c_str();
 \endcode
 
-\section anyptr2any AnyPtr�^�𑼂̌^�ɕϊ�����
-String��ێ����Ă���AnyPtr��StringPtr�^�ɕϊ�����ꍇ�Ato_s���\�b�h���g���Ƃ������Ƃ�����������A
-���̑��ɂ�ptr_cast�֐����g�����Ƃ�String�^�ɕϊ����邱�Ƃ��ł���B\n
-ptr_cast�֐��͎��̂悤�Ȋ֐��ł���B    \n
+\section anyptr2any AnyPtr型を他の型に変換する
+Stringを保持しているAnyPtrをStringPtr型に変換する場合、to_sメソッドを使うということを説明したが、
+その他にもptr_cast関数を使うことでString型に変換することができる。\n
+ptr_cast関数は次のような関数である。    \n
 
 \code
 template<class T>
 const SmartPtr<T>& ptr_cast(const AnyPtr& from);
 \endcode
-dynamic_cast����C++�̃L���X�g�Ɠ����`���ŌĂяo���悤�Ƀf�U�C������Ă���B\n
+dynamic_cast等のC++のキャストと同じ形式で呼び出すようにデザインされている。\n
 \code
 AnyPtr astr = XTAL_STRING("string");
 StringPtr str = ptr_cast<String>(astr);
 \endcode
-�����L���X�g�Ɏ��s������Anull��Ԃ��B\n  
+もしキャストに失敗したら、nullを返す。\n  
 \n
-��΂ɂ����StringPtr���A�Ɗm�肵�Ă���ꍇ�Aunchecked_ptr_cast���g����B\n
-ptr_cast�͌p���֌W�𒲂ׂ邽�ߎ኱���Ԃ������邪�Aunchecked_ptr_cast�͍����ɓ��삷��B\n
+絶対にこれはStringPtrだ、と確定している場合、unchecked_ptr_castが使える。\n
+ptr_castは継承関係を調べるため若干時間がかかるが、unchecked_ptr_castは高速に動作する。\n
 \code
 AnyPtr astr = XTAL_STRING("string");
 StringPtr str = unchecked_ptr_cast<String>(astr);
 \endcode
 */
 
-/** \page usenew C++�̃I�u�W�F�N�g��Xtal���Ǘ��ł���I�u�W�F�N�g�Ƃ��č쐬����
-xnew<T>�e���v���[�g�֐����g���ƁAC++�̃I�u�W�F�N�g��Xtal�ł�������I�u�W�F�N�g�Ƃ��č쐬�ł���B\n  
-xnew<T>�֐��́ASmartPtr<T>�^��Ԃ��܂��B\n
+/** \page usenew C++のオブジェクトをXtalが管理できるオブジェクトとして作成する
+xnew<T>テンプレート関数を使うと、C++のオブジェクトをXtalでも扱えるオブジェクトとして作成できる。\n  
+xnew<T>関数は、SmartPtr<T>型を返します。\n
 \n
-�Ⴆ�΁A�g�ݍ��݂̔z���Array�N���X��C++�ŋL�q����Ă��邪�A�����C++�Ő�������ɂ͎��̂悤�ɏ����B\n
+例えば、組み込みの配列のArrayクラスはC++で記述されているが、これをC++で生成するには次のように書く。\n
 \code
-// ArrayPtr �� SmartPtr<Array> ��typedef
-ArrayPtr ary = xnew<Array>(10); //����10�̔z��𐶐�
+// ArrayPtr は SmartPtr<Array> のtypedef
+ArrayPtr ary = xnew<Array>(10); //長さ10の配列を生成
 ary->push_back(10);
 \endcode
  
-���[�U�[����`�����N���X��xnew�Ő����ł���B\n
+ユーザーが定義したクラスもxnewで生成できる。\n
 \code
 class Foo{
 pubic:
@@ -222,37 +222,37 @@ pubic:
 SmartPtr<Foo> foo = xnew<Foo>();
 foo->bar();
 \endcode
-�����̃I�u�W�F�N�g�́A���ׂẴX�}�[�g�|�C���^���Q�Ƃ��Ȃ��Ȃ�΁A\n
-�����I�ɃK�[�x�[�W�R���N�V�����ō폜�����̂ŁA�����I��delete�͕K�v�����B\n
+これらのオブジェクトは、すべてのスマートポインタが参照しなくなれば、\n
+自動的にガーベージコレクションで削除されるので、明示的なdeleteは必要無い。\n
 */
 
-/** \page usefuncall �֐��̌Ăяo��
-AnyPtr�Ɋi�[����Ă���̂�C++�̊֐���Xtal�̊֐����Ɋւ�炸�AAny::call���g���B\n
+/** \page usefuncall 関数の呼び出し
+AnyPtrに格納されているのがC++の関数かXtalの関数かに関わらず、Any::callを使う。\n
 \code
-// foo�Ɋi�[����Ă���֐�������(100, 200)�ŌĂяo��
+// fooに格納されている関数を引数(100, 200)で呼び出す
 AnyPtr ret = foo->call(100, 200);
 \endcode
-���O�������̌Ăяo�������̂悤�Ɏ�y�ɋL�q�ł���B\n
+名前つき引数の呼び出しも下のように手軽に記述できる。\n
 \code
-// foo�Ɋi�[����Ă���֐�������(10, hoge:50)�ŌĂяo��
+// fooに格納されている関数を引数(10, hoge:50)で呼び出す
 AnyPtr ret = foo->call(10, Xnamed(hoge, 50));
 \endcode
 */
 
-/** \page usesend ���\�b�h�Ăяo��
-AnyPtr�Ɋi�[����Ă���̂�C++�̃I�u�W�F�N�g��Xtal�̃I�u�W�F�N�g���Ɋւ�炸�AAny::send���g���B\n
+/** \page usesend メソッド呼び出し
+AnyPtrに格納されているのがC++のオブジェクトかXtalのオブジェクトかに関わらず、Any::sendを使う。\n
 \code
 int len = obj->send(Xid(length))->to_i();
 AnyPtr ret = obj->send(Xid(slice), 0, 2);
 printf("%s\n", ret->to_s()->c_str());
 \endcode
-Xid�Ƃ����̂́AXtal��intern�ςݕ�������ȒP�ɐ������邽�߂̃}�N���ł���B\n
+Xidというのは、Xtalのintern済み文字列を簡単に生成するためのマクロである。\n
 \n
-�Z�J���_���L�[�t�ŌĂяo���ɂ�Any::send2���g���B\n
+セカンダリキー付で呼び出すにはAny::send2を使う。\n
 */
 
-/** \page useiter �C�e���[�^�̏���
-�z���A�z�z��A�܂��̓C�e���[�^�����񂷂�ꍇ�AXfor�}�N�����g���B\n
+/** \page useiter イテレータの巡回
+配列や連想配列、またはイテレータを巡回する場合、Xforマクロを使う。\n
 \code
 Xfor(val, array){
     val.p;
@@ -263,43 +263,43 @@ Xfor2(key, val, map){
     val.p;
 }
 \endcode
-����Xfor�̒��ł͕��ʂ�break�ȂǂŔ����o�����Ƃ��ł���B\n
-�܂��Afirst_step�Ƃ����A���[�v�̈�ԍŏ����ǂ��������߂����[�J���ϐ�����`����Ă��Ďg�����Ƃ��ł���B\n
+このXforの中では普通にbreakなどで抜け出すことができる。\n
+また、first_stepという、ループの一番最初かどうかをしめすローカル変数も定義されていて使うことができる。\n
 \n
-�Z�J���_���L�[�t�ŌĂяo���ɂ�Any::send2���g���B\n
+セカンダリキー付で呼び出すにはAny::send2を使う。\n
 */
 
 
-/** \page userefmember �����o�̎擾
-����ɂ�Any::member�����o�֐����g���܂��B\n
-�擾�����������o�̖��O��������Ƃ��ēn���B\n    
-�����擾�����������o�������ꍇ�Aundefined���Ԃ�B\n
-�����o�̎擾�Ɋւ��Ă�C++���x���ł͗�O�̓Z�b�g����Ȃ��B\n  
+/** \page userefmember メンバの取得
+これにはAny::memberメンバ関数を使います。\n
+取得したいメンバの名前を第一引数として渡す。\n    
+もし取得したいメンバが無い場合、undefinedが返る。\n
+メンバの取得に関してはC++レベルでは例外はセットされない。\n  
 \code 
-// �N���X��foo�����o�����o��
+// クラスのfooメンバを取り出す
 AnyPtr foo = cls->member(Xid(foo));
 
-// �N���X��bar�����o�����o��
+// クラスのbarメンバを取り出す
 AnyPtr bar = lib()->member(Xid(bar)):
 \endcode
 */
 
-/** \page useat �z��A�A�z�z��̗v�f�擾�A�ݒ�
-Array::at, Map::at���g���āA�v�f�̎擾���s���B\n
+/** \page useat 配列、連想配列の要素取得、設定
+Array::at, Map::atを使って、要素の取得を行う。\n
 \code
 ret = ary->at(0);
 ret = map->at("key");
 \endcode
  
-�l�̐ݒ�́AArray::set_at, Map::set_at���s���B\n
+値の設定は、Array::set_at, Map::set_atを行う。\n
 \code
 any->set_at(0, 10);
 map->set_at("test", 5);
 \endcode
 */
 
-/** \page usereturn Xtal����I�u�W�F�N�g���󂯎��
-Xtal����l��C++�ɕԂ��ɂ̓g�b�v���x����return�����g���B\n
+/** \page usereturn Xtalからオブジェクトを受け取る
+Xtalから値をC++に返すにはトップレベルでreturn文を使う。\n
 \code
 // test.xtal
 return 100 + 20;
@@ -307,10 +307,10 @@ return 100 + 20;
  
 \code
 // C++
-// test.xtal�t�@�C�������s���Areturn���ꂽ�I�u�W�F�N�g�𓾂�
+// test.xtalファイルを実行し、returnされたオブジェクトを得る
 AnyPtr ret = load("test.xtal");
 
-// ��O���������Ă��Ȃ����`�F�b�N
+// 例外が発生していないかチェック
 XTAL_CATCH_EXCEPT(e){
     stderr_stream()->println(e);
 }
@@ -320,7 +320,7 @@ else{
 }
 \endcode
 
-����return���������ꍇ�Atoplevel�I�u�W�F�N�g�������I�ɕԂ����B\n
+もしreturn文が無い場合、toplevelオブジェクトが自動的に返される。\n
 \code
 // test.xtal
 hoo: 100;
@@ -334,23 +334,23 @@ class Vec{
  
 \code
 // C++
-// test.xtal�t�@�C�������s���Areturn���ꂽ�I�u�W�F�N�g�𓾂�
+// test.xtalファイルを実行し、returnされたオブジェクトを得る
 AnyPtr ret = load("test.xtal");
 
-// ��O���������Ă��Ȃ����`�F�b�N
+// 例外が発生していないかチェック
 XTAL_CATCH_EXCEPT(e){
     stderr_stream()->println(e);
 }
 else{
-	// toplevel��hoo���擾����
+	// toplevelのhooを取得する
 	int value = ret->member(Xid(hoo))->to_i();
     printf("%d\n", value);
 }
 \endcode
 */
 
-/** \page usecppclass C++�̃N���X���o�C���h����
-\section secvec2d 2�����̃x�N�g���N���X��Xtal�Ŏg����悤�ɂ����
+/** \page usecppclass C++のクラスをバインドする
+\section secvec2d 2次元のベクトルクラスをXtalで使えるようにする例
 \code
 // test.cpp
 class Vector2D{
@@ -371,25 +371,25 @@ public:
     }
 };
 
-// XTAL_PREBIND�̒��Ōp���֌W�̓o�^�A�R���X�g���N�^�̓o�^�A�������閼�O��Ԃ��w�肷��
+// XTAL_PREBINDの中で継承関係の登録、コンストラクタの登録、所属する名前空間を指定する
 XTAL_PREBIND(Vector2D){
-	Xregister(Lib); // lib��Vector2D�Ƃ������O�œo�^����
+	Xregister(Lib); // libにVector2Dという名前で登録する
     
-    // �R���X�g���N�^�̓o�^
+    // コンストラクタの登録
 	Xdef_ctor2(float, float);
-		Xparam(x, 0); // �I�v�V���i������x
-		Xparam(y, 0); // �I�v�V���i������y
+		Xparam(x, 0); // オプショナル引数x
+		Xparam(y, 0); // オプショナル引数y
 }
 
-// XTAL_BIND�̒��Ń����o�֐��̓o�^���s��
+// XTAL_BINDの中でメンバ関数の登録を行う
 XTAL_BIND(Vector2D){
-    // it��ClassPtr�ł���B
-    // it->��Class�N���X�̃����o�֐����Ăׂ�
+    // itはClassPtrである。
+    // it->でClassクラスのメンバ関数が呼べる
 
-    Xdef_var(x); // �����o�ϐ�x�̃Z�b�^�A�Q�b�^��o�^
-    Xdef_var(y); // �����o�ϐ�y�̃Z�b�^�A�Q�b�^��o�^
-    Xdef_method(length); // �����o�֐�length��o�^
-    Xdef_method(normalize); // �����o�֐�length��o�^
+    Xdef_var(x); // メンバ変数xのセッタ、ゲッタを登録
+    Xdef_var(y); // メンバ変数yのセッタ、ゲッタを登録
+    Xdef_method(length); // メンバ関数lengthを登録
+    Xdef_method(normalize); // メンバ関数lengthを登録
 }
 \endcode
 
@@ -401,9 +401,9 @@ vec.normalize;
 vec.length.p;
 \endcode
 
-\section secfoo �p���֌W������N���X���o�C���h����
-C++�̃N���X�Ɍp���֌W������ꍇ�AClass::inherit���g���āA�p���֌W��o�^����K�v������܂��B\n
-��������Ȃ���΁A�L���X�g�Ɏ��s���܂��B\n
+\section secfoo 継承関係があるクラスをバインドする
+C++のクラスに継承関係がある場合、Class::inheritを使って、継承関係を登録する必要があります。\n
+これをしなければ、キャストに失敗します。\n
 \code
 class Foo{
 public:
@@ -418,7 +418,7 @@ public:
 };
 
 XTAL_PREBIND(Foo){
-	Xregister(Lib); // lib��Foo�Ƃ������O�œo�^����
+	Xregister(Lib); // libにFooという名前で登録する
 
     Xdef_ctor1(int);
 		Xparam(value, 0);
@@ -429,52 +429,52 @@ XTAL_BIND(Foo){
 }
 
 XTAL_PREBIND(SubFoo){
- 	Xregister(SubFoo); // lib��Foo�Ƃ������O�œo�^����
+ 	Xregister(SubFoo); // libにFooという名前で登録する
 	
-   // Xinherit�Ōp���֌W������
+   // Xinheritで継承関係を結ぶ
     Xinherit(Foo);
 	
-	// �R���X�g���N�^���`����
+	// コンストラクタを定義する
     Xdef_ctor0();
 }
 
 void test(){
-    // ���s���Č��ʂ��󂯎��
+    // 実行して結果を受け取る
     AnyPtr ret = load("test.xtal");
     
-    // ������ret�ɂ�SubFoo�N���X�̃C���X�^���X�������Ă���
+    // ここでretにはSubFooクラスのインスタンスが入っている
     
-    // ptr_cast��SubFoo�Ƃ��Ď��o����
+    // ptr_castでSubFooとして取り出せる
     SmartPtr<SubFoo> subfooref = ptr_cast<SubFoo>(ret);
     
-    // SubFoo�ƌp���֌W������Foo�Ƃ��Ă����o����
+    // SubFooと継承関係を結んだFooとしても取り出せる
     SmartPtr<Foo> fooref = ptr_cast<Foo>(ret);
 }
 \endcode
 
 \code
 // test.xtal
-// lib�I�u�W�F�N�g�ɓo�^���ꂽ�ASubFoo�N���X�����o���ăC���X�^���X�𐶐�����B
+// libオブジェクトに登録された、SubFooクラスを取り出してインスタンスを生成する。
 subfoo: lib::SubFoo(); 
-return subfoo; // subfoo��return����
+return subfoo; // subfooをreturnする
 \endcode
 */
 
-/** \page usebytecode �o�C�g�R�[�h�ɃR���p�C������
+/** \page usebytecode バイトコードにコンパイルする
 \code
-// �t�@�C�����R���p�C������
+// ファイルをコンパイルする
 if(CodePtr code = compile_file("test.xtal")){
-    // test.xtalc�Ƀo�C�g�R�[�h��ۑ�����
+    // test.xtalcにバイトコードを保存する
     FileStreamPtr fs = xnew<FileStream>("test.xtalc", "w");
     fs->serialize(code);
 }
 \endcode
 
 \code
-// �o�C�g�R�[�h��ǂݏo��
+// バイトコードを読み出す
 FileStreamPtr fs = xnew<FileStream>("test.xtalc", "r");
 if(CodePtr code = ptr_cast<Code>(fs->deserialize())){
-    // ���s����
+    // 実行する
     code->call();
 }
 \endcode

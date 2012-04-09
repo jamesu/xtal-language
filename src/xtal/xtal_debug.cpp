@@ -504,7 +504,7 @@ ArrayPtr CommandReciver::make_debug_object(const AnyPtr& v, int depth){
 
 	if(const MapPtr& a = ptr_cast<Map>(v)){
 		MapPtr children = xnew<Map>();
-		Xfor2(key, val, v){
+        Xfor2(key, val, a){
 			children->set_at(key->to_s(), make_debug_object(val, depth-1));
 		}
 		ret->set_at(2, children);
@@ -652,19 +652,23 @@ CommandSender::CommandSender(){
 
 void CommandSender::add_eval_expr(const StringPtr& expr){
 	exprs_->set_at(expr, xnew<ExprValue>());
-	
-	ArrayPtr a = xnew<Array>();
-	a->push_back(Xid(add_eval_expr));
-	a->push_back(expr->intern());
-	a->push_back(eval_compile(expr));
-	stream_->serialize(a);
+
+    if(stream_){
+        ArrayPtr a = xnew<Array>();
+        a->push_back(Xid(add_eval_expr));
+        a->push_back(expr->intern());
+        a->push_back(eval_compile(expr));
+        stream_->serialize(a);
+    }
 }
 
 void CommandSender::remove_eval_expr(const StringPtr& expr){
-	ArrayPtr a = xnew<Array>();
-	a->push_back(Xid(remove_eval_expr));
-	a->push_back(expr->intern());
-	stream_->serialize(a);
+    if(stream_){
+        ArrayPtr a = xnew<Array>();
+        a->push_back(Xid(remove_eval_expr));
+        a->push_back(expr->intern());
+        stream_->serialize(a);
+    }
 }
 
 ArrayPtr CommandSender::eval_expr_result(const StringPtr& expr){

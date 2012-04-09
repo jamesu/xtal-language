@@ -21,7 +21,7 @@
 	if(bool not_end = true)\
 	for(::xtal::BlockValueHolder1 block_value_holder(target, not_end); not_end; not_end=false)\
 	for(const ::xtal::AnyPtr& var = block_value_holder.values[0]; not_end; not_end=false)\
-	for(bool first_step=not_end=::xtal::block_next(block_value_holder, true); XTAL_UNUSED_VAR(first_step), not_end; not_end=::xtal::block_next(block_value_holder, false), first_step=false)
+	for(bool first_step=not_end=::xtal::block_next(block_value_holder, true); XTAL_UNUSED_VAR(var), XTAL_UNUSED_VAR(first_step), not_end; not_end=::xtal::block_next(block_value_holder, false), first_step=false)
 
 /**
 * \hideinitializer
@@ -37,7 +37,7 @@
 	if(bool not_end = true)\
 	for(::xtal::BlockValueHolder2 block_value_holder(target, not_end); not_end; not_end=false)\
 	for(const ::xtal::AnyPtr& var1 = block_value_holder.values[0], &var2 = block_value_holder.values[1]; not_end; not_end=false)\
-	for(bool first_step=not_end=::xtal::block_next(block_value_holder, true); XTAL_UNUSED_VAR(first_step), not_end; not_end=::xtal::block_next(block_value_holder, false), first_step=false)
+	for(bool first_step=not_end=::xtal::block_next(block_value_holder, true); XTAL_UNUSED_VAR(var1), XTAL_UNUSED_VAR(var2), XTAL_UNUSED_VAR(first_step), not_end; not_end=::xtal::block_next(block_value_holder, false), first_step=false)
 
 /**
 * \hideinitializer
@@ -53,7 +53,7 @@
 	if(bool not_end = true)\
 	for(::xtal::BlockValueHolder3 block_value_holder(target, not_end); not_end; not_end=false)\
 	for(const ::xtal::AnyPtr& var1 = block_value_holder.values[0], &var2 = block_value_holder.values[1], &var3 = block_value_holder.values[2]; not_end; not_end=false)\
-	for(bool first_step=not_end=::xtal::block_next(block_value_holder, true); XTAL_UNUSED_VAR(first_step), not_end; not_end=::xtal::block_next(block_value_holder, false), first_step=false)
+	for(bool first_step=not_end=::xtal::block_next(block_value_holder, true); XTAL_UNUSED_VAR(var1), XTAL_UNUSED_VAR(var2), XTAL_UNUSED_VAR(var3), XTAL_UNUSED_VAR(first_step), not_end; not_end=::xtal::block_next(block_value_holder, false), first_step=false)
 
 
 /**
@@ -93,7 +93,7 @@
 #define Xfor_unchecked_cast(var, target) \
 	if(bool not_end = true)\
 	for(::xtal::BlockValueHolder1 block_value_holder(target, not_end); not_end; not_end=false)\
-	for(bool first_step=not_end=::xtal::block_next(block_value_holder, true); XTAL_UNUSED_VAR(first_step), not_end; not_end=::xtal::block_next(block_value_holder, false), first_step=false)\
+	for(bool first_step=not_end=::xtal::block_next(block_value_holder, true); XTAL_UNUSED_VAR(var), XTAL_UNUSED_VAR(first_step), not_end; not_end=::xtal::block_next(block_value_holder, false), first_step=false)\
 	if(var = ::xtal::tricky_unchecked_cast(block_value_holder.values[0], (void (*)(var##e))0))
 
 /**

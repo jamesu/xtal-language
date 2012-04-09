@@ -519,7 +519,14 @@ private:
 
 	void execute();
 
-	void upsize_variables(uint_t upsize);
+	void upsize_variables(uint_t upsize){
+		if(XTAL_UNLIKELY(variables_.size()<XTAL_VM_variables_top()+upsize+129)){
+			upsize_variables_detail(upsize);
+		}
+		variables_top_ += upsize;
+	}
+
+	void upsize_variables_detail(uint_t upsize);
 
 public:
 	ArgumentsPtr inner_make_arguments(Method* fun);

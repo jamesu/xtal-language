@@ -119,8 +119,9 @@ public:
 	void upsize(size_t us){		
 		XTAL_ASSERT(current_+us>=current_);
 		current_+=us;
-		if(current_>=end_)
+		if(XTAL_UNLIKELY(current_>=end_)){
 			upsize_detail(us);
+		}
 	}
 
 	size_t size() const{
@@ -357,7 +358,7 @@ void FastStack<T>::insert(size_t i, const T& v){
 
 template<class T>
 void FastStack<T>::reserve(size_t capa){
-	if(capa<=capacity()){
+	if(XTAL_LIKELY(capa<=capacity())){
 		return;
 	}
 
@@ -463,8 +464,9 @@ public:
 	void upsize(size_t us){		
 		XTAL_ASSERT(current_+us>=current_);
 		current_+=us;
-		if(current_>=end_)
+		if(current_>=end_){
 			upsize_detail(us);
+		}
 	}
 
 	size_t size() const{

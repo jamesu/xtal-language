@@ -158,7 +158,7 @@ CodePtr CodeBuilder::compile_toplevel(const ExprPtr& ae, const StringPtr& source
 	info.variable_size = 0;
 	info.variable_identifier_offset = 0;
 
-	int esize = scope_stack_.size();
+	//int esize = scope_stack_.size();
 	scope_begin(null);
 
 	info.max_variable = (u16)current_scope().register_max;
@@ -186,7 +186,7 @@ CodePtr CodeBuilder::compile_toplevel(const ExprPtr& ae, const StringPtr& source
 		result_->xfun_info_table_[fun_info_table_number].flags |= FunInfo::FLAG_SCOPE_CHAIN;
 	}
 
-	int eesize = scope_stack_.size();
+    //int eesize = scope_stack_.size();
 	scope_end(null);
 	delete_scope(root);
 

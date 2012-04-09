@@ -1,26 +1,26 @@
 
 /**
-* \biref xtal�̃��C�u����
+* \biref xtalのライブラリ
 */
 namespace lib{
 
     /**
-    * \brief �r���g�C���̃N���X��֐�
+    * \brief ビルトインのクラスや関数
     */
     namespace builtin{
     
         /**
-        * \brief �t�@�C���V�X�e���̃N���X��֐�
+        * \brief ファイルシステムのクラスや関数
         */
         namespace filesystem{}
         
         /**
-        * \brief �f�o�b�O�̃N���X��֐�
+        * \brief デバッグのクラスや関数
         */
         namespace debug{}
         
         /**
-        * \brief xpeg�̃N���X��֐�
+        * \brief xpegのクラスや関数
         */
         namespace xpeg{}
     }
@@ -30,23 +30,23 @@ namespace lib{
 
 
 /** \mainpage Programing Xtal
-Xtal�́A��ɃQ�[������p�r�̂��߂ɁAC++�ɑg�ݍ��݁A�A�g�����Ďg�����߂ɊJ�����ꂽ����ł��B\n
-��{�I��Xtal��P�̂Ŏg�����Ƃ͖����AC++�Ƒg�ݍ��킹�Ďg���܂��B\n
-���̃h�L�������g���AC++���g�p�ł��邱�Ƃ�O��ɋL�q����Ă��܂��B\n
+Xtalは、主にゲーム製作用途のために、C++に組み込み、連携させて使うために開発された言語です。\n
+基本的にXtalを単体で使うことは無く、C++と組み合わせて使います。\n
+このドキュメントも、C++を使用できることを前提に記述されています。\n
 \n
-Xtal��Ruby, Python, Lua, NewtonScript, ECMAScript���A�ƂĂ������̌�����Q�l�ɂ��č���܂����B\n
+XtalはRuby, Python, Lua, NewtonScript, ECMAScript等、とても多くの言語を参考にして作られました。\n
 \n
 
-\section feature ����
+\section feature 特徴
 
-- �N���X�x�[�X�I�u�W�F�N�g�w�� 
-- C++ like�ȍ\�� 
-- C++�ɗe�Ղɑg�ݍ��߂� 
-- ���I�Ȍ^ 
-- �N���[�W�� 
-- �t�@�C�o�[ (�R���[�`���A�}�C�N���X���b�h) 
-- byte code�ɂ�鉼�z�}�V���쓮 
-- native thread�Ή� 
+- クラスベースオブジェクト指向 
+- C++ likeな構文 
+- C++に容易に組み込める 
+- 動的な型 
+- クロージャ 
+- ファイバー (コルーチン、マイクロスレッド) 
+- byte codeによる仮想マシン駆動 
+- native thread対応 
 - MultiVM 
 
 \section xindexsec Xtal
@@ -58,17 +58,17 @@ Xtal��Ruby, Python, Lua, NewtonScript, ECMAScript���A�ƂĂ������̌�����Q�l�ɂ��
 - \subpage usepage
 */
 
-/** \page xtalapis Xtal�̕W���N���X��֐�
-�ȉ����Q�Ƃ��Ă��������B\n
-- \link lib::builtin Xtal�̕W���N���X��֐� \endlink
+/** \page xtalapis Xtalの標準クラスや関数
+以下を参照してください。\n
+- \link lib::builtin Xtalの標準クラスや関数 \endlink
 */
 
-/** \page cppapis C++��API
-�ȉ����Q�Ƃ��Ă��������B\n
-- \link xtal C++��API \endlink
+/** \page cppapis C++のAPI
+以下を参照してください。\n
+- \link xtal C++のAPI \endlink
 */
 
-/** \page syntax Xtal����\��
+/** \page syntax Xtal言語構文
 - \subpage comment
 - \subpage identifier
 - \subpage reserved
@@ -78,7 +78,7 @@ Xtal��Ruby, Python, Lua, NewtonScript, ECMAScript���A�ƂĂ������̌�����Q�l�ɂ��
 - \subpage overloadable_operator
 */
 
-/** \page expr ��
+/** \page expr 式
 - \subpage pseudovar
 - \subpage numberlit
 - \subpage string
@@ -92,7 +92,7 @@ Xtal��Ruby, Python, Lua, NewtonScript, ECMAScript���A�ƂĂ������̌�����Q�l�ɂ��
 - \subpage operator
 */
 
-/** \page operator ���Z�q
+/** \page operator 演算子
 - \subpage call
 - \subpage method_call
 - \subpage refmember
@@ -103,7 +103,7 @@ Xtal��Ruby, Python, Lua, NewtonScript, ECMAScript���A�ƂĂ������̌�����Q�l�ɂ��
 - \subpage operator_priority
 */
 
-/** \page sentence ��
+/** \page sentence 文
 - \subpage expr_sentence
 - \subpage assign
 - \subpage op_assign
@@ -112,13 +112,13 @@ Xtal��Ruby, Python, Lua, NewtonScript, ECMAScript���A�ƂĂ������̌�����Q�l�ɂ��
 - \subpage except
 */
 
-/** \page tutorial Xtal����N�C�b�N�`���[�g���A��
-\section secdebugprint �f�o�b�O�v�����g
+/** \page tutorial Xtal言語クイックチュートリアル
+\section secdebugprint デバッグプリント
 \code
 100.p;
 "test".p;
 \endcode
-\section secvar �ϐ�
+\section secvar 変数
 \code
 foo: 100;
 bar: 200;
@@ -128,7 +128,7 @@ bar = 20;
 (foo - bar).p; //=> -10
 \endcode
 
-\section secmvar ���d��`�E���d���
+\section secmvar 多重定義・多重代入
 \code
 foo, bar: 100, 200;
 (foo - bar).p; //=> -100
@@ -136,7 +136,7 @@ foo, bar = 10, 20;
 (foo - bar).p; //=> -10
 \endcode
 
-\section secarray �z��
+\section secarray 配列
 \code
 array: [];
 array.push_back(100);
@@ -144,14 +144,14 @@ array.push_back(200);
 array.p; //=> [100, 200]
 \endcode
 
-\section secmap �A�z�z��
+\section secmap 連想配列
 \code
 map: [:];
 map["test"] = 100;
 map["test"].p; //=> 100
 \endcode
 
-\section secblock �u���b�N
+\section secblock ブロック
 \code
 array: [10, 20, 30];
 array{
@@ -162,7 +162,7 @@ array{
 //=> 30
 \endcode
 
-\section secfun �֐�
+\section secfun 関数
 \code
 fun foo(a, b){
     return a - b;
@@ -170,13 +170,13 @@ fun foo(a, b){
 foo(15, 5).p; //=> 10
 \endcode
 
-\section seclambda �����_
+\section seclambda ラムダ
 \code
 lambda: |a, b| a + b;
 lambda(10, 20); //=> 30
 \endcode
 
-\section secclass �N���X
+\section secclass クラス
 \code
 class Bar{
     _boo;
@@ -197,23 +197,23 @@ bar.say; //=> boo!
 */
 
 
-/** \page comment �R�����g
-�R�����g��C++�Ɠ���̋L�q���\�ł��B\n
+/** \page comment コメント
+コメントはC++と同一の記述が可能です。\n
 \n
-����ɉ����A\#!�Ŏn�߂��s�R�����g���\�ł��B\n
+それに加え、\#!で始める一行コメントも可能です。\n
 \code
 #! this is comment
 \endcode
-#�P�̂ł̓R�����g�ƂȂ�Ȃ����Ƃɒ��ӂ��Ă��������B\n
+#単体ではコメントとならないことに注意してください。\n
 */
 
-/** \page identifier ���ʎq
-�ϐ����̓A���t�@�x�b�g�A�����A�A���_�[�X�R�A���g���܂��B �����������Ŏn�܂�ϐ����͔F�߂��܂���B\n
-�����R�[�h�̐ݒ肪�K�؂ł���΁A���{����g�p���邱�Ƃ��ł��܂��B\n
-�A���_�[�X�R�A�Ŏn�܂閼�O�̓C���X�^���X�ϐ��ɂ����g���܂���B\n
-�\���Ɠ������ʎq�͎g�p���邱�Ƃ��o���܂���B\n
+/** \page identifier 識別子
+変数名はアルファベット、数字、アンダースコアを使えます。 ただし数字で始まる変数名は認められません。\n
+文字コードの設定が適切であれば、日本語も使用することができます。\n
+アンダースコアで始まる名前はインスタンス変数にしか使えません。\n
+予約語と同じ識別子は使用することが出来ません。\n
 \n
-�������A.���Z�q��::���Z�q�̒���̏ꍇ�́A�\���ł��g�p���邱�Ƃ��o���܂��B\n
+ただし、.演算子と::演算子の直後の場合は、予約語でも使用することが出来ます。\n
 
 \code
 test: 100; // ok
@@ -222,25 +222,25 @@ alpha_0_test: 300; // ok
 \endcode
 
 \code
-class: 400; // bad! class�͗\���
-if: 500; // bad! if�͗\���
+class: 400; // bad! classは予約語
+if: 500; // bad! ifは予約語
 \endcode
 
 \code
-100.class; // ok .���Z�q�̌�Ȃ̂ŗ\��ꂪ�g����
-Int::if: 600; // ok ::���Z�q�̌�Ȃ̂ŗ\��ꂪ�g����
+100.class; // ok .演算子の後なので予約語が使える
+Int::if: 600; // ok ::演算子の後なので予約語が使える
 \endcode
 
-�܂��A�����R�[�h�̐ݒ肪�������s���Ă���Ȃ�΁A���{��̎��ʎq���g�����Ƃ��o���܂��B \n
+また、文字コードの設定が正しく行われているならば、日本語の識別子も使うことが出来ます。 \n
 
 \code
-������: 100; // ok
+あいう: 100; // ok
 \endcode
 
 */
 
-/** \page reserved �\���
-�\���̈ꗗ�ł��B \n
+/** \page reserved 予約語
+予約語の一覧です。 \n
 
 - if 
 - for 
@@ -283,23 +283,23 @@ Int::if: 600; // ok ::���Z�q�̌�Ȃ̂ŗ\��ꂪ�g����
 - private
 */
 
-/** \page defvar �ϐ���`
-\section local ���[�J���ϐ��̒�`
+/** \page defvar 変数定義
+\section local ローカル変数の定義
 
-���݂̃X�R�[�v�ɕϐ����`���镶�ł��B\n
-�����l�𔺂�Ȃ��ϐ��̒�`�͏o���܂���B\n 
-�ϐ��ɂ͐ÓI�Ȍ^�͂Ȃ��A�Ȃ�̎�ނ̃f�[�^�̎Q�Ƃł��ێ��o���܂��B\n 
+現在のスコープに変数を定義する文です。\n
+初期値を伴わない変数の定義は出来ません。\n 
+変数には静的な型はなく、なんの種類のデータの参照でも保持出来ます。\n 
 \code
 foo: 111;
 bar: "test";
 foobar: null;
 \endcode
 
-\section defmultivar ���[�J���ϐ��̑��d��` 
+\section defmultivar ローカル変数の多重定義 
 
-�E�ӂɑ��l��Ԃ���������ꍇ�A������΂炵�Ď󂯎�邽�߂ɁA���[�J���ϐ��̑��d��`���ł��܂��B\n
-�����E�ӂ̒l�̕��������ꍇ�A���ӍŌ�̕ϐ��ɑ��l�Ƃ��đ������܂��B\n
-�E�ӂ̒l�̕������Ȃ��ꍇ�Aundefined�Ŗ��߂��܂��B\n
+右辺に多値を返す式がある場合、それをばらして受け取るために、ローカル変数の多重定義ができます。\n
+もし右辺の値の方が多い場合、左辺最後の変数に多値として代入されます。\n
+右辺の値の方が少ない場合、undefinedで埋められます。\n
 \code
 {
     a, b: 0, 1;
@@ -318,121 +318,121 @@ foobar: null;
 \endcode
 */
 
-/** \page pseudovar �[���ϐ�
-�ϐ��Q�Ƃ̂悤�Ɉ�����I�u�W�F�N�g�ł��B
+/** \page pseudovar 擬似変数
+変数参照のように扱えるオブジェクトです。
 
 \section null 
-�����������Ƃ�\���I�u�W�F�N�g�ł��B\n
-if���Ȃǂ̏������ŁAnull�́u�U�v�ƂȂ�܂��B\n
+何も無いことを表すオブジェクトです。\n
+if文などの条件式で、nullは「偽」となります。\n
 
 \section true 
-�u�^�v��\���I�u�W�F�N�g�ł��B\n
-�������Anull��false��undefined�ȊO�̑S�ẴI�u�W�F�N�g�́u�^�v�ł���̂ŁA���ɓK���Ȓl�������ꍇ�ɂ���������g�p���邱�ƂɂȂ�ł��傤�B\n
+「真」を表すオブジェクトです。\n
+ただし、nullとfalseとundefined以外の全てのオブジェクトは「真」であるので、他に適当な値が無い場合にだけこれを使用することになるでしょう。\n
 
 \section false 
-�u�U�v��\���I�u�W�F�N�g�ł��B \n
-if���Ȃǂ̏������ŁAfalse�́u�U�v�ƂȂ�܂��B \n
+「偽」を表すオブジェクトです。 \n
+if文などの条件式で、falseは「偽」となります。 \n
 
 \section undefined 
-���l��\���I�u�W�F�N�g�ł��B
-�Ⴆ�� ::?���Z�q �� .?���Z�q �ŁA���݂��Ȃ������o�����o�����Ƃ����Ƃ��ɕԂ����I�u�W�F�N�g�ł��B\n
-if���Ȃǂ̏������ŁAundefined�́u�U�v�ƂȂ�܂��B\n
+無値を表すオブジェクトです。
+例えば ::?演算子 や .?演算子 で、存在しないメンバを取り出そうとしたときに返されるオブジェクトです。\n
+if文などの条件式で、undefinedは「偽」となります。\n
 
 \section callee 
-�����s���Ă���֐����g���w���Ă܂��B ����Ď��̂悤�ɂ��邱�ƂōċA�Ăяo�����\�ł��B\n
+今実行している関数自身を指してます。 よって次のようにすることで再帰呼び出しが可能です。\n
 \code
 callee();
 \endcode
 
 \section lib 
-���C�u�����̃��[�h�A�o�^���i��V���O���g���N���X�I�u�W�F�N�g�ł��B\n
-lib::foo �Ƃ���ƁAfoo.xtal�t�@�C�����������A�R���p�C���A���s���āA���̃t�@�C����return���ꂽ�l��ۑ����܂��B\n
-��x�ڈȍ~�̃A�N�Z�X�͂��̕ۑ����ꂽ�l���Ԃ���܂��B\n
+ライブラリのロード、登録を司るシングルトンクラスオブジェクトです。\n
+lib::foo とすると、foo.xtalファイルを検索し、コンパイル、実行して、そのファイルでreturnされた値を保存します。\n
+二度目以降のアクセスはその保存された値が返されます。\n
 \code
-// foo.xtal��ǂݍ��݁Areturn���ꂽ�l��foo�ϐ����`
+// foo.xtalを読み込み、returnされた値をfoo変数を定義
 foo: lib::foo; 
 
-// ����foo.xtal�͓ǂݍ��܂�Ă���̂ŁA�ۑ����ꂽ�l��hoge�ϐ����`����B
+// 既にfoo.xtalは読み込まれているので、保存された値でhoge変数を定義する。
 hoge: lib::foo; 
 \endcode
 
-��̂悤�ȃt�@�C���ǂݍ��݈ȊO�ɂ��Alib�I�u�W�F�N�g�Ƀ����o�𒼐ڒ�`���邱�Ƃ��\�ł��B\n
+上のようなファイル読み込み以外にも、libオブジェクトにメンバを直接定義することも可能です。\n
 \code
 lib::foo: "foo!";
 lib::foo.p; //=> foo!
 \endcode
 
-append_load_path���\�b�h���g���ƁA�����p�X�̒ǉ����o���܂��B\n
+append_load_pathメソッドを使うと、検索パスの追加が出来ます。\n
 \code
 lib.append_load_path("library")
 \endcode
 
 \section filelocal
-���̃t�@�C���ŗL�̂̃g�b�v���x�����w�����O��ԓI�Ɉ�����V���O���g���N���X�I�u�W�F�N�g�ł��B \n
-�ÓI�Ɍ�����Ȃ��ϐ��Q�Ƃ́Afilelocal���猟������܂��B\n
-�܂��Afilelocal��builtin�I�u�W�F�N�g��inherit���Ă���̂ŁAbuiltin�ɒ�`����Ă���֐��܂��̓N���X�������I�Ɍ����ΏۂƂȂ�܂��B\n
+そのファイル固有ののトップレベルを指す名前空間的に扱われるシングルトンクラスオブジェクトです。 \n
+静的に見つからない変数参照は、filelocalから検索されます。\n
+また、filelocalはbuiltinオブジェクトをinheritしているので、builtinに定義されている関数またはクラスも自動的に検索対象となります。\n
 \code
-println(foo); // filelocal::println(filelocal::foo); �Ɠ��`
+println(foo); // filelocal::println(filelocal::foo); と同義
 \endcode
 */
 
 /*
-\section defmember �����o��`�� 
+\section defmember メンバ定義文 
 
-����:
+書式:
 \code
-�N���X��Ԃ��� :: ���ʎq : �� ; 
+クラスを返す式 :: 識別子 : 式 ; 
 \endcode
 
-�����̃N���X�Ƀ��\�b�h�Ȃǂ��`����\���ł��B\n
-��:
+既存のクラスにメソッドなどを定義する構文です。\n
+例:
 \code
-// �����̃N���X�Ɏ��g��2�{�̐���Ԃ����\�b�h��ǉ�
+// 整数のクラスに自身を2倍の数を返すメソッドを追加
 Integer::x2: method(){
     return this*2;
 }
 100.x2.p; //=> 200
 \endcode
 
-���ɓ����̃����o����`����Ă���ꍇ�A��O���������܂��B \n
+既に同名のメンバが定義されている場合、例外が発生します。 \n
 */
 
-/* \page numberlit ���l���e����
-\section integer �������e���� 
-�����𐶐����鎮�͎��̂悤�ɋL�q���܂��B\n
+/* \page numberlit 数値リテラル
+\section integer 整数リテラル 
+整数を生成する式は次のように記述します。\n
 \code
 0
 123
 58325
 \endcode
-���₷���悤�ɓr���ɃA���_�[�o�[�����邱�Ƃ��o���܂��B\n
+見やすいように途中にアンダーバーを入れることも出来ます。\n
 \code
 1_234_567
 \endcode
 
-\subsection hex 16�i���������e���� 
+\subsection hex 16進数整数リテラル 
 \code
 0x3f
 0Xfd_2A
 \endcode
 
-\subsection bin 2�i���������e����
+\subsection bin 2進数整数リテラル
 \code
 0b1111
 0B1111_0011
 \endcode
 
-\section float ���������_�����e����
-���������_���𐶐����鎮�͎��̂悤�ɋL�q���܂��B\n
+\section float 浮動小数点数リテラル
+浮動小数点数を生成する式は次のように記述します。\n
 
 \code
 12.3
 0.56
 \endcode
 
-e�܂���E���g���A10���Ƃ���w���\�L���o���܂��B e�͑啶������������܂���B\n
-�܂��A�s���I�h(.)�̒����e��u�����Ƃ͏o���܂���B \n
-����̓����o�Q�Ɖ��Z�q�Ƃ��ăp�[�X����܂��B e�̑O��0��u���Ă��������B\n
+eまたはEを使い、10を底とする指数表記も出来ます。 eは大文字小文字問われません。\n
+また、ピリオド(.)の直後にeを置くことは出来ません。 \n
+それはメンバ参照演算子としてパースされます。 eの前に0を置いてください。\n
 
 \code
 50.0e-5
@@ -440,111 +440,111 @@ e�܂���E���g���A10���Ƃ���w���\�L���o���܂��B e�͑啶������������܂���B\n
 56.0e10
 \endcode
 
-\section suffix �T�t�B�b�N�X
-�������e�����ƕ��������_�����e�����͎��̃T�t�B�b�N�X�����邱�Ƃ��o���܂��B\n
-- f ���������_�����e�����Ƃ��Ĉ����� 
-- F ���� 
+\section suffix サフィックス
+整数リテラルと浮動小数点数リテラルは次のサフィックスをつけることが出来ます。\n
+- f 浮動小数点数リテラルとして扱われる 
+- F 同上 
 
 \code
 10.5f
 255f
 \endcode
 
-���l�͂ǂ���ύX�s�\�I�u�W�F�N�g�ł��B \n
-���̂��� += ���Z�q�Ȃǂ� a = a + b; �Ɠ����Ӗ��ƂȂ�܂��B\n
+数値はどれも変更不能オブジェクトです。 \n
+そのため += 演算子などは a = a + b; と同じ意味となります。\n
 */
 
-/** \page string �����񃊃e����
-������𐶐����鎮�̓_�u���N�H�[�g(")�ŕ����������ŋL�q���܂��B\n
+/** \page string 文字列リテラル
+文字列を生成する式はダブルクォート(")で文字列を挟んで記述します。\n
 \code
 "String"
 \endcode
 
-�g�p�ł���G�X�P�[�v�V�[�P���X�͈ȉ��̂Ƃ���ł��B\n
-- \\b �o�b�N�X�y�[�X 
-- \\f ���y�[�W 
-- \\n ���s 
-- \\r ���A 
-- \\t �����^�u 
-- \\v �����^�u 
-- \\\\ �o�b�N�X���b�V�� (�~�L��) 
-- \\" ���p�� 
+使用できるエスケープシーケンスは以下のとおりです。\n
+- \\b バックスペース 
+- \\f 改ページ 
+- \\n 改行 
+- \\r 復帰 
+- \\t 水平タブ 
+- \\v 垂直タブ 
+- \\\\ バックスラッシュ (円記号) 
+- \\" 引用符 
 
-������͕ύX�s�\�I�u�W�F�N�g�ł��B \n
-���̂��� a ~= b; �Ƃ����A��������Z�q�́A a = a ~ b; �Ɠ����Ӗ��ƂȂ�܂��B\n
+文字列は変更不能オブジェクトです。 \n
+そのため a ~= b; という連結代入演算子は、 a = a ~ b; と同じ意味となります。\n
 \n
-�����͈ꕶ���̕�������g���ĕ\���܂��B�������e�����͑��݂��܂���B\n
+文字は一文字の文字列を使って表します。文字リテラルは存在しません。\n
 
-\section parcent %�L�@ 
+\section parcent %記法 
 
-Ruby�̂悤��%�L�@�����݂��܂��B\n
+Rubyのような%記法も存在します。\n
 \code
-%!This is a "pen"! // "This is a \"pen\"" �Ɠ�����
+%!This is a "pen"! // "This is a \"pen\"" と等しい
 \endcode
 
-!�̕����ɂ͍D����ASCII�̋L���������g�p�ł��܂��B\n
-�n�܂�̋L�������Ƃ��āA[ ( < { �̂ǂꂩ���g�����ꍇ�A�I��̋L���ɑΉ����� ] > ) } ���g���܂��B\n
-���ʂ��g�p�����ꍇ�A�����ł܂��������ʂ�����ƃl�X�g���܂��B\n
+!の部分には好きなASCIIの記号文字を使用できます。\n
+始まりの記号文字として、[ ( < { のどれかを使った場合、終りの記号に対応する ] > ) } を使います。\n
+括弧を使用した場合、内部でまた同じ括弧があるとネストします。\n
 
 \code
-%[ai[u]eo] // "ai[u]eo" �Ɠ�����
+%[ai[u]eo] // "ai[u]eo" と等しい
 \endcode
 
-�܂��A%%�L�@�ł́A%%�Ǝn�܂�̋L�������̊Ԃ̕����ɂ���ē��ʂȈӖ����t�^����܂��B\n
-- f �t�H�[�}�b�g������ 
-- t get text������ 
+また、%%記法では、%%と始まりの記号文字の間の文字によって特別な意味が付与されます。\n
+- f フォーマット文字列 
+- t get text文字列 
 
-\subsection �t�H�[�}�b�g������ 
-%%�̌�� f ������ƁA����̓t�H�[�}�b�g������ƂȂ�܂��B\n
+\subsection フォーマット文字列 
+%%の後に f を入れると、それはフォーマット文字列となります。\n
 
 \code
 format_object: %f!This %s a %s.!;
-// format_object�͓�̒l���󂯎��֐��ƂȂ�
+// format_objectは二つの値を受け取る関数となる
 
 format_object("is", "pen").p; // This is a pen. 
 \endcode
 
-Python�̂悤�ɁA%(name)s�Ƃ������ɋL�q���邱�ƂŁA���O�t���ɂ��邱�Ƃ��o���܂��B\n
+Pythonのように、%(name)sという風に記述することで、名前付きにすることも出来ます。\n
 \code
 format_object: %f[x=%(x)d, y=%(y)d];
 format_object(y: 10, x: 20).p; // x=20, y=10
 \endcode
 
-\subsection text get text������ 
-%%�̌�� t ������ƁA�����get text������ƂȂ�܂��B\n
+\subsection text get text文字列 
+%%の後に t を入れると、それはget text文字列となります。\n
 
 */
 
 
-/** \page array_map �z��A�A�z�z��
+/** \page array_map 配列、連想配列
 
-\section secarray �z�񐶐��� 
-�z��𐶐����鎮�͎��̂悤�ɋL�q���܂��B\n
+\section secarray 配列生成式 
+配列を生成する式は次のように記述します。\n
 \code
 []
 [0, 1, 2]
 ["str", 5, 5.6, ]
 \endcode
-�J���}�ɋ�؂�ꂽ�l��v�f�Ƃ����z��I�u�W�F�N�g�𐶐����܂��B \n
-�z��̗v�f�͂ǂ�ȃf�[�^�����݂��Ă����܂��܂���B \n
-�Ō�̃J���}�͕t���Ă��t���Ȃ��Ă����܂��܂���B\n
+カンマに区切られた値を要素とした配列オブジェクトを生成します。 \n
+配列の要素はどんなデータが混在してもかまいません。 \n
+最後のカンマは付けても付けなくてもかまいません。\n
 
-\section secmap �A�z�z�񐶐��� 
-�A�z�z��𐶐����鎮�͎��̂悤�ɋL�q���܂��B\n
+\section secmap 連想配列生成式 
+連想配列を生成する式は次のように記述します。\n
 \code
 [:]
 ["key":"value", 5:100]
 ["one":1, "two":2, ]
 \endcode
-�L�[�ƒl��:�ŋ�؂������̂��J���}(,)��؂�ɂ���ƘA�z�z��I�u�W�F�N�g�̐����ƂȂ�܂��B\n 
-�Ō�̃J���}�͕t���Ă��t���Ȃ��Ă����܂��܂���B\n
+キーと値を:で区切ったものをカンマ(,)区切りにすると連想配列オブジェクトの生成となります。\n 
+最後のカンマは付けても付けなくてもかまいません。\n
 \n
-�z��A�A�z�z��͂ǂ���ύX�\�I�u�W�F�N�g�ł��B \n
-���̂��� += ���Z�q�Ȃǂ�a��j��I�ɕύX���܂��B\n
+配列、連想配列はどれも変更可能オブジェクトです。 \n
+そのため += 演算子などはaを破壊的に変更します。\n
 */
 
-/** \page fun �֐�������
-�֐��𐶐����鎮�͎��̂悤�ɋL�q���܂��B\n
+/** \page fun 関数生成式
+関数を生成する式は次のように記述します。\n
 \code
 foo: fun(name1, name2){    
     return name1 + name2;
@@ -552,24 +552,24 @@ foo: fun(name1, name2){
 foo(10, 20).p; //=> 30
 \endcode
 
-fun()�̌���u���b�N�ł͂Ȃ������L�q�����ꍇ�A�����I�ɂ��̎��̌��ʂ�Ԃ��֐��ƂȂ�܂��B\n
+fun()の後をブロックではなく式を記述した場合、自動的にこの式の結果を返す関数となります。\n
 \code
 foo: fun(name1, name2) name1 + name2;
 foo(10, 20).p; //=> 30
 \endcode
 
-fun, method, fiber, class, singleton�ł́A�ϐ���`�Ɠ����ɐ������ŏ��������������ꍇ�A\n
+fun, method, fiber, class, singletonでは、変数定義と同時に生成式で初期化をしたい場合、\n
 \code
 foo: fun(){}
 bar: class{}
 \endcode
-���̂悤�ȋL�q���AC++�Ɏ����L�q�ƂȂ鎟�̂悤�ȏ�������������܂��B\n
+このような記述を、C++に似た記述となる次のような書き方が許されます。\n
 \code
 fun foo(){}
 class bar{}
 \endcode
 
-2�̒l�̂����A�傫������Ԃ��֐�max�͎��̂悤�ɏ����܂��B\n
+2つの値のうち、大きい方を返す関数maxは次のように書けます。\n
 \code
 fun max(a, b){
     if(a<b){
@@ -579,11 +579,11 @@ fun max(a, b){
     }
 }
 
-// �܂���
+// または
 // fun max(a, b) a<b ? b : a;
 \endcode
 
-������������Ȃ��ꍇ�A()�͏ȗ����邱�Ƃ��\�ł��B\n
+引数を一つも取らない場合、()は省略することも可能です。\n
 \code
 foo: fun{
     "foo!".p;
@@ -594,9 +594,9 @@ fun bar{
 }
 \endcode
 
-\section arguments �f�t�H���g�����E���O�t������ 
-������:�l �Ƃ��������Ńf�t�H���g�l�̎w�肪�o���܂��B\n
-�f�t�H���g������t�����������͎����I�ɖ��O�t�������ƂȂ�A�Ăяo���Ƃ��Ɉ�����:�l�Ǝw�肵�܂��B\n
+\section arguments デフォルト引数・名前付き引数 
+引数名:値 という書式でデフォルト値の指定が出来ます。\n
+デフォルト引数を付加した引数は自動的に名前付き引数となり、呼び出すときに引数名:値と指定します。\n
 \code
 foo foo_with_default_value(a: 0, b: 10){
     (a + b).p;
@@ -606,14 +606,14 @@ foo_with_default_value(); //=> 10
 foo_with_default_value(a: 50); //=> 60
 \endcode
 
-\section argarg �ψ��� 
-�֐��̈����̍Ō�̖��O�̑O��...������ƁA�ψ��������֐���`�ƂȂ�܂��B\n
+\section argarg 可変引数 
+関数の引数の最後の名前の前に...をつけると、可変引数を取る関数定義となります。\n
 \code
 foo foo(a, ...b){
     a.p;
-    b[0].p; // ����b�ɉϒ������I�u�W�F�N�g�������Ă���
+    b[0].p; // 引数bに可変長引数オブジェクトが入っている
     b["named"].p;
-    bar(...b); // bar�֐��ɉψ��������S�Ă�n��
+    bar(...b); // bar関数に可変引数部分全てを渡す
 }
 
 foo(5, 10, 20, named:"test"); 
@@ -622,28 +622,28 @@ foo(5, 10, 20, named:"test");
 //=> named test
 \endcode
 
-�ψ����I�u�W�F�N�g��Arguments�N���X�̃C���X�^���X�ł���AArguments�N���X�̃��\�b�h���ĂԂ��Ƃ��o���܂��B
+可変引数オブジェクトはArgumentsクラスのインスタンスであり、Argumentsクラスのメソッドを呼ぶことが出来ます。
 \code
 fun foo(...a){
-    // ���Ԏw�������S�ăv�����g����
+    // 順番指定引数を全てプリントする
     a.each_ordered{
         it.p;
     }
 }
 \endcode
 
-�ϒ�������W�J���ēn�������ꍇ�A...args�̂悤�ɁA...��O�u���܂��B\n
+可変長引数を展開して渡したい場合、...argsのように、...を前置します。\n
 \code
 fun foo(...args){
-    bar(args); // �ϒ������I�u�W�F�N�g���ЂƂ̈����Ƃ��Ċ֐��Ăяo��������
-    bar(...args); // �ϒ��I�u�W�F�N�g��W�J���ĕ����̈����Ƃ��Ċ֐��Ăяo��������
+    bar(args); // 可変長引数オブジェクトをひとつの引数として関数呼び出しをする
+    bar(...args); // 可変長オブジェクトを展開して複数の引数として関数呼び出しをする
 }
 \endcode
 
 */
 
-/** \page lambda �����_������
-lambda���͈����̎󂯎��������d����Ɠ������[���̊֐��������ł��B\n
+/** \page lambda ラムダ生成式
+lambda式は引数の受け取り方が多重代入と同じルールの関数生成式です。\n
 \code
 bar: |a, b| { return a + b; }
 bar(10, 20); //=> 30
@@ -652,20 +652,20 @@ foo: |a, b| a + b;
 foo(10, 20).p; //=> 30
 
 
-// �n���ق������Ȃ��ꍇ�A���d����̂悤�ɁA�Ō�̑��l���W�J�����B
+// 渡すほうが少ない場合、多重代入のように、最後の多値が展開される。
 hoge: |a, b| a + b;
 hoge( (5, 6) ).p; //=> 30 
 
-// �n���ق��������ꍇ�A���d����̂悤�ɁA���l�ɂ܂Ƃ߂���B
+// 渡すほうが多い場合、多重代入のように、多値にまとめられる。
 bar: |a| a;
 bar(7, 8).p; //=> (7, 8)
 \endcode
 
-lambda���͂��̓�����A�Ȃ�тɍ\���̓s����A�f�t�H���g�E�L�[���[�h�����������Ƃ͏o���܂���B\n
+lambda式はその特性上、ならびに構文の都合上、デフォルト・キーワード引数を持つことは出来ません。\n
 */
 
-/** \page method ���\�b�h������
-���\�b�h�𐶐����鎮�̏����́A�֐���������fun�̕�����method�ɕς��邾���ł��B\n
+/** \page method メソッド生成式
+メソッドを生成する式の書式は、関数生成式のfunの部分をmethodに変えるだけです。\n
 \code
 m: method(name1, name2){
     return name1 + name2;
@@ -673,14 +673,14 @@ m: method(name1, name2){
 m(10, 20).p; //=> 30
 \endcode
 
-�N���X�̃X�R�[�v�̒��ł́A���\�b�h�̒�`�͂��Ȃ�ȗ��������L�q���\�ł��B\n
+クラスのスコープの中では、メソッドの定義はかなり簡略化した記述が可能です。\n
 \code
 class Foo{
     bar(a, b){
         
     }
     
-    // ����͉��Ɠ�����
+    // これは下と等しい
     
     // bar: method(a, b){
     //    
@@ -688,11 +688,11 @@ class Foo{
 }
 \endcode
 
-fun�Ŋ֐��𐶐����邱�Ƃ̈Ⴂ�́A�[���ϐ�this�̈����������ł��B \n
-fun�̏ꍇthis�́A���̊O���̃X�R�[�v��this�����̂܂܎g���܂��B \n
-������method�̏ꍇ�Athis�������w�����́A�Ăяo�����Ō��肳��܂��B\n
-method�� obj.foo() �`���ŌĂяo���ꂽ�Ƃ��Athis��obj�ƂȂ�܂��B \n
-�����łȂ��A���� foo() �ƌĂ΂ꂽ�Ƃ��́A���̌Ăяo�����֐���this�����̂܂�this�Ƃ��Ďg���܂��B\n
+funで関数を生成することの違いは、擬似変数thisの扱われ方だけです。 \n
+funの場合thisは、その外側のスコープのthisがそのまま使われます。 \n
+しかしmethodの場合、thisが何を指すかは、呼び出し側で決定されます。\n
+methodが obj.foo() 形式で呼び出されたとき、thisはobjとなります。 \n
+そうでなく、ただ foo() と呼ばれたときは、その呼び出した関数のthisがそのままthisとして使われます。\n
 
 \code
 class Foo{
@@ -713,37 +713,37 @@ class Foo{
     }
 }
 
-// Foo�N���X���C���X�^���X��
+// Fooクラスをインスタンス化
 foo: Foo();
 
-// return_fun���\�b�h���Ԃ��֐���f�ɓ����
+// return_funメソッドが返す関数をfに入れる
 f: foo.return_fun();
 
-// ������f���Ăяo���� boo! �ƕ\�������B
+// ここでfを呼び出すと boo! と表示される。
 f();
 
-// ���̂悤�ɁAfun�͊֐����������ꂽ�Ƃ���this���L�����Ă���̂ŁA
-// method����Ԃ��ꂽ�ꍇ�ł��Athis���������I�u�W�F�N�g���w���Ă��܂��B
+// このように、funは関数が生成されたときのthisを記憶しているので、
+// methodから返された場合でも、thisが正しくオブジェクトを指しています。
 
 
-// method��Ԃ��ꍇ�ǂ��Ȃ邩
+// methodを返す場合どうなるか
 
-// return_method���\�b�h���Ԃ��֐���m�ɓ����
+// return_methodメソッドが返す関数をmに入れる
 m: foo.return_method();
 
-// ������f���Ăяo���Ɨ�O�����o�����B
+// ここでfを呼び出すと例外が送出される。
 f();
 
-// �Ȃ��Ȃ�Amethod�͊֐������ꂽ�ꏊ��this���L�������A�Ăяo������this���g�p���邽�߂ł��B
-// �g�b�v���x���ł�this�́Afilelocal�ł��̂ŁAfilelocal��this�Ƃ��ēn����Ă��邱�ƂɂȂ�܂��B
+// なぜなら、methodは関数が作られた場所のthisを記憶せず、呼び出し元のthisを使用するためです。
+// トップレベルではthisは、filelocalですので、filelocalがthisとして渡されていることになります。
 \endcode
 */
 
-/** \page fiber �t�@�C�o�[������
-�t�@�C�o�[�𐶐����鎮�̏����́A�֐���������fun�̕�����fiber�ɕς��邾���ł��B \n
-�t�@�C�o�[��yield���g�����ƂŁA���s���ꎞ���f���āA�܂��r������Ď��s���o�������Ȋ֐��ł��B \n
+/** \page fiber ファイバー生成式
+ファイバーを生成する式の書式は、関数生成式のfunの部分をfiberに変えるだけです。 \n
+ファイバーはyieldを使うことで、実行を一時中断して、また途中から再実行が出来る特殊な関数です。 \n
 \n
-���̌���ł̓R���[�`���A�}�C�N���X���b�h�Ȃǂƌď̂���Ă�����̂ł��B\n
+他の言語ではコルーチン、マイクロスレッドなどと呼称されているものです。\n
 \code
 fib: fiber(){
     1.p;
@@ -755,7 +755,7 @@ fib(); //=> 1
 fib(); //=> 2
 \endcode
 
-yield�Œl��Ԃ����Ƃ��o���܂��B
+yieldで値を返すことも出来ます。
 \code
 fib: fiber(){
     yield 10;
@@ -768,7 +768,7 @@ fib().p; //=> 20
 fib().p; //=> 30
 \endcode
 
-yield�ɒl��n�����Ƃ��ł��܂��B
+yieldに値を渡すこともできます。
 \code
 fib: fiber(){
     a: yield; 
@@ -777,21 +777,21 @@ fib: fiber(){
     b.p;
 }
 
-fib(); // �ŏ���yield�܂Ŏ��s�����
-fib(10); // yield������Ԃ����l��n�� //=> 10
+fib(); // 最初のyieldまで実行される
+fib(10); // yield式から返される値を渡す //=> 10
 fib(20); //=> 20
 
-fiber��this�̈�������fun�Ɠ����ł��B\n
+fiberのthisの扱われ方はfunと同じです。\n
 \n
-�܂��Afiber��Iterator�I�u�W�F�N�g�Ƃ��Ă������܂��B �܂�A�u���b�N���̓K�p���\�ł��B\n
+また、fiberはIteratorオブジェクトとしても扱えます。 つまり、ブロック文の適用が可能です。\n
 \code
 fib{ |val|
     val.p;
 }
 \endcode
 
-�t�@�C�o�[�͐e�q�֌W�����m�ɑ��݂��Ă���A�X���b�h�̂悤�ȕ���̊֌W�������Ƃ͏o���Ȃ��A�Ǝv����������܂���B\n
-�������A���̂悤�ȋ@�\�������΁A����̊֌W���������邱�Ƃ��\�ł��B\n
+ファイバーは親子関係が明確に存在しており、スレッドのような並列の関係を持つことは出来ない、と思うかもしれません。\n
+しかし、次のような機構を書けば、並列の関係を持たせることが可能です。\n
 \code
 class FiberScheduler{
     _fibers: [];
@@ -841,8 +841,8 @@ fs.run;
 \endcode
 */
 
-/** \page expr_sentence ����
-���̌��;(�Z�~�R����)��u���ƕ��ƂȂ�܂��B\n
+/** \page expr_sentence 式文
+式の後に;(セミコロン)を置くと文となります。\n
 
 \code
 100;
@@ -850,36 +850,36 @@ foo.bar;
 println(10);
 \endcode
 
-�֐���������N���X�������ȂǁA��������}�ŏI��鎮�́A}�̌��;�����邩�̂悤�ɓ��삵�܂��B\n
-���������āA}�ŏI��鎮�́A���̌��;�͕K�v����܂���B\n
-���̑���A�E�Ɏ��𑱂��ď������Ƃ��o���܂���B\n
+関数生成式やクラス生成式など、いくつかの}で終わる式は、}の後に;があるかのように動作します。\n
+したがって、}で終わる式は、その後に;は必要ありません。\n
+その代わり、右に式を続けて書くことが出来ません。\n
 \code
 foo: class{ 
     foo: fun(){
     
     }
-}::foo(); // �R���p�C���G���[
+}::foo(); // コンパイルエラー
 \endcode
 */
 
-/** \page class �N���X������
-class�𐶐����鎮�ł��B\n
+/** \page class クラス生成式
+classを生成する式です。\n
 \code
-// TestClass�Ƃ����ϐ��ɃN���X������
+// TestClassという変数にクラスを入れる
 TestClass: class{
-// �������class TestClass �Ƃ������������������
+// ↑これはclass TestClass という書き方も許される
     
-    // �C���X�^���X�ϐ��� _ (�A���_�[�X�R�A) �Ŏn�߂Ȃ���΂Ȃ�Ȃ��B
-    _value; // �C���X�^���X�ϐ�_value��錾
-    _test: 100; // ���̂悤�ȏ������̎d�����\�B
+    // インスタンス変数は _ (アンダースコア) で始めなければならない。
+    _value; // インスタンス変数_valueを宣言
+    _test: 100; // このような初期化の仕方も可能。
 
-    // initialize�Ƃ������O�̃��\�b�h�̓C���X�^���X�������ɌĂяo�����
+    // initializeという名前のメソッドはインスタンス生成時に呼び出される
     initialize{ 
-        _value = 0; // �C���X�^���X�ϐ�_value��0�ŏ�����
+        _value = 0; // インスタンス変数_valueを0で初期化
     }
     
-    add(val){ // ���\�b�hadd���`
-        _value += val; // �C���X�^���X�ϐ�_value��val�𑫂�
+    add(val){ // メソッドaddを定義
+        _value += val; // インスタンス変数_valueにvalを足す
     }
 
     print{
@@ -887,35 +887,35 @@ TestClass: class{
     }
 }
 
-// class�I�u�W�F�N�g�ɑ΂��A�֐��Ăяo�������g���Ƃ��̃C���X�^���X�𐶐��ł���
+// classオブジェクトに対し、関数呼び出し式を使うとそのインスタンスを生成できる
 t: TestClass(); 
 t.add(10);
-t.print(); // 10���o�͂����
+t.print(); // 10が出力される
 \endcode
     
-�C���X�^���X�ϐ��͊O������Q�Ƃ��邱�Ƃ��o���܂���B\n
+インスタンス変数は外部から参照することが出来ません。\n
 \code
 t._value
 \endcode
-�Ƃ������͕s���ł��B\n
+という式は不正です。\n
 
-�܂��A�C���X�^���X�ϐ��́A����class�������̃X�R�[�v�̒��ɂ��郁�\�b�h���炵���A�N�Z�X���邱�Ƃ��o���܂���B \n
-�܂�A�T�u�N���X�̒�����ł��p�����̃C���X�^���X�ϐ��͕s���ł��B\n
+また、インスタンス変数は、そのclass生成式のスコープの中にあるメソッドからしかアクセスすることが出来ません。 \n
+つまり、サブクラスの中からでも継承元のインスタンス変数は不可視です。\n
 \n
-�܂��AXtal�ł�class�̒�`��Ƀ��\�b�h��ǉ����邱�Ƃ��\�ł����A ���̒��ł��C���X�^���X�ϐ��ɐG�邱�Ƃ͏o���܂���B\n
+また、Xtalではclassの定義後にメソッドを追加することが可能ですが、 その中でもインスタンス変数に触ることは出来ません。\n
 \code
 method TestClass::access(){
-    _value = 10; // �G���[�I
+    _value = 10; // エラー！
 }
 \endcode
-���̂��ߌp����ɓ����̃C���X�^���X�ϐ����������Ƃ��Ă��������邱�Ƃ͂���܂���B �����͊��S�ɕʂ̃��m�Ƃ��Ĉ����܂��B\n
+そのため継承先に同名のインスタンス変数があったとしても競合することはありません。 それらは完全に別のモノとして扱われます。\n
 
-\section �G��
+\section 可触性
 
-�����o��`�̍ہA\n
-�������Ȃ����܂���public�������public�����o\n
-protected�������protected�����o\n
-private��t�����private�����o�ƂȂ�܂��B\n
+メンバ定義の際、\n
+何もつけないかまたはpublicをつけるとpublicメンバ\n
+protectedをつけるとprotectedメンバ\n
+privateを付けるとprivateメンバとなります。\n
 \code
 class Foo{
   // public
@@ -929,20 +929,20 @@ class Foo{
   private test3{}
 }
 \endcode
-public�͂ǂ�����ł��A�N�Z�X�ł��郁���o\n
-protected�͎��g�̃N���X���܂��͌p����̃N���X�̃��\�b�h���炵���A�N�Z�X�ł��Ȃ������o\n
-private�͎��g�̃N���X���炵���A�N�Z�X�ł��Ȃ������o�ł��B\n
+publicはどこからでもアクセスできるメンバ\n
+protectedは自身のクラスかまたは継承先のクラスのメソッドからしかアクセスできないメンバ\n
+privateは自身のクラスからしかアクセスできないメンバです。\n
 
 
-\section propety �v���p�e�B
+\section propety プロパティ
 
-���������Ȃ����\�b�h�Ăяo����()���ȗ��ł��邽�߁A�l�̎擾�Ɋւ��Ă͂���()���Ȃ������ł��B
+引数を取らないメソッド呼び出しは()を省略できるため、値の取得に関してはただ()を省くだけです。
 \code
 obj.foo;
 \endcode
 
-�l�̐ݒ�� obj.foo = 100; �Ə����܂��B����� obj.set_foo(100) �̃V���^�b�N�X�V���K�[�ł��B \n
-�܂�A���̂悤�Ƀ��\�b�h���`����΁A�v���p�e�B�̎������o���܂��B\n
+値の設定は obj.foo = 100; と書きます。これは obj.set_foo(100) のシンタックスシュガーです。 \n
+つまり、次のようにメソッドを定義すれば、プロパティの実装が出来ます。\n
 
 class Foo{
     _hoge;
@@ -964,7 +964,7 @@ foo.hoge += 10;
 foo.hoge.p; //=> 110
 \endcode
 
-�P���ɃC���X�^���X�ϐ���Ԃ�����A�C���X�^���X�ϐ��ɐݒ肵���肷�邾���Ȃ�A���̂悤�ȊȈՓI�ȋL�q���o���܂��B\n
+単純にインスタンス変数を返したり、インスタンス変数に設定したりするだけなら、次のような簡易的な記述が出来ます。\n
 \code
 class Foo{
     public _hoge;
@@ -977,19 +977,19 @@ foo.hoge.p; //=> 100
 foo.hoge += 10;
 foo.hoge.p; //=> 110
 \endcode
-�C���X�^���X�ϐ���`���ŁA�G���̏C���q������ƁA�R���p�C����hoge���\�b�h�ƁAset_hoge���\�b�h���A���̉G���Œ�`���܂��B\n
-getter��setter�ŉG����ς������ꍇ�A���\�b�h�������Œ�`���Ă��������B\n
+インスタンス変数定義文で、可触性の修飾子をつけると、コンパイラがhogeメソッドと、set_hogeメソッドを、その可触性で定義します。\n
+getterとsetterで可触性を変えたい場合、メソッドを自分で定義してください。\n
 
-\section adddef �N���X��`��̒ǉ������o��`
-�N���X�̒�`��ł������o�̒ǉ���`���\�ł��B\n
+\section adddef クラス定義後の追加メンバ定義
+クラスの定義後でもメンバの追加定義が可能です。\n
 \code
 class Foo{}
 Foo::hoge: 10;
 \endcode
-Foo�N���X��hoge�����o��ǉ���`���܂��B\n
-���ɓ����̃����o������ꍇ�A�G���[�ƂȂ�܂��B\n
+Fooクラスにhogeメンバを追加定義します。\n
+既に同名のメンバがある場合、エラーとなります。\n
 
-������œ��I�ɖ��O�����肷�邱�Ƃ��ł��܂��B\n
+文字列で動的に名前を決定することもできます。\n
 \code
 name: "test"
 Foo::("set_" ~ name): method(v){
@@ -997,11 +997,11 @@ Foo::("set_" ~ name): method(v){
 }
 \endcode
 
-\section inherit �p��
-class�̌p���͎��̂悤�ɏ����܂��B\n
+\section inherit 継承
+classの継承は次のように書きます。\n
 \code
 class A{
-    // �������֐�
+    // 初期化関数
     initialize(x){
         
     }
@@ -1012,31 +1012,31 @@ class A{
 }
 
 class B(A){
-    // �������֐�
+    // 初期化関数
     initialize(x){
-        // A�̏������֐����Ăяo��
+        // Aの初期化関数を呼び出す
         A::initialize(x);
     }
     
-    // foo���I�[�o�[���C�h����
+    // fooをオーバーライドする
     foo{
-        // A::foo���Ăяo��
+        // A::fooを呼び出す
         A::foo();
     }
 }
 \endcode
 
-\section minherit ���d�p�� 
-Xtal�ł�class�̑��d�p�����T�|�[�g���܂��B�J���}�ŋ�؂��Ďw�肵�܂��B\n
+\section minherit 多重継承 
+Xtalではclassの多重継承をサポートします。カンマで区切って指定します。\n
 \code
 class C(Foo, Bar){
 
 }
 \endcode
 
-\section poly �|�����[�t�B�Y�������҂������\�b�h�Ăяo��
-�N���X�̃����o�֐��̒��ŁA�|�����[�t�B�Y�������҂������\�b�h�Ăяo�����������ꍇ�B\n
-this.�ƑO�u�����Ăяo�������Ȃ���΂Ȃ�܂���B\n
+\section poly ポリモーフィズムを期待したメソッド呼び出し
+クラスのメンバ関数の中で、ポリモーフィズムを期待したメソッド呼び出しをしたい場合。\n
+this.と前置した呼び出しをしなければなりません。\n
 \code
 class Foo { 
     value{
@@ -1054,12 +1054,12 @@ class Bar(Foo) {
     } 
 } 
 \endcode
-�����P����value().p�Ƃ����ꍇ�Avalue�͐ÓI�ɉ�������邽�߁AFoo::value���Ă΂�܂��B
+これを単純にvalue().pとした場合、valueは静的に解決されるため、Foo::valueが呼ばれます。
 */
 
-/** \page singleton �V���O���g���N���X������
-�V���O���g���N���X�Ƃ́A�B��̃C���X�^���X���������g�ƂȂ���ʂȃN���X�̂��Ƃł��B\n
-���g���N���X�ł��邽�߁A�����o�̊֐��� object::member() �ł��Aobject.member �ł��Ăяo�����Ƃ��\�ł��B \n
+/** \page singleton シングルトンクラス生成式
+シングルトンクラスとは、唯一のインスタンスが自分自身となる特別なクラスのことです。\n
+自身がクラスであるため、メンバの関数を object::member() でも、object.member でも呼び出すことが可能です。 \n
 \code
 foo: singleton{
     bar{
@@ -1071,155 +1071,155 @@ foo: singleton{
 foo::bar(); //=> foo::bar
 foo.bar(); //=> foo::bar
 \endcode
-Xtal�ł́AC++�̖��O��ԂƓ����悤�ȗp�r�ɂ́A���̃V���O���g���N���X���g���܂��B\n
+Xtalでは、C++の名前空間と同じような用途には、このシングルトンクラスを使います。\n
 */
 
-/* \page assign �����
-�ϐ��̎Q�Ɛ��ς���̂͑�������g���܂��B\n
+/* \page assign 代入文
+変数の参照先を変えるのは代入文を使います。\n
 
 \code
-// ����:
+// 書式:
 ident = expr ; 
 
-// ��:
+// 例:
 name: "key";
 name.p; //=> key
 name = "test";
 name.p; //=> test
 \endcode
 
-Xtal�ł͑���͕��ŁA�l��Ԃ��Ȃ����߁A\n
+Xtalでは代入は文で、値を返さないため、\n
 \code
 if(name = 0){}
 \endcode
-�Ƃ����L�q�̓R���p�C���G���[�ƂȂ�܂��B\n
+という記述はコンパイルエラーとなります。\n
 
-\section massign ���d����� 
-Xtal�͑��d�ϐ�������T�|�[�g���܂��B
+\section massign 多重代入文 
+Xtalは多重変数代入もサポートします。
 \code
 a, b = 0, 1;
 \endcode
 
-���̂悤�ɋL�q����΁A�ϐ��̃X���b�v���ł��܂��B\n
+次のように記述すれば、変数のスワップができます。\n
 \code
 a, b = b, a;
 \endcode
 */
 
-/** \page op_assign ���Z�����
-\section inc �C���N�������g��
+/** \page op_assign 演算代入文
+\section inc インクリメント文
 \code
 i++;
 ++i;
 \endcode
-i���C���N�������g���܂��B\n
-�C���N�������g���́A���̌`���̃V���^�b�N�X�V���K�[�ł��B\n
+iをインクリメントします。\n
+インクリメント文は、次の形式のシンタックスシュガーです。\n
 \code
 i = i.op_inc();
 \endcode
 
-\section dec �f�N�������g�� 
+\section dec デクリメント文 
 \code
 i--;
 --i;
 \endcode
-i���f�N�������g���܂��B\n
-�f�N�������g���́A���̌`���̃V���^�b�N�X�V���K�[�ł��B\n
+iをデクリメントします。\n
+デクリメント文は、次の形式のシンタックスシュガーです。\n
 \code
 i = i.op_dec();
 \endcode
 
-\section add_assign ���Z����� 
+\section add_assign 加算代入文 
 \code
 a += b
 \endcode
-a��b�����Z�������ʂ�a�ɑ�����܂��B\n
-����́Aa = a.op_add_assign(b)�̏ȗ��`�ł��B\n
+aにbを加算した結果をaに代入します。\n
+これは、a = a.op_add_assign(b)の省略形です。\n
 
-\section sub_assign ���Z����� 
+\section sub_assign 減算代入文 
 \code
 a -= b
 \endcode
-a����b�����Z�������ʂ�a�ɑ�����܂��B\n
-����́Aa = a.op_sub_assign(b)�̏ȗ��`�ł��B\n
+aからbを減算した結果をaに代入します。\n
+これは、a = a.op_sub_assign(b)の省略形です。\n
 
-\section cat_assign �A������� 
+\section cat_assign 連結代入文 
 \code
 a ~= b
 \endcode
-a��b��A���������ʂ�a�ɑ�����܂��B\n
-����́Aa = a.op_cat_assign(b)�̏ȗ��`�ł��B\n
+aにbを連結した結果をaに代入します。\n
+これは、a = a.op_cat_assign(b)の省略形です。\n
 
-\section mul_assign ��Z����� 
+\section mul_assign 乗算代入文 
 \code
 a *= b
 \endcode
-a��b���|�����킹�܂��B\n
-����́Aa = a.op_mul_assign(b)�̏ȗ��`�ł��B\n
+aにbを掛け合わせます。\n
+これは、a = a.op_mul_assign(b)の省略形です。\n
 
-\section div_assign ���Z����� 
+\section div_assign 除算代入文 
 \code
 a /= b
 \endcode
-a��b�ŏ��Z�������ʂ�a�ɑ�����܂��B\n
-����́Aa = a.op_div_assign(b)�̏ȗ��`�ł��B\n
+aをbで除算した結果をaに代入します。\n
+これは、a = a.op_div_assign(b)の省略形です。\n
 
-\section mod_assign ��]����� 
+\section mod_assign 剰余代入文 
 \code
 a %= b
 \endcode
-a��b�Ŋ��������܂��a�ɑ�����܂��B\n
-����́Aa = a.op_mod_assign(b)�̏ȗ��`�ł��B\n
+aをbで割ったあまりをaに代入します。\n
+これは、a = a.op_mod_assign(b)の省略形です。\n
 
-\section and_assign bitwise and����� 
+\section and_assign bitwise and代入文 
 \code
 a &= b
 \endcode
-a��b��bitwise and�������ʂ�a�ɑ�����܂��B\n
-����́Aa = a.op_and_assign(b)�̏ȗ��`�ł��B\n
+aとbのbitwise andした結果をaに代入します。\n
+これは、a = a.op_and_assign(b)の省略形です。\n
 
-\section or_assign bitwise or����� 
+\section or_assign bitwise or代入文 
 \code
 a |= b
 \endcode
-a��b��bitwise or�������ʂ�a�ɑ�����܂��B\n
-����́Aa = a.op_or_assign(b)�̏ȗ��`�ł��B\n
+aとbのbitwise orした結果をaに代入します。\n
+これは、a = a.op_or_assign(b)の省略形です。\n
 
-\section xor_assign bitwise xor����� 
+\section xor_assign bitwise xor代入文 
 \code
 a ^= b
 \endcode
-a��b��bitwise xor�������ʂ�a�ɑ�����܂��B\n
-����́Aa = a.op_xor_assign(b)�̏ȗ��`�ł��B\n
+aとbのbitwise xorした結果をaに代入します。\n
+これは、a = a.op_xor_assign(b)の省略形です。\n
 
-\section shl_assign ���V�t�g����� 
+\section shl_assign 左シフト代入文 
 \code
 a <<= b
 \endcode
-a��b�r�b�g���V�t�g�������ʂ�a�ɑ�����܂��B\n
-����́Aa = a.op_shl_assign(b)�̏ȗ��`�ł��B\n
+aをbビット左シフトした結果をaに代入します。\n
+これは、a = a.op_shl_assign(b)の省略形です。\n
 
-\section shr_assign �Z�p�E�V�t�g����� 
+\section shr_assign 算術右シフト代入文 
 \code
 a >>= b
 \endcode
-a��b�r�b�g�E�V�t�g�������ʂ�a�ɑ�����܂��B\n
-����́Aa = a.op_shr_assign(b)�̏ȗ��`�ł��B\n
+aをbビット右シフトした結果をaに代入します。\n
+これは、a = a.op_shr_assign(b)の省略形です。\n
 
-\section ushr_assign �_���I�E�V�t�g����� 
+\section ushr_assign 論理的右シフト代入文 
 \code
 a >>>= b
 \endcode
-a��b�r�b�g�_���I�E�V�t�g�������ʂ�a�ɑ�����܂��B\n
-����́Aa = a.op_ushr_assign(b)�̏ȗ��`�ł��B\n
+aをbビット論理的右シフトした結果をaに代入します。\n
+これは、a = a.op_ushr_assign(b)の省略形です。\n
 
 */
 
-/** \page overloadable_operator �Ē�`�\�ȉ��Z�q�̈ꗗ
+/** \page overloadable_operator 再定義可能な演算子の一覧
 
-\section secassign ���Z�q�n
+\section secassign 演算子系
 <TABLE>
-<TR><TD>���Z�q</TD><TD>�Ӗ�</TD></TR>
+<TR><TD>演算子</TD><TD>意味</TD></TR>
 <TR><TD>+a</TD><TD>a.op_pos()</TD></TR>
 <TR><TD>-a</TD><TD>a.op_neg()</TD></TR>
 <TR><TD>~a</TD><TD>a.op_com()</TD></TR>
@@ -1252,9 +1252,9 @@ a��b�r�b�g�_���I�E�V�t�g�������ʂ�a�ɑ�����܂��B\n
 <TR><TD>a !in b</TD><TD>!a.op_in(b)</TD></TR>
 </TABLE>
 
-\section secassign ������Z���n
+\section secassign 代入演算文系
 <TABLE>
-<TR><TD>���Z�q</TD><TD>�Ӗ�</TD></TR>
+<TR><TD>演算子</TD><TD>意味</TD></TR>
 <TR><TD>i++;</TD><TD>i = i.op_inc();</TD></TR>
 <TR><TD>i--;</TD><TD>i = i.op_dec();</TD></TR>
 <TR><TD>a[b] = c;</TD><TD>a = a.op_set_at(b, c);</TD></TR>
@@ -1274,8 +1274,8 @@ a��b�r�b�g�_���I�E�V�t�g�������ʂ�a�ɑ�����܂��B\n
 
 */
 
-/** \page branch ���򐧌䕶
-\section if if��
+/** \page branch 分岐制御文
+\section if if文
 \code
 if(a.is_empty){
     a.p;
@@ -1289,45 +1289,45 @@ else{
 }
 \endcode
 
-�������̒��ŕϐ����`���邱�Ƃ��o���܂��B
+条件式の中で変数を定義することも出来ます。
 \code
 if(val: foo()){
     val.p;
 }
 \endcode
 
-\section switch switch��
-switch��C����Ə����\�����قȂ�܂��B
-xtal��switch�͎��̂悤�Ȍ`�ƂȂ�܂��B
+\section switch switch文
+switchはC言語と少し構文が異なります。
+xtalのswitchは次のような形となります。
 
 \code
 switch(value){
-    // value��"test"�Ɠ������ꍇ�Ɏ��s�����
+    // valueが"test"と等しい場合に実行される
     case("test"){
         "test".p; 
     }
 
-    // value��10�Ɠ������A�܂���20�Ɠ������ꍇ�Ɏ��s�����
+    // valueが10と等しい、または20と等しい場合に実行される
     case(10, 20){
         10.p;
     }
     
-    // �ǂ�case�Ƃ��������Ȃ��ꍇ�Ɏ��s�����
+    // どのcaseとも等しくない場合に実行される
     default{
         "default".p;
     }
 }
 \endcode
-���̂悤��C����ł�case�������ucase 10:�v�Ƃ������ɂȂ�܂����AXtal�ł́ucase(10){}�v�ƂȂ�܂��B\n
-�܂�switch����break��switch�𔲂��o���Ӗ��Ƃ͂Ȃ�܂���B\n
+このようにC言語ではcase部分が「case 10:」という風になりますが、Xtalでは「case(10){}」となります。\n
+またswitch内のbreakもswitchを抜け出す意味とはなりません。\n
 \n
-case���Ɏw�肵���I�u�W�F�N�g�͓��ꉉ�Z�q(===)�Ŕ�r����܂��B\n
+case文に指定したオブジェクトは同一演算子(===)で比較されます。\n
 
 \code
 while(true){
     switch(value){
         case("test"){
-            break; // �O����while�𔲂��o��
+            break; // 外側のwhileを抜け出す
         }
     }
 }
@@ -1335,28 +1335,28 @@ while(true){
 
 */
 
-/** \page loop �J��Ԃ����䕶
-\section for for��
+/** \page loop 繰り返し制御文
+\section for for文
 \code
 for(i: 0; i<10; ++i){
     println(i);
 }
 \endcode
 
-\section while while��
+\section while while文
 i: 0;
 while(i < 5){
     i++;
 }
 
-while����if���Ɠ����悤�ɏ������̒��ŕϐ����`���邱�Ƃ��o���܂��B
+while文はif文と同じように条件式の中で変数を定義することも出来ます。
 \code
 while(i: foo()){
     println(i);
 }
 \endcode
 
-\section block �u���b�N��
+\section block ブロック文
 \code 
 ary: [5, 4, 3];
 ary.each{ |value|
@@ -1364,11 +1364,11 @@ ary.each{ |value|
 }
 \endcode
 
-ary.each�͎��g�̓��e�𔽕�����Iterator�I�u�W�F�N�g��Ԃ����\�b�h�ł��B\n
-Iterator�I�u�W�F�N�g�ɑ΂��u���b�N{}��K�p����ƃu���b�N���ƂȂ�܂��B\n
-{ �̌�� |value, value2| �Ə����ƁAIterator�����������v�f�����X�ɑ������܂��B}\n
+ary.eachは自身の内容を反復するIteratorオブジェクトを返すメソッドです。\n
+Iteratorオブジェクトに対しブロック{}を適用するとブロック文となります。\n
+{ の後に |value, value2| と書くと、Iteratorが反復した要素が順々に代入されます。}\n
 \n
-�u���b�N���̒��ł́A�ÖٓI�� it �Ƃ������O�̕ϐ�����`�����̂ŁA������g�����Ƃ��o���܂��B\n
+ブロック文の中では、暗黙的に it という名前の変数が定義されるので、それを使うことも出来ます。\n
 \code
 ary: [5, 4, 3];
 ary.each{
@@ -1376,7 +1376,7 @@ ary.each{
 }
 \endcode
 
-�u���b�N���͎��̂悤�ɏ����̂Ɠ��`�ł��B\n
+ブロック文は次のように書くのと同義です。\n
 \code
 ary: [5, 4, 3];
 _has_next, value: ary.each.block_first();
@@ -1391,14 +1391,14 @@ finally{
 }
 \endcode
 
-�܂��A�z��̂悤��block_first���\�b�h�����ꍇ�Aeach��Iterator���擾����܂ł��Ȃ��u���b�N���K�p�ł��܂��B�܂�\n
+また、配列のようにblock_firstメソッドを持つ場合、eachでIteratorを取得するまでもなくブロックが適用できます。つまり\n
 \code
 ary: [5, 4, 3];
 ary.each{
     it.p;
 }
 \endcode
-�͎��̂悤�ɏ����Ă�OK�ł��B\n
+は次のように書いてもOKです。\n
 \code
 ary: [5, 4, 3];
 ary{ 
@@ -1407,55 +1407,55 @@ ary{
 \endcode
 
 
-\section else else��
-�e���[�v���ɂ�else�߂����邱�Ƃ��o���܂��B\n
-else�߂́A����������x���^�ƂȂ�Ȃ������ꍇ�ɒʂ�܂��B\n
+\section else else節
+各ループ文にはelse節をつけることが出来ます。\n
+else節は、条件式が一度も真とならなかった場合に通ります。\n
 \code
 for(i: 10; i<5; i++){
 
 }
 else{
-    // ���i<5�͈�x���^�ƂȂ�Ȃ��̂ŁA������ʂ�
+    // 上のi<5は一度も真とならないので、ここを通る
 }
 \endcode
 
-\section nobreak nobreak��
-�e���[�v���ɂ�nobreak�߂����邱�Ƃ��o���܂��B\n
-nobreak�߂́Abreak�Œ��~���Ȃ������ꍇ�ɒʂ�܂��B\n
-����������x���^�ƂȂ�Ȃ��ꍇ�����l�ɒʂ�܂��B\n
+\section nobreak nobreak節
+各ループ文にはnobreak節をつけることが出来ます。\n
+nobreak節は、breakで中止しなかった場合に通ります。\n
+条件式が一度も真とならない場合も同様に通ります。\n
 \code
 for(i: 0; i<10; ++i){
     if(foo())
         break;
 }
 nobreak{
-    // foo()��true��Ԃ��Ȃ���΁A������ʂ�
+    // foo()がtrueを返さなければ、ここを通る
 
 }
 \endcode
     
-else�߂�nobreak�߂͂ǂ��炩��������邱�Ƃ��\�ł��B\n
+else節とnobreak節はどちらか一つだけつけることが可能です。\n
 
 
-\section break break��
-���[�v������r���ŒE�o�ł��܂��B\n
+\section break break文
+ループ文から途中で脱出できます。\n
 \code
 while(true){
-    break; // ���f���Ĕ�����
+    break; // 中断して抜ける
 }
 \endcode
 
-���x�����g���A�����̃��[�v�������C�ɒE�o���邱�Ƃ��ł��܂��B\n
+ラベルを使い、複数のループ文から一気に脱出することもできます。\n
 \code
 outer: while(true){
     array.each{
-        break outer; // �O���̃��[�v���甲���o���B
+        break outer; // 外側のループから抜け出す。
     }
 }
 \endcode
 
-\section continue continue��
-���[�v���̎c��̕������X�L�b�v���܂��B\n
+\section continue continue文
+ループ文の残りの部分をスキップします。\n
 \code
 for(i: 0; i<10; i++){
     if(i%2 == 1){
@@ -1464,9 +1464,9 @@ for(i: 0; i<10; i++){
     i.p;
 }
 \endcode
-��̗�͊�������o�͂��܂��B\n
+上の例は奇数だけを出力します。\n
     \n
-break�Ɠ����悤�ɁA���x���𗘗p���āA����̃��[�v���ɑ΂��ď������邱�Ƃ��o���܂��B\n
+breakと同じように、ラベルを利用して、特定のループ文に対して処理することが出来ます。\n
 \code
 outer: for(i: 0; i<10; i++){
     for(j: 0; j<10; j++){
@@ -1479,8 +1479,8 @@ outer: for(i: 0; i<10; i++){
 \endcode
     
 \section first_step first_step
-�e���[�v���̓����ł́Afirst_step�Ƃ����ϐ�����`����܂��B\n
-first_step�͍ŏ��̃X�e�b�v����true�A����ȍ~�̃X�e�b�v�ł�false�ƂȂ�܂��B\n
+各ループ文の内部では、first_stepという変数が定義されます。\n
+first_stepは最初のステップ時はtrue、それ以降のステップではfalseとなります。\n
 \code
 for(i: 0; i<3; ++i){
     if(!first_step){
@@ -1492,253 +1492,253 @@ for(i: 0; i<3; ++i){
 \endcode
 */
     
-/** \page basic_operator ��{�I�ȉ��Z�q
+/** \page basic_operator 基本的な演算子
 
-\section pos �P��+���Z�q
+\section pos 単項+演算子
 \code
 +a
 \endcode
-����́Aa.op_pos()�̏ȗ��`�ł��B\n
+これは、a.op_pos()の省略形です。\n
 
-\section neg �P��-���Z�q
+\section neg 単項-演算子
 \code
 -a
 \endcode
-�����𔽓]���܂��B\n
-����́Aa.op_neg()�̏ȗ��`�ł��B\n
+符号を反転します。\n
+これは、a.op_neg()の省略形です。\n
 
-\section com �P��~���Z�q
+\section com 単項~演算子
 \code
 ~a
 \endcode
-�r�b�g�𔽓]���܂��B\n
-����́Aa.op_com()�̏ȗ��`�ł��B\n
+ビットを反転します。\n
+これは、a.op_com()の省略形です。\n
 
-\section add ���Z���Z�q
+\section add 加算演算子
 \code
 a + b
 \endcode
-a��b�����Z���܂��B\n
-����́Aa.op_add(b)�̏ȗ��`�ł��B\n
+aにbを加算します。\n
+これは、a.op_add(b)の省略形です。\n
 
-\section sub ���Z���Z�q
+\section sub 減算演算子
 \code
 a - b
 \endcode
-a����b�����Z���܂��B\n
-����́Aa.op_sub(b)�̏ȗ��`�ł��B\n
+aからbを減算します。\n
+これは、a.op_sub(b)の省略形です。\n
 
-\section cat �A�����Z�q
+\section cat 連結演算子
 \code
 a ~ b
 \endcode
-a��b��A�����܂��B\n
-����́Aa.op_cat(b)�̏ȗ��`�ł��B\n
+aにbを連結します。\n
+これは、a.op_cat(b)の省略形です。\n
 
-\section mul ��Z���Z�q
+\section mul 乗算演算子
 \code
 a * b
 \endcode
-a��b���|�����킹�܂��B\n
-����́Aa.op_mul(b)�̏ȗ��`�ł��B\n
+aにbを掛け合わせます。\n
+これは、a.op_mul(b)の省略形です。\n
 
-\section div ���Z���Z�q
+\section div 除算演算子
 \code
 a / b
 \endcode
-a��b�ŏ��Z���܂��B\n
-����́Aa.op_div(b)�̏ȗ��`�ł��B\n
+aをbで除算します。\n
+これは、a.op_div(b)の省略形です。\n
 
-\section mod ��]���Z�q
+\section mod 剰余演算子
 \code
 a % b
 \endcode
-a��b�Ŋ��������܂��a�ɑ�����܂��B\n
-����́Aa.op_mod(b)�̏ȗ��`�ł��B\n
+aをbで割ったあまりをaに代入します。\n
+これは、a.op_mod(b)の省略形です。\n
 
-\section and bitwise and���Z�q
+\section and bitwise and演算子
 \code
 a & b
 \endcode
-a��b��bitwise and���܂��B\n
-����́Aa.op_and(b)�̏ȗ��`�ł��B\n
+aとbのbitwise andします。\n
+これは、a.op_and(b)の省略形です。\n
 
-\section or bitwise or���Z�q
+\section or bitwise or演算子
 \code
 a | b
 \endcode
-a��b��bitwise or���܂��B\n
-����́Aa.op_or(b)�̏ȗ��`�ł��B\n
+aとbのbitwise orします。\n
+これは、a.op_or(b)の省略形です。\n
 
-\section xor bitwise xor���Z�q
+\section xor bitwise xor演算子
 \code
 a ^ b
 \endcode
-a��b��bitwise xor���܂��B\n
-����́Aa.op_xor(b)�̏ȗ��`�ł��B\n
+aとbのbitwise xorします。\n
+これは、a.op_xor(b)の省略形です。\n
 
-\section shl ���V�t�g���Z�q
+\section shl 左シフト演算子
 \code
 a << b
 \endcode
-a��b�r�b�g���V�t�g���܂��B\n
-����́Aa.op_shl(b)�̏ȗ��`�ł��B\n
+aをbビット左シフトします。\n
+これは、a.op_shl(b)の省略形です。\n
 
-\section shr �E�V�t�g���Z�q
+\section shr 右シフト演算子
 \code
 a >> b
 \endcode
-a��b�r�b�g�E�V�t�g���܂��B\n
-����́Aa.op_shr(b)�̏ȗ��`�ł��B\n
+aをbビット右シフトします。\n
+これは、a.op_shr(b)の省略形です。\n
 
-\section ushr �_���I�E�V�t�g���Z�q
+\section ushr 論理的右シフト演算子
 \code
 a >>> b
 \endcode
-a��b�r�b�g�_���I�E�V�t�g���܂��B\n
-����́Aa.op_ushr(b)�̏ȗ��`�ł��B\n
+aをbビット論理的右シフトします。\n
+これは、a.op_ushr(b)の省略形です。\n
 */
 
     
-/** \page cmp_operator ��r���Z�q
-\section not �P��!���Z�q
+/** \page cmp_operator 比較演算子
+\section not 単項!演算子
 \code
 !a
 \endcode
-�^�l��false�ɁA�U�l��true�ɕϊ����܂��B\n
+真値をfalseに、偽値をtrueに変換します。\n
 
-\section eq ==���Z�q
+\section eq ==演算子
 \code
 a == b
 \endcode
-a��b�������������ׂ܂��B\n
-����́Aa.op_eq(b)�̏ȗ��`�ł��B\n
+aとbが等しいか調べます。\n
+これは、a.op_eq(b)の省略形です。\n
     
-\section ne !=���Z�q
+\section ne !=演算子
 \code
 a != b
 \endcode
-==���Z�q�̔ے�ł��B\n
-����́A!a.op_eq(b)�̏ȗ��`�ł��B\n
+==演算子の否定です。\n
+これは、!a.op_eq(b)の省略形です。\n
 
-\section lt <���Z�q
+\section lt <演算子
 \code
 a < b
 \endcode
-a��b���������ׂ܂��B\n
-����́Aa.op_lt(b)�̏ȗ��`�ł��B\n
+aがb未満か調べます。\n
+これは、a.op_lt(b)の省略形です。\n
 
-\section gt >���Z�q
+\section gt >演算子
 \code
 a > b
 \endcode
-a���b���傫���l�����ׂ܂��B\n
-����́Ab.op_lt(a)�̏ȗ��`�ł��B\n
+aよりbが大きい値か調べます。\n
+これは、b.op_lt(a)の省略形です。\n
 
-\section ge <=���Z�q
+\section ge <=演算子
 \code
 a <= b
 \endcode
-a��b�ȉ������ׂ܂��B\n
-����́A!b.op_lt(a)�̏ȗ��`�ł��B\n
+aがb以下か調べます。\n
+これは、!b.op_lt(a)の省略形です。\n
     
-\section le >=���Z�q
+\section le >=演算子
 \code
 a >= b
 \endcode
-a��b�ȏォ���ׂ܂��B\n
-����́A!a.op_lt(b)�̏ȗ��`�ł��B\n
+aがb以上か調べます。\n
+これは、!a.op_lt(b)の省略形です。\n
 
-\section eql ===���Z�q
+\section eql ===演算子
 \code
 a === b
 \endcode
-a��b������̃I�u�W�F�N�g�ł��邩���ׂ܂��B\n
+aとbが同一のオブジェクトであるか調べます。\n
     
-\section neq !==���Z�q
+\section neq !==演算子
 \code
 a !== b
 \endcode
-===���Z�q�̔ے�ł��B\n
+===演算子の否定です。\n
     
-\section is is���Z�q
+\section is is演算子
 \code
 a is b
 \endcode
-a�̂�b�̃N���X�̃C���X�^���X�����ׂ܂��B\n
+aのがbのクラスのインスタンスか調べます。\n
     
-\section nis !is���Z�q
+\section nis !is演算子
 \code
 a !is b
 \endcode
-is���Z�q�̔ے�ł��B\n
+is演算子の否定です。\n
     
-\section in in���Z�q
+\section in in演算子
 \code
 a in b
 \endcode
-b��a���܂�ł��邩���ׂ܂��B\n
-�����a.op_in(b)�̏ȗ��n�ł��B
+bがaを含んでいるか調べます。\n
+これはa.op_in(b)の省略系です。
     
-\section nin !in���Z�q
+\section nin !in演算子
 \code
 a !in b
 \endcode
-in���Z�q�̔ے�ł��B\n
-�����!a.op_in(b)�̏ȗ��n�ł��B
+in演算子の否定です。\n
+これは!a.op_in(b)の省略系です。
 
 */
 
-/** \page call �֐��Ăяo�����Z�q
+/** \page call 関数呼び出し演算子
 \code
 foo(a, b, c)
 \endcode
-�֐��Ăяo����foo.op_call(a, b, c)�̏ȗ��`�ł��B\n
+関数呼び出しはfoo.op_call(a, b, c)の省略形です。\n
 
-�֐��Ăяo���͈����������Ƃ��Ă��A���ʂ��ȗ����邱�Ƃ͂ł��܂���B \n
-���ʂ��ȗ������ꍇ�A�P�Ȃ�ϐ��̎Q�ƂɂȂ�܂��B\n
+関数呼び出しは引数が無いとしても、括弧を省略することはできません。 \n
+括弧を省略した場合、単なる変数の参照になります。\n
 
-Xtal�̓L�[���[�h�������Ή����Ă��܂��B
+Xtalはキーワード引数も対応しています。
 \code
 foo(key: "value", key2: 100);
 \endcode
 */
     
-/** \page method_call ���\�b�h�Ăяo�����Z�q
+/** \page method_call メソッド呼び出し演算子
 \code
 obj.member();
 obj.member(100);
 \endcode
-�����̓n�����́A�֐��Ăяo�����Z�q�Ɠ����ł��B\n
+引数の渡し方は、関数呼び出し演算子と同じです。\n
 \n
-���\�b�h�Ăяo�����Z�q�́A�v���p�e�B�T�|�[�g�̂��߁A���\�b�h�Ăяo���͈����������Ƃ��A���ʂ��ȗ����邱�Ƃ��ł��܂��B\n 
+メソッド呼び出し演算子は、プロパティサポートのため、メソッド呼び出しは引数が無いとき、括弧を省略することができます。\n 
 \code
 obj.member;
 \endcode
-�v���p�e�B�̒l�ݒ�̕��͎��̂悤�ɏ����܂��B\n
+プロパティの値設定の方は次のように書けます。\n
 \code
 obj.member = 100;
 \endcode
-����� obj.set_member(100); �̂悤�ɃR���p�C������܂��B\n
+これは obj.set_member(100); のようにコンパイルされます。\n
 
-���\�b�h�Ăяo������.��.?�Ƃ���ƁA���̃��\�b�h�����݂���ꍇ�����Ăяo���Ƃ�������ɂȂ�܂��B \n
-�������݂��Ȃ������ꍇ�A���̒l��undefined�I�u�W�F�N�g�ƂȂ�܂��B\n
+メソッド呼び出し式の.を.?とすると、そのメソッドが存在する場合だけ呼び出すという動作になります。 \n
+もし存在しなかった場合、式の値はundefinedオブジェクトとなります。\n
 \code
 obj.?member;
 obj.?member(100);
 \endcode
     
-\section dynamic_method_call ���I���\�b�h�Ăяo��
+\section dynamic_method_call 動的メソッド呼び出し
 \code
 obj.("test" ~ "2");
 name: "aaaa";
 obj.(name)(100);
 ojb.?("key");
 \endcode
-.�̒����()�ň͂ނ��ƂŁA���ʎq�̕����𓮓I�ȕ�����ɂĎw�肷�邱�Ƃ��ł��܂��B\n
+.の直後に()で囲むことで、識別子の部分を動的な文字列にて指定することができます。\n
 */
 
-/** \page refmember �����o�擾���Z�q
+/** \page refmember メンバ取得演算子
 \code
 class Foo{
     roo: 100;
@@ -1747,17 +1747,17 @@ class Foo{
 Foo::roo.p; //=> 100
 \endcode
 
-�N���X�I�u�W�F�N�g�ɒ�`����Ă��郁���o�����o�����Z�q�ł��B\n
-::? �̕����g���ƁA���̃����o�����݂��Ȃ��ꍇ�Aundefined�I�u�W�F�N�g���Ԃ鉉�Z�q�ł��B\n
+クラスオブジェクトに定義されているメンバを取り出す演算子です。\n
+::? の方を使うと、そのメンバが存在しない場合、undefinedオブジェクトが返る演算子です。\n
 \code
 if(Foo::?hoge === undefined){
-  // Foo::hoge�������Ȃ炱����ʂ�
+  // Foo::hogeが無いならここを通る
 }else{
-  // Foo::hoge������Ȃ炱����ʂ�
+  // Foo::hogeがあるならここを通る
 }
 \endcode
 
-\section dynamic_refmeber ���I�����o�擾���Z�q
+\section dynamic_refmeber 動的メンバ取得演算子
 \code
 class Foo{
     roo: 100;
@@ -1766,19 +1766,19 @@ class Foo{
 Foo::("ro" ~ "o").p; //=>100
 Foo::?("key").p; //=> undefined
 \endcode
-::�̒����()�ň͂ނ��ƂŁA���ʎq�̕����𕶎���Ŏw�肵�A���o�������o�𓮓I�Ɍ��肵�܂��B\n
+::の直後に()で囲むことで、識別子の部分を文字列で指定し、取り出すメンバを動的に決定します。\n
 */
 
-/** \page secondary_key �Z�J���_���L�[
-�����o�̒�`��擾�ȂǂɁA�C�ӂ̃I�u�W�F�N�g���Z�J���_���L�[�Ƃ��Ďg�����Ƃ��ł��܂��B\n
+/** \page secondary_key セカンダリキー
+メンバの定義や取得などに、任意のオブジェクトをセカンダリキーとして使うことができます。\n
 \code
 class Foo{
-    // ���ʎqhoge���v���C�}���L�[
-    // ����555���Z�J���_���L�[��
+    // 識別子hogeをプライマリキー
+    // 整数555をセカンダリキーに
     bar#555: 100;
     
-    // ���ʎqhoge���v���C�}���L�[
-    // �N���X�I�u�W�F�N�gString���Z�J���_���L�[��
+    // 識別子hogeをプライマリキー
+    // クラスオブジェクトStringをセカンダリキーに
     hoge#String{
         "hoge#String".p;
     }
@@ -1790,7 +1790,7 @@ f: Foo();
 f.hoge#String; //=> hoge#String
 \endcode
 
-�N���X�I�u�W�F�N�g���Z�J���_���L�[�ɂ����ꍇ�A���̃N���X�̃T�u�N���X�ł��������q�b�g���܂��B\n
+クラスオブジェクトをセカンダリキーにした場合、そのクラスのサブクラスでも検索がヒットします。\n
 \code
 class A{}
 class B(A){}
@@ -1806,160 +1806,160 @@ f.bar#B; //=> "bar#A"
 \endcode
 */
     
-/** \page etc_operator ���̑��̉��Z�q
+/** \page etc_operator その他の演算子
 
-\section �v�f�擾���Z�q
+\section 要素取得演算子
 \code
 a[index]
 \endcode
-index�ɑΉ�����v�f��Ԃ��܂��B\n
-����́Aa.op_at(index)�̏ȗ��`�ł��B\n
+indexに対応する要素を返します。\n
+これは、a.op_at(index)の省略形です。\n
 
-\section �v�f�ݒ艉�Z�q
+\section 要素設定演算子
 \code
 a[index] = value
 \endcode
-index�ɑΉ�����v�f��ݒ肵�܂��B\n
-����́Aa.op_set_at(index, value)�̏ȗ��`�ł��B\n
+indexに対応する要素を設定します。\n
+これは、a.op_set_at(index, value)の省略形です。\n
 
-\section �z�񉻉��Z�q
+\section 配列化演算子
 \code
 a[]
 \endcode
-a��z��ɓZ�߂����ʂ�Ԃ��܂��B\n
-����́Aa.op_to_array�̏ȗ��`�ł��B\n
+aを配列に纏めた結果を返します。\n
+これは、a.op_to_arrayの省略形です。\n
 
-\section �A�z�z�񉻉��Z�q
+\section 連想配列化演算子
 \code 
 a[:]
 \endcode
-a��A�z�z��ɓZ�߂����ʂ�Ԃ��܂��B\n
-����́Aa.op_to_map�̏ȗ��`�ł��B\n
+aを連想配列に纏めた結果を返します。\n
+これは、a.op_to_mapの省略形です。\n
 
-\section oror �_���a���Z�q
+\section oror 論理和演算子
 \code
 a || b
 \endcode
-a��]�����āA���ꂪ�U�łȂ��Ȃ獶�ӂ̒l��Ԃ��܂��B �U�Ȃ�E�ӂ�Ԃ��܂��B\n
+aを評価して、それが偽でないなら左辺の値を返します。 偽なら右辺を返します。\n
 
-\section andand �_���ω��Z�q 
+\section andand 論理積演算子 
 \code
 a && b
 \endcode
-a��]�����āA���ꂪ�U�łȂ��Ȃ�A�E�ӂ�Ԃ��܂��B �U�Ȃ炻�̂܂܍��ӂ�Ԃ��܂��B\n
+aを評価して、それが偽でないなら、右辺を返します。 偽ならそのまま左辺を返します。\n
 
-\section _3term �O�����Z�q
-�l��Ԃ�if���ł��B\n
+\section _3term 三項演算子
+値を返すif文です。\n
 \code
 a<10 ? 1: 2
 \endcode
 
-\section once once���Z�q 
-once���Z�q�́A���̕]�����ŏ��̈�x�������鉉�Z�q�ł��B\n
+\section once once演算子 
+once演算子は、式の評価を最初の一度だけする演算子です。\n
 \code
 fun foo(){
     return once [0, 1, 2, 3];
 }
 \endcode
-����once��t���Ȃ��ꍇ�A���̊֐��͌Ăяo�����тɈႤ�z��I�u�W�F�N�g�𐶐����ĕԂ��܂����A once�ň�x�����]�����Ȃ��Ƃ��Ă��邽�߁A���x�Ăяo���Ă������z��I�u�W�F�N�g��Ԃ��܂��B\n
+もしonceを付けない場合、この関数は呼び出すたびに違う配列オブジェクトを生成して返しますが、 onceで一度しか評価しないとしているため、何度呼び出しても同じ配列オブジェクトを返します。\n
 
-\section range �͈͐������Z�q
-�͈̓I�u�W�F�N�g�𐶐����܂��B\n
+\section range 範囲生成演算子
+範囲オブジェクトを生成します。\n
 \code
-a .. b  // �͈�[expr, expr]
-a ..< b  // �͈�[expr, expr)
-a <.. b  // �͈�(expr, expr]
-a <..< b  // �͈�(expr, expr)
+a .. b  // 範囲[expr, expr]
+a ..< b  // 範囲[expr, expr)
+a <.. b  // 範囲(expr, expr]
+a <..< b  // 範囲(expr, expr)
 \endcode
-����́Aa.op_range(b, kind)�̏ȗ��n�ł��B\n
-���ӂ̎��������̏ꍇ�AIntRange�N���X�̃I�u�W�F�N�g���A\n
-���������_���̏ꍇ�AFloatRange�N���X�̃I�u�W�F�N�g���A\n
-����1�̕�����̏ꍇ�AChRange�N���X�̃I�u�W�F�N�g����������܂��B\n
+これは、a.op_range(b, kind)の省略系です。\n
+両辺の式が整数の場合、IntRangeクラスのオブジェクトが、\n
+浮動小数点数の場合、FloatRangeクラスのオブジェクトが、\n
+長さ1の文字列の場合、ChRangeクラスのオブジェクトが生成されます。\n
 */
 
-/** \page operator_priority ���Z�q�̗D�揇��
+/** \page operator_priority 演算子の優先順位
 <TABLE>
-<TR><TD>�D</TD><TD>��</TD><TD>���Z�q</TD><TD>�Ӗ�</TD></TR> 
-<TR><TD>15</TD><TD>��</TD><TD>a.b</TD><TD>�I�u�W�F�N�g�����o�A�N�Z�X</TD></TR>  
-<TR><TD>15</TD><TD>��</TD><TD>a[b]</TD><TD>�z��v�f�A�N�Z�X</TD></TR>  
-<TR><TD>15</TD><TD>��</TD><TD>a()</TD><TD>�֐��Ăяo��</TD></TR>  
-<TR><TD>15</TD><TD>��</TD><TD>a..b</TD><TD>�͈͉��Z�q</TD></TR>  
-<TR><TD>15</TD><TD>��</TD><TD>a[]</TD><TD>�z�񉻉��Z�q</TD></TR> 
-<TR><TD>15</TD><TD>��</TD><TD>a[:]</TD><TD>�A�z�z�񉻉��Z�q</TD></TR> 
-<TR><TD>14</TD><TD>�E</TD><TD>+a</TD><TD></TD></TR>  
-<TR><TD>14</TD><TD>�E</TD><TD>-a</TD><TD>�������]</TD></TR>  
-<TR><TD>14</TD><TD>�E</TD><TD>~a</TD><TD>�r�b�g�P�ʂ̔��]</TD></TR>  
-<TR><TD>14</TD><TD>�E</TD><TD>!a</TD><TD>�_���ے�</TD></TR>  
-<TR><TD>13</TD><TD>��</TD><TD>a*b</TD><TD>��Z</TD></TR>  
-<TR><TD>13</TD><TD>��</TD><TD>a/b</TD><TD>���Z</TD></TR>  
-<TR><TD>13</TD><TD>��</TD><TD>a%b</TD><TD>�]��</TD></TR>  
-<TR><TD>12</TD><TD>��</TD><TD>a+b</TD><TD>���Z</TD></TR>  
-<TR><TD>12</TD><TD>��</TD><TD>a-b</TD><TD>���Z</TD></TR>  
-<TR><TD>11</TD><TD>��</TD><TD>a<<b</TD><TD>���V�t�g</TD></TR>  
-<TR><TD>11</TD><TD>��</TD><TD>a>>b</TD><TD>�����t�E�V�t�g</TD></TR>  
-<TR><TD>11</TD><TD>��</TD><TD>a>>>b</TD><TD>�������E�V�t�g</TD></TR>  
-<TR><TD>10</TD><TD>��</TD><TD>a==b</TD><TD>������</TD></TR>  
-<TR><TD>10</TD><TD>��</TD><TD>a!=b</TD><TD>�������Ȃ�</TD></TR>  
-<TR><TD>10</TD><TD>��</TD><TD>a===b</TD><TD>����</TD></TR>  
-<TR><TD>10</TD><TD>��</TD><TD>a!==b</TD><TD>����ł͂Ȃ�</TD></TR>  
-<TR><TD>10</TD><TD>��</TD><TD>a is b</TD><TD>a��b�N���X�̃C���X�^���X��</TD></TR>  
-<TR><TD>10</TD><TD>��</TD><TD>a !is b</TD><TD>a��b�N���X�̃C���X�^���X�ł͂Ȃ���</TD></TR>  
-<TR><TD>10</TD><TD>��</TD><TD>a<b</TD><TD>��菬����</TD></TR>  
-<TR><TD>10</TD><TD>��</TD><TD>a>b</TD><TD>���傫��</TD></TR>  
-<TR><TD>10</TD><TD>��</TD><TD>a<=b</TD><TD>��菬������������</TD></TR>  
-<TR><TD>10</TD><TD>��</TD><TD>a>=b</TD><TD>���傫����������</TD></TR>  
-<TR><TD>09</TD><TD>��</TD><TD>a&b</TD><TD>�r�b�g�P�ʂ̘_����</TD></TR>  
-<TR><TD>08</TD><TD>��</TD><TD>a^b</TD><TD>�r�b�g�P�ʂ̔r���I�_���a</TD></TR>  
-<TR><TD>07</TD><TD>��</TD><TD>a|b</TD><TD>�r�b�g�P�ʂ̘_���a</TD></TR>  
-<TR><TD>06</TD><TD>��</TD><TD>a&&b</TD><TD>�_����</TD></TR>  
-<TR><TD>05</TD><TD>��</TD><TD>a||b</TD><TD>�_���a</TD></TR>  
-<TR><TD>00</TD><TD>�E</TD><TD>once a</TD><TD>�ŏ��̈�x�����]�����Ȃ�</TD></TR>  
+<TR><TD>優</TD><TD>結</TD><TD>演算子</TD><TD>意味</TD></TR> 
+<TR><TD>15</TD><TD>左</TD><TD>a.b</TD><TD>オブジェクトメンバアクセス</TD></TR>  
+<TR><TD>15</TD><TD>左</TD><TD>a[b]</TD><TD>配列要素アクセス</TD></TR>  
+<TR><TD>15</TD><TD>左</TD><TD>a()</TD><TD>関数呼び出し</TD></TR>  
+<TR><TD>15</TD><TD>左</TD><TD>a..b</TD><TD>範囲演算子</TD></TR>  
+<TR><TD>15</TD><TD>左</TD><TD>a[]</TD><TD>配列化演算子</TD></TR> 
+<TR><TD>15</TD><TD>左</TD><TD>a[:]</TD><TD>連想配列化演算子</TD></TR> 
+<TR><TD>14</TD><TD>右</TD><TD>+a</TD><TD></TD></TR>  
+<TR><TD>14</TD><TD>右</TD><TD>-a</TD><TD>符号反転</TD></TR>  
+<TR><TD>14</TD><TD>右</TD><TD>~a</TD><TD>ビット単位の反転</TD></TR>  
+<TR><TD>14</TD><TD>右</TD><TD>!a</TD><TD>論理否定</TD></TR>  
+<TR><TD>13</TD><TD>左</TD><TD>a*b</TD><TD>乗算</TD></TR>  
+<TR><TD>13</TD><TD>左</TD><TD>a/b</TD><TD>除算</TD></TR>  
+<TR><TD>13</TD><TD>左</TD><TD>a%b</TD><TD>余り</TD></TR>  
+<TR><TD>12</TD><TD>左</TD><TD>a+b</TD><TD>加算</TD></TR>  
+<TR><TD>12</TD><TD>左</TD><TD>a-b</TD><TD>減算</TD></TR>  
+<TR><TD>11</TD><TD>左</TD><TD>a<<b</TD><TD>左シフト</TD></TR>  
+<TR><TD>11</TD><TD>左</TD><TD>a>>b</TD><TD>符号付右シフト</TD></TR>  
+<TR><TD>11</TD><TD>左</TD><TD>a>>>b</TD><TD>符号無右シフト</TD></TR>  
+<TR><TD>10</TD><TD>左</TD><TD>a==b</TD><TD>等しい</TD></TR>  
+<TR><TD>10</TD><TD>左</TD><TD>a!=b</TD><TD>等しくない</TD></TR>  
+<TR><TD>10</TD><TD>左</TD><TD>a===b</TD><TD>同一</TD></TR>  
+<TR><TD>10</TD><TD>左</TD><TD>a!==b</TD><TD>同一ではない</TD></TR>  
+<TR><TD>10</TD><TD>左</TD><TD>a is b</TD><TD>aはbクラスのインスタンスか</TD></TR>  
+<TR><TD>10</TD><TD>左</TD><TD>a !is b</TD><TD>aはbクラスのインスタンスではないか</TD></TR>  
+<TR><TD>10</TD><TD>左</TD><TD>a<b</TD><TD>より小さい</TD></TR>  
+<TR><TD>10</TD><TD>左</TD><TD>a>b</TD><TD>より大きい</TD></TR>  
+<TR><TD>10</TD><TD>左</TD><TD>a<=b</TD><TD>より小さいか等しい</TD></TR>  
+<TR><TD>10</TD><TD>左</TD><TD>a>=b</TD><TD>より大きいか等しい</TD></TR>  
+<TR><TD>09</TD><TD>左</TD><TD>a&b</TD><TD>ビット単位の論理積</TD></TR>  
+<TR><TD>08</TD><TD>左</TD><TD>a^b</TD><TD>ビット単位の排他的論理和</TD></TR>  
+<TR><TD>07</TD><TD>左</TD><TD>a|b</TD><TD>ビット単位の論理和</TD></TR>  
+<TR><TD>06</TD><TD>左</TD><TD>a&&b</TD><TD>論理積</TD></TR>  
+<TR><TD>05</TD><TD>左</TD><TD>a||b</TD><TD>論理和</TD></TR>  
+<TR><TD>00</TD><TD>右</TD><TD>once a</TD><TD>最初の一度しか評価しない</TD></TR>  
 </TABLE>
     
-Xtal�͗D�揇�ʂƋ󔒂��}�b�`���Ă��Ȃ��ꍇ�A�R���p�C���G���[�Ƃ��܂��B\n
+Xtalは優先順位と空白がマッチしていない場合、コンパイルエラーとします。\n
 \code
 10 + 5*6 // ok
 10+5*6 // ok
-10+5 * 6 // error +���*�̕����D�揇�ʂ������̂ɁA�����ڂ͂����Ȃ��Ă��Ȃ��B
+10+5 * 6 // error +より*の方が優先順位が高いのに、見た目はそうなっていない。
 \endcode
 
-\subsection sppri ���ʂȗD�揇��0�̉��Z�q 
-once�Ȃǂ̗D�揇��0�̉��Z�q���������ċL�q�����ꍇ�A �D�揇�ʂ���ԍ����Ȃ�A�Ƃ������[�����K�p����܂��B\n
-�Ⴆ��\n
+\subsection sppri 特別な優先順位0の演算子 
+onceなどの優先順位0の演算子をくっつけて記述した場合、 優先順位が一番高くなる、というルールが適用されます。\n
+例えば\n
 \code
 once(10)+10
 \endcode
-��\n
+は\n
 \code
 ((once 10) + 10)
 \endcode
-�ƂȂ�܂��B\n
+となります。\n
 \code
 once (10)+10
 \endcode
-�Ɨ�����\n
+と離すと\n
 \code
 (once (10 + 10))
 \endcode
-�ƂȂ�܂��B\n
+となります。\n
 */
     
     
-/** \page except ��O���䕶
-\section try_catch try catch��
+/** \page except 例外制御文
+\section try_catch try catch文
 \code
 try{
     hoge();
     // ...
 }
-catch(e){ // try�߂ŗ�O�����������ꍇ�Ɏ��s������
-   // �ϐ�e�ɗ�O�I�u�W�F�N�g����������
+catch(e){ // try節で例外が発生した場合に実行される節
+   // 変数eに例外オブジェクトが代入される
 }
 \endcode
 
-try�߂̒��ő��o���ꂽ��O��߂܂���\���ł��B \n
+try節の中で送出された例外を捕まえる構文です。 \n
 
-\section try_finally try finally��
+\section try_finally try finally文
 \code
 try{
 
@@ -1968,11 +1968,11 @@ finally{
 
 }
 \endcode
-try�߂��甲���o�����Ƃ��ɕK��finally�߂ɏ����ꂽ�߂����s����\���ł��B\n
-����͕��ʂ�{}�̒��𔲂��o�����Ƃ��͂������A\n
-break�Acontinue�Areturn�Athrow�ȂǂŔ����o�����Ƃ��ɂ����s����܂��B\n
+try節から抜け出したときに必ずfinally節に書かれた節を実行する構文です。\n
+これは普通に{}の中を抜け出したときはもちろん、\n
+break、continue、return、throwなどで抜け出したときにも実行されます。\n
 
-\section try try catch finally�� 
+\section try try catch finally文 
 \code
 try{
 
@@ -1984,12 +1984,12 @@ finally{
 
 }
 \endcode
-try catch����try finally���̕������ł��B\n
+try catch文とtry finally文の複合文です。\n
 
-\section throw throw��
+\section throw throw文
 \code
 throw "error";
 \endcode
-��O�𑗏o���܂��B\n
-��������I�u�W�F�N�g�́A�����񉻉\�ȃI�u�W�F�N�g���AExcetion�N���X�����̃T�u�N���X�̃C���X�^���X�I�u�W�F�N�g�ł���K�v������܂��B\n
+例外を送出します。\n
+投げられるオブジェクトは、文字列化可能なオブジェクトか、Excetionクラスかそのサブクラスのインスタンスオブジェクトである必要があります。\n
 */

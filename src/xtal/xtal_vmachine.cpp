@@ -246,24 +246,20 @@ void VMachine::adjust_values3(AnyPtr* values, int_t src_count, int_t dest_count)
 	}
 }
 
-void VMachine::upsize_variables(uint_t upsize){
+void VMachine::upsize_variables_detail(uint_t upsize){
 	int_t top = XTAL_VM_variables_top();
 
-	if(variables_.size()<top+upsize+129){
-		variables_.resize(top+upsize+130);
-		variables_.resize(variables_.capacity());
-		XTAL_VM_set_variables_top(top);
+	variables_.resize(top+upsize+130);
+	variables_.resize(variables_.capacity());
+	XTAL_VM_set_variables_top(top);
 
-		for(uint_t i=0; i<scopes_.size(); ++i){
-			Scope& scope = scopes_[i]; 
-			if(scope.flags!=Scope::CLASS){
-				XTAL_ASSERT(scope.pos+scope.size<=variables_.size());
-				scopes_[i].frame->members_.attach((AnyPtr*)variables_.data()+scope.pos, scope.size);
-			}
+	for(uint_t i=0; i<scopes_.size(); ++i){
+		Scope& scope = scopes_[i]; 
+		if(scope.flags!=Scope::CLASS){
+			XTAL_ASSERT(scope.pos+scope.size<=variables_.size());
+			scopes_[i].frame->members_.attach((AnyPtr*)variables_.data()+scope.pos, scope.size);
 		}
 	}
-
-	variables_top_ += upsize;
 }
 
 void VMachine::push_ff(CallState& call_state){
@@ -576,8 +572,16 @@ send_common_iprimary_nosecondary:
 		}
 
 send_common_nosecondary:
+		accessibility = 0;
+
 		call_state.secondary = undefined;
 		call_state.self = XTAL_VM_ff().self;
+		XTAL_VM_LOCK{			
+			call_state.cls = call_state.target.get_class();
+			call_state.member = environment_->member_cache_table_.cache(XTAL_detail_pvalue(call_state.cls), (IDPtr&)call_state.primary, accessibility);
+		}
+		common_flag = SEND;
+		goto send_common4;
 
 send_common:
 		XTAL_VM_LOCK{
@@ -586,13 +590,14 @@ send_common:
 		common_flag = SEND;
 
 send_common2:
+		XTAL_VM_LOCK{			
+			call_state.member = environment_->member_cache_table2_.cache(XTAL_detail_pvalue(call_state.cls), (IDPtr&)call_state.primary, ap(call_state.secondary), accessibility);
+		}
+
+send_common4:
 
 		XTAL_VM_LOCK{
-			// ÉÅÉìÉoÇéÊìæÇµÇƒÉAÉNÉZÉbÉTÇÃÉ`ÉFÉbÉNÇÇ∑ÇÈ
-			accessibility = 0;
 			
-			call_state.member = environment_->member_cache_table_.cache(XTAL_detail_pvalue(call_state.cls), (IDPtr&)call_state.primary, ap(call_state.secondary), accessibility);
-
 			if(accessibility){
 				if(const inst_t* epc = check_accessibility(call_state, accessibility)){
 					XTAL_VM_CONTINUE(epc);
@@ -801,9 +806,9 @@ XTAL_VM_LOOP
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 
 		// å^Ç™intÇ©floatÇ≈Ç†ÇÈÇ©ÅH
-		if(((atype)&(~1U))==0){
+		if(XTAL_LIKELY(((atype)&(~1U))==0)){
 			XTAL_VM_DEC(result);
-			if(atype==0){
+			if(XTAL_LIKELY(atype==0)){
 				result.value_.init_int(XTAL_detail_ivalue(a)+1);
 			}
 			else{
@@ -822,9 +827,9 @@ XTAL_VM_LOOP
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 
 		// å^Ç™intÇ©floatÇ≈Ç†ÇÈÇ©ÅH
-		if(((atype)&(~1U))==0){
+		if(XTAL_LIKELY(((atype)&(~1U))==0)){
 			XTAL_VM_DEC(result);
-			if(atype==0){
+			if(XTAL_LIKELY(atype==0)){
 				result.value_.init_int(XTAL_detail_ivalue(a)-1);
 			}
 			else{
@@ -843,7 +848,7 @@ XTAL_VM_LOOP
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 
 		// å^Ç™intÇ©floatÇ≈Ç†ÇÈÇ©ÅH
-		if(((atype)&(~1U))==0){
+		if(XTAL_LIKELY(((atype)&(~1U))==0)){
 			XTAL_VM_DEC(result);
 			result.value_ = a.value_;
 			XTAL_VM_CONTINUE(pc + inst.ISIZE);
@@ -859,9 +864,9 @@ XTAL_VM_LOOP
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 
 		// å^Ç™intÇ©floatÇ≈Ç†ÇÈÇ©ÅH
-		if(((atype)&(~1U))==0){
+		if(XTAL_LIKELY(((atype)&(~1U))==0)){
 			XTAL_VM_DEC(result);
-			if(atype==0){
+			if(XTAL_LIKELY(atype==0)){
 				result.value_.init_int(-XTAL_detail_ivalue(a));
 			}
 			else{
@@ -879,7 +884,7 @@ XTAL_VM_LOOP
 		const AnyPtr& a = XTAL_VM_local_variable(inst.target); uint_t atype = XTAL_detail_urawtype(a);
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 
-		if(atype==TYPE_INT){
+		if(XTAL_LIKELY(atype==TYPE_INT)){
 			XTAL_VM_DEC(result);
 			result.value_.init_int(~XTAL_detail_ivalue(a));
 			XTAL_VM_CONTINUE(pc + inst.ISIZE);
@@ -896,7 +901,7 @@ XTAL_VM_LOOP
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 		
 		// å^Ç™intÇ©floatÇ≈Ç†ÇÈÇ©ÅH
-		if(((atype|btype)&(~1U))==0){
+		if(XTAL_LIKELY(((atype|btype)&(~1U))==0)){
 			XTAL_VM_DEC(result);
 			switch((atype<<1) | (btype)){
 				XTAL_NODEFAULT;
@@ -919,7 +924,7 @@ XTAL_VM_LOOP
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 		
 		// å^Ç™intÇ©floatÇ≈Ç†ÇÈÇ©ÅH
-		if(((atype|btype)&(~1U))==0){
+		if(XTAL_LIKELY(((atype|btype)&(~1U))==0)){
 			XTAL_VM_DEC(result);
 			switch((atype<<1) | (btype)){
 				XTAL_NODEFAULT;
@@ -948,7 +953,7 @@ XTAL_VM_LOOP
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 		
 		// å^Ç™intÇ©floatÇ≈Ç†ÇÈÇ©ÅH
-		if(((atype|btype)&(~1U))==0){
+		if(XTAL_LIKELY(((atype|btype)&(~1U))==0)){
 			XTAL_VM_DEC(result);
 			switch((atype<<1) | (btype)){
 				XTAL_NODEFAULT;
@@ -971,7 +976,7 @@ XTAL_VM_LOOP
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 		
 		// å^Ç™intÇ©floatÇ≈Ç†ÇÈÇ©ÅH
-		if(((atype|btype)&(~1U))==0){
+		if(XTAL_LIKELY(((atype|btype)&(~1U))==0)){
 			XTAL_VM_DEC(result);
 			switch((atype<<1) | (btype)){
 				XTAL_NODEFAULT;
@@ -998,7 +1003,7 @@ zerodiv2:
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 		
 		// å^Ç™intÇ©floatÇ≈Ç†ÇÈÇ©ÅH
-		if(((atype|btype)&(~1U))==0){
+		if(XTAL_LIKELY(((atype|btype)&(~1U))==0)){
 			XTAL_VM_DEC(result);			
 			switch((atype<<1) | (btype)){
 				XTAL_NODEFAULT;
@@ -1024,7 +1029,7 @@ zerodiv3:
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 		
 		// å^Ç™intÇ≈Ç†ÇÈÇ©ÅH
-		if((atype|btype)==0){
+		if(XTAL_LIKELY((atype|btype)==0)){
 			XTAL_VM_DEC(result);
 			result.value_.init_int(XTAL_detail_ivalue(a) & XTAL_detail_ivalue(b));
 			XTAL_VM_CONTINUE(pc + inst.ISIZE);
@@ -1041,7 +1046,7 @@ zerodiv3:
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 		
 		// å^Ç™intÇ≈Ç†ÇÈÇ©ÅH
-		if((atype|btype)==0){
+		if(XTAL_LIKELY((atype|btype)==0)){
 			XTAL_VM_DEC(result);
 			result.value_.init_int(XTAL_detail_ivalue(a) | XTAL_detail_ivalue(b));
 			XTAL_VM_CONTINUE(pc + inst.ISIZE);
@@ -1058,7 +1063,7 @@ zerodiv3:
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 		
 		// å^Ç™intÇ≈Ç†ÇÈÇ©ÅH
-		if((atype|btype)==0){
+		if(XTAL_LIKELY((atype|btype)==0)){
 			XTAL_VM_DEC(result);
 			result.value_.init_int(XTAL_detail_ivalue(a) ^ XTAL_detail_ivalue(b));
 			XTAL_VM_CONTINUE(pc + inst.ISIZE);
@@ -1075,7 +1080,7 @@ zerodiv3:
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 		
 		// å^Ç™intÇ≈Ç†ÇÈÇ©ÅH
-		if((atype|btype)==0){
+		if(XTAL_LIKELY((atype|btype)==0)){
 			XTAL_VM_DEC(result);
 			result.value_.init_int(XTAL_detail_ivalue(a) << XTAL_detail_ivalue(b));
 			XTAL_VM_CONTINUE(pc + inst.ISIZE);
@@ -1092,7 +1097,7 @@ zerodiv3:
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 	
 		// å^Ç™intÇ≈Ç†ÇÈÇ©ÅH
-		if((atype|btype)==0){
+		if(XTAL_LIKELY((atype|btype)==0)){
 			XTAL_VM_DEC(result);
 			result.value_.init_int(XTAL_detail_ivalue(a) >> XTAL_detail_ivalue(b));
 			XTAL_VM_CONTINUE(pc + inst.ISIZE);
@@ -1109,7 +1114,7 @@ zerodiv3:
 		AnyPtr& result = XTAL_VM_local_variable(inst.result);
 		
 		// å^Ç™intÇ≈Ç†ÇÈÇ©ÅH
-		if((atype|btype)==0){
+		if(XTAL_LIKELY((atype|btype)==0)){
 			XTAL_VM_DEC(result);
 			result.value_.init_int((uint_t)XTAL_detail_ivalue(a) >> XTAL_detail_ivalue(b));
 			XTAL_VM_CONTINUE(pc + inst.ISIZE);
@@ -1124,7 +1129,7 @@ zerodiv3:
 		AnyPtr& a = XTAL_VM_local_variable(inst.target); uint_t atype = XTAL_detail_type(a);
 		AnyPtr& b = XTAL_VM_local_variable(inst.index); uint_t btype = XTAL_detail_urawtype(b);
 
-		if(atype==TYPE_ARRAY && btype==TYPE_INT){
+		if(XTAL_LIKELY(((atype^TYPE_ARRAY) | (btype^TYPE_INT))==0)){
 			int_t index = XTAL_detail_ivalue(b);
 			const ArrayPtr& ary = unchecked_ptr_cast<Array>(a);
 
@@ -1161,7 +1166,7 @@ zerodiv3:
 		AnyPtr& b = XTAL_VM_local_variable(inst.index); uint_t btype = XTAL_detail_urawtype(b);
 		AnyPtr& c = XTAL_VM_local_variable(inst.value);
 
-		if(atype==TYPE_ARRAY && btype==TYPE_INT){
+		if(XTAL_LIKELY(((atype^TYPE_ARRAY) | (btype^TYPE_INT))==0)){
 			int_t index = XTAL_detail_ivalue(b);
 			const ArrayPtr& ary = unchecked_ptr_cast<Array>(a);
 
@@ -1217,7 +1222,7 @@ zerodiv3:
 		AnyPtr& b = XTAL_VM_local_variable(inst.rhs); uint_t btype = XTAL_detail_urawtype(b)-TYPE_INT;
 
 		// å^Ç™intÇ©floatÇ≈Ç†ÇÈÇ©ÅH
-		if(((atype|btype)&(~1U))==0){
+		if(XTAL_LIKELY(((atype|btype)&(~1U))==0)){
 			int next = 0;
 			switch((atype<<1) | (btype)){
 				XTAL_NODEFAULT;
@@ -1247,7 +1252,7 @@ zerodiv3:
 		AnyPtr& b = XTAL_VM_local_variable(inst.rhs); uint_t btype = XTAL_detail_urawtype(b)-TYPE_INT;
 
 		// å^Ç™intÇ©floatÇ≈Ç†ÇÈÇ©ÅH
-		if(((atype|btype)&(~1U))==0){
+		if(XTAL_LIKELY(((atype|btype)&(~1U))==0)){
 			int next = 0;
 			switch((atype<<1) | (btype)){
 				XTAL_NODEFAULT;

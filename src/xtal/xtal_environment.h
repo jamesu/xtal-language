@@ -114,19 +114,6 @@ public:
 };
 
 /**
-* \brief デバッグライブラリ
-*/
-class DebugLib{
-public:
-	virtual ~DebugLib(){}
-
-	virtual void* new_debug_stream(){ return 0; }
-	virtual void delete_debug_stream(void* /*debug_stream_object*/){}
-	virtual uint_t read_debug_stream(void* /*debug_stream_object*/, void* /*dest*/, uint_t /*size*/){ return 0; }
-	virtual uint_t write_debug_stream(void* /*debug_stream_object*/, const void* /*src*/, uint_t /*size*/){ return 0; }
-};
-
-/**
 * \brief 使用ライブラリの指定のための構造体
 */
 struct Setting{
@@ -135,7 +122,6 @@ struct Setting{
 	ThreadLib* thread_lib;
 	StdStreamLib* std_stream_lib;
 	FilesystemLib* filesystem_lib;
-	DebugLib* debug_lib;
 
 	/**
 	* \brief ほとんど何もしない動作を設定する。
@@ -170,8 +156,6 @@ ThreadLib* thread_lib();
 StdStreamLib* std_stream_lib();
 
 FilesystemLib* filesystem_lib();
-
-DebugLib* debug_lib();
 
 /////////////////////////////////////////////////////
 

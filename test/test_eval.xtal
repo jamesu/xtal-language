@@ -3,17 +3,32 @@ inherit(lib::test);
 class EvalTest{
 
 	local_var#Test{
+		n, m: 10, 20;
 		a: 10;
 		assert eval("a")==a;
 		assert eval("dofun a")==a;
+		assert eval("dofun n + m")==n+m;
+	}
+		
+	local_scope_var#Test{
+		{
+			n, m: 10, 20;
+			a: 10;
+			assert eval("a")==a;
+			assert eval("dofun a")==a;
+			assert eval("dofun n + m")==n+m;
+		}
 	}
 	
 	instance_var#Test{
+		n, m: 10, 20;
 		class A{
 			_e: 11;
 			
 			foo{
 				assert eval("_e")==_e;
+				assert eval("_e+m")==_e+m;
+				assert eval("_e+n")==_e+n;
 			}
 		}
 		
@@ -21,6 +36,7 @@ class EvalTest{
 	}
 	
 	local_instance_var#Test{
+		n, m: 10, 20;
 		a: 10;
 		
 		class A{
@@ -33,6 +49,7 @@ class EvalTest{
 				eval("a = 22;");
 				
 				assert eval("_e + a") == 19 + 22;				
+				assert eval("_e + m") == 19 + 20;				
 			}
 		}
 		
@@ -40,6 +57,7 @@ class EvalTest{
 	}
 	
 	set_local_var#Test{
+		n, m: 10, 20;
 		a: 10;
 		eval("a = 1;");
 		assert a==1;
@@ -47,6 +65,7 @@ class EvalTest{
 	
 	
 	instance_var#Test{
+		n, m: 10, 20;
 		class A{
 			_e: 11;
 			
@@ -60,13 +79,16 @@ class EvalTest{
 	}
 	
 	catch_except#Test{
+		n, m: 10, 20;
 		aa: 10;
 		aa = 15;
 		assert eval("unknown") && false catch(e) true;
 		assert eval("aa") && true catch(e) false;
 	}
+
 	
 	fiber_var#Test{
+		n, m: 10, 20;
 		f: fiber{
 			for(i: 0; i<10; ++i){
 				yield i;

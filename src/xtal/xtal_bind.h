@@ -3044,7 +3044,25 @@ template<class TFun> inline static_setter_meker<TFun> generate_static_setter(TFu
 */
 #define Xxtal_class() it->set_xtal_class()
 
+/**
+* \brief シングルトンマークをつける
+*/
 #define Xsingleton() it->set_singleton()
+
+/**
+* \brief 次から定義するメンバをpublicとする
+*/
+#define Xpublic() it->set_accessibility(::xtal::KIND_PUBLIC)
+
+/**
+* \brief 次から定義するメンバをpublicとする
+*/
+#define Xprotected() it->set_accessibility(::xtal::KIND_PROTECTED)
+
+/**
+* \brief 次から定義するメンバをpublicとする
+*/
+#define Xprivate() it->set_accessibility(::xtal::KIND_PRIVATE)
 
 //{REPEAT{{
 /*

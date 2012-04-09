@@ -149,6 +149,7 @@ void Class::init(){
 	object_force_ = 0;
 	symbol_data_ = 0;
 	overwrite_now_ = false;
+	default_accessibility_ = KIND_PUBLIC;
 	set_initialized_members();
 }
 
@@ -291,6 +292,7 @@ void Class::inherit_first(const ClassPtr& cls){
 
 	if(!symbol_data_){
 		symbol_data_ = cls->symbol_data();
+		flags_ |= FLAG_CPP_INHERIT;
 	}
 
 	if(cls->is_final()){
@@ -399,11 +401,11 @@ IDPtr Class::find_near_member2(const IDPtr& primary_key, const AnyPtr& secondary
 }
 
 void Class::def_double_dispatch_method(const IDPtr& primary_key, int_t accessibility){
-	on_def(primary_key, xtal::double_dispatch_method(primary_key), undefined, accessibility);
+	def_inner(primary_key, xtal::double_dispatch_method(primary_key), undefined, accessibility);
 }
 
 void Class::def_double_dispatch_fun(const IDPtr& primary_key, int_t accessibility){
-	on_def(primary_key, xtal::double_dispatch_fun(to_smartptr(this), primary_key), undefined, accessibility);
+	def_inner(primary_key, xtal::double_dispatch_fun(to_smartptr(this), primary_key), undefined, accessibility);
 }
 
 const NativeFunPtr& Class::def_and_return(const IDPtr& primary_key, const AnyPtr& secondary_key, int_t accessibility, const param_types_holder_n& pth, const void* val){
@@ -416,11 +418,11 @@ const NativeFunPtr& Class::def_and_return(const IDPtr& primary_key, const AnyPtr
 }
 
 void Class::define(const LongLivedString& primary_key, const param_types_holder_n& pth){
-	def(intern(primary_key), xnew<StatelessNativeMethod>(pth), undefined, KIND_PUBLIC);
+	def(intern(primary_key), xnew<StatelessNativeMethod>(pth), undefined, default_accessibility_);
 }
 
 void Class::define(const LongLivedString& primary_key, const AnyPtr& secondary_key, const param_types_holder_n& pth){
-	def(intern(primary_key), xnew<StatelessNativeMethod>(pth), secondary_key, KIND_PUBLIC);
+	def(intern(primary_key), xnew<StatelessNativeMethod>(pth), secondary_key, default_accessibility_);
 }
 
 void Class::define_param(const LongLivedString& name, const AnyPtr& default_value){
@@ -459,15 +461,15 @@ void Class::define_param(const LongLivedString& name, const AnyPtr& default_valu
 }
 
 void Class::define(const LongLivedString& primary_key, const AnyPtr& value){
-	def(intern(primary_key), value, undefined, KIND_PUBLIC);
+	def(intern(primary_key), value, undefined, default_accessibility_);
 }
 
 void Class::define(const LongLivedString& primary_key, const AnyPtr& value, const AnyPtr& secondary_key){
-	def(intern(primary_key), value, undefined, KIND_PUBLIC);
+	def(intern(primary_key), value, undefined, default_accessibility_);
 }
 
 const AnyPtr& Class::def2(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key, int_t accessibility){
-	on_def(primary_key, value, secondary_key, accessibility);
+	def_inner(primary_key, value, secondary_key, accessibility);
 
 	if(Node* it = find_node(primary_key, secondary_key)){
 		return member_direct(it->num);
@@ -492,14 +494,17 @@ void Class::overwrite_member(const IDPtr& primary_key, const AnyPtr& value, cons
 		invalidate_cache_member();
 	}
 	else{
-		on_def(primary_key, value, secondary_key, accessibility);
+		def_inner(primary_key, value, secondary_key, accessibility);
 	}
+}
+	
+void Class::def_inner(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key, int_t accessibility){
+	on_def(primary_key, value, secondary_key, accessibility==KIND_DEFAULT?default_accessibility_:KIND_PUBLIC);
 }
 
 void Class::on_def(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key, int_t accessibility){
 	flags_ &= ~(FLAG_LAST_DEFINED_CTOR | FLAG_LAST_DEFINED_CTOR2);
 
-	bool a = debug::is_redefine_enabled();
 	if(find_node(primary_key, secondary_key)){
 		if(debug::is_redefine_enabled()){
 			Node* node = insert_node(primary_key, secondary_key, members_.size());
@@ -522,15 +527,15 @@ void Class::on_def(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& 
 }
 
 void Class::def(const char_t* primary_key, const AnyPtr& value, const AnyPtr& secondary_key, int_t accessibility){
-	on_def(intern(primary_key), value, secondary_key, accessibility);
+	def_inner(intern(primary_key), value, secondary_key, accessibility);
 }
 
 void Class::def(const IDPtr& primary_key, const AnyPtr& value){
-	on_def(primary_key, value, undefined, KIND_PUBLIC);
+	def_inner(primary_key, value, undefined, default_accessibility_);
 }
 
 void Class::def(const char_t* primary_key, const AnyPtr& value){
-	on_def(intern(primary_key), value, undefined, KIND_PUBLIC);
+	def_inner(intern(primary_key), value, undefined, default_accessibility_);
 }
 
 const AnyPtr& Class::find_member(const IDPtr& primary_key, const AnyPtr& secondary_key, int_t& accessibility, bool& nocache){
@@ -575,11 +580,13 @@ const AnyPtr& Class::find_member(const IDPtr& primary_key, const AnyPtr& seconda
 		return ret;
 	}
 
-	for(int_t i=0; i<CppClassSymbolData::BIND; ++i){
-		if(bind(i)){
-			const AnyPtr& ret = find_member(primary_key, secondary_key, accessibility, nocache);
-			if(!XTAL_detail_is_undefined(ret)){
-				return ret;
+	if((flags_&FLAG_CPP_INHERIT)==0){
+		for(int_t i=0; i<CppClassSymbolData::BIND; ++i){
+			if(bind(i)){
+				const AnyPtr& ret = find_member(primary_key, secondary_key, accessibility, nocache);
+				if(!XTAL_detail_is_undefined(ret)){
+					return ret;
+				}
 			}
 		}
 	}
@@ -668,7 +675,7 @@ IDPtr Class::object_temporary_name(){
 		return name;
 	}
 
-	if(symbol_data_ && (symbol_data_->flags&CppClassSymbolData::FLAG_NAME)){
+	if(symbol_data_ && (symbol_data_->flags&CppClassSymbolData::FLAG_NAME) && (flags_&FLAG_CPP_INHERIT)){
 		return XTAL_LONG_LIVED_STRING(symbol_data_->name);
 	}
 
@@ -917,6 +924,10 @@ void Class::set_singleton(){
 		inherit(get_class());
 		Base::set_class(to_smartptr(this));
 	}
+}
+
+void Class::set_accessibility(int_t accessiblity){
+	default_accessibility_ = accessiblity;
 }
 
 void Class::set_cpp_singleton(){

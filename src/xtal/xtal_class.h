@@ -87,9 +87,10 @@ public:
 
 	void overwrite(const ClassPtr& p);
 
-	void overwrite_member(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_PUBLIC);
+	void overwrite_member(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_DEFAULT);
 
 public:
+	using RefCountingBase::def;
 
 	/**
 	* \brief 新しいメンバを定義する
@@ -98,22 +99,21 @@ public:
 	* \param secondary_key セカンダリキー
 	* \param accessibility 可蝕性
 	*/
-	void on_def(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key, int_t accessibility = KIND_PUBLIC);
-
-	using RefCountingBase::def;
-	
-	void def(const char_t* primary_key, const AnyPtr& value, const AnyPtr& secondary_key, int_t accessibility = KIND_PUBLIC);
-
-	void def(const IDPtr& primary_key, const AnyPtr& value);
-	void def(const char_t* primary_key, const AnyPtr& value);
+	void def(const char_t* primary_key, const AnyPtr& value, const AnyPtr& secondary_key, int_t accessibility = KIND_DEFAULT);
 
 	/**
-	* \internal
-	* \brief メンバを取り出す
-	*
-	* この関数を使うのではなく、Any::memberを使うこと。
+	* \brief 新しいメンバを定義する
+	* \param primary_key 新しく定義するメンバの名前
+	* \param value 設定する値
 	*/
-	const AnyPtr& on_rawmember(const IDPtr& primary_key, const AnyPtr& secondary_key, bool inherited_too, int_t& accessibility, bool& nocache);
+	void def(const IDPtr& primary_key, const AnyPtr& value);
+
+	/**
+	* \brief 新しいメンバを定義する
+	* \param primary_key 新しく定義するメンバの名前
+	* \param value 設定する値
+	*/
+	void def(const char_t* primary_key, const AnyPtr& value);
 
 	/**
 	* \brief メンバを再設定する
@@ -188,7 +188,7 @@ public:
 	* \param accessibility 可蝕性
 	*/
 	template<class TFun>
-	const NativeFunPtr& def_fun(const IDPtr& primary_key, const TFun& f, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_PUBLIC){
+	const NativeFunPtr& def_fun(const IDPtr& primary_key, const TFun& f, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_DEFAULT){
 		return def_and_return(primary_key, secondary_key, accessibility, fun_param_holder<dfun<TFun> >::value, &f);
 	}
 
@@ -201,7 +201,7 @@ public:
 	* \param accessibility 可蝕性
 	*/
 	template<class TFun>
-	const NativeFunPtr& def_method(const IDPtr& primary_key, const TFun& f, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_PUBLIC){
+	const NativeFunPtr& def_method(const IDPtr& primary_key, const TFun& f, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_DEFAULT){
 		return def_and_return(primary_key, secondary_key, accessibility, fun_param_holder<dmemfun<TFun> >::value, &f);
 	}
 
@@ -213,7 +213,7 @@ public:
 	* \param accessibility 可蝕性
 	*/
 	template<class T, class C>
-	const NativeFunPtr& def_getter(const IDPtr& primary_key, T C::* v, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_PUBLIC){
+	const NativeFunPtr& def_getter(const IDPtr& primary_key, T C::* v, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_DEFAULT){
 		return def_and_return(primary_key, secondary_key, accessibility, fun_param_holder<dmemfun<getter_functor<C, T> > >::value, &v);
 	}
 	
@@ -227,7 +227,7 @@ public:
 	* \param accessibility 可蝕性
 	*/
 	template<class T, class C>
-	const NativeFunPtr& def_setter(const IDPtr& primary_key, T C::* v, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_PUBLIC){
+	const NativeFunPtr& def_setter(const IDPtr& primary_key, T C::* v, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_DEFAULT){
 		return def_and_return(primary_key, secondary_key, accessibility, fun_param_holder<dmemfun<setter_functor<C, T> > >::value, &v);
 	}
 	
@@ -242,7 +242,7 @@ public:
 	* \param accessibility 可蝕性
 	*/	
 	template<class T, class U>
-	void def_var(const IDPtr& primary_key, T U::* v, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_PUBLIC){
+	void def_var(const IDPtr& primary_key, T U::* v, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_DEFAULT){
 		def_getter(primary_key, v, secondary_key, accessibility);
 		def_setter(StringPtr(XTAL_STRING("set_"))->cat(primary_key), v, secondary_key, accessibility);
 	}
@@ -252,14 +252,14 @@ public:
 	* \param primary_key 新しく定義するメンバの名前
 	* \param accessibility 可蝕性
 	*/
-	void def_double_dispatch_method(const IDPtr& primary_key, int_t accessibility = KIND_PUBLIC);
+	void def_double_dispatch_method(const IDPtr& primary_key, int_t accessibility = KIND_DEFAULT);
 
 	/**
 	* \brief 2重ディスパッチ関数を定義する。
 	* \param primary_key 新しく定義するメンバの名前
 	* \param accessibility 可蝕性
 	*/
-	void def_double_dispatch_fun(const IDPtr& primary_key, int_t accessibility = KIND_PUBLIC);
+	void def_double_dispatch_fun(const IDPtr& primary_key, int_t accessibility = KIND_DEFAULT);
 
 public:
 
@@ -380,11 +380,34 @@ public:
 
 public:
 
+	/**
+	* \brief 新しいメンバを定義する
+	* \param primary_key 新しく定義するメンバの名前
+	* \param value 設定する値
+	* \param secondary_key セカンダリキー
+	* \param accessibility 可蝕性
+	* この関数を使うのではなく、defを使うこと。
+	*/
+	void on_def(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key, int_t accessibility = KIND_DEFAULT);
+
+	void on_rawcall(const VMachinePtr& vm);
+
+	/**
+	* \internal
+	* \brief メンバを取り出す
+	*
+	* この関数を使うのではなく、memberを使うこと。
+	*/
+	const AnyPtr& on_rawmember(const IDPtr& primary_key, const AnyPtr& secondary_key, bool inherited_too, int_t& accessibility, bool& nocache);
+
+	void on_set_object_parent(const ClassPtr& parent);
+
+public:
+
 	struct cpp_class_t{};
 
 	Class(cpp_class_t);
 
-	void on_rawcall(const VMachinePtr& vm);
 	
 	void s_new(const VMachinePtr& vm);
 
@@ -403,8 +426,6 @@ public:
 	void set_object_temporary_name(const IDPtr& name);
 
 	IDPtr object_temporary_name();
-
-	void on_set_object_parent(const ClassPtr& parent);
 
 	uint_t object_force(){
 		return object_force_;
@@ -457,7 +478,11 @@ public:
 
 	void init_singleton(const VMachinePtr& vm);
 
+	void set_accessibility(int_t accessiblity);
+
 private:
+
+	void def_inner(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key, int_t accessibility);
 
 	void init();
 
@@ -488,7 +513,7 @@ public:
 protected:
 	void overwrite_inner(const ClassPtr& p);
 	
-	const AnyPtr& def2(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key = null, int_t accessibility = KIND_PUBLIC);
+	const AnyPtr& def2(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key = null, int_t accessibility = KIND_DEFAULT);
 
 	struct Options{
 		NativeFunPtr ctor;
@@ -521,6 +546,8 @@ protected:
 	Class** inherited_classes_;
 
 	bool overwrite_now_;
+
+	int_t default_accessibility_;
 
 	friend class InheritedClassesIter;
 };

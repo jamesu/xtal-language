@@ -249,7 +249,11 @@ public:
 	bool eat_ascii(int_t ch);
 
 protected:
-	virtual int_t on_read(AnyPtr* buf, int_t size){ return 0; }
+	virtual int_t on_read(AnyPtr* buf, int_t size){ 
+		XTAL_UNUSED_VAR(buf);
+		XTAL_UNUSED_VAR(size);
+		return 0; 
+	}
 
 private:
 	

@@ -33,7 +33,7 @@ const AnyPtr& Any::member(const IDPtr& primary_key, const AnyPtr& secondary_key,
 		Base* p = XTAL_detail_pvalue(*this);
 		bool nocache;
 		const AnyPtr& ret = inherited_too ?
-			environment_->member_cache_table_.cache(p, primary_key, secondary_key, accessibility) :
+			environment_->member_cache_table2_.cache(p, primary_key, secondary_key, accessibility) :
 			p->rawmember(primary_key, secondary_key, false, accessibility, nocache);
 		return ret;
 	}
@@ -41,8 +41,13 @@ const AnyPtr& Any::member(const IDPtr& primary_key, const AnyPtr& secondary_key,
 }
 
 const AnyPtr& Any::member(const IDPtr& primary_key) const{
-	int_t accessibility;
-	return member(primary_key, (const AnyPtr&)undefined, true, accessibility);
+	if(XTAL_detail_type(*this)==TYPE_BASE){
+		Base* p = XTAL_detail_pvalue(*this);
+		int_t accessibility = 0;
+		const AnyPtr& ret = environment_->member_cache_table_.cache(p, primary_key, accessibility);
+		return ret;
+	}
+	return undefined;
 }
 
 const AnyPtr& Any::member(const IDPtr& primary_key, const AnyPtr& secondary_key) const{

@@ -892,6 +892,7 @@ void Class::prebind(){
 		flags_ |= FLAG_PREBINDED;
 		if(symbol_data_ && (symbol_data_->flags&CppClassSymbolData::FLAG_BIND0)){
 			symbol_data_->prebind(this);
+			set_accessibility(KIND_PUBLIC);
 		}
 	}
 }
@@ -904,6 +905,7 @@ bool Class::bind(int_t n){
 				ret = true;
 			}
 		}
+		set_accessibility(KIND_PUBLIC);
 		return ret;
 	}
 
@@ -911,6 +913,7 @@ bool Class::bind(int_t n){
 		flags_ |= (FLAG_BINDED<<n);
 		if(symbol_data_ && (symbol_data_->flags&(CppClassSymbolData::FLAG_BIND1<<n))){
 			symbol_data_->bind[n](this);
+			set_accessibility(KIND_PUBLIC);
 			return true;
 		}
 	}

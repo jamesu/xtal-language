@@ -63,7 +63,6 @@ struct MemberCacheTable{
 			miss_++;
 
 			bool nocache = false;
-			int_t accessibility;
 			const AnyPtr& ret = target_class->rawmember(primary_key, undefined, true, accessibility, nocache);
 			if(!nocache){
 				unit.member = ret;

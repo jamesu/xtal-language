@@ -572,11 +572,11 @@ send_common_iprimary_nosecondary:
 		}
 
 send_common_nosecondary:
-		accessibility = 0;
 
 		call_state.secondary = undefined;
 		call_state.self = XTAL_VM_ff().self;
 		XTAL_VM_LOCK{			
+			accessibility = 0;
 			call_state.cls = call_state.target.get_class();
 			call_state.member = environment_->member_cache_table_.cache(XTAL_detail_pvalue(call_state.cls), (IDPtr&)call_state.primary, accessibility);
 		}
@@ -584,6 +584,7 @@ send_common_nosecondary:
 		goto send_common4;
 
 send_common:
+
 		XTAL_VM_LOCK{
 			call_state.cls = call_state.target.get_class();
 		}
@@ -591,6 +592,7 @@ send_common:
 
 send_common2:
 		XTAL_VM_LOCK{			
+			accessibility = 0;
 			call_state.member = environment_->member_cache_table2_.cache(XTAL_detail_pvalue(call_state.cls), (IDPtr&)call_state.primary, ap(call_state.secondary), accessibility);
 		}
 

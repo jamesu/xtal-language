@@ -66,7 +66,9 @@ inline void bind_error_message(){
 		XTAL_L("XRE1031"), XTAL_L("XRE1031:シングルトンクラスはシングルトンクラスでないと継承できません。"),
 		XTAL_L("XRE1032"), XTAL_L("XRE1032:ファイル'%(name)s'が開けません。"),
 		XTAL_L("XRE1033"), XTAL_L("XRE1033:ストリームの終端以降を読み取ろうとしました。"),
-		XTAL_L("XRE1034"), XTAL_L("XRE1034:無限ループが発生する可能性があるxpeg要素を実行しようとしました"),	};
+		XTAL_L("XRE1034"), XTAL_L("XRE1034:無限ループが発生する可能性があるxpeg要素を実行しようとしました"),
+		XTAL_L("XRE1035"), XTAL_L("XRE1035:実行中で非yield中のファイバーに対する不正な操作です"),	
+	};
 	
 	for(int i=0; i<sizeof(messages)/sizeof(*messages)/2; ++i){
 		IDPtr key(*(LongLivedString*)messages[i*2+0]);

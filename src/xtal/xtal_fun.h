@@ -253,10 +253,8 @@ public:
 
 	Fiber(const FramePtr& outer, const AnyPtr& th, const CodePtr& code, FunInfo* info);
 
-	void on_finalize();
 			
 public:
-
 	void block_next(const VMachinePtr& vm){
 		call_helper(vm, true);
 	}
@@ -265,10 +263,6 @@ public:
 	* \brief 実行を強制停止する
 	*/
 	void halt();
-
-	void on_rawcall(const VMachinePtr& vm){
-		call_helper(vm, false);
-	}
 
 	/**
 	* \brief ファイバーオブジェクトが実行中かどうか
@@ -282,7 +276,12 @@ public:
 	*/
 	const FiberPtr& reset();
 
-	void call_helper(const VMachinePtr& vm, bool add_succ_or_fail_result);
+public:
+	void on_rawcall(const VMachinePtr& vm){
+		call_helper(vm, false);
+	}
+
+	void on_finalize();
 
 	void on_visit_members(Visitor& m){
 		Fun::on_visit_members(m);
@@ -290,9 +289,14 @@ public:
 	}
 
 private:
+	void call_helper(const VMachinePtr& vm, bool add_succ_or_fail_result);
+
+private:
+
 	VMachinePtr vm_;
 	const inst_t* resume_pc_;
 	bool alive_;
+	bool calling_;
 };
 
 class BindedThis : public Base{

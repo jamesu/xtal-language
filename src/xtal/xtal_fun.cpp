@@ -216,7 +216,7 @@ void Lambda::on_rawcall(const VMachinePtr& vm){
 }
 
 Fiber::Fiber(const FramePtr& outer, const AnyPtr& th, const CodePtr& code, FunInfo* info)
-	:Fun(outer, th, code, info), resume_pc_(0), alive_(true){
+	:Fun(outer, th, code, info), resume_pc_(0), alive_(true), calling_(false){
 }
 
 void Fiber::on_finalize(){
@@ -224,6 +224,11 @@ void Fiber::on_finalize(){
 }
 
 void Fiber::halt(){
+	if(calling_){
+		XTAL_SET_EXCEPT(cpp_class<RuntimeError>()->call(Xt("XRE1035")));
+		return;
+	}
+
 	if(resume_pc_!=0){
 		vm_->exit_fiber();
 		resume_pc_ = 0;
@@ -235,6 +240,11 @@ void Fiber::halt(){
 }
 
 void Fiber::call_helper(const VMachinePtr& vm, bool add_succ_or_fail_result){
+	if(calling_){
+		vm->set_except(cpp_class<RuntimeError>()->call(Xt("XRE1035")));
+		return;
+	}
+
 	if(alive_){
 		vm->set_arg_this(this_);
 		if(resume_pc_==0){
@@ -242,10 +252,14 @@ void Fiber::call_helper(const VMachinePtr& vm, bool add_succ_or_fail_result){
 				set_finalizer_flag();
 				vm_ = vmachine_take_over(); 
 			}
+			calling_ = true;
 			resume_pc_ = vm_->start_fiber(this, vm.get(), add_succ_or_fail_result);
+			calling_ = false;
 		}
 		else{ 
+			calling_ = true;
 			resume_pc_ = vm_->resume_fiber(this, resume_pc_, vm.get(), add_succ_or_fail_result);
+			calling_ = false;
 		}
 
 		if(resume_pc_==0){
@@ -261,6 +275,11 @@ void Fiber::call_helper(const VMachinePtr& vm, bool add_succ_or_fail_result){
 }
 
 const FiberPtr& Fiber::reset(){
+	if(calling_){
+		XTAL_SET_EXCEPT(cpp_class<RuntimeError>()->call(Xt("XRE1035")));
+		return to_smartptr(this);
+	}
+
 	halt();
 	alive_ = true;
 	return to_smartptr(this);

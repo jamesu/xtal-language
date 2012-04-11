@@ -898,7 +898,7 @@ namespace{
 #ifndef XTAL_NO_PARSER
 		GCer gc(0);
 		CodeBuilder cb;
-		return cb.compile(create_xpeg(source, file_name));
+		return cb.compile(create_xpeg(source, file_name), file_name);
 #else
 		return nul<Code>();
 #endif

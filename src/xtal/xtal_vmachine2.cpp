@@ -658,6 +658,10 @@ void VMachine::make_debug_info(const inst_t* pc, const MethodPtr& fun, int_t kin
 }
 
 debug::CallerInfoPtr VMachine::caller(uint_t n){
+	//if(n==0){
+	//	return nul<debug::CallerInfo>();
+	//}
+
 	if((int_t)n>call_stack_size()){
 		return nul<debug::CallerInfo>();
 	}
@@ -686,7 +690,7 @@ debug::CallerInfoPtr VMachine::caller(uint_t n){
 	ret->set_fun(f.fun);
 
 	make_outer_outer(0, 0, true);
-	ret->set_variables_frame(scopes_.reverse_at(scope_lower-1).frame);
+	ret->set_variables_frame(scopes_.reverse_at(scope_lower==0 ? 0 : scope_lower-1).frame);
 	return ret;
 }
 
@@ -982,20 +986,28 @@ AnyPtr VMachine::eval(const CodePtr& code, uint_t n){
 		return undefined;
 	}
 
-	debug::CallerInfoPtr cp = caller(n+1);
+	debug::CallerInfoPtr cp = caller(n);
 	if(!cp || !cp->fun()){
 		return undefined;
 	}
 
-	AnyPtr self = fun_frames_[n+1]->self;
+	AnyPtr self = fun_frames_[n]->self;
+
+	// eval中の例外の発生による影響範囲抑制のため、関数呼び出しを一段はさむ
+	setup_call(1); 
+	n += 1;
+
 	setup_call(1);
 	set_arg_this(self);
-	code->first_fun()->rawcall(to_smartptr(this));
+	code->first_fun()->rawcall(to_smartptr(this)); //evalコンパイルされたCodeを実行
 
-	execute_inner(XTAL_VM_ff().next_pc, n + 2);
+	execute_inner(XTAL_VM_ff().next_pc, n+1);
 
 	XTAL_VM_ff().is_executed = 0;
-	return XTAL_VM_local_variable(result_base_+0);
+
+	return_result(XTAL_VM_local_variable(result_base_+0));
+
+	return result_and_cleanup_call();
 }
 
 }//namespace

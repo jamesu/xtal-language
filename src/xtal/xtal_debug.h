@@ -408,7 +408,7 @@ private:
 /**
 * \brief デバッガの受信側
 */
-class CommandReciver : public Base{
+class CommandReceiver : public Base{
 public:
 
 	/**
@@ -510,6 +510,9 @@ public:
 	void remove_breakpoint(const StringPtr& path, int n);
 
 public:
+	void update_source(const CodePtr& code){}
+
+public:
 	void nostep();
 	void start();
 
@@ -535,6 +538,11 @@ protected:
 
 protected:
 	void send_command(const IDPtr& id);
+	void erase_breakpoint(const StringPtr& path, int n);
+	void add_breakpoint_inner(const StringPtr& path, int n, const StringPtr& cond);
+	void remove_breakpoint_inner(const StringPtr& path, int n);
+	void add_eval_expr_inner(const StringPtr& expr);
+	void remove_eval_expr_inner(const StringPtr& expr);
 
 private:
 	StreamPtr stream_;
@@ -547,17 +555,8 @@ private:
 
 	TArray<CallInfo> call_stack_;
 
-	struct ExprValue{
-		ExprValue(){
-			count = 0;
-		}
-
-		int count;
-		CodePtr code;
-		ArrayPtr result;
-	};
-
 	MapPtr exprs_;
+	ArrayPtr breakpoints_;
 	StringPtr required_file_;
 	int level_;
 

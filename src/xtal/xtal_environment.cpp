@@ -972,6 +972,12 @@ CodePtr require_source(const StringPtr& name){
 		if(CodePtr ret = ptr_cast<Code>(r->require_source_hook->call(name))){
 			return ret;
 		}
+
+		XTAL_CATCH_EXCEPT(e){
+			StringPtr str = e->to_s();
+			const char_t* cstr = str->data();
+			stderr_stream()->println(e);
+		}
 	}
 
 	StringPtr temp = Xf1("%s.xtalc", 0, name);

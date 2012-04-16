@@ -142,9 +142,11 @@ public:
 
 	IDPtr find_near_variable(const IDPtr& primary_key);
 
-	void add_breakpoint(int_t lineno);
+	void add_breakpoint(int_t lineno, const AnyPtr& cond = undefined);
 
 	void remove_breakpoint(int_t lineno);
+
+	CodePtr breakpoint_cond(int_t lineno);
 
 	void on_visit_members(Visitor& m){
 		Class::on_visit_members(m);
@@ -174,6 +176,8 @@ private:
 	MethodPtr first_fun_;
 
 	bool enable_redefine_;
+
+	MapPtr breakpoint_cond_map_;
 
 private:
 

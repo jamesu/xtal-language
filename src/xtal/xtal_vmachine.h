@@ -404,7 +404,7 @@ public: // evalån
 	debug::CallerInfoPtr caller(uint_t n);
 	int_t call_stack_size();
 
-	AnyPtr eval(const CodePtr& code, uint_t n = 0);
+	AnyPtr eval(const CodePtr& code, uint_t n);
 
 	AnyPtr eval_local_variable(const IDPtr& var, uint_t call_n);
 	bool eval_set_local_variable(const IDPtr& var, const AnyPtr& value, uint_t call_n);

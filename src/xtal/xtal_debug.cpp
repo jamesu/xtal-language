@@ -349,10 +349,10 @@ void call_breakpoint_hook(int_t kind, const HookInfoPtr& ainfo){
 * \brief デバッガをアタッチする
 * \param stream デバッガと通信するためのストリーム
 */
-bool CommandReciver::start(const StreamPtr& stream){
+bool CommandReceiver::start(const StreamPtr& stream){
 	stream_ = stream;
-	debug::set_breakpoint_hook(bind_this(method(&CommandReciver::linehook), this));
-	set_require_source_hook(bind_this(method(&CommandReciver::require_source_hook), this));
+	debug::set_breakpoint_hook(bind_this(method(&CommandReceiver::linehook), this));
+	set_require_source_hook(bind_this(method(&CommandReceiver::require_source_hook), this));
 	eval_exprs_ = xnew<Map>();
 	code_map_ = xnew<Map>();
 
@@ -371,18 +371,18 @@ bool CommandReciver::start(const StreamPtr& stream){
 * デバッガを更新する
 * 
 */
-void CommandReciver::update(){
+void CommandReceiver::update(){
 	// 次のコマンドが到着していたらコマンドをデシリアライズして実行する
 	while(stream_->available()){
 		exec_command(ptr_cast<Array>(stream_->deserialize()));
 	}
 }
 
-ArrayPtr CommandReciver::recv_command(){
+ArrayPtr CommandReceiver::recv_command(){
 	return ptr_cast<Array>(stream_->deserialize());
 }
 
-CodePtr CommandReciver::require_source_hook(const StringPtr& name){
+CodePtr CommandReceiver::require_source_hook(const StringPtr& name){
 	ArrayPtr a = xnew<Array>();
 	a->push_back(Xid(require));
 	a->push_back(name);
@@ -394,9 +394,7 @@ CodePtr CommandReciver::require_source_hook(const StringPtr& name){
 		if(XTAL_detail_raweq(type, Xid(required_source))){
 			ret = ptr_cast<Code>(cmd->at(1));
 			if(ret){
-				MapPtr map = xnew<Map>();
-				map->set_at(Xid(code), ret);
-				code_map_->set_at(ret->source_file_name(), map);
+				code_map_->set_at(ret->source_file_name(), ret);
 			}
 			else{
 				break;
@@ -415,47 +413,41 @@ CodePtr CommandReciver::require_source_hook(const StringPtr& name){
 	return ret;
 }
 
-void CommandReciver::exec_command(const ArrayPtr& cmd){
+void CommandReceiver::exec_command(const ArrayPtr& cmd){
 	if(!cmd){
 		return;
 	}
 
 	AnyPtr type = cmd->at(0);
 
-	if(XTAL_detail_raweq(type, Xid(add_breakpoint))){
-		AnyPtr ddd = cmd->at(1);
-		if(MapPtr value = ptr_cast<Map>(code_map_->at(cmd->at(1)))){
-			if(CodePtr code = ptr_cast<Code>(value->at(Xid(code)))){
-				code->add_breakpoint(cmd->at(2)->to_i());
-				value->set_at(cmd->at(2)->to_i(), cmd->at(3));
-			}
+	if(XTAL_detail_raweq(type, Xid(add_breakpoint))){ // ブレークポイントの追加
+		if(CodePtr code = ptr_cast<Code>(code_map_->at(cmd->at(1)))){
+			code->add_breakpoint(cmd->at(2)->to_i(), cmd->at(3));
 		}
 
 		return;
 	}
 
-	if(XTAL_detail_raweq(type, Xid(remove_breakpoint))){
-		if(MapPtr value = ptr_cast<Map>(code_map_->at(cmd->at(1)))){
-			if(CodePtr code = ptr_cast<Code>(value->at(Xid(code)))){
-				code->remove_breakpoint(cmd->at(2)->to_i());
-			}
+	if(XTAL_detail_raweq(type, Xid(remove_breakpoint))){ // ブレークポイントの削除
+		if(CodePtr code = ptr_cast<Code>(code_map_->at(cmd->at(1)))){
+			code->remove_breakpoint(cmd->at(2)->to_i());
 		}
 
 		return;
 	}
 
-	if(XTAL_detail_raweq(type, Xid(add_eval_expr))){
+	if(XTAL_detail_raweq(type, Xid(add_eval_expr))){ // 評価式の追加
 		eval_exprs_->set_at(cmd->at(1), cmd->at(2));
 		return;
 	}
 
-	if(XTAL_detail_raweq(type, Xid(remove_eval_expr))){
+	if(XTAL_detail_raweq(type, Xid(remove_eval_expr))){ // 評価式の削除
 		eval_exprs_->erase(cmd->at(1));
 		return;
 	}
 }
 
-ArrayPtr CommandReciver::make_debug_object(const AnyPtr& v, int depth){
+ArrayPtr CommandReceiver::make_debug_object(const AnyPtr& v, int depth){
 	ArrayPtr ret = xnew<Array>(3);
 	ret->set_at(0, v->get_class()->to_s());
 	ret->set_at(1, v->to_s());
@@ -535,7 +527,7 @@ ArrayPtr CommandReciver::make_debug_object(const AnyPtr& v, int depth){
 	return ret;
 }
 
-ArrayPtr CommandReciver::make_call_stack_info(const debug::HookInfoPtr& info){
+ArrayPtr CommandReceiver::make_call_stack_info(const debug::HookInfoPtr& info){
 	ArrayPtr ret = xnew<Array>();
 
 	{
@@ -559,7 +551,7 @@ ArrayPtr CommandReciver::make_call_stack_info(const debug::HookInfoPtr& info){
 	return ret;
 }
 
-MapPtr CommandReciver::make_eval_expr_info(const debug::HookInfoPtr& info, int level){
+MapPtr CommandReceiver::make_eval_expr_info(const debug::HookInfoPtr& info, int level){
 	MapPtr ret = xnew<Map>();
 	Xfor2(key, value, eval_exprs_){
 		if(CodePtr code = ptr_cast<Code>(value)){
@@ -580,7 +572,7 @@ MapPtr CommandReciver::make_eval_expr_info(const debug::HookInfoPtr& info, int l
 	return ret;
 }
 
-void CommandReciver::send_break(debug::HookInfoPtr info, int level){
+void CommandReceiver::send_break(debug::HookInfoPtr info, int level){
 	ArrayPtr data = xnew<Array>();
 	data->push_back(Xid(break));
 	data->push_back(make_eval_expr_info(info, level));
@@ -589,13 +581,12 @@ void CommandReciver::send_break(debug::HookInfoPtr info, int level){
 	stream_->serialize(data);
 }
 
-int CommandReciver::linehook(debug::HookInfoPtr info){
+int CommandReceiver::linehook(debug::HookInfoPtr info){
 	if(info->kind()==BREAKPOINT){
-		if(MapPtr value = ptr_cast<Map>(code_map_->at(info->file_name()))){
-			if(CodePtr eval = ptr_cast<Code>(value->at(info->lineno()))){
-				AnyPtr val = info->vm()->eval(eval);
-				info->vm()->catch_except();
-				if(!val){
+		if(CodePtr code = ptr_cast<Code>(code_map_->at(info->file_name()))){
+			if(code->breakpoint_cond(info->lineno())){
+				AnyPtr val = info->vm()->eval(code->breakpoint_cond(info->lineno()), 0);
+				if(!info->vm()->catch_except() && !val){
 					return debug::REDO;
 				}
 			}
@@ -648,31 +639,47 @@ CommandSender::CommandSender(){
 	level_ = 0;
 	prev_command_ = Xid(run);
 	exprs_ = xnew<Map>();
+	breakpoints_ = xnew<Array>();
 }
 
 void CommandSender::add_eval_expr(const StringPtr& expr){
-	exprs_->set_at(expr, xnew<ExprValue>());
+    MapPtr a = xnew<Map>();
+	exprs_->set_at(expr, null);
 
-    if(stream_){
-        ArrayPtr a = xnew<Array>();
-        a->push_back(Xid(add_eval_expr));
-        a->push_back(expr->intern());
-        a->push_back(eval_compile(expr));
-        stream_->serialize(a);
-    }
+	add_eval_expr_inner(expr);
+}
+
+void CommandSender::add_eval_expr_inner(const StringPtr& expr){
+    if(!stream_ || stream_->eos()){
+		return;
+	}
+
+    ArrayPtr a = xnew<Array>();
+    a->push_back(Xid(add_eval_expr));
+    a->push_back(expr);
+    a->push_back(eval_compile(expr));
+    stream_->serialize(a);
 }
 
 void CommandSender::remove_eval_expr(const StringPtr& expr){
-    if(stream_){
-        ArrayPtr a = xnew<Array>();
-        a->push_back(Xid(remove_eval_expr));
-        a->push_back(expr->intern());
-        stream_->serialize(a);
-    }
+	exprs_->erase(expr);
+
+	remove_eval_expr_inner(expr);
+}
+
+void CommandSender::remove_eval_expr_inner(const StringPtr& expr){
+    if(!stream_ || stream_->eos()){
+		return;
+	}
+
+    ArrayPtr a = xnew<Array>();
+    a->push_back(Xid(remove_eval_expr));
+    a->push_back(expr->intern());
+    stream_->serialize(a);
 }
 
 ArrayPtr CommandSender::eval_expr_result(const StringPtr& expr){
-	return ptr_cast<ExprValue>(exprs_->at(expr))->result;
+	return ptr_cast<Array>(exprs_->at(expr));
 }
 
 int CommandSender::call_stack_size(){
@@ -726,8 +733,34 @@ void CommandSender::step_out(){
 void CommandSender::redo(){
 	send_command(prev_command_);
 }
+	
+void CommandSender::erase_breakpoint(const StringPtr& path, int n){
+	for(uint_t i=0; i<breakpoints_->size(); ++i){
+		ArrayPtr d = ptr_cast<Array>(breakpoints_->at(i));
+		if(!XTAL_detail_raweq(d->at(0), path) || !XTAL_detail_raweq(d->at(1), AnyPtr(n))){
+			breakpoints_->erase(i);
+			break;
+		}		
+	}
+}
 
 void CommandSender::add_breakpoint(const StringPtr& path, int n, const StringPtr& cond){
+	erase_breakpoint(path, n);
+
+	ArrayPtr v = xnew<Array>();
+	v->push_back(path);
+	v->push_back(n);
+	v->push_back(cond);
+	breakpoints_->push_back(v);
+
+	add_breakpoint_inner(path, n, cond);
+}
+
+void CommandSender::add_breakpoint_inner(const StringPtr& path, int n, const StringPtr& cond){
+    if(!stream_ || stream_->eos()){
+		return;
+	}
+
 	ArrayPtr a = xnew<Array>();
 	a->push_back(Xid(add_breakpoint));
 	a->push_back(path);
@@ -737,11 +770,23 @@ void CommandSender::add_breakpoint(const StringPtr& path, int n, const StringPtr
 	}
 	else{
 		a->push_back(eval_compile(cond));
+		XTAL_CATCH_EXCEPT(e){}
 	}
+
 	stream_->serialize(a);
 }
 
 void CommandSender::remove_breakpoint(const StringPtr& path, int n){
+	erase_breakpoint(path, n);
+
+	remove_breakpoint_inner(path, n);
+}
+
+void CommandSender::remove_breakpoint_inner(const StringPtr& path, int n){
+    if(!stream_ || stream_->eos()){
+		return;
+	}
+
 	ArrayPtr a = xnew<Array>();
 	a->push_back(Xid(remove_breakpoint));
 	a->push_back(path);
@@ -750,6 +795,10 @@ void CommandSender::remove_breakpoint(const StringPtr& path, int n){
 }
 
 void CommandSender::move_call_stack(int n){
+    if(!stream_ || stream_->eos()){
+		return;
+	}
+
 	ArrayPtr a = xnew<Array>();
 	a->push_back(Xid(move_callstack));
 	a->push_back(n);
@@ -757,18 +806,36 @@ void CommandSender::move_call_stack(int n){
 }
 
 void CommandSender::nostep(){
+    if(!stream_ || stream_->eos()){
+		return;
+	}
+
 	ArrayPtr a = xnew<Array>();
 	a->push_back(Xid(nostep));
 	stream_->serialize(a);
 }
 
 void CommandSender::start(){
+    if(!stream_ || stream_->eos()){
+		return;
+	}
+
 	ArrayPtr a = xnew<Array>();
 	a->push_back(Xid(start));
 	stream_->serialize(a);
 }
 
 void CommandSender::required_source(const CodePtr& code){
+    if(!stream_ || stream_->eos()){
+		return;
+	}
+
+	Xfor_cast(ArrayPtr d, breakpoints_){
+		if(code->source_file_name()->op_eq(ptr_cast<String>(d->at(0)))){
+			code->add_breakpoint(d->at(1)->to_i(), d->at(2));
+		}
+	}
+
 	ArrayPtr a = xnew<Array>();
 	a->push_back(Xid(required_source));
 	a->push_back(code);
@@ -776,6 +843,10 @@ void CommandSender::required_source(const CodePtr& code){
 }
 
 void CommandSender::send_command(const IDPtr& id){
+    if(!stream_ || stream_->eos()){
+		return;
+	}
+
 	prev_command_ = id;
 	ArrayPtr a = xnew<Array>();
 	a->push_back(id);
@@ -783,6 +854,10 @@ void CommandSender::send_command(const IDPtr& id){
 }
 
 void CommandSender::update(){
+    if(!stream_ || stream_->eos()){
+		return;
+	}
+
 	while(stream_->available()!=0){
 		ArrayPtr command = ptr_cast<Array>(stream_->deserialize());
 		AnyPtr type = command->at(0);
@@ -792,9 +867,7 @@ void CommandSender::update(){
 			ArrayPtr callStack = ptr_cast<Array>(command->at(2));
 
 			Xfor2(key, value, exprs){
-				if(SmartPtr<ExprValue> ev = ptr_cast<ExprValue>(exprs_->at(key->to_s()))){
-					ev->result = ptr_cast<Array>(value);
-				}
+				exprs_->set_at(key, value);
 			}
 
 			call_stack_.resize(callStack->size());
@@ -805,7 +878,7 @@ void CommandSender::update(){
 				call_stack_[i].lineno = record->at(2)->to_i();
 			}
 
-			level_ = command->at(3).to_i();
+			level_ = command->at(3)->to_i();
 
 			on_breaked();
 			continue;
@@ -818,11 +891,13 @@ void CommandSender::update(){
 		}
 	}
 }
+
 void CommandSender::start(const StreamPtr& stream){
 	stream_ = stream;
 
+	// 式をすべて転送する
 	Xfor2(k, v, exprs_){
-		add_eval_expr(ptr_cast<String>(k));
+		add_eval_expr_inner(ptr_cast<String>(k));
 	}
 
 	send_command(Xid(start));

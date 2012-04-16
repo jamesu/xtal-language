@@ -7,7 +7,7 @@ namespace xtal{
 	
 enum{
 	SERIALIZE_VERSION1 = 1,
-	SERIALIZE_VERSION2 = 0
+	SERIALIZE_VERSION2 = 1
 };
 
 Serializer::Serializer(const StreamPtr& s)
@@ -237,6 +237,8 @@ void Serializer::inner_serialize(const AnyPtr& v){
 			inner_serialize(p->value_table_.at(i));
 		}
 
+		inner_serialize(p->breakpoint_cond_map_);
+
 		return;
 	}
 	
@@ -368,8 +370,12 @@ CodePtr Serializer::inner_deserialize_code(){
 	u8 head[7];
 	stream_->read(head, 7);
 
-	if(head[0]!='t' || head[1]!='a' || head[2]!='l' 
-	|| head[3]!=SERIALIZE_VERSION1 || head[4]!=SERIALIZE_VERSION2){
+	if(head[0]!='t' || head[1]!='a' || head[2]!='l' ){
+		set_runtime_error(Xt("XRE1009"));
+		return null;
+	}
+
+	if(head[3]!=SERIALIZE_VERSION1){
 		set_runtime_error(Xt("XRE1009"));
 		return null;
 	}
@@ -448,6 +454,13 @@ CodePtr Serializer::inner_deserialize_code(){
 	p->value_table_.resize(sz);
 	for(uint_t i=0; i<sz; ++i){
 		p->value_table_.set_at(i, inner_deserialize());
+	}
+
+	if(head[4]==0){
+
+	}
+	else if(head[4]==1){
+		p->breakpoint_cond_map_ = ptr_cast<Map>(inner_deserialize());
 	}
 
 	p->generated();

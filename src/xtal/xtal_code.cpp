@@ -52,11 +52,18 @@ void Code::generated(){
 	first_fun_->set_info(&xfun_info_table_[0]);
 }
 
-void Code::add_breakpoint(int_t lineno){
+void Code::add_breakpoint(int_t lineno, const AnyPtr& cond){
 	for(uint_t i=0, sz=lineno_table_.size(); i<sz; ++i){
 		LineNumberInfo& info = lineno_table_[i];
-		if(info.lineno==lineno && code_[info.start_pc] == InstLine::NUMBER){
+		if(info.lineno==lineno && (code_[info.start_pc] == InstLine::NUMBER || code_[info.start_pc] == InstBreakPoint::NUMBER)){
 			code_[info.start_pc] = InstBreakPoint::NUMBER;
+
+			if(cond){
+				if(!breakpoint_cond_map_){
+					breakpoint_cond_map_ = xnew<Map>();
+				}
+				breakpoint_cond_map_->set_at(lineno, cond);
+			}
 		}
 	}
 }
@@ -66,10 +73,21 @@ void Code::remove_breakpoint(int_t lineno){
 		LineNumberInfo& info = lineno_table_[i];
 		if(info.lineno==lineno && code_[info.start_pc] == InstBreakPoint::NUMBER){
 			code_[info.start_pc] = InstLine::NUMBER;
+
+			if(breakpoint_cond_map_){
+				breakpoint_cond_map_->erase(lineno);
+			}
 		}
 	}
 }
-	
+		
+CodePtr Code::breakpoint_cond(int_t lineno){
+	if(breakpoint_cond_map_){
+		return ptr_cast<Code>(breakpoint_cond_map_->at(lineno));
+	}
+	return nul<Code>();
+}
+
 bool Code::set_lineno_info(uint_t line){
 	if(!lineno_table_.empty() && lineno_table_.back().lineno==line){
 		return false;

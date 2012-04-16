@@ -79,7 +79,7 @@ void interactive_compile_loop(const VMachinePtr& vm){
 	CodeBuilder cb;
 	CodePtr code = cb.eval_compile(exec);
 
-	vm->eval(code);
+	vm->eval(code, 0);
 	
 	XTAL_CATCH_EXCEPT(e){
 		exec->skip();

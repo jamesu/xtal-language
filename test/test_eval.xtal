@@ -35,6 +35,79 @@ class EvalTest{
 		A().foo;
 	}
 	
+	nested_loops#Test(){
+		n: 3;
+		x: 0;
+		for(a: 0; a<n; a++){
+			for(b: 0; b<n; b++)
+				for(c: 0; c<n; c++)
+					for(d: 0; d<n; d++)
+						for(e: 0; e<n; e++)
+							for(f: 0; f<n; f++){
+								x++;
+								
+								assert eval("x")==x;
+							}
+		}
+		
+		assert x==729;
+	}
+
+	nested_loops2#Test(){
+		n: 3;
+		x: 0;
+		for(a: 0; a<n; a++){
+			for(b: 0; b<n; b++)
+				for(c: 0; c<n; c++)
+					for(d: 0; d<n; d++)
+						for(e: 0; e<n; e++)
+							for(f: 0; f<n; f++){
+								x++;
+								
+								ss: 0;
+								try{
+									eval("xx");
+								}
+								catch(e){
+									ss = 1;
+								}
+								
+								assert ss==1;
+							}
+		}
+		
+		assert x==729;
+	}
+	
+	class_loop#Test(){
+		Foo: class{
+			+_inst1: 0;
+			+_inst2: 0;
+			+_inst3: 0;
+			+_inst4: 0;
+
+			bar: method(){
+				for(i: 0; i<100; ++i){
+					_inst1 += 1;
+					_inst2 += 2;
+					try{ eval("kb"); }catch(e){}
+						
+					_inst3 += 3;
+					_inst4 += 4;
+				}
+				return _inst1;
+			}
+		}
+		
+		foo: Foo();
+		foo.bar;
+		
+		assert foo.inst1==100;
+		assert foo.inst2==200;
+		assert foo.inst3==300;
+		assert foo.inst4==400;
+	}
+	
 	local_instance_var#Test{
 		n, m: 10, 20;
 		a: 10;
@@ -85,7 +158,6 @@ class EvalTest{
 		assert eval("unknown") && false catch(e) true;
 		assert eval("aa") && true catch(e) false;
 	}
-
 	
 	fiber_var#Test{
 		n, m: 10, 20;

@@ -530,7 +530,7 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\src\xtal\xtal_lib\xtal_tcpdebug.h"
+					RelativePath="..\..\src\xtal\xtal_lib\xtal_tcpstream.h"
 					>
 				</File>
 				<File

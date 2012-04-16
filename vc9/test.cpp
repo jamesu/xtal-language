@@ -10,6 +10,7 @@
 #include "../src/xtal/xtal_lib/xtal_winfilesystem.h"
 #include "../src/xtal/xtal_lib/xtal_chcode.h"
 #include "../src/xtal/xtal_lib/xtal_errormessage.h"
+#include "../src/xtal/xtal_lib/xtal_tcpstream.h"
 
 #include "time.h"
 
@@ -819,14 +820,14 @@ int main2(int argc, char** argv){
 		}*/
 	//debug::enable_debug_compile();
 
-		if(CodePtr code = Xsrc((
-			class A(lib::SmashPlayer){
-				foo2{
-					"aa".p;
-				}
-			}
+		SmartPtr<debug::CommandReceiver> cr = xnew<debug::CommandReceiver>();
+		cr->start(xnew<TCPStream>("127.0.0.1", "13245"));
 
-			A().foo;
+		debug::enable();
+		if(CodePtr code = Xsrc((
+
+			lib::inst;
+
 		))){
 		   //code->inspect()->p();
 		   //code->def(Xid(AA), 20);
@@ -858,14 +859,7 @@ int main2(int argc, char** argv){
 
 	//compile_file("../test/compile_error/test.xtal");
 
-	XTAL_CATCH_EXCEPT(e){
-		StringPtr str = e->to_s();
-		const char_t* cstr = str->data();
-		stderr_stream()->println(e);
-		return 1;
-	}
-
-	return 0;
+	//return 0;
 	
 //*/
 

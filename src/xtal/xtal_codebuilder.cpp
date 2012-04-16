@@ -71,7 +71,10 @@ CodePtr CodeBuilder::eval_compile(const xpeg::ExecutorPtr& executor){
 		return nul<Code>();
 	}
 
-	ExprPtr e = ep(executor->tree_back());
+    ExprPtr e;
+    if(executor->tree_back()){
+        e = ep(executor->tree_back());
+    }
 
 	if(e->itag()==EXPR_DEFINE){
 		if(e->bin_lhs()->itag()==EXPR_LVAR){

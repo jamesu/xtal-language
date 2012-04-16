@@ -104,11 +104,11 @@ void eval(const VMachinePtr& vm){
 	int_t depth = vm->arg_default(1, 0)->to_i();
 
 	if(CodePtr code = ptr_cast<Code>(ev)){
-		vm->return_result(vm->eval(code, depth));
+		vm->return_result(vm->eval(code, depth+1));
 		return;
 	}
 
-	vm->return_result(vm->eval(eval_compile(ev), depth));
+	vm->return_result(vm->eval(eval_compile(ev), depth+1));
 }
 
 #endif

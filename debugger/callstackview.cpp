@@ -18,6 +18,7 @@ QStandardItem* CallStackView::makeItem(const QString& text){
 	return ret;
 }
 
+/*
 void CallStackView::view(const VMachinePtr& vm){
 	for(int i=0;; ++i){
 		if(debug::CallerInfoPtr caller = vm->caller(i)){
@@ -32,7 +33,7 @@ void CallStackView::view(const VMachinePtr& vm){
 		}
 	}
 }
-
+*/
 void CallStackView::setLevel(int n){
 	model_->item(n, 0)->setIcon(QIcon("data/right.png"));
 }

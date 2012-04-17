@@ -830,10 +830,19 @@ bool VMachine::eval_set_instance_variable(const AnyPtr& self, const IDPtr& key, 
 }
 
 void VMachine::breakpoint_hook(const inst_t* pc, const MethodPtr& fun, int_t kind){
-	make_debug_info(pc, fun, kind);
-
+	if(kind!=BREAKPOINT_LINE_LIGHT_WEIGHT){
+		make_debug_info(pc, fun, kind);
+	}
+	
 	VMachinePtr oldvm = set_vmachine(vmachine_take_over());
-	debug::call_breakpoint_hook(kind, debug_info_);
+	
+	if(kind!=BREAKPOINT_LINE_LIGHT_WEIGHT){
+		debug::call_breakpoint_hook(kind, debug_info_);
+	}
+	else{
+		debug::call_breakpoint_hook(kind, null);
+	}
+
 	vmachine_take_back(set_vmachine(oldvm));
 }
 

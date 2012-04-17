@@ -232,61 +232,62 @@ const AnyPtr& assert_hook(){
 	return hook(BREAKPOINT_ASSERT);
 }
 
-void call_breakpoint_hook(int_t kind, const HookInfoPtr& ainfo){
+void call_breakpoint_hook(int_t kind, HookInfoPtr info){
 	const SmartPtr<DebugData>& d = cpp_value<DebugData>();
-	HookInfoPtr info = ainfo;
 
-	if(kind>=BREAKPOINT_LINE){
-		int_t count = disable_force();
-		d->hooks_[kind]->call(info);
-		enable_force(count);
+	if(kind==BREAKPOINT_LINE_LIGHT_WEIGHT){
+		d->hooks_[kind]->call();
 		return;
 	}
 
-	AnyPtr hook = d->hooks_[0];
+	AnyPtr hook = kind<BREAKPOINT_LINE ? d->hooks_[BREAKPOINT] : d->hooks_[kind];
+
 	while(true){
 		switch(d->breakpoint_state_){
 			XTAL_NODEFAULT;
 
 			XTAL_CASE(BSTATE_NONE){
 				int_t count = disable_force();
-				AnyPtr hookret = hook ? hook->call(info) : AnyPtr(0);
+				AnyPtr hookret = AnyPtr(0);
+
+				if(hook){
+					hookret = hook->call(info);
+				}
+
 				int_t ret = XTAL_detail_is_ivalue(hookret) ? hookret->to_i() : -1;
 				enable_force(count);
 
 				switch(ret){
 					XTAL_DEFAULT{
-						// 2 line
-						// 3 return
-						// 4 call
+
 					}
 
 					XTAL_CASE(RUN){
 						d->breakpoint_state_ = BSTATE_NONE;
-						bitchange(d, false, BREAKPOINT2);
-						bitchange(d, false, BREAKPOINT3);
-						bitchange(d, false, BREAKPOINT4);
+						bitchange(d, false, BREAKPOINT_INNER_LINE);
+						bitchange(d, false, BREAKPOINT_INNER_RETURN);
+						bitchange(d, false, BREAKPOINT_INNER_CALL);
 					}
 
 					XTAL_CASE(STEP_OVER){
 						d->breakpoint_state_ = BSTATE_STEP_OVER;
-						bitchange(d, true, BREAKPOINT2);
-						bitchange(d, true, BREAKPOINT3);
-						bitchange(d, true, BREAKPOINT4);
+						bitchange(d, true, BREAKPOINT_INNER_LINE);
+						bitchange(d, true, BREAKPOINT_INNER_RETURN);
+						bitchange(d, true, BREAKPOINT_INNER_CALL);
 					}
 
 					XTAL_CASE(STEP_INTO){
 						d->breakpoint_state_ = BSTATE_STEP_INTO;
-						bitchange(d, true, BREAKPOINT2);
-						bitchange(d, true, BREAKPOINT3);
-						bitchange(d, false, BREAKPOINT4);
+						bitchange(d, true, BREAKPOINT_INNER_LINE);
+						bitchange(d, true, BREAKPOINT_INNER_RETURN);
+						bitchange(d, false, BREAKPOINT_INNER_CALL);
 					}
 
 					XTAL_CASE(STEP_OUT){
 						d->breakpoint_state_ = BSTATE_STEP_OUT;
-						bitchange(d, true, BREAKPOINT2);
-						bitchange(d, true, BREAKPOINT3);
-						bitchange(d, false, BREAKPOINT4);
+						bitchange(d, true, BREAKPOINT_INNER_LINE);
+						bitchange(d, true, BREAKPOINT_INNER_RETURN);
+						bitchange(d, false, BREAKPOINT_INNER_CALL);
 					}
 
 					XTAL_CASE(REDO){
@@ -303,16 +304,16 @@ void call_breakpoint_hook(int_t kind, const HookInfoPtr& ainfo){
 			}
 
 			XTAL_CASE(BSTATE_STEP_OVER){
-				if(kind==BREAKPOINT2 || kind==BREAKPOINT3 || kind==BREAKPOINT){
+				if(kind==BREAKPOINT_INNER_LINE || kind==BREAKPOINT_INNER_RETURN || kind==BREAKPOINT){
 					d->breakpoint_state_ = BSTATE_NONE;
 					continue;
 				}
 
-				if(kind==BREAKPOINT4){
+				if(kind==BREAKPOINT_INNER_CALL){
 					d->breakpoint_state_ = BSTATE_STEP_OUT2;
-					bitchange(d, true, BREAKPOINT2);
-					bitchange(d, true, BREAKPOINT3);
-					bitchange(d, false, BREAKPOINT4);
+					bitchange(d, true, BREAKPOINT_INNER_LINE);
+					bitchange(d, true, BREAKPOINT_INNER_RETURN);
+					bitchange(d, false, BREAKPOINT_INNER_CALL);
 					break;
 				}
 			}
@@ -330,7 +331,7 @@ void call_breakpoint_hook(int_t kind, const HookInfoPtr& ainfo){
 			}
 
 			XTAL_CASE(BSTATE_STEP_OUT2){
-				if(kind==BREAKPOINT3 && info->call_stack_size() == d->breakpoint_call_stack_size_){
+				if(kind==BREAKPOINT_INNER_RETURN && info->call_stack_size() == d->breakpoint_call_stack_size_){
 					break;
 				}
 
@@ -340,21 +341,32 @@ void call_breakpoint_hook(int_t kind, const HookInfoPtr& ainfo){
 				}
 			}
 		}
-
 		break;
 	}
 }
 
-/**
-* \brief デバッガをアタッチする
-* \param stream デバッガと通信するためのストリーム
-*/
+
+CommandReceiver::~CommandReceiver(){
+	set_breakpoint_hook(null);
+	remove_require_source_hook(require_hook_);
+	set_hook(BREAKPOINT_LINE_LIGHT_WEIGHT, null);
+	set_hook(BREAKPOINT_LINE, null);
+	require_hook_ = null;
+}
+
 bool CommandReceiver::start(const StreamPtr& stream){
 	stream_ = stream;
-	debug::set_breakpoint_hook(bind_this(method(&CommandReceiver::linehook), this));
-	set_require_source_hook(bind_this(method(&CommandReceiver::require_source_hook), this));
+
+	set_hook(BREAKPOINT_LINE_LIGHT_WEIGHT, bind_this(method(&CommandReceiver::check), undeleter(this)));
+
+	set_breakpoint_hook(bind_this(method(&CommandReceiver::breakpointhook), undeleter(this)));
+
+	require_hook_ = bind_this(method(&CommandReceiver::require_source_hook), undeleter(this));
+	append_require_source_hook(require_hook_);
+
 	eval_exprs_ = xnew<Map>();
 	code_map_ = xnew<Map>();
+	pause_ = false;
 
 	while(ArrayPtr cmd = recv_command()){
 		AnyPtr type = cmd->at(0);
@@ -366,11 +378,14 @@ bool CommandReceiver::start(const StreamPtr& stream){
 
 	return true;
 }
+	
+void CommandReceiver::check(){
+	update();
+	if(pause_){
+		set_hook(BREAKPOINT_LINE, bind_this(method(&CommandReceiver::breakpointhook), undeleter(this)));
+	}
+}
 
-/**
-* デバッガを更新する
-* 
-*/
 void CommandReceiver::update(){
 	// 次のコマンドが到着していたらコマンドをデシリアライズして実行する
 	while(stream_->available()){
@@ -443,6 +458,11 @@ void CommandReceiver::exec_command(const ArrayPtr& cmd){
 
 	if(XTAL_detail_raweq(type, Xid(remove_eval_expr))){ // 評価式の削除
 		eval_exprs_->erase(cmd->at(1));
+		return;
+	}
+
+	if(XTAL_detail_raweq(type, Xid(pause))){ // 一時停止
+		pause_ = true;
 		return;
 	}
 }
@@ -527,7 +547,7 @@ ArrayPtr CommandReceiver::make_debug_object(const AnyPtr& v, int depth){
 	return ret;
 }
 
-ArrayPtr CommandReceiver::make_call_stack_info(const debug::HookInfoPtr& info){
+ArrayPtr CommandReceiver::make_call_stack_info(debug::HookInfoPtr info){
 	ArrayPtr ret = xnew<Array>();
 
 	{
@@ -551,7 +571,7 @@ ArrayPtr CommandReceiver::make_call_stack_info(const debug::HookInfoPtr& info){
 	return ret;
 }
 
-MapPtr CommandReceiver::make_eval_expr_info(const debug::HookInfoPtr& info, int level){
+MapPtr CommandReceiver::make_eval_expr_info(debug::HookInfoPtr info, int level){
 	MapPtr ret = xnew<Map>();
 	Xfor2(key, value, eval_exprs_){
 		if(CodePtr code = ptr_cast<Code>(value)){
@@ -581,13 +601,26 @@ void CommandReceiver::send_break(debug::HookInfoPtr info, int level){
 	stream_->serialize(data);
 }
 
-int CommandReceiver::linehook(debug::HookInfoPtr info){
-	if(info->kind()==BREAKPOINT){
-		if(CodePtr code = ptr_cast<Code>(code_map_->at(info->file_name()))){
-			if(code->breakpoint_cond(info->lineno())){
-				AnyPtr val = info->vm()->eval(code->breakpoint_cond(info->lineno()), 0);
-				if(!info->vm()->catch_except() && !val){
-					return debug::REDO;
+int CommandReceiver::breakpointhook(debug::HookInfoPtr info){
+	int ret = breakpointhook2(info);
+
+	if(pause_){
+		set_hook(BREAKPOINT_LINE, null);
+		pause_ = false;
+	}
+
+	return ret;
+}
+
+int CommandReceiver::breakpointhook2(debug::HookInfoPtr info){
+	if(!pause_){
+		if(info->kind()==BREAKPOINT){
+			if(CodePtr code = ptr_cast<Code>(code_map_->at(info->file_name()))){
+				if(code->breakpoint_cond(info->lineno())){
+					AnyPtr val = info->vm()->eval(code->breakpoint_cond(info->lineno()), 0);
+					if(!info->vm()->catch_except() && !val){
+						return debug::REDO;
+					}
 				}
 			}
 		}
@@ -627,7 +660,9 @@ int CommandReceiver::linehook(debug::HookInfoPtr info){
 			}
 
 			exec_command(cmd);
-			continue;
+		}
+		else{
+			return debug::RUN;
 		}
 	}
 }
@@ -654,11 +689,18 @@ void CommandSender::add_eval_expr_inner(const StringPtr& expr){
 		return;
 	}
 
-    ArrayPtr a = xnew<Array>();
-    a->push_back(Xid(add_eval_expr));
-    a->push_back(expr);
-    a->push_back(eval_compile(expr));
-    stream_->serialize(a);
+	if(CodePtr eval_code = eval_compile(expr)){
+	    ArrayPtr a = xnew<Array>();
+		a->push_back(Xid(add_eval_expr));
+	    a->push_back(expr);
+		a->push_back(eval_code);
+	    stream_->serialize(a);
+	}
+	else{
+		XTAL_CATCH_EXCEPT(e){
+		
+		}
+	}
 }
 
 void CommandSender::remove_eval_expr(const StringPtr& expr){
@@ -769,8 +811,15 @@ void CommandSender::add_breakpoint_inner(const StringPtr& path, int n, const Str
 		a->push_back(null);
 	}
 	else{
-		a->push_back(eval_compile(cond));
-		XTAL_CATCH_EXCEPT(e){}
+		if(CodePtr eval_code = eval_compile(cond)){
+			a->push_back(eval_code);
+		}
+		else{
+			a->push_back(null);
+			XTAL_CATCH_EXCEPT(e){
+
+			}
+		}
 	}
 
 	stream_->serialize(a);
@@ -839,6 +888,16 @@ void CommandSender::required_source(const CodePtr& code){
 	ArrayPtr a = xnew<Array>();
 	a->push_back(Xid(required_source));
 	a->push_back(code);
+	stream_->serialize(a);
+}
+	
+void CommandSender::pause(){
+    if(!stream_ || stream_->eos()){
+		return;
+	}
+
+	ArrayPtr a = xnew<Array>();
+	a->push_back(Xid(pause));
 	stream_->serialize(a);
 }
 

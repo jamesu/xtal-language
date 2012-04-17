@@ -5,55 +5,86 @@
 #include <QPlainTextEdit>
 #include <QObject>
 
-struct FileInfo{
-	QString path;
-	QMap<int, QString> breakpoints;
+struct BreakpointInfo{
+    QString file;
+    int lineno;
+    QString condition;
 };
+
 
 /**
   * \brief プロジェクトの情報を保持するクラス
-　 * ソースパス、ブレークポイントの位置を保持している
+　 * ソースパス、ブレークポイントの位置、評価式を保持している
   */
-class Document{
+class Document : public QObject{
+    Q_OBJECT
 public:
 
+    /**
+      * \brief ドキュメントを初期化する
+      */
 	void init();
 
+    /**
+      * \brief ドキュメントを保存する
+      */
 	bool save(const QString& filename);
 
+    /**
+      * \brief ドキュメントを読み込む
+      */
 	bool load(const QString& filename);
+
+signals:
+    void changed();
 
 public:
 
 	/**
-	  * \brief i番目のファイル情報を取り出す
+      * \brief i番目のパス情報を取り出す
 	  */
-	FileInfo* file(int i);
+    QString path(int i);
 
 	/**
 	  * \brief ファイル情報が何個あるか返す
 	  */
-	int fileCount();
+    int pathCount();
 
-	/**
-	  * \brief プロジェクトにfileを追加する
-	  */
-	bool addFile(const QString& file);
+    void setPath(int n, const QString& path);
 
-	bool removeFile(const QString& file);
+    void insertPath(int n, const QString& path);
 
-	/**
-	  * \brief 文字列fileにマッチするファイル情報を取り出す
-	  */
-	FileInfo* findFile(const QString& file);
-
-	/**
-	  * \brief 部分文字列fileにマッチするファイル情報を取り出す
-	  */
-	FileInfo* findFileAbout(const QString& file);
+    void removePath(int n);
 
 public:
 
+    /**
+      * \brief i番目のパス情報を取り出す
+      */
+    BreakpointInfo breakpoint(int i);
+
+
+    /**
+      * \brief ファイル情報が何個あるか返す
+      */
+    int breakpointCount();
+
+    /**
+      * \brief
+      */
+    void addBreakpoint(const QString& file, int lineno);
+
+    void addBreakpoint(const QString& file, int lineno, const QString& cond);
+
+    QString breakpointCondition(const QString& file, int lineno);
+
+    void removeBreakpoint(const QString& file, int lineno);
+
+public:
+
+    /**
+      * \brief 評価式を設定する
+      */
 	void setEvalExpr(int n, const QString& expr){
 		if(n>=evalExprs_.size()){
 			evalExprs_.resize(n+1);
@@ -62,21 +93,38 @@ public:
 		evalExprs_[n] = expr;
 	}
 
+    /**
+      * \breif 評価式の数を取得する
+      */
 	int evalExprCount(){
 		return evalExprs_.size();
 	}
 
+    /**
+      * \brief 評価式を取得する
+      */
 	QString evalExpr(int n){
 		return evalExprs_[n];
 	}
 
+    /**
+      * \brief n番目の評価式を削除する
+      */
 	void removeEvalExpr(int n);
 
+    /**
+      * \brief n番目に評価式を追加する
+      */
 	void insertEvaExpr(int n);
 
 private:
+    // パスのリスト
+    QVector<QString> paths_;
 
-	QVector<FileInfo> files_;
+    // ブレークポイントのリスト
+    QVector<BreakpointInfo> breakpoints_;
+
+    // 評価式のリスト
 	QVector<QString> evalExprs_;
 };
 

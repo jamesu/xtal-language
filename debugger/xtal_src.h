@@ -3,6 +3,8 @@
 
 #include "../src/xtal/xtal.h"
 #include "../src/xtal/xtal_macro.h"
+#include "../src/xtal/xtal_debug.h"
+
 using namespace xtal;
 
 inline StringPtr qstr2xstr(const QString& str){

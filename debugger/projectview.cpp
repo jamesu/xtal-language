@@ -1,29 +1,23 @@
 #include "projectview.h"
 
-ProjectView::ProjectView(QWidget *parent)
-	:QTreeView(parent){
-	model_ = new ProjectTreeModel(this);
-	model_->setRoot(new ProjectTreeNode(ProjectTreeNode::TYPE_FOLDER, "", 0));
-	setModel(model_);
+ProjectView::ProjectView(Document* doc, QWidget *parent)
+    :QTreeView(parent){
+    model_ = new ProjectViewModel(doc, this);
+    setModel(model_);
 
-	setDragEnabled(true);
-	setDragDropMode(QAbstractItemView::DragDrop);
-	setHeaderHidden(true);
+    //model_->setHorizontalHeaderItem(0, new QStandardItem("path"));
 
-	connect(this, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(onClicked(const QModelIndex&)));
+    connect(this, SIGNAL(clicked(const QModelIndex&)), this, SLOT(onClicked(const QModelIndex&)));
+
+    setDragEnabled(true);
+    setDragDropMode(QAbstractItemView::DragDrop);
+    setHeaderHidden(true);
 }
 
-void ProjectView::init(){
-//	model_->clear();
+void ProjectView::onClicked(const QModelIndex & index){
+    emit pathSelected(index.row());
 }
-/*
-QStandardItem* ProjectView::makeItem(const QString& text, const QString& data){
-	QStandardItem* ret = new QStandardItem(text);
-	ret->setData(data);
-	ret->setEditable(false);
-	return ret;
-}
-*/
+
 void ProjectView::dragEnterEvent(QDragEnterEvent *event){
 	dragMoveEvent(event);
 }
@@ -36,11 +30,10 @@ void ProjectView::dropEvent(QDropEvent *event){
 
 	foreach(QUrl url, urls){
 		QString file = url.toLocalFile();
-		if(file.isEmpty()){
-			continue;
-		}
 
-		model_->addNode(file);
+        if(QDir(file).exists()){
+            emit pathAdded(file);
+        }
 	}
 }
 
@@ -48,14 +41,4 @@ void ProjectView::dragMoveEvent(QDragMoveEvent *event){
 	if(event->mimeData()->hasFormat("text/uri-list")){
 		event->acceptProposedAction();
 	}
-}
-/*
-void ProjectView::addFile(const QString& filename){
-	model_->invisibleRootItem()->appendRow(makeItem(QFile(filename).fileName(), filename));
-}
-*/
-void ProjectView::onClicked(const QModelIndex& index){
-	//if(QStandardItem* ret = model_->item(index.row(), index.column())){
-	//	emit onView(ret->text());
-	//}
 }

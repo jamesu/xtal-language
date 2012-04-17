@@ -138,14 +138,19 @@ int main(int argc, char *argv[]){
 	xtal::initialize(setting);
 	xtal::bind_error_message();
 
-    QApplication a(argc, argv);
-	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("SJIS"));
-	MainWindow w;
-    w.show();
+    xtal::debug::enable();
+    xtal::debug::enable_debug_compile();
 
-	int ret = a.exec();
+    {
+        QApplication a(argc, argv);
+        QTextCodec::setCodecForCStrings(QTextCodec::codecForName("SJIS"));
+        MainWindow w;
+        w.show();
 
-	xtal::uninitialize();
+        a.exec();
+    }
+
+    xtal::uninitialize();
 
 	return 0;
 }

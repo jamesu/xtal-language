@@ -14,11 +14,11 @@
 #include "codeeditor.h"
 #include "evalexprview.h"
 #include "callstackview.h"
-#include "projectview.h"
 #include "breakpointview.h"
 #include "codeeditor.h"
 #include "debugger.h"
 #include "document.h"
+#include "projectview.h"
 
 Q_DECLARE_METATYPE(AnyPtr);
 
@@ -59,8 +59,6 @@ inline void alert(int i){
 	alert->exec();
 }
 
-QString makeRelative(const QString& source, const QString& from);
-
 class OptionDialog : public QDialog{
 	Q_OBJECT
 public:
@@ -87,6 +85,41 @@ public:
 	}
 };
 
+class LimitedFileSystemModel : public QFileSystemModel{
+    Q_OBJECT
+public:
+    LimitedFileSystemModel(QWidget* parent)
+        :QFileSystemModel(parent){}
+
+    virtual int	columnCount(const QModelIndex & parent = QModelIndex()) const{
+        return 1;
+    }
+};
+
+class CllickMapper : public QObject{
+    Q_OBJECT
+public:
+    CllickMapper(QFileSystemModel* model, QObject* parent = 0)
+        :QObject(parent), model_(model){}
+
+public slots:
+    void map(const QModelIndex& index){
+        emit clicked(model_, index);
+        emit clicked(model_->filePath(index));
+    }
+
+signals:
+    void clicked(QFileSystemModel* model, const QModelIndex& index);
+    void clicked(const QString& file);
+
+private:
+    QFileSystemModel* model_;
+};
+
+class PathListModel : public QAbstractListModel{
+public:
+};
+
 class MainWindow : public QMainWindow{
 	Q_OBJECT
 
@@ -95,13 +128,20 @@ public:
 
 	~MainWindow();
 
-public:
+private:
+    void createProjectView();
+    void addPathView(const QString& path);
+    void clearPathView();
 
+    void createMessageView();
 	void createActions();
+    void createExprView();
+    void createCallStackView();
+    void createBreakpointView();
 
-	void view(const VMachinePtr& vm){
-		callstack_->view(vm);
-	}
+    //void view(const VMachinePtr& vm){
+    //	callstack_->view(vm);
+    //}
 
 protected:
 	void closeEvent(QCloseEvent *event);
@@ -112,85 +152,141 @@ protected:
 
 	void setStepActionsEnabled(bool b);
 
+    // 評価式ビューを更新する
 	void updateExprView();
 
+    // コールスタックビューを更新する
 	void updateCallStackView();
 
 public slots:
 
+    // プロジェクトを初期化
 	void initProject();
 
+    // プロジェクトを新しく作る
 	void newProject();
 
+    // プロジェクトを保存
 	void saveProject();
 
+    // プロジェクトを読み込む
 	void loadProject();
 
-	void addFile(const QString& filename);
-	void removeFile(const QString& filename);
+    // 現在編集中のファイルを保存する
+    void saveFile();
 
-	void addFile();
+    void publish();
 
+    // オプションダイアログを表示
 	void viewOption();
 
-	void viewSource(const QString& file);
+    // ソースを表示
+    void viewSource(const QString& file);
 
-	void exprChanged(int i, const QString& expr);
+    // 評価式を変更
+    void changeExpr(int i, const QString& expr);
 
+    // ブレークポイントを変更
+    void changeBreakpoint(const QString& path, int line, bool b);
+
+    // ブレークポイントの条件を変更
+    void changeBreakpointCondition(const QString& path, int line, const QString& cond);
+
+    // ブレークポイントの条件式を変更
+    void viewBreakpoint(const QString& path, int line);
+
+    // ブレークポイントの削除
+    void eraseBreakpoint(const QString& path, int line);
+
+    void viewPath(int n);
+
+    void addPath(const QString& path);
+
+    void modifiedPath();
+
+public slots:
+
+    // デバッグ開始
+    void run();
+
+    void pause();
+
+    // ステップオーバーする
+    void stepOver();
+
+    // ステップイントゥする
+    void stepInto();
+
+    // ステップアウトする
+    void stepOut();
+
+public slots:
+
+    // ブレークした
 	void breaked();
 
-	void required();
+    // ファイル要求があった
+    void required();
 
+    // 実機と接続された
 	void connected();
 
+    // 実機と接続が切れた
 	void disconnected();
-
-	void run();
-
-	void stepOver();
-
-	void stepInto();
-
-	void stepOut();
-
+    //
 	void onUpdate();
 
-	void onBreakpointChanged(const QString& path, int line, bool b);
-	void onBreakpointConditionChanged(const QString& path, int line, const QString& cond);
-	void onViewBreakpoint(const QString& path, int line);
-	void eraseBreakpoint(const QString& path, int line);
+    // コールスタックを移動する
+    void moveCallStack(int n);
 
+    // メッセージを表示する
 	void print(const QString& mes);
 
-	void showProjectDock(){ projDockWidget_->show(); }
+public slots:
+
+    // ウインドウ周りの再表示
+    void showProjectDock(){ projDockWidget_->show(); }
 	void showEvalExprDock(){ exprDockWidget_->show(); }
 	void showCSDock(){ csDockWidget_->show(); }
 	void showBreakpointDock(){ breakpointDockWidget_->show(); }
 	void showMessageDock(){ mesDockWidget_->show(); }
-
-	void moveCallStack(int n);
 
 	void showAboutQt(){
 		QMessageBox::aboutQt(this, "Xtal Debugger");
 	}
 
 private:
+    // パスを環境変数の値を使って変換する
+    QString convertPath(const QString& path);
+
+    // 相対パスを絶対パスに変換する
+    QString toXtalPath(const QString& str);
+
+    // 絶対パスを相対パスに変換する
+    QString fromXtalPath(const QString& str);
+
+    void loadProject(const QString& filename);
+
+    MapPtr publish(const QDir& dir);
+
+    void addPage(const QString& file);
+
+private:
+    ProjectView* projectView_;
 	EvalExprView* evalexpr_;
 	CallStackView* callstack_;
 	CodeEditor* codeEditor_;
-	ProjectView* project_;
 	BreakpointView* breakpoint_;
 	QTextEdit* messages_;
 	Debugger debugger_;
 
 private:
-	QSet<QString> requiredFiles_;
 	Document document_;
 	QString projectFilename_;
 
-
 private:
-	QDockWidget* projDockWidget_;
+    QDockWidget* projDockWidget_;
+    QMap<QString, QDockWidget*> projDockWidgetList_;
 	QDockWidget* exprDockWidget_;
 	QDockWidget* csDockWidget_;
 	QDockWidget* mesDockWidget_;
@@ -199,6 +295,7 @@ private:
 private:
 	QToolBar* toolBar_;
 	QAction* runAction_;
+    QAction* pauseAction_;
 	QAction* stepIntoAction_;
 	QAction* stepOverAction_;
 	QAction* stepOutAction_;

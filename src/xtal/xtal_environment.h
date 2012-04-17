@@ -626,7 +626,14 @@ void exec_compiled_source(const void* src, int_t size);
 * \brief require‚ÌÀs‚ğhook‚·‚éŠÖ”‚ğ“o˜^‚·‚é
 * \param hook ƒtƒbƒN‚·‚éŠÖ”
 */
-void set_require_source_hook(const AnyPtr& hook);
+void append_require_source_hook(const AnyPtr& hook);
+inline void set_require_source_hook(const AnyPtr& hook){ append_require_source_hook(hook); }
+
+/**
+* \brief require‚ÌÀs‚ğhook‚·‚éŠÖ”‚ğ“o˜^‰ğœ‚·‚é
+* \param hook “o˜^‚µ‚½ŠÖ”
+*/
+void remove_require_source_hook(const AnyPtr& hook);
 
 /**
 * \xbind lib::builtin

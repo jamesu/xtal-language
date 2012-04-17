@@ -22,6 +22,11 @@ public:
 public:
 
 	/**
+	* \brief コードオブジェクトをリロードする
+	*/
+	void reload(const CodePtr& new_code);
+
+	/**
 	* \brief コードに対応したソース行数を返す。
 	*/
 	int_t compliant_lineno(const inst_t* p);

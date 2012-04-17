@@ -17,7 +17,7 @@ struct MemberCacheTable{
 		AnyPtr member;
 	};
 
-	enum{ CACHE_MAX = 277, CACHE_MASK = CACHE_MAX };
+	enum{ CACHE_MAX = 127, CACHE_MASK = CACHE_MAX };
 
 	Unit table_[CACHE_MAX];
 

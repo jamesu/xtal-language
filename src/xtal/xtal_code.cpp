@@ -33,11 +33,47 @@ Code::~Code(){
 
 }
 
+void Code::reload(const CodePtr& new_code){
+	if(!new_code){
+		return;
+	}
+
+	new_code->enable_redefine();
+	new_code->call();
+
+	overwrite(new_code);
+
+	code_ = new_code->code_;
+
+	identifier_table_ = new_code->identifier_table_;
+	value_table_ = new_code->value_table_;
+	once_table_ = new_code->once_table_;
+	
+	source_file_name_ = new_code->source_file_name_;
+	first_fun_ = new_code->first_fun_;
+
+	breakpoint_cond_map_ = new_code->breakpoint_cond_map_;
+
+	xfun_info_table_ = new_code->xfun_info_table_;
+	scope_info_table_ = new_code->scope_info_table_;
+	class_info_table_ = new_code->class_info_table_;
+	except_info_table_ = new_code->except_info_table_;
+
+	lineno_table_ = new_code->lineno_table_;
+
+	implicit_table_ = new_code->implicit_table_;
+}
+
 void Code::generated(){
 	set_code(to_smartptr(this));
 	if(scope_info_table_.size()>1){
-		set_info(&scope_info_table_[1]);
-		resize_member_direct(scope_info_table_[1].variable_size);
+		ClassInfo cinfo;
+		(ScopeInfo&)cinfo = scope_info_table_[1];
+		class_info_table_.push_back(cinfo);
+
+		set_info((ClassInfo*)&class_info_table_.back());
+		resize_member_direct(class_info_table_.back().variable_size);
+
 		make_members_force(Frame::FLAG_NOCACHE);
 	}
 

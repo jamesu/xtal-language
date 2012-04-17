@@ -305,111 +305,17 @@ enum{
 	REDO
 };
 
-void call_breakpoint_hook(int_t kind, const HookInfoPtr& info);
-
-
-#if 0
-
-/**
-* \biref デバッガとやりとりするためのストリームクラス
-*/
-class DebugStream : public Stream{
-public:
-
-	DebugStream(){
-		socket_ = -1;
-	}
-
-	DebugStream(int s){
-		socket_ = s;
-	}
-
-	DebugStream(const StringPtr& path, const StringPtr& port){
-		socket_ = -1;
-		open(path, port);
-	}
-
-	virtual ~DebugStream(){
-		close();
-	}
-
-	void open(const StringPtr& host, const StringPtr& port){
-		close();
-		socket_ = socket(AF_INET, SOCK_STREAM, 0);
-
-		if(is_open()){
-			struct addrinfo hints = {0};
-			hints.ai_family = AF_UNSPEC;
-			hints.ai_socktype = SOCK_STREAM;
-			hints.ai_flags = 0;
-
-			struct addrinfo* res = 0;
-			int err = getaddrinfo(host->c_str(), port->c_str(), &hints, &res);
-			if(err!=0){
-				return;
-			}
-
-			for(struct addrinfo* ai= res; ai; ai=ai->ai_next){
-				socket_ = socket(ai->ai_family, ai->ai_socktype, ai->ai_protocol);
-				if(socket_<0){
-					break;
-				}
-
-				if(connect(socket_, ai->ai_addr, ai->ai_addrlen)<0){
-					close();
-					continue;
-				}
-				else{
-					break;
-				}
-			}
-
-			freeaddrinfo(res);
-		}
-	}
-
-	bool is_open(){
-		return socket_>=0;
-	}
-
-	virtual void close(){
-		if(socket_>=0){
-			::close(socket_);
-			socket_ = -1;
-		}
-	}
-
-	virtual uint_t read(void* dest, uint_t size){
-		int read = recv(socket_, (char*)dest, size, 0);
-		if(read<0){
-			close();
-			return 0;
-		}
-		return read;
-	}
-
-	virtual uint_t write(const void* src, uint_t size){
-		int temp = ::send(socket_, (char*)src, size, 0);
-		if(temp<0){
-			close();
-			return 0;
-		}
-		return temp;
-	}
-
-private:
-	void* debug_stream_;
-};
-
-#endif
+void call_breakpoint_hook(int_t kind, HookInfoPtr info);
 
 ////////////////////////////////////////////////////////////////////////////////////
 
 /**
 * \brief デバッガの受信側
 */
-class CommandReceiver : public Base{
+class CommandReceiver{
 public:
+
+	~CommandReceiver();
 
 	/**
 	* \brief デバッガをスタートする
@@ -424,7 +330,6 @@ public:
 	void update();
 
 private:
-
 	ArrayPtr recv_command();
 
 	CodePtr require_source_hook(const StringPtr& name);
@@ -433,26 +338,33 @@ private:
 
 	ArrayPtr make_debug_object(const AnyPtr& v, int depth = 3);
 
-	ArrayPtr make_call_stack_info(const debug::HookInfoPtr& info);
+	ArrayPtr make_call_stack_info(debug::HookInfoPtr info);
 
-	MapPtr make_eval_expr_info(const debug::HookInfoPtr& info, int level);
+	MapPtr make_eval_expr_info(debug::HookInfoPtr info, int level);
 
 	void send_break(debug::HookInfoPtr info, int level);
 
-	int linehook(debug::HookInfoPtr info);
+	int breakpointhook(debug::HookInfoPtr info);
+	int breakpointhook2(debug::HookInfoPtr info);
+
+	void check();
 
 private:
 	StreamPtr stream_;
 	MapPtr eval_exprs_;
 	MapPtr code_map_;
+	AnyPtr require_hook_;
+	bool pause_;
 };
+
+typedef SmartPtr<CommandReceiver> CommandReceiverPtr;
 
 ////////////////////////////////////////////////////////////////////////////////////
 
 /**
 * \brief デバッガの送信側
 */
-class CommandSender : public Base{
+class CommandSender{
 public:
 
 	CommandSender();
@@ -510,6 +422,9 @@ public:
 	void remove_breakpoint(const StringPtr& path, int n);
 
 public:
+	void pause();
+
+public:
 	void update_source(const CodePtr& code){}
 
 public:
@@ -562,6 +477,8 @@ private:
 
 	IDPtr prev_command_;
 };
+
+typedef SmartPtr<CommandSender> CommandSenderPtr;
 
 }
 

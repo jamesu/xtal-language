@@ -2,162 +2,98 @@
 #define PROJECTVIEW_H
 
 #include <QtGui>
+#include "document.h"
 
-class ProjectTreeNode{
+class ProjectViewModel : public QAbstractListModel{
+    Q_OBJECT
 public:
-	enum{
-		TYPE_FOLDER,
-		TYPE_FILE,
-	};
+    ProjectViewModel(Document* doc, QObject* parent = 0)
+        :QAbstractListModel(parent), doc_(doc){
+        connect(doc, SIGNAL(changed()), this, SLOT(updateView()));
+    }
 
-	ProjectTreeNode(int type, const QString& name, ProjectTreeNode* parent)
-		:type(type), name(name), parent(parent){}
+    int rowCount(const QModelIndex &parent = QModelIndex()) const{
+        return doc_->pathCount()+1;
+    }
 
-	~ProjectTreeNode(){
-		qDeleteAll(children);
-	}
+    QVariant data(const QModelIndex &index, int role) const{
+        QString str;
+        if(index.row()<doc_->pathCount()){
+            str = doc_->path(index.row());
+        }
 
-	int type;
-	QString name;
-	ProjectTreeNode* parent;
-	QList<ProjectTreeNode*> children;
-};
+        //if(index.column() == 0 && role == Qt::DecorationRole) return color;
+        if(index.column() == 0 && role == Qt::EditRole){ return str; }
+        if(index.column() == 0 && role == Qt::DisplayRole){ return str; }
 
-class ProjectTreeModel : public QAbstractItemModel{
-	Q_OBJECT
-public:
+        return QVariant();
+    }
 
-	ProjectTreeModel(QObject* parent=0)
-		:QAbstractItemModel(parent){
-		root_ = 0;
-	}
+    Qt::ItemFlags flags(const QModelIndex &index) const{
+        return QAbstractItemModel::flags(index) | Qt::ItemIsEditable | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled;
+    }
 
-	~ProjectTreeModel(){
-		delete root_;
-	}
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole){
+        if(role == Qt::EditRole || role == Qt::DisplayRole){
+            doc_->setPath(index.row(), value.toString());
+            emit dataChanged(index, index);
+            reset();
+            return true;
+        }
+        return true;
+    }
 
-	void setRoot(ProjectTreeNode* p){
-		delete root_;
-		root_ = p;
-		reset();
-	}
+    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()){
+        beginInsertRows(QModelIndex(), row, row + count - 1);
+        for(int r = 0; r < count; ++r){
+            doc_->insertPath(row, QString());
+        }
+        endInsertRows();
 
-	void addNode(const QString& name){
-		root_->children.push_back(new ProjectTreeNode(ProjectTreeNode::TYPE_FILE, name,root_));
-		reset();
-	}
+        return true;
+    }
 
-	ProjectTreeNode* root(){
-		return root_;
-	}
+    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()){
+        beginRemoveRows(QModelIndex(), row, row + count - 1);
+        for(int r = 0; r < count; ++r){
+            doc_->removePath(row);
+        }
+        endRemoveRows();
 
-	QModelIndex index(int row, int column, const QModelIndex& parent) const{
-		if(ProjectTreeNode* p=toNode(parent)){
-			return createIndex(row, column, p->children[row]);
-		}
+        return true;
+    }
 
-		return QModelIndex();
-	}
-
-	QModelIndex parent(const QModelIndex& child) const{
-		if(ProjectTreeNode* c=toNode(child)){
-			if(ProjectTreeNode* p=c->parent){
-				if(ProjectTreeNode* pp=p->parent){
-					return createIndex(pp->children.indexOf(p), 0, p);
-				}
-			}
-		}
-		return QModelIndex();
-	}
-
-	int rowCount(const QModelIndex& parent) const{
-		if(ProjectTreeNode* p=toNode(parent)){
-			return p->children.count();
-		}
-		return 0;
-	}
-
-	int columnCount(const QModelIndex& parent) const{
-		return 1;
-	}
-
-	QVariant data(const QModelIndex& index, int role) const{
-		if(role!=Qt::DisplayRole){
-			return QVariant();
-		}
-
-		if(ProjectTreeNode* p=toNode(index)){
-			if(index.column()==0){
-				return p->name;
-			}
-			else if(index.column()==1){
-				return p->name;
-			}
-		}
-
-		return QVariant();
-	}
+public slots:
+    void updateView(){
+        reset();
+    }
 
 private:
-
-	ProjectTreeNode* toNode(const QModelIndex& index) const{
-		if(index.isValid()){
-			return (ProjectTreeNode*)index.internalPointer();
-		}
-		else{
-			return root_;
-		}
-	}
-
-	ProjectTreeNode* root_;
+    Document* doc_;
 };
 
 class ProjectView : public QTreeView{
-	Q_OBJECT
+    Q_OBJECT
 public:
-
-	ProjectView(QWidget *parent = 0);
+    ProjectView(Document* doc, QWidget* parent = 0);
 
 public:
+    void dragEnterEvent(QDragEnterEvent *event);
 
-	void init();
+    void dropEvent(QDropEvent *event);
 
-	void setRoot(ProjectTreeNode* p){
-		model_->setRoot(p);
-	}
-
-	void dragEnterEvent(QDragEnterEvent *event);
-
-	void dropEvent(QDropEvent *event);
-
-	void dragMoveEvent(QDragMoveEvent *event);
-
-signals:
-
-	void onView(const QString& filename);
-
-	void removeFile(const QString& filename);
+    void dragMoveEvent(QDragMoveEvent *event);
 
 public slots:
+    void onClicked(const QModelIndex & index);
 
-	void onClicked(const QModelIndex& index);
+signals:
+    void pathAdded(const QString& path);
 
-protected:
-
-	/*
-	void keyPressEvent(QKeyEvent* event){
-		if(event->key()==Qt::Key_Delete){
-			QModelIndexList list = selectedIndexes();
-			for(int i=0; i<list.size(); ++i){
-				removeFile(model_->item(list.at(i).row(), 0)->data().toString());
-				model_->removeRow(list.at(i).row());
-			}
-		}
-	}
-	*/
+    void pathSelected(int n);
 
 private:
-	ProjectTreeModel* model_;
+    ProjectViewModel* model_;
 };
 
 #endif // PROJECTVIEW_H

@@ -13,7 +13,12 @@ struct FunctorParam{
 	Any result;
 	const void* fun;
 	VMachine* vm;
-	Any args[16];
+	
+	enum{
+		MAX_ARGS = 16
+	};
+
+	Any args[MAX_ARGS];
 };
 
 template<class R>

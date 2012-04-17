@@ -820,18 +820,18 @@ int main2(int argc, char** argv){
 		}*/
 	//debug::enable_debug_compile();
 
-		SmartPtr<debug::CommandReceiver> cr = xnew<debug::CommandReceiver>();
-		cr->start(xnew<TCPStream>("127.0.0.1", "13245"));
+		debug::CommandReceiver cr;
+		//cr.start(xnew<TCPStream>("127.0.0.1", "13245"));
+		//AnyPtr map = xnew<CompressDecoder>(xnew<FileStream>("../debugger/pd", "r"))->deserialize();
+		//set_require_source_map(map);
 
 		debug::enable();
 		if(CodePtr code = Xsrc((
-
-			lib::inst;
-
+			a: 10;
+			a.p;
 		))){
 		   //code->inspect()->p();
 		   //code->def(Xid(AA), 20);
-
 
 			XTAL_CATCH_EXCEPT(e){
 				StringPtr str = e->to_s();
@@ -841,6 +841,14 @@ int main2(int argc, char** argv){
 			}
 
 		   code->call();
+
+			if(CodePtr code2 = Xsrc((
+				a: 20;
+				a.p;
+			))){
+				code->reload(code2);
+				code->call();
+			}
 
 		   //code->set_member(Xid(AA), 10, undefined);
 		   //code->member(Xid(AA))->p();
@@ -859,7 +867,7 @@ int main2(int argc, char** argv){
 
 	//compile_file("../test/compile_error/test.xtal");
 
-	//return 0;
+	return 0;
 	
 //*/
 

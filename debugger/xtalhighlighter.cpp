@@ -1,8 +1,7 @@
 #include "xtalhighlighter.h"
 
 XtalHighlighter::XtalHighlighter(QTextDocument *parent)
-	: QSyntaxHighlighter(parent)
-{
+	: QSyntaxHighlighter(parent){
 	HighlightingRule rule;
 
 	keywordFormat_.setForeground(Qt::blue);

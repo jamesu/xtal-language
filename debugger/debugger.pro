@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # Project created by QtCreator 2009-09-07T13:48:57
 # -------------------------------------------------
-QT += network
+QT += network xml
 TARGET = debugger
 TEMPLATE = app
 SOURCES += main.cpp \

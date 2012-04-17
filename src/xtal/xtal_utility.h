@@ -603,6 +603,9 @@ class Stream;
 class MemoryStream;
 class PointerStream;
 class StringStream;
+class FileStream;
+class CompressEncoder;
+class CompressDecoder;
 class Fun;
 class Method;
 class Fiber;
@@ -639,6 +642,9 @@ typedef SmartPtr<Stream> StreamPtr;
 typedef SmartPtr<MemoryStream> MemoryStreamPtr;
 typedef SmartPtr<PointerStream> PointerStreamPtr;
 typedef SmartPtr<StringStream> StringStreamPtr;
+typedef SmartPtr<FileStream> FileStreamPtr;
+typedef SmartPtr<CompressEncoder> CompressEncoderPtr;
+typedef SmartPtr<CompressDecoder> CompressDecoderPtr;
 typedef SmartPtr<Fun> FunPtr;
 typedef SmartPtr<Method> MethodPtr;
 typedef SmartPtr<Fiber> FiberPtr;
@@ -914,9 +920,9 @@ enum BreakPointKind{
 	* \brief ブレークポイント
 	*/
 	BREAKPOINT,
-	BREAKPOINT2,
-	BREAKPOINT3,
-	BREAKPOINT4,
+	BREAKPOINT_INNER_LINE, // 内部で使用する用
+	BREAKPOINT_INNER_RETURN,
+	BREAKPOINT_INNER_CALL,
 
 	/**
 	* \brief ラインごとのブレークポイント
@@ -942,6 +948,11 @@ enum BreakPointKind{
 	* \brief 表明時ブレークポイント
 	*/
 	BREAKPOINT_ASSERT,
+
+	/**
+	* \brief ラインごとの軽量ブレークポイント
+	*/
+	BREAKPOINT_LINE_LIGHT_WEIGHT,
 
 	BREAKPOINT_MAX
 };

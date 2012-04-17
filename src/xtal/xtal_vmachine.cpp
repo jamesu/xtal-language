@@ -117,7 +117,7 @@ void VMachine::carry_over(Method* fun, bool adjust_arguments){
 	const inst_t* next_pc =  fun->source();
 	if(*hook_setting_bit_!=0){
 		check_breakpoint_hook(next_pc, BREAKPOINT_CALL);
-		check_breakpoint_hook(next_pc, BREAKPOINT4);
+		check_breakpoint_hook(next_pc, BREAKPOINT_INNER_CALL);
 	}
 
 	FunFrame& f = XTAL_VM_ff();
@@ -755,7 +755,8 @@ XTAL_VM_LOOP
 	XTAL_VM_CASE_FIRST(InstLine){ // 3
 		if(*hook_setting_bit_!=0){
 			XTAL_VM_LOCK{
-				check_breakpoint_hook(pc, BREAKPOINT2);
+				check_breakpoint_hook(pc, BREAKPOINT_LINE_LIGHT_WEIGHT);
+				check_breakpoint_hook(pc, BREAKPOINT_INNER_LINE);
 				check_breakpoint_hook(pc, BREAKPOINT_LINE);
 			}
 		}
@@ -1506,7 +1507,7 @@ zerodiv3:
 
 		if(*hook_setting_bit_!=0){
 			check_breakpoint_hook(pc, BREAKPOINT_RETURN);
-			check_breakpoint_hook(next_pc-1, BREAKPOINT3);
+			check_breakpoint_hook(next_pc-1, BREAKPOINT_INNER_RETURN);
 		}
 
 		XTAL_VM_CONTINUE(next_pc);
@@ -1780,6 +1781,7 @@ zerodiv3:
 	}*/ }
 
 	XTAL_VM_CASE(InstBreakPoint) XTAL_VM_LOCK{ // 5
+		check_breakpoint_hook(pc, BREAKPOINT_LINE_LIGHT_WEIGHT);
 		check_breakpoint_hook(pc, BREAKPOINT);
 		//check_breakpoint_hook(pc, BREAKPOINT2);
 		check_breakpoint_hook(pc, BREAKPOINT_LINE);

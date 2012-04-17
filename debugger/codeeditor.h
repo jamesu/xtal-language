@@ -119,7 +119,7 @@ public:
 		}
 	}
 
-	void addPage(const QString& path);
+    void addPage(const QString& path);
 
 	CodeEditorPage* currentPage();
 
@@ -132,6 +132,8 @@ public:
 	void clearCursorLine();
 
 	void saveAll();
+
+    void saveFile();
 };
 
 class LineNumberArea : public QWidget{

@@ -21,26 +21,28 @@ public:
 		model_->setRowCount(256);
 	}
 
+    // 式を設定する
+    void setExpr(int n, const QString& expr);
+
+    // 式を評価した結果を設定する
+    void setExprResult(int n, const ArrayPtr& value);
+
+    // 式を取得する
+    QString expr(int n);
+
+    // 式の個数を取得する
+    int exprCount(){ return exprCount_; }
+
 public slots:
 
 	void dataChanged(QStandardItem* item);
 
 signals:
 
+    // 式が変更されたシグナル
 	void exprChanged(int i, const QString& expr);
 
-public:
-
-	void setExpr(int n, const QString& expr);
-
-	void setExprResult(int n, const ArrayPtr& value);
-
-	QString expr(int n);
-
-	int exprCount(){ return exprCount_; }
-
-public:
-
+private:
 	void setChild(QStandardItem* item, int n, const QString& key, const ArrayPtr& value);
 
 	void setChild(QStandardItem* item, const AnyPtr& children);

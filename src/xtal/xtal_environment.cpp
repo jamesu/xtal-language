@@ -958,25 +958,58 @@ AnyPtr load(const StringPtr& file_name){
 }
 
 struct RequireData : public Base{
-	AnyPtr require_source_hook;
+	ArrayPtr require_source_hook_list;
 };
 
-void set_require_source_hook(const AnyPtr& hook){
+void append_require_source_hook(const AnyPtr& hook){
 	const SmartPtr<RequireData>& r = cpp_value<RequireData>();
-	r->require_source_hook = hook;
+	if(!r->require_source_hook_list){
+		r->require_source_hook_list = xnew<Array>();
+	}
+	r->require_source_hook_list->push_front(hook);
+}
+
+void remove_require_source_hook(const AnyPtr& hook){
+	const SmartPtr<RequireData>& r = cpp_value<RequireData>();
+	if(!r->require_source_hook_list){
+		return;
+	}
+
+	for(uint_t i=0; i<r->require_source_hook_list->size(); ++i){
+		if(XTAL_detail_raweq(r->require_source_hook_list->at(i), hook)){
+			r->require_source_hook_list->erase(i);
+			break;
+		}
+	}
 }
 
 CodePtr require_source(const StringPtr& name){
 	const SmartPtr<RequireData>& r = cpp_value<RequireData>();
-	if(r->require_source_hook){
-		if(CodePtr ret = ptr_cast<Code>(r->require_source_hook->call(name))){
-			return ret;
-		}
+	if(r->require_source_hook_list){
+		Xfor(hook, r->require_source_hook_list){
+			if(MapPtr map = ptr_cast<Map>(hook)){
+				AnyPtr ret = map;
+				Xfor_cast(StringPtr key, name->split("/")){
+					if(MapPtr m = ptr_cast<Map>(ret)){
+						ret = m->at(key);
+					}
+				}
 
-		XTAL_CATCH_EXCEPT(e){
-			StringPtr str = e->to_s();
-			const char_t* cstr = str->data();
-			stderr_stream()->println(e);
+				if(CodePtr code = ptr_cast<Code>(ret)){
+					return code;
+				}
+			}
+			else{
+				if(CodePtr ret = ptr_cast<Code>(hook->call(name))){
+					return ret;
+				}
+
+				XTAL_CATCH_EXCEPT(e){
+					StringPtr str = e->to_s();
+					const char_t* cstr = str->data();
+					stderr_stream()->println(e);
+				}
+			}
 		}
 	}
 

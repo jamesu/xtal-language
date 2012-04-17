@@ -14,21 +14,32 @@ public:
 	}
 
 	virtual ~TCPStream(){
-		close();
+        on_close();
 	}
 
-	bool isOpen(){
-		return socket_!=0;
+    bool is_open(){
+        return socket_!=0 && socket_->isOpen();
 	}
 
-	virtual void close(){
-		if(isOpen()){
-			socket_->close();
+    virtual void on_close(){
+        if(socket_){
 			socket_ = 0;
 		}
 	}
 
-	virtual uint_t read(void* dest, uint_t size){
+    virtual uint_t on_available(){
+        if(!is_open()){
+            return 0;
+        }
+
+        return socket_->bytesAvailable();
+    }
+
+    virtual uint_t on_read(void* dest, uint_t size){
+        if(!is_open()){
+            return 0;
+        }
+
 		uint_t read = 0;
 
 		while(true){
@@ -48,7 +59,11 @@ public:
 		return read;
 	}
 
-	virtual uint_t write(const void* src, uint_t size){
+    virtual uint_t on_write(const void* src, uint_t size){
+        if(!is_open()){
+            return 0;
+        }
+
 		int temp = socket_->write((char*)src, size);
 		if(temp<0){
 			close();
@@ -56,6 +71,10 @@ public:
 		}
 		return temp;
 	}
+
+    virtual bool on_eos(){
+        return !is_open();
+    }
 
 	QTcpSocket* rawsocket(){
 		return socket_;
@@ -65,7 +84,7 @@ private:
 	QTcpSocket* socket_;
 };
 
-class Debugger : public QObject{
+class Debugger : public QObject, public debug::CommandSender{
 	Q_OBJECT
 public:
 
@@ -73,67 +92,10 @@ public:
 
 	void setSource(const QString& source);
 
-	void init(){
-		if(stream_){
-			stream_->close();
-			stream_ = null;
-		}
-	}
-
 public:
-
-	void addEvalExpr(const QString& expr);
-
-	void removeEvalExpr(const QString& expr);
-
-	ArrayPtr evalExprResult(const QString& expr);
-
-public:
-
-	int callStackSize();
-
-	StringPtr callStackFunName(int n);
-	StringPtr callStackFunName();
-
-	StringPtr callStackFileName(int n);
-	StringPtr callStackFileName();
-
-	int callStackLineno(int n);
-	int callStackLineno();
-
-public:
-
-	QString requiredFile();
-
-	void sendRequiredSource(const CodePtr& code);
-
-	int level(){ return level_;	}
-
-public:
-
-	void addBreakpoint();
-	void removeBreakpoint();
-	void clearBreakpoint();
-
-	void run();
-	void stepOver();
-	void stepInto();
-	void stepOut();
-	void redo();
-
-	void sendAddBreakpoint(const QString& path, int n, const QString& cond);
-	void sendRemoveBreakpoint(const QString& path, int n);
-
-	void sendMoveCallStack(int n);
-	void sendNostep();
-	void sendStart();
-
-public:
-
 	bool isConnected();
 
 signals:
-
 	// リモートデバック先と接続された際のシグナル
 	void connected();
 
@@ -153,10 +115,21 @@ signals:
 	void uncatchedException();
 
 protected:
+    virtual void on_breaked(){
+        emit breaked();
+    }
 
-	void sendCommand(const IDPtr& id);
-	void sendAddEvalExpr(const QString& expr);
-	void sendRemoveEvalExpr(const QString& expr);
+    virtual void on_required(){
+        emit required();
+    }
+
+    virtual void on_compile_error(){
+        emit compileError();
+    }
+
+    virtual void on_uncatched_exception(){
+        emit uncatchedException();
+    }
 
 protected slots:
 
@@ -167,33 +140,8 @@ protected slots:
 private:
 
 	int socket_;
-	SmartPtr<TCPStream> stream_;
 	QTcpServer server_;
 	QString source_;
-
-	struct CallInfo{
-		StringPtr funName;
-		StringPtr fileName;
-		int lineno;
-	};
-
-	QVector<CallInfo> callStack_;
-
-	struct ExprValue{
-		ExprValue(){
-			count = 0;
-		}
-
-		int count;
-		CodePtr code;
-		ArrayPtr result;
-	};
-
-	QMap<QString, ExprValue> exprs_;
-	QString requiredFile_;
-	int level_;
-
-	IDPtr prevCommand_;
 
 	int state_;
 

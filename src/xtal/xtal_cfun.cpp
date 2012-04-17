@@ -218,6 +218,10 @@ void NativeMethod::on_rawcall(const VMachinePtr& vm){
 			}
 			num = pth.param_n+1;
 		}
+
+		if(num>FunctorParam::MAX_ARGS){
+			num = FunctorParam::MAX_ARGS;
+		}
 			
 		for(int_t i=0; i<num; ++i){
 			if(pth.param_types[i]==anycls){

@@ -20,16 +20,17 @@ public:
 
 	void init(){
 		clear();
-	}
+    }
 
-	QStandardItem* makeItem(const QString& text);
+    void clear();
 
-	void view(const VMachinePtr& vm);
+    // コールスタックを表示する
+    //void view(const VMachinePtr& vm);
 
-	void set(int i, const StringPtr& fun, const StringPtr& file, int line);
+    // コールスタックの表示を設定する
+    void set(int i, const StringPtr& fun, const StringPtr& file, int line);
 
-	void clear();
-
+    // コールスタックのレベルを設定する
 	void setLevel(int n);
 
 public slots:
@@ -38,7 +39,11 @@ public slots:
 
 signals:
 
+    // コールスタック位置の選択シグナル
 	void moveCallStack(int n);
+
+private:
+    QStandardItem* makeItem(const QString& text);
 
 private:
 	QStandardItemModel* model_;

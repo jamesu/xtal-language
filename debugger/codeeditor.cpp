@@ -211,9 +211,7 @@ CodeEditor::CodeEditor(QWidget *parent)
 }
 
 void CodeEditor::closePage(int index){
-	//if(widget(index)->sourcePath()!=""){
-		this->removeTab(index);
-	//}
+    this->removeTab(index);
 }
 
 void CodeEditor::onTextChanged(CodeEditorPage* p){
@@ -226,14 +224,14 @@ void CodeEditor::onBreakpointChanged(const QString& path, int n, bool b){
 }
 
 void CodeEditor::addPage(const QString& path){
-	if(CodeEditorPage* p = findPage(path)){
+    if(CodeEditorPage* p = findPage(path)){
 		this->setCurrentWidget(p);
 		return;
 	}
 
 	CodeEditorPage* page = new CodeEditorPage();
 	page->setSourcePath(path);
-	addTab(page, QFileInfo(path).fileName());
+    addTab(page, QFileInfo(path).fileName());
 	this->setCurrentWidget(page);
 
 	QFile f(path);
@@ -316,3 +314,15 @@ void CodeEditor::saveAll(){
 		}
 	}
 }
+
+void CodeEditor::saveFile(){
+    if(currentPage()){
+        CodeEditorPage* p = currentPage();
+        p->save();
+        int i = index(p);
+        if(this->tabText(i).left(1)=="*"){
+            this->setTabText(i, this->tabText(i).right(this->tabText(i).size()-1));
+        }
+    }
+}
+

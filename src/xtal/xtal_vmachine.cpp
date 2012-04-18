@@ -300,7 +300,7 @@ void VMachine::upsize_variables_detail(uint_t upsize){
 	}
 }
 	
-FunFrame* VMachine::reserve_ff(){
+VMachine::FunFrame* VMachine::reserve_ff(){
 	FunFrame* fp = fun_frames_.push();
 	if(XTAL_UNLIKELY(!fp)){ 
 		fun_frames_.top() = fp = new_object_xmalloc<FunFrame>();

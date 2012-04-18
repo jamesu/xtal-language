@@ -321,7 +321,7 @@ void VMachine::push_ff(CallState& call_state){
 	f.ordered_arg_count = call_state.ordered;
 	f.named_arg_count = call_state.named;
 	f.next_pc = 0;
-	f.poped_pc = call_state.next_pc;
+	f.poped_pc = call_state.poped_pc;
 	f.result = call_state.result;
 	f.prev_stack_base = XTAL_VM_variables_top();
 	f.scope_lower = scopes_.size();
@@ -495,6 +495,7 @@ void VMachine::execute_inner2(const inst_t* start, int_t eval_n, ExceptFrame& cu
 	static Any values[4] = { null, undefined, Bool(false), Bool(true) };
 
 	CallState call_state;
+	//FunFrame* call_state;
 
 	int_t eval_base_n = fun_frames_.size();
 
@@ -676,7 +677,7 @@ send_common4:
 					if(XTAL_detail_type(call_state.member)==TYPE_IVAR_GETTER){
 						InstanceVariableGetter* p = unchecked_cast<InstanceVariableGetter*>(ap(call_state.member));
 						set_local_variable(call_state.result, call_state.target.instance_variables()->variable(p->number(), p->class_info()));
-						XTAL_VM_CONTINUE(call_state.next_pc);
+						XTAL_VM_CONTINUE(call_state.poped_pc);
 					}
 				}
 
@@ -684,14 +685,14 @@ send_common4:
 					if(XTAL_detail_type(call_state.member)==TYPE_IVAR_SETTER){
 						InstanceVariableSetter* p = unchecked_cast<InstanceVariableSetter*>(ap(call_state.member));
 						call_state.target.instance_variables()->set_variable(p->number(), p->class_info(), XTAL_VM_local_variable(call_state.stack_base));
-						XTAL_VM_CONTINUE(call_state.next_pc);
+						XTAL_VM_CONTINUE(call_state.poped_pc);
 					}
 				}
 
 				XTAL_CASE(MEMBER){
 					if(!XTAL_detail_is_undefined(call_state.member)){
 						set_local_variable(call_state.result, ap(call_state.member));
-						XTAL_VM_CONTINUE(call_state.next_pc);
+						XTAL_VM_CONTINUE(call_state.poped_pc);
 					}
 				}
 			}
@@ -706,7 +707,7 @@ send_common3:
 					for(int_t i=0; i<call_state.need_result_count; ++i){
 						set_local_variable(call_state.result+i, undefined);
 					}
-					XTAL_VM_CONTINUE(call_state.next_pc);
+					XTAL_VM_CONTINUE(call_state.poped_pc);
 				}
 
 				XTAL_VM_CONTINUE(push_except(call_state.pc, unsupported_error(ap(call_state.cls), (IDPtr&)call_state.primary, ap(call_state.secondary))));
@@ -1211,6 +1212,7 @@ zerodiv3:
 		}
 		else{
 			set_local_variable(inst.stack_base, b);
+			//call_state = reserve_ff();
 			call_state.set(pc, pc+inst.ISIZE, inst.result, 1, inst.stack_base, 1, 0, 0);
 			call_state.target = a;
 			iprimary = DefinedID::id_op_at;
@@ -1458,7 +1460,7 @@ zerodiv3:
 	XTAL_VM_CASE(InstMember){ // 11
 		call_state.result = inst.result;
 		call_state.need_result_count = 1;
-		call_state.next_pc = pc + inst.ISIZE;
+		call_state.poped_pc = pc + inst.ISIZE;
 		call_state.flags = 0;
 		call_state.primary = XTAL_VM_ff().identifiers[inst.primary];
 		call_state.secondary = undefined;
@@ -1476,7 +1478,7 @@ zerodiv3:
 		int_t flags = inst.flags;
 		call_state.result = inst.result;
 		call_state.need_result_count = 1;
-		call_state.next_pc = pc + inst.ISIZE;
+		call_state.poped_pc = pc + inst.ISIZE;
 		call_state.flags = flags;
 		call_state.primary = (flags&MEMBER_FLAG_P_BIT) ? unchecked_ptr_cast<ID>(XTAL_VM_local_variable(inst.primary)) : XTAL_VM_ff().identifiers[inst.primary];
 		call_state.secondary = (flags&MEMBER_FLAG_S_BIT) ? XTAL_VM_local_variable(inst.secondary) : undefined;
@@ -1907,7 +1909,7 @@ const inst_t* VMachine::FunInstClassBegin(const inst_t* pc){
 
 		CallState call_state;
 		call_state.self = cp;
-		call_state.next_pc = pc + inst.ISIZE;
+		call_state.poped_pc = pc + inst.ISIZE;
 		call_state.result = 0;
 		call_state.need_result_count = 0;
 		call_state.stack_base = 0;

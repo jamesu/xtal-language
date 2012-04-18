@@ -157,7 +157,7 @@ void VMachine::setup_call(int_t need_result_count){
 
 	CallState call_state;
 	call_state.self = undefined;
-	call_state.next_pc = &end_code_;
+	call_state.poped_pc = &end_code_;
 	call_state.result = base;
 	call_state.need_result_count = need_result_count;
 	call_state.stack_base = base;
@@ -424,7 +424,7 @@ const inst_t* VMachine::start_fiber(Fiber* fun, VMachine* vm, bool add_succ_or_f
 
 	CallState call_state;
 	call_state.self = vm->arg_this();
-	call_state.next_pc = &end_code_;
+	call_state.poped_pc = &end_code_;
 	call_state.result = XTAL_VM_variables_top();
 	call_state.need_result_count = vm->need_result_count();
 	call_state.stack_base = 0;

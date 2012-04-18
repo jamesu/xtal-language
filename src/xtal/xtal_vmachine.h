@@ -411,7 +411,57 @@ public: // evalŒn
 
 public:
 
+	struct CallState{
+		Any cls;
+		Any target;
+		Any primary;
+		Any secondary;
+		Any self;
+		Any member;
+
+		CallState()
+			:cls(null), target(null), primary(null), secondary(null), self(null), member(null){} 
+
+		const inst_t* pc;
+		const inst_t* poped_pc;
+		int_t result;
+		int_t need_result_count;
+		int_t stack_base;
+		int_t ordered;
+		int_t named;
+		int_t flags;
+
+		void set(const inst_t* pc, const inst_t* poped_pc,
+			int_t result, int_t need_result_count, 
+			int_t stack_base, int_t ordered, int_t named, 
+			int_t flags){
+
+			this->pc = pc;
+			this->poped_pc = poped_pc; 
+			this->result = result; 
+			this->need_result_count = need_result_count;
+			this->stack_base = stack_base;
+			this->ordered = ordered;
+			this->named = named;
+			this->flags = flags;
+		}
+	};
+
 	struct FunFrame{
+		/*void set(const inst_t* pc, const inst_t* next_pc,
+			int_t result, int_t need_result_count, 
+			int_t stack_base, int_t ordered, int_t named, 
+			int_t flags){
+
+			this->pc = pc;
+			this->next_pc = next_pc; 
+			this->result = result; 
+			this->need_result_count = need_result_count;
+			this->stack_base = stack_base;
+			this->ordered = ordered;
+			this->named = named;
+			this->flags = flags;
+		}*/
 
 		// pop_ff‚µ‚½‚Æ‚«‚Í‚±‚Ìpc‚©‚çŽÀs‚·‚é
 		const inst_t* poped_pc;
@@ -471,42 +521,6 @@ public:
 private:
 
 	void push_args(const ArgumentsPtr& args, int_t stack_base, int_t ordered_arg_count, int_t named_arg_count);
-
-	struct CallState{
-		Any cls;
-		Any target;
-		Any primary;
-		Any secondary;
-		Any self;
-		Any member;
-
-		CallState()
-			:cls(null), target(null), primary(null), secondary(null), self(null), member(null){} 
-
-		const inst_t* pc;
-		const inst_t* next_pc;
-		int_t result;
-		int_t need_result_count;
-		int_t stack_base;
-		int_t ordered;
-		int_t named;
-		int_t flags;
-
-		void set(const inst_t* pc, const inst_t* next_pc,
-			int_t result, int_t need_result_count, 
-			int_t stack_base, int_t ordered, int_t named, 
-			int_t flags){
-
-			this->pc = pc;
-			this->next_pc = next_pc; 
-			this->result = result; 
-			this->need_result_count = need_result_count;
-			this->stack_base = stack_base;
-			this->ordered = ordered;
-			this->named = named;
-			this->flags = flags;
-		}
-	};
 
 	const inst_t* check_accessibility(CallState& call_state, int_t accessibility);
 

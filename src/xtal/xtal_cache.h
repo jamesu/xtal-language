@@ -17,7 +17,7 @@ struct MemberCacheTable{
 		AnyPtr member;
 	};
 
-	enum{ CACHE_MAX = 127, CACHE_MASK = CACHE_MAX };
+	enum{ CACHE_MAX = 128, CACHE_MASK = CACHE_MAX-1 };
 
 	Unit table_[CACHE_MAX];
 
@@ -44,11 +44,14 @@ struct MemberCacheTable{
 	}
 
 	const AnyPtr& cache(Base* target_class, const IDPtr& primary_key, int_t& accessibility){
+		//bool nocache = false;
+		//return target_class->rawmember(primary_key, undefined, true, accessibility, nocache);
+
 		uint_t itarget_class = (uint_t)target_class >> 2;
 		uint_t iprimary_key = XTAL_detail_uvalue(primary_key);
 
 		uint_t hash = itarget_class ^ (iprimary_key ^ (iprimary_key>>24));
-		Unit& unit = table_[hash % CACHE_MASK];
+		Unit& unit = table_[hash & CACHE_MASK];
 
 		if(((mutate_count_ ^ unit.mutate_count) | 
 			XTAL_detail_rawbitxor(primary_key, unit.primary_key) | 
@@ -59,7 +62,6 @@ struct MemberCacheTable{
 			return unit.member;
 		}
 		else{
-
 			miss_++;
 
 			bool nocache = false;
@@ -96,7 +98,7 @@ struct MemberCacheTable2{
 		AnyPtr member;
 	};
 
-	enum{ CACHE_MAX = 65, CACHE_MASK = CACHE_MAX };
+	enum{ CACHE_MAX = 64, CACHE_MASK = CACHE_MAX-1 };
 
 	Unit table_[CACHE_MAX];
 
@@ -128,7 +130,7 @@ struct MemberCacheTable2{
 		uint_t isecondary_key = XTAL_detail_uvalue(secondary_key);
 
 		uint_t hash = itarget_class ^ (iprimary_key ^ (iprimary_key>>24)) ^ isecondary_key;
-		Unit& unit = table_[hash % CACHE_MASK];
+		Unit& unit = table_[hash & CACHE_MASK];
 
 		if(((mutate_count_ ^ unit.mutate_count) | 
 			XTAL_detail_rawbitxor(primary_key, unit.primary_key) | 
@@ -177,7 +179,7 @@ struct IsCacheTable{
 		bool result;
 	};
 
-	enum{ CACHE_MAX = 127, CACHE_MASK = CACHE_MAX };
+	enum{ CACHE_MAX = 128, CACHE_MASK = CACHE_MAX-1 };
 
 
 	Unit table_[CACHE_MAX];
@@ -209,7 +211,7 @@ struct IsCacheTable{
 		uint_t iklass = XTAL_detail_uvalue(klass);
 
 		uint_t hash = (itarget_class>>3) ^ (iklass>>2);
-		Unit& unit = table_[hash % CACHE_MASK];
+		Unit& unit = table_[hash & CACHE_MASK];
 		
 		if(mutate_count_==unit.mutate_count && 
 			XTAL_detail_raweq(target_class, unit.target_class) && 

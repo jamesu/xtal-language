@@ -1,5 +1,6 @@
 #include "xtal.h"
 #include "xtal_macro.h"
+#include "xtal_stringspace.h"
 
 namespace xtal{ namespace debug{
 
@@ -18,15 +19,34 @@ void CallerInfo::on_visit_members(Visitor& m){
 
 void HookInfo::on_visit_members(Visitor& m){
 	Base::on_visit_members(m);
-	m & /*vm_ & */ code_ & file_name_ & fun_name_ & exception_ & variables_frame_;
+	m & /*vm_ & */ exception_ & variables_frame_ & fun_;
+}
+
+int_t HookInfo::lineno(){
+	if(fun_){ return fun_->code()->compliant_lineno(pc_); }
+	return 0;
+}
+
+CodePtr HookInfo::code(){
+	if(fun_){ return fun_->code(); }
+	return nul<Code>();
+}
+
+StringPtr HookInfo::file_name(){
+	if(fun_){ return fun_->code()->source_file_name(); }
+	return XTAL_DEFINED_ID(UNKNOWN);
+}
+
+StringPtr HookInfo::fun_name(){
+	if(fun_){ return fun_->code()->object_name(); }
+	return XTAL_DEFINED_ID(UNKNOWN);
 }
 
 SmartPtr<HookInfo> HookInfo::clone(){
 	SmartPtr<HookInfo> ret = xnew<HookInfo>();
 	ret->kind_ = kind_;
-	ret->line_ = line_;
-	ret->file_name_ = file_name_;
-	ret->fun_name_ = fun_name_;
+	ret->fun_ = fun_;
+	ret->pc_ = pc_;
 	ret->exception_ = exception_;
 	ret->variables_frame_ = variables_frame_;
 	ret->vm_ = vm_;
@@ -48,7 +68,6 @@ CallerInfoPtr HookInfo::caller(uint_t n){
 int_t HookInfo::call_stack_size(){
 	return vm_->call_stack_size();
 }
-
 
 enum{
 	BSTATE_NONE,
@@ -235,12 +254,17 @@ const AnyPtr& assert_hook(){
 void call_breakpoint_hook(int_t kind, HookInfoPtr info){
 	const SmartPtr<DebugData>& d = cpp_value<DebugData>();
 
-	if(kind==BREAKPOINT_LINE_LIGHT_WEIGHT){
-		d->hooks_[kind]->call();
+	if(kind>=BREAKPOINT_LINE_LIGHT_WEIGHT && kind<=BREAKPOINT_CALL_LIGHT_WEIGHT){
+		d->hooks_[kind]->call(info);
 		return;
 	}
 
-	AnyPtr hook = kind<BREAKPOINT_LINE ? d->hooks_[BREAKPOINT] : d->hooks_[kind];
+	if(kind>=BREAKPOINT_LINE_PROFILE && kind<=BREAKPOINT_CALL_PROFILE){
+		d->hooks_[kind]->call(info);
+		return;
+	}
+
+	AnyPtr hook = (kind>=BREAKPOINT && kind<=BREAKPOINT_INNER_CALL) ? d->hooks_[BREAKPOINT] : d->hooks_[kind];
 
 	while(true){
 		switch(d->breakpoint_state_){
@@ -379,7 +403,7 @@ bool CommandReceiver::start(const StreamPtr& stream){
 	return true;
 }
 	
-void CommandReceiver::check(){
+void CommandReceiver::check(HookInfoPtr){
 	update();
 	if(pause_){
 		set_hook(BREAKPOINT_LINE, bind_this(method(&CommandReceiver::breakpointhook), undeleter(this)));
@@ -547,7 +571,7 @@ ArrayPtr CommandReceiver::make_debug_object(const AnyPtr& v, int depth){
 	return ret;
 }
 
-ArrayPtr CommandReceiver::make_call_stack_info(debug::HookInfoPtr info){
+ArrayPtr CommandReceiver::make_call_stack_info(HookInfoPtr info){
 	ArrayPtr ret = xnew<Array>();
 
 	{
@@ -560,7 +584,7 @@ ArrayPtr CommandReceiver::make_call_stack_info(debug::HookInfoPtr info){
 
 	for(int i=2; i<info->call_stack_size(); ++i){
 		ArrayPtr record = xnew<Array>(3);
-		if(debug::CallerInfoPtr caller = info->caller(i)){
+		if(CallerInfoPtr caller = info->caller(i)){
 			record->set_at(0, caller->fun_name());
 			record->set_at(1, caller->file_name());
 			record->set_at(2, caller->lineno());
@@ -571,7 +595,7 @@ ArrayPtr CommandReceiver::make_call_stack_info(debug::HookInfoPtr info){
 	return ret;
 }
 
-MapPtr CommandReceiver::make_eval_expr_info(debug::HookInfoPtr info, int level){
+MapPtr CommandReceiver::make_eval_expr_info(HookInfoPtr info, int level){
 	MapPtr ret = xnew<Map>();
 	Xfor2(key, value, eval_exprs_){
 		if(CodePtr code = ptr_cast<Code>(value)){
@@ -592,7 +616,7 @@ MapPtr CommandReceiver::make_eval_expr_info(debug::HookInfoPtr info, int level){
 	return ret;
 }
 
-void CommandReceiver::send_break(debug::HookInfoPtr info, int level){
+void CommandReceiver::send_break(HookInfoPtr info, int level){
 	ArrayPtr data = xnew<Array>();
 	data->push_back(Xid(break));
 	data->push_back(make_eval_expr_info(info, level));
@@ -601,7 +625,7 @@ void CommandReceiver::send_break(debug::HookInfoPtr info, int level){
 	stream_->serialize(data);
 }
 
-int CommandReceiver::breakpointhook(debug::HookInfoPtr info){
+int CommandReceiver::breakpointhook(HookInfoPtr info){
 	int ret = breakpointhook2(info);
 
 	if(pause_){
@@ -612,14 +636,14 @@ int CommandReceiver::breakpointhook(debug::HookInfoPtr info){
 	return ret;
 }
 
-int CommandReceiver::breakpointhook2(debug::HookInfoPtr info){
+int CommandReceiver::breakpointhook2(HookInfoPtr info){
 	if(!pause_){
 		if(info->kind()==BREAKPOINT){
 			if(CodePtr code = ptr_cast<Code>(code_map_->at(info->file_name()))){
 				if(code->breakpoint_cond(info->lineno())){
 					AnyPtr val = info->vm()->eval(code->breakpoint_cond(info->lineno()), 0);
 					if(!info->vm()->catch_except() && !val){
-						return debug::REDO;
+						return REDO;
 					}
 				}
 			}
@@ -644,25 +668,25 @@ int CommandReceiver::breakpointhook2(debug::HookInfoPtr info){
 			}
 
 			if(XTAL_detail_raweq(type, Xid(run))){
-				return debug::RUN;
+				return RUN;
 			}
 
 			if(XTAL_detail_raweq(type, Xid(step_into))){
-				return debug::STEP_INTO;
+				return STEP_INTO;
 			}
 
 			if(XTAL_detail_raweq(type, Xid(step_over))){
-				return debug::STEP_OVER;
+				return STEP_OVER;
 			}
 
 			if(XTAL_detail_raweq(type, Xid(step_out))){
-				return debug::STEP_OUT;
+				return STEP_OUT;
 			}
 
 			exec_command(cmd);
 		}
 		else{
-			return debug::RUN;
+			return RUN;
 		}
 	}
 }

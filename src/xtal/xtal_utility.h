@@ -921,8 +921,8 @@ enum BreakPointKind{
 	*/
 	BREAKPOINT,
 	BREAKPOINT_INNER_LINE, // 内部で使用する用
-	BREAKPOINT_INNER_RETURN,
-	BREAKPOINT_INNER_CALL,
+	BREAKPOINT_INNER_RETURN, // 内部で使用する用
+	BREAKPOINT_INNER_CALL, // 内部で使用する用
 
 	/**
 	* \brief ラインごとのブレークポイント
@@ -930,14 +930,14 @@ enum BreakPointKind{
 	BREAKPOINT_LINE,
 
 	/**
-	* \brief 関数呼び出し時ブレークポイント
-	*/
-	BREAKPOINT_CALL,
-
-	/**
 	* \brief 関数リターン時ブレークポイント
 	*/
 	BREAKPOINT_RETURN,
+
+	/**
+	* \brief 関数呼び出し時ブレークポイント
+	*/
+	BREAKPOINT_CALL,
 
 	/**
 	* \brief 例外創出時ブレークポイント
@@ -953,6 +953,31 @@ enum BreakPointKind{
 	* \brief ラインごとの軽量ブレークポイント
 	*/
 	BREAKPOINT_LINE_LIGHT_WEIGHT,
+
+	/**
+	* \brief 関数リターン時軽量ブレークポイント
+	*/
+	BREAKPOINT_RETURN_LIGHT_WEIGHT,
+
+	/**
+	* \brief 関数呼び出し時軽量ブレークポイント
+	*/
+	BREAKPOINT_CALL_LIGHT_WEIGHT,
+
+	/**
+	* \brief ラインごとのプロファイル用軽量ブレークポイント
+	*/
+	BREAKPOINT_LINE_PROFILE,
+
+	/**
+	* \brief 関数リターン時プロファイル用軽量ブレークポイント
+	*/
+	BREAKPOINT_RETURN_PROFILE,
+
+	/**
+	* \brief 関数呼び出しプロファイル用時軽量ブレークポイント
+	*/
+	BREAKPOINT_CALL_PROFILE,
 
 	BREAKPOINT_MAX
 };

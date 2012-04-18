@@ -98,6 +98,46 @@ void InstanceVariables::destroy(){
 	}
 }
 
+const AnyPtr& InstanceVariables::variable(uint_t index, ClassInfo* class_info){
+	char* buf = (char*)(this + 1);
+	if(class_info==info_){
+		return ((AnyPtr*)buf)[index];
+	}
+
+	if(!info_){
+		int_t install_count = *(int_t*)buf; buf += sizeof(int_t);
+		AnyPtr* values = (AnyPtr*)buf;
+		for(int_t i=0; i<install_count; ++i){
+			if(class_info==XTAL_detail_rawvalue(values[i]).immediate_second_vpvalue()){
+				int_t pos = XTAL_detail_rawvalue(values[i]).immediate_first_value();
+				return values[install_count+pos+index];
+			}
+		}
+	}
+
+	return undefined;
+}
+
+void InstanceVariables::set_variable(uint_t index, ClassInfo* class_info, const AnyPtr& value){
+	char* buf = (char*)(this + 1);
+	if(class_info==info_){
+		((AnyPtr*)buf)[index] = value;
+		return;
+	}
+
+	if(!info_){
+		int_t install_count = *(int_t*)buf; buf += sizeof(int_t);
+		AnyPtr* values = (AnyPtr*)buf;
+		for(int_t i=0; i<install_count; ++i){
+			if(class_info==XTAL_detail_rawvalue(values[i]).immediate_second_vpvalue()){
+				int_t pos = XTAL_detail_rawvalue(values[i]).immediate_first_value();
+				values[install_count+pos+index] = value;
+				return;
+			}
+		}
+	}
+}
+
 void visit_members(Visitor& m, InstanceVariables* self){
 	if(self->info_==&empty_class_info){
 

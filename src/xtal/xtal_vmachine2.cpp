@@ -146,7 +146,7 @@ void VMachine::ready(){
 
 void VMachine::setup_call(int_t need_result_count){
 	int_t base;
-	FunFrame& f= XTAL_VM_ff();
+	FunFrame& f = XTAL_VM_ff();
 	if(f.fun){
 		base = 128;
 	}
@@ -625,38 +625,6 @@ void VMachine::set_except_0(const AnyPtr& e){
 	except_[0] = e;
 }
 	
-void VMachine::make_debug_info(const inst_t* pc, const MethodPtr& fun, int_t kind){
-	if(!debug_info_){ 
-		debug_info_ = XNew<debug::HookInfo>(); 
-	}
-
-	debug_info_->set_kind(kind);
-	if(fun){
-		debug_info_->set_line(fun->code()->compliant_lineno(pc));
-		debug_info_->set_code(fun->code());
-		debug_info_->set_file_name(fun->code()->source_file_name());
-		debug_info_->set_fun_name(fun->object_name());
-	}
-	else{
-		debug_info_->set_line(0);
-		debug_info_->set_code(null);
-		debug_info_->set_file_name(XTAL_STRING("?"));
-		debug_info_->set_fun_name(XTAL_STRING("?"));
-	}
-
-	debug_info_->set_exception(except_[0]);
-
-	if(scopes_.empty()){
-		debug_info_->set_variables_frame(null);
-	}
-	else{
-		make_outer_outer(0, 0, true);
-		debug_info_->set_variables_frame(scopes_.top().frame);
-	}
-
-	debug_info_->set_vm(to_smartptr(this));
-}
-
 debug::CallerInfoPtr VMachine::caller(uint_t n){
 	//if(n==0){
 	//	return nul<debug::CallerInfo>();
@@ -830,19 +798,31 @@ bool VMachine::eval_set_instance_variable(const AnyPtr& self, const IDPtr& key, 
 }
 
 void VMachine::breakpoint_hook(const inst_t* pc, const MethodPtr& fun, int_t kind){
-	if(kind!=BREAKPOINT_LINE_LIGHT_WEIGHT){
-		make_debug_info(pc, fun, kind);
-	}
-	
-	VMachinePtr oldvm = set_vmachine(vmachine_take_over());
-	
-	if(kind!=BREAKPOINT_LINE_LIGHT_WEIGHT){
-		debug::call_breakpoint_hook(kind, debug_info_);
-	}
-	else{
-		debug::call_breakpoint_hook(kind, null);
+	if(!debug_info_){ 
+		debug_info_ = XNew<debug::HookInfo>(); 
 	}
 
+	debug_info_->set_kind(kind);
+	debug_info_->set_fun(fun, pc);
+	debug_info_->set_exception(except_[0]);
+	debug_info_->set_vm(to_smartptr(this));
+	debug_info_->set_variables_frame(null);
+
+	if(kind>=BREAKPOINT_LINE_PROFILE && kind<=BREAKPOINT_CALL_PROFILE){
+
+	}
+	else if(kind>=BREAKPOINT_LINE_LIGHT_WEIGHT && kind<=BREAKPOINT_CALL_LIGHT_WEIGHT){
+
+	}
+	else{
+		if(!scopes_.empty()){
+			make_outer_outer(0, 0, true);
+			debug_info_->set_variables_frame(scopes_.top().frame);
+		}
+	}
+
+	VMachinePtr oldvm = set_vmachine(vmachine_take_over());
+	debug::call_breakpoint_hook(kind, debug_info_);
 	vmachine_take_back(set_vmachine(oldvm));
 }
 

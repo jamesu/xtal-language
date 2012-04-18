@@ -6,4 +6,3 @@ fib: fun(i){
 }
 
 fib(33).p;
-

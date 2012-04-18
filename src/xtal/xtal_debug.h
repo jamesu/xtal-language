@@ -74,27 +74,33 @@ public:
 
 	/**
 	* \xbind
+	* \brief フックされた場所の関数を返す
+	*/
+	const MethodPtr& fun(){ return fun_; }
+
+	/**
+	* \xbind
 	* \brief フックされた場所の行数を返す
 	*/
-	int_t lineno(){ return line_; }
+	int_t lineno();
 
 	/**
 	* \xbind
 	* \brief フックされた場所のCodeオブジェクトを返す
 	*/
-	const CodePtr& code(){ return code_; }
+	CodePtr code();
 
 	/**
 	* \xbind
 	* \brief フックされた場所のファイル名を返す
 	*/
-	const StringPtr& file_name(){ return file_name_; }
+	StringPtr file_name();
 
 	/**
 	* \xbind
 	* \brief フックされた場所の関数名を返す
 	*/
-	const StringPtr& fun_name(){ return fun_name_; }
+	StringPtr fun_name();
 
 	/**
 	* \xbind
@@ -116,10 +122,7 @@ public:
 	int_t call_stack_size();
 
 	void set_kind(int_t v){ kind_ = v; }
-	void set_line(int_t v){ line_ = v; }
-	void set_code(const CodePtr& v){ code_ = v; }
-	void set_file_name(const StringPtr& v){ file_name_ = v; }
-	void set_fun_name(const StringPtr& v){ fun_name_ = v; }
+	void set_fun(const MethodPtr& v, const inst_t* pc){ fun_ = v; pc_ = pc; }
 	void set_exception(const AnyPtr& e){ exception_ = e; }
 	void set_variables_frame(const FramePtr& v){ variables_frame_ = v; }
 
@@ -139,12 +142,10 @@ public:
 private:
 
 	int_t kind_;
-	int_t line_;
-	CodePtr code_;
-	StringPtr file_name_;
-	StringPtr fun_name_;
 	AnyPtr exception_;
 	FramePtr variables_frame_;
+	MethodPtr fun_;
+	const inst_t* pc_;
 	VMachine* vm_;
 
 	friend class VMachine;
@@ -338,16 +339,16 @@ private:
 
 	ArrayPtr make_debug_object(const AnyPtr& v, int depth = 3);
 
-	ArrayPtr make_call_stack_info(debug::HookInfoPtr info);
+	ArrayPtr make_call_stack_info(HookInfoPtr info);
 
-	MapPtr make_eval_expr_info(debug::HookInfoPtr info, int level);
+	MapPtr make_eval_expr_info(HookInfoPtr info, int level);
 
-	void send_break(debug::HookInfoPtr info, int level);
+	void send_break(HookInfoPtr info, int level);
 
-	int breakpointhook(debug::HookInfoPtr info);
-	int breakpointhook2(debug::HookInfoPtr info);
+	int breakpointhook(HookInfoPtr info);
+	int breakpointhook2(HookInfoPtr info);
 
-	void check();
+	void check(HookInfoPtr);
 
 private:
 	StreamPtr stream_;

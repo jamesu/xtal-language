@@ -13,6 +13,13 @@ inline const ClassPtr& Base::get_class(){
 	return to_smartptr(class_); 
 }
 
+inline const ClassPtr& Any::get_class() const{
+	if(XTAL_detail_type(*this)==TYPE_BASE){ 
+		return XTAL_detail_pvalue(*this)->get_class(); 
+	}
+	return get_class_except_base();
+}
+
 inline InstanceVariables* Any::instance_variables() const{
 	if(XTAL_detail_type(*this)==TYPE_BASE){
 		return XTAL_detail_pvalue(*this)->instance_variables();

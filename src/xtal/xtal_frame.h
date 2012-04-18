@@ -123,7 +123,7 @@ protected:
 protected:
 
 	static uint_t hashcode(const IDPtr& primary_key, const AnyPtr& secondary_key){
-		return (XTAL_detail_uvalue(primary_key)>>3) ^ XTAL_detail_uvalue(secondary_key);
+		return rawhash(primary_key) ^ rawhash(secondary_key);
 	}
 
 	void expand_buckets();

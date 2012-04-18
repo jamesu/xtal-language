@@ -763,6 +763,154 @@ XTAL_BIND(SmashPlayer){
 }
 
 
+struct ProfileData{
+	ProfileData(){
+		
+	}
+
+	struct Fun{
+		static uint_t hash(const MethodPtr& key){
+			return XTAL_detail_rawhash(key);
+		}
+
+		static bool eq(const MethodPtr& a, const MethodPtr& b){
+			return XTAL_detail_raweq(a, b);
+		}
+	};
+
+	struct Value{
+		double sum;
+		double now;
+		int count;
+
+		Value(){
+			sum = 0;
+			now = 0;
+			count = 0;
+		}
+	};
+
+	typedef Hashtable<MethodPtr, Value, Fun> map_t;
+	map_t map;
+	TArray<map_t::Node*> stack;
+
+
+	void profile(debug::HookInfoPtr info){
+		if(info->kind()==BREAKPOINT_CALL_PROFILE){
+			map_t::Node* node = map.find(info->fun());
+			if(!node){ node = map.insert(info->fun(), Value()); }
+		
+			node->value().count++;
+			node->value().now = clock();
+
+			if(stack.size()!=0){
+				map_t::Node* p = stack[stack.size()-1];
+				p->value().sum += clock() - p->value().now;
+			}
+
+			stack.push_back(node);
+		}
+		else if(info->kind()==BREAKPOINT_RETURN_PROFILE){
+			map_t::Node* node = map.find(info->fun());
+			if(stack.size()!=0 && node==stack[stack.size()-1]){
+				node->value().sum += clock() - node->value().now;
+
+				stack.pop_back();
+				if(stack.size()!=0){
+					stack[stack.size()-1]->value().now = clock();
+				}
+			}
+		}
+	}
+
+
+	struct ResultRecord{
+		MethodPtr fun;
+		double sum;
+		int count;
+	};
+
+	struct Cmp{
+		bool operator()(const ResultRecord& a, const ResultRecord& b){
+			return a.sum < b.sum;
+		}
+	};
+
+	void print(){
+		if(map.empty()){
+			Xf("none")->p();
+			return;
+		}
+
+		TArray<ResultRecord> results;
+		for(map_t::iterator it=map.begin(); it!=map.end(); ++it){
+			if(it->first){
+				ResultRecord rr;
+				rr.fun = it->first;
+				rr.sum = it->second.sum;
+				rr.count = it->second.count;
+				results.push_back(rr);
+			}
+		}
+
+		std::sort(&results[0], &results[0] + results.size(), Cmp());
+
+		for(int i=0; i<results.size(); ++i){
+			ResultRecord rr = results[i];
+			Xf("fun:%s, count%d, sum:%d")->call(rr.fun, rr.count, rr.sum)->p();
+		}
+	}
+};
+
+void profile(debug::HookInfoPtr info){
+	if(!info->fun()){
+		return;
+	}
+
+	SmartPtr<ProfileData> pd = cpp_value<ProfileData>();
+	pd->profile(info);
+}
+
+void start_profile(){
+	debug::set_hook(BREAKPOINT_CALL_PROFILE, fun(&profile));
+	debug::set_hook(BREAKPOINT_RETURN_PROFILE, fun(&profile));
+}
+
+void print_profile(){
+	SmartPtr<ProfileData> pd = cpp_value<ProfileData>();
+	pd->print();
+}
+
+struct Vec2D : public Base{
+	float x, y;
+
+	Vec2D(float a, float b){
+		x = a;
+		y = b;
+	}
+
+	SmartPtr<Vec2D> op_add_assign(const SmartPtr<Vec2D>& a){
+		x += a->x;
+		y += a->y;
+		return to_smartptr(this);
+	}
+
+	StringPtr to_s(){
+		return ptr_cast<String>(Xf("%s %s")->call(x, y));
+	}
+};
+
+XTAL_PREBIND(Vec2D){
+	Xregister(Lib);
+
+	Xdef_ctor2(float, float);
+
+	Xdef_var(x);
+	Xdef_var(y);
+	Xdef_method(op_add_assign);
+	Xdef_method(to_s);
+}
+
 int main2(int argc, char** argv){
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | /*_CRTDBG_CHECK_ALWAYS_DF |*/ _CRTDBG_DELAY_FREE_MEM_DF);
 
@@ -825,10 +973,24 @@ int main2(int argc, char** argv){
 		//AnyPtr map = xnew<CompressDecoder>(xnew<FileStream>("../debugger/pd", "r"))->deserialize();
 		//set_require_source_map(map);
 
+		debug::set_hook(BREAKPOINT_CALL_PROFILE, fun(&profile));
+		debug::set_hook(BREAKPOINT_RETURN_PROFILE, fun(&profile));
+
 		debug::enable();
 		if(CodePtr code = Xsrc((
-			a: 10;
-			a.p;
+			foo: fun(){
+				v: lib::Vec2D(0, 0);
+				u: lib::Vec2D(1, 2);
+				for(i: 0; i<5000000; ++i){
+					v += u;
+				}
+				
+				v.to_s.p;
+			}
+
+
+			foo();
+
 		))){
 		   //code->inspect()->p();
 		   //code->def(Xid(AA), 20);
@@ -840,15 +1002,19 @@ int main2(int argc, char** argv){
 				return 1;
 			}
 
-		   code->call();
+			int c = clock();
+			code->call();
+			printf("vec %g\n\n", (clock()-c)/1000.0f);		
 
+		   /*
 			if(CodePtr code2 = Xsrc((
 				a: 20;
 				a.p;
 			))){
 				code->reload(code2);
-				code->call();
+				code->member(Xid(a))->p();
 			}
+			*/
 
 		   //code->set_member(Xid(AA), 10, undefined);
 		   //code->member(Xid(AA))->p();
@@ -867,7 +1033,7 @@ int main2(int argc, char** argv){
 
 	//compile_file("../test/compile_error/test.xtal");
 
-	return 0;
+	//return 0;
 	
 //*/
 
@@ -875,6 +1041,9 @@ int main2(int argc, char** argv){
 
 	int c;	
 	
+	debug::enable();
+	debug::enable_debug_compile();
+
 	/*		
 	c = clock();
 	//load("../bench/ao.xtal");
@@ -968,6 +1137,8 @@ int main2(int argc, char** argv){
 
 	debug::enable();
 	test();
+
+	//print_profile();
 
 	full_gc();
 

@@ -41,9 +41,9 @@ namespace xtal{
 
 #define XTAL_VM_FUN
 
-const ClassPtr& Any::get_class() const{
+const ClassPtr& Any::get_class_except_base() const{
 	int_t t = XTAL_detail_type(*this);
-	if(t==TYPE_BASE){ return XTAL_detail_pvalue(*this)->get_class(); }
+	//if(t==TYPE_BASE){ return XTAL_detail_pvalue(*this)->get_class(); }
 	if(t==TYPE_POINTER){ return cpp_class(value_.cpp_class_index()); }
 
 	static CppClassSymbolData* const data[] = {
@@ -80,6 +80,42 @@ const ClassPtr& Any::get_class() const{
 	XTAL_STATIC_ASSERT(sizeof(data)/sizeof(*data) == TYPE_MAX);
 
 	return cpp_class(data[t]);
+	
+	/*
+	CppClassSymbolData* data;
+	switch(XTAL_detail_type(*this)){
+		XTAL_NODEFAULT;
+		XTAL_CASE(TYPE_NULL){ data = &CppClassSymbol<Null>::value; }
+		XTAL_CASE(TYPE_UNDEFINED){ data = &CppClassSymbol<Undefined>::value; }
+		XTAL_CASE(TYPE_FALSE){ data = &CppClassSymbol<Bool>::value; }
+		XTAL_CASE(TYPE_TRUE){ data = &CppClassSymbol<Bool>::value; }
+		XTAL_CASE(TYPE_INT){ data = &CppClassSymbol<Int>::value; }
+		XTAL_CASE(TYPE_FLOAT){ data = &CppClassSymbol<Float>::value; }
+		XTAL_CASE(TYPE_IMMEDIATE_VALUE){ data = &CppClassSymbol<ImmediateValue>::value; }
+		XTAL_CASE(TYPE_POINTER){ return cpp_class(value_.cpp_class_index()); }
+		XTAL_CASE(TYPE_STATELESS_NATIVE_METHOD){ data = &CppClassSymbol<StatelessNativeMethod>::value; }
+		XTAL_CASE(TYPE_IVAR_GETTER){ data = &CppClassSymbol<InstanceVariableGetter>::value; }
+		XTAL_CASE(TYPE_IVAR_SETTER){ data = &CppClassSymbol<InstanceVariableSetter>::value; }
+		XTAL_CASE(TYPE_SMALL_STRING){ data = &CppClassSymbol<String>::value; }
+		XTAL_CASE(TYPE_LONG_LIVED_STRING){ data = &CppClassSymbol<String>::value; }
+		XTAL_CASE(TYPE_INTERNED_STRING){ data = &CppClassSymbol<String>::value; }
+		XTAL_CASE(TYPE_PADDING_0){ data = &CppClassSymbol<Any>::value; }
+		XTAL_CASE(TYPE_PADDING_1){ data = &CppClassSymbol<Any>::value; }
+		XTAL_CASE(TYPE_BASE){ return XTAL_detail_pvalue(*this)->get_class(); }
+		XTAL_CASE(TYPE_STRING){ data = &CppClassSymbol<String>::value; }
+		XTAL_CASE(TYPE_ARRAY){ data = &CppClassSymbol<Array>::value; }
+		XTAL_CASE(TYPE_VALUES){ data = &CppClassSymbol<Values>::value; }
+		XTAL_CASE(TYPE_TREE_NODE){ data = &CppClassSymbol<TreeNode>::value; }
+		XTAL_CASE(TYPE_NATIVE_METHOD){ data = &CppClassSymbol<NativeMethod>::value; }
+		XTAL_CASE(TYPE_NATIVE_FUN){ data = &CppClassSymbol<NativeFun>::value; }
+		XTAL_CASE(TYPE_METHOD){ data = &CppClassSymbol<Method>::value; }
+		XTAL_CASE(TYPE_FUN){ data = &CppClassSymbol<Fun>::value; }
+		XTAL_CASE(TYPE_LAMBDA){ data = &CppClassSymbol<Lambda>::value; }
+		XTAL_CASE(TYPE_FIBER){ data = &CppClassSymbol<Fiber>::value; }
+	}
+
+	return cpp_class(data);
+	*/
 }
 
 bool Any::is(const AnyPtr& klass) const{
@@ -116,8 +152,10 @@ SmartPtr<Any>& SmartPtr<Any>::operator =(const UndefinedPtr& p){
 void VMachine::carry_over(Method* fun, bool adjust_arguments){
 	const inst_t* next_pc =  fun->source();
 	if(*hook_setting_bit_!=0){
-		check_breakpoint_hook(next_pc, BREAKPOINT_CALL);
-		check_breakpoint_hook(next_pc, BREAKPOINT_INNER_CALL);
+		check_breakpoint_hook(next_pc, to_smartptr(fun), BREAKPOINT_CALL_PROFILE);
+		check_breakpoint_hook(next_pc, to_smartptr(fun), BREAKPOINT_CALL_LIGHT_WEIGHT);
+		check_breakpoint_hook(next_pc, to_smartptr(fun), BREAKPOINT_INNER_CALL);
+		check_breakpoint_hook(next_pc, to_smartptr(fun), BREAKPOINT_CALL);
 	}
 
 	FunFrame& f = XTAL_VM_ff();
@@ -261,10 +299,19 @@ void VMachine::upsize_variables_detail(uint_t upsize){
 		}
 	}
 }
+	
+FunFrame* VMachine::reserve_ff(){
+	FunFrame* fp = fun_frames_.push();
+	if(XTAL_UNLIKELY(!fp)){ 
+		fun_frames_.top() = fp = new_object_xmalloc<FunFrame>();
+	}
+	fun_frames_.downsize(1);
+	return fp;
+}
 
 void VMachine::push_ff(CallState& call_state){
 	FunFrame* fp = fun_frames_.push();
-	if(!fp){ 
+	if(XTAL_UNLIKELY(!fp)){ 
 		fun_frames_.top() = fp = new_object_xmalloc<FunFrame>();
 	}
 
@@ -426,27 +473,37 @@ AnyPtr& VMachine::local_variable_out_of_fun(uint_t pos, uint_t depth){
 	return out->member_direct(pos);
 }
 
-void VMachine::execute_inner2(const inst_t* start, int_t eval_n){
+void VMachine::execute_inner(const inst_t* start, int_t eval_n){
+	XTAL_VM_UNLOCK{
+		ExceptFrame cur;
+		cur.info = 0;
+		cur.stack_size = stack_.size() - (XTAL_VM_ff().ordered_arg_count+(XTAL_VM_ff().named_arg_count<<1));
+		cur.fun_frame_size = fun_frames_.size();
+		cur.scope_size = scopes_.size();
+		cur.variables_top = XTAL_VM_variables_top();
 
-	const inst_t* pc = start;
+		hook_setting_bit_ = debug::hook_setting_bit_ptr();
+
+		execute_inner2(start, eval_n, cur);
+	}
+}
+
+void VMachine::execute_inner2(const inst_t* start, int_t eval_n, ExceptFrame& cur){
+	register const inst_t* pc = start;
+	const void* next_pc = 0;
+
+	static Any values[4] = { null, undefined, Bool(false), Bool(true) };
 
 	CallState call_state;
-
-	ExceptFrame cur;
-	cur.info = 0;
-	cur.stack_size = stack_.size() - (XTAL_VM_ff().ordered_arg_count+(XTAL_VM_ff().named_arg_count<<1));
-	cur.fun_frame_size = fun_frames_.size();
-	cur.scope_size = scopes_.size();
-	cur.variables_top = XTAL_VM_variables_top();
-
-	hook_setting_bit_ = debug::hook_setting_bit_ptr();
-
-	Any values[4] = { null, undefined, Bool(false), Bool(true) };
 
 	int_t eval_base_n = fun_frames_.size();
 
 	inst_t xop = 0;
-	const void* next_pc = 0;
+
+	int_t iprimary = 0;
+
+	uint_t common_flag = 0;
+	int_t accessibility = 0;
 
 	XTAL_ASSERT(cur.stack_size>=0);
 	
@@ -523,13 +580,17 @@ void VMachine::execute_inner2(const inst_t* start, int_t eval_n){
 		};
 #endif
 
-	uint_t common_flag = 0;
-	int_t accessibility = 0;
-	int_t iprimary = 0;
-
 	XTAL_CHECK_YIELD;
 
 XTAL_VM_CONTINUE0;
+
+	{
+zerodiv:
+		XTAL_VM_LOCK{
+			set_runtime_error(Xt("XRE1024"), to_smartptr(this));
+			XTAL_VM_CONTINUE(&throw_code_);
+		}
+	}
 
 	enum{
 		SEND = 0,
@@ -572,7 +633,6 @@ send_common_iprimary_nosecondary:
 		}
 
 send_common_nosecondary:
-
 		call_state.secondary = undefined;
 		call_state.self = XTAL_VM_ff().self;
 		XTAL_VM_LOCK{			
@@ -584,7 +644,6 @@ send_common_nosecondary:
 		goto send_common4;
 
 send_common:
-
 		XTAL_VM_LOCK{
 			call_state.cls = call_state.target.get_class();
 		}
@@ -677,6 +736,8 @@ call_common2:
 				case TYPE_FUN:
 					set_arg_this(unchecked_cast<Fun*>(ap(call_state.member))->self());
 
+					// ÉXÉãÅ[
+
 				case TYPE_METHOD:{
 					Method* p = unchecked_cast<Method*>(ap(call_state.member));
 					if(call_state.ordered!=p->info()->max_param_count){
@@ -739,14 +800,6 @@ call_end:
 		}
 	}
 
-	{
-zerodiv:
-		XTAL_VM_LOCK{
-			set_runtime_error(Xt("XRE1024"), to_smartptr(this));
-			XTAL_VM_CONTINUE(&throw_code_);
-		}
-	}
-
 vmloopbegin:
 	xop = *pc;
 XTAL_VM_LOOP
@@ -755,6 +808,7 @@ XTAL_VM_LOOP
 	XTAL_VM_CASE_FIRST(InstLine){ // 3
 		if(*hook_setting_bit_!=0){
 			XTAL_VM_LOCK{
+				check_breakpoint_hook(pc, BREAKPOINT_LINE_PROFILE);
 				check_breakpoint_hook(pc, BREAKPOINT_LINE_LIGHT_WEIGHT);
 				check_breakpoint_hook(pc, BREAKPOINT_INNER_LINE);
 				check_breakpoint_hook(pc, BREAKPOINT_LINE);
@@ -1502,12 +1556,16 @@ zerodiv3:
 	}
 
 	XTAL_VM_CASE(InstReturn) XTAL_VM_LOCK{ // 7
+		const MethodPtr& fun = XTAL_VM_ff().fun;
+
 		pop_scope();
 		const inst_t* next_pc = pop_ff(inst.base, inst.result_count);
 
 		if(*hook_setting_bit_!=0){
-			check_breakpoint_hook(pc, BREAKPOINT_RETURN);
-			check_breakpoint_hook(next_pc-1, BREAKPOINT_INNER_RETURN);
+			check_breakpoint_hook(pc, fun, BREAKPOINT_RETURN_PROFILE);
+			check_breakpoint_hook(next_pc-1, fun, BREAKPOINT_RETURN_LIGHT_WEIGHT);
+			check_breakpoint_hook(next_pc-1, fun, BREAKPOINT_INNER_RETURN);
+			check_breakpoint_hook(pc, fun, BREAKPOINT_RETURN);
 		}
 
 		XTAL_VM_CONTINUE(next_pc);

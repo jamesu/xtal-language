@@ -154,6 +154,7 @@ Frame::Node* Frame::find_node(const IDPtr& primary_key, const AnyPtr& secondary_
 		}
 		node = node->next;
 	}
+
 	return 0;
 }
 
@@ -162,7 +163,7 @@ Frame::Node* Frame::insert_node(const IDPtr& primary_key, const AnyPtr& secondar
 		return node;
 	}
 
-	if(members_.size() >= buckets_capa_){
+	if(members_.size() >= buckets_capa_*0.7f){
 		expand_buckets();
 	}
 

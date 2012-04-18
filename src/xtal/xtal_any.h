@@ -358,6 +358,8 @@ private:
 
 protected:
 
+	const ClassPtr& get_class_except_base() const;
+
 	struct noinit_t{};
 
 	void init(RefCountingBase* p);

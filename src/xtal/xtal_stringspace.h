@@ -141,6 +141,8 @@ static const char_t* id_list[] = {
 	XTAL_DEFINE_ID(builtin)
 	XTAL_DEFINE_ID(filesystem)
 
+	XTAL_DEFINE_ID(UNKNOWN)
+
 #ifndef XATL_DEFINE_IDs
 
 	DUMMY_DUM

@@ -726,18 +726,19 @@ XTAL_PREBIND(HookInfo){
 XTAL_BIND(HookInfo){
 	Xdef_method(clone);
 	Xdef_method(kind);
+	Xdef_method(fun);
 	Xdef_method(lineno);
 	Xdef_method(fun_name);
 	Xdef_method(file_name);
 	Xdef_method(exception);
 	Xdef_method(variables_frame);
 
-	Xdef_method(set_kind);
-	Xdef_method(set_line);
-	Xdef_method(set_fun_name);
-	Xdef_method(set_file_name);
-	Xdef_method(set_exception);
-	Xdef_method(set_variables_frame);
+	//Xdef_method(set_kind);
+	//Xdef_method(set_line);
+	//Xdef_method(set_fun_name);
+	//Xdef_method(set_file_name);
+	//Xdef_method(set_exception);
+	//Xdef_method(set_variables_frame);
 
 	Xdef(LINE, (int_t)BREAKPOINT_LINE);
 	Xdef(CALL, (int_t)BREAKPOINT_CALL);

@@ -359,13 +359,10 @@ public:
 
 	void set_except_0(const AnyPtr& e);
 
-	void execute_inner(const inst_t* start, int_t eval_n = 0){
-		XTAL_VM_UNLOCK{
-			execute_inner2(start, eval_n);
-		}
-	}
+	void execute_inner(const inst_t* start, int_t eval_n = 0);
 
-	void execute_inner2(const inst_t* start, int_t eval_n = 0);
+	struct ExceptFrame;
+	void execute_inner2(const inst_t* start, int_t eval_n, ExceptFrame& cur);
 
 	void execute(Method* fun, const inst_t* start_pc);
 
@@ -437,10 +434,13 @@ public:
 		// この関数が使っているスコープの下限
 		uint_t scope_lower;
 
+		// 実行中かフラグ
 		int_t is_executed;
 
+		// 戻り値を返す位置
 		int_t result;
 
+		// これが詰まれる前のスタックペース
 		uint_t prev_stack_base;
 
 		// 呼び出された関数オブジェクト
@@ -513,6 +513,7 @@ private:
 	void push_scope(ScopeInfo* info = &empty_scope_info);
 	void pop_scope();
 
+	FunFrame* reserve_ff();
 	void push_ff(CallState& call_state);
 	const inst_t* pop_ff(int_t base, int_t result_count);
 	void pop_ff_non();
@@ -551,8 +552,6 @@ private: // 例外系
 	const inst_t* catch_body(const inst_t* pc, const ExceptFrame& cur);
 
 private: // ブレークポイント系
-	void make_debug_info(const inst_t* pc, const MethodPtr& fun, int_t kind);
-
 	void breakpoint_hook(const inst_t* pc, const MethodPtr& fun, int_t kind);
 
 	void check_breakpoint_hook(const inst_t* pc, const MethodPtr& fun, int_t kind){

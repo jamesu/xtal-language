@@ -156,7 +156,7 @@ void VMachine::setup_call(int_t need_result_count){
 
 
 	CallState call_state;
-	call_state.self = undefined;
+	call_state.aself = undefined;
 	call_state.poped_pc = &end_code_;
 	call_state.result = base;
 	call_state.need_result_count = need_result_count;
@@ -423,7 +423,7 @@ const inst_t* VMachine::start_fiber(Fiber* fun, VMachine* vm, bool add_succ_or_f
 	yield_result_count_ = 0;
 
 	CallState call_state;
-	call_state.self = vm->arg_this();
+	call_state.aself = vm->arg_this();
 	call_state.poped_pc = &end_code_;
 	call_state.result = XTAL_VM_variables_top();
 	call_state.need_result_count = vm->need_result_count();
@@ -480,21 +480,21 @@ void VMachine::exit_fiber(){
 
 const inst_t* VMachine::check_accessibility(CallState& call_state, int_t accessibility){
 	if(accessibility & KIND_PRIVATE){
-		if(!XTAL_detail_raweq(ap(call_state.self)->get_class(), ap(call_state.cls))){
+		if(!XTAL_detail_raweq(ap(call_state.aself)->get_class(), ap(call_state.acls))){
 			return push_except(call_state.pc, cpp_class<AccessibilityError>()->call(Xt4("XRE1017",
-				object, ap(call_state.cls)->object_name(), 
-				name, ap(call_state.primary), 
-				secondary_key, ap(call_state.secondary), 
+				object, ap(call_state.acls)->object_name(), 
+				name, ap(call_state.aprimary), 
+				secondary_key, ap(call_state.asecondary), 
 				accessibility, Xid(private)))
 			);
 		}
 	}
 	else if(accessibility & KIND_PROTECTED){
-		if(!ap(call_state.self)->is(ap(call_state.cls))){
+		if(!ap(call_state.aself)->is(ap(call_state.acls))){
 			return push_except(call_state.pc, cpp_class<AccessibilityError>()->call(Xt4("XRE1017",
-				object, ap(call_state.cls)->object_name(), 
-				primary_key, ap(call_state.primary), 
-				secondary_key, ap(call_state.secondary), 
+				object, ap(call_state.acls)->object_name(), 
+				primary_key, ap(call_state.aprimary), 
+				secondary_key, ap(call_state.asecondary), 
 				accessibility, Xid(protected)))
 			);
 		}

@@ -412,15 +412,15 @@ public: // eval系
 public:
 
 	struct CallState{
-		Any cls;
-		Any target;
-		Any primary;
-		Any secondary;
-		Any self;
-		Any member;
+		Any acls;
+		Any atarget;
+		Any aprimary;
+		Any asecondary;
+		Any aself;
+		Any amember;
 
 		CallState()
-			:cls(null), target(null), primary(null), secondary(null), self(null), member(null){} 
+			:acls(null), atarget(null), aprimary(null), asecondary(null), aself(null), amember(null){} 
 
 		const inst_t* pc;
 		const inst_t* poped_pc;
@@ -448,7 +448,10 @@ public:
 	};
 
 	struct FunFrame{
-		/*void set(const inst_t* pc, const inst_t* next_pc,
+		FunFrame()
+			:acls(null), atarget(null), aprimary(null), asecondary(null), aself(null), amember(null){}
+
+		void set(const inst_t* pc, const inst_t* next_pc,
 			int_t result, int_t need_result_count, 
 			int_t stack_base, int_t ordered, int_t named, 
 			int_t flags){
@@ -461,7 +464,21 @@ public:
 			this->ordered = ordered;
 			this->named = named;
 			this->flags = flags;
-		}*/
+		}
+
+		//{ 一時的なテンポラリとして使う
+		Any acls;
+		Any atarget;
+		Any aprimary;
+		Any asecondary;
+		Any aself;
+		Any amember;
+		const inst_t* pc;
+		int_t stack_base;
+		int_t ordered;
+		int_t named;
+		int_t flags;
+		//}
 
 		// pop_ffしたときはこのpcから実行する
 		const inst_t* poped_pc;

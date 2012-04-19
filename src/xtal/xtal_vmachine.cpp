@@ -325,7 +325,7 @@ void VMachine::push_ff(CallState& call_state){
 	f.result = call_state.result;
 	f.prev_stack_base = XTAL_VM_variables_top();
 	f.scope_lower = scopes_.size();
-	f.self = ap(call_state.self);
+	f.self = ap(call_state.aself);
 	f.fun = null;
 	f.outer = null;
 
@@ -507,7 +507,12 @@ void VMachine::execute_inner2(const inst_t* start, int_t eval_n, ExceptFrame& cu
 	int_t accessibility = 0;
 
 	XTAL_ASSERT(cur.stack_size>=0);
-	
+		
+	union i2f{
+		float_t f;
+		int_t i;
+	};
+
 #ifdef XTAL_USE_COMPUTED_GOTO
 	static const void* labels[] = {
 	//{LABELS{{
@@ -608,7 +613,7 @@ send_comp:
 			InstType2& inst2 = *(InstType2*)((u8*)next_pc+inst.ISIZE);
 			set_local_variable(inst.stack_base, XTAL_VM_local_variable(inst.rhs));
 			call_state.set(pc, pc+inst.ISIZE, inst2.target, 1, inst.stack_base, 1, 0, MEMBER_FLAG_Q_BIT);
-			call_state.target = XTAL_VM_local_variable(inst.lhs);
+			call_state.atarget = XTAL_VM_local_variable(inst.lhs);
 			goto send_common_iprimary_nosecondary;
 		}
 
@@ -616,7 +621,7 @@ send_una:
 		{
 			const InstInc& inst = *(const InstInc*)next_pc;
 			call_state.set(pc, pc+inst.ISIZE, inst.result, 1, inst.stack_base, 0, 0, 0);
-			call_state.target = XTAL_VM_local_variable(inst.target);
+			call_state.atarget = XTAL_VM_local_variable(inst.target);
 			goto send_common_iprimary_nosecondary;
 		}
 
@@ -625,35 +630,35 @@ send_bin:
 			const InstAdd& inst = *(const InstAdd*)next_pc;
 			set_local_variable(inst.stack_base, XTAL_VM_local_variable(inst.rhs));
 			call_state.set(pc, pc+inst.ISIZE, inst.result, 1, inst.stack_base, 1, 0, 0);
-			call_state.target = XTAL_VM_local_variable(inst.lhs);
+			call_state.atarget = XTAL_VM_local_variable(inst.lhs);
 		}
 
 send_common_iprimary_nosecondary:
 		XTAL_VM_LOCK{
-			call_state.primary = fetch_defined_id(iprimary);
+			call_state.aprimary = fetch_defined_id(iprimary);
 		}
 
 send_common_nosecondary:
-		call_state.secondary = undefined;
-		call_state.self = XTAL_VM_ff().self;
+		call_state.asecondary = undefined;
+		call_state.aself = XTAL_VM_ff().self;
 		XTAL_VM_LOCK{			
 			accessibility = 0;
-			call_state.cls = call_state.target.get_class();
-			call_state.member = environment_->member_cache_table_.cache(XTAL_detail_pvalue(call_state.cls), (IDPtr&)call_state.primary, accessibility);
+			call_state.acls = call_state.atarget.get_class();
+			call_state.amember = environment_->member_cache_table_.cache(XTAL_detail_pvalue(call_state.acls), (IDPtr&)call_state.aprimary, accessibility);
 		}
 		common_flag = SEND;
 		goto send_common4;
 
 send_common:
 		XTAL_VM_LOCK{
-			call_state.cls = call_state.target.get_class();
+			call_state.acls = call_state.atarget.get_class();
 		}
 		common_flag = SEND;
 
 send_common2:
 		XTAL_VM_LOCK{			
 			accessibility = 0;
-			call_state.member = environment_->member_cache_table2_.cache(XTAL_detail_pvalue(call_state.cls), (IDPtr&)call_state.primary, ap(call_state.secondary), accessibility);
+			call_state.amember = environment_->member_cache_table2_.cache(XTAL_detail_pvalue(call_state.acls), (IDPtr&)call_state.aprimary, ap(call_state.asecondary), accessibility);
 		}
 
 send_common4:
@@ -674,31 +679,31 @@ send_common4:
 				}
 
 				XTAL_CASE(PROPERTY){
-					if(XTAL_detail_type(call_state.member)==TYPE_IVAR_GETTER){
-						InstanceVariableGetter* p = unchecked_cast<InstanceVariableGetter*>(ap(call_state.member));
-						set_local_variable(call_state.result, call_state.target.instance_variables()->variable(p->number(), p->class_info()));
+					if(XTAL_detail_type(call_state.amember)==TYPE_IVAR_GETTER){
+						InstanceVariableGetter* p = unchecked_cast<InstanceVariableGetter*>(ap(call_state.amember));
+						set_local_variable(call_state.result, call_state.atarget.instance_variables()->variable(p->number(), p->class_info()));
 						XTAL_VM_CONTINUE(call_state.poped_pc);
 					}
 				}
 
 				XTAL_CASE(SET_PROPERTY){
-					if(XTAL_detail_type(call_state.member)==TYPE_IVAR_SETTER){
-						InstanceVariableSetter* p = unchecked_cast<InstanceVariableSetter*>(ap(call_state.member));
-						call_state.target.instance_variables()->set_variable(p->number(), p->class_info(), XTAL_VM_local_variable(call_state.stack_base));
+					if(XTAL_detail_type(call_state.amember)==TYPE_IVAR_SETTER){
+						InstanceVariableSetter* p = unchecked_cast<InstanceVariableSetter*>(ap(call_state.amember));
+						call_state.atarget.instance_variables()->set_variable(p->number(), p->class_info(), XTAL_VM_local_variable(call_state.stack_base));
 						XTAL_VM_CONTINUE(call_state.poped_pc);
 					}
 				}
 
 				XTAL_CASE(MEMBER){
-					if(!XTAL_detail_is_undefined(call_state.member)){
-						set_local_variable(call_state.result, ap(call_state.member));
+					if(!XTAL_detail_is_undefined(call_state.amember)){
+						set_local_variable(call_state.result, ap(call_state.amember));
 						XTAL_VM_CONTINUE(call_state.poped_pc);
 					}
 				}
 			}
 		}
 
-		if(XTAL_detail_is_undefined(call_state.member)){
+		if(XTAL_detail_is_undefined(call_state.amember)){
 send_common3:
 			XTAL_VM_LOCK{
 				XTAL_VM_CHECK_EXCEPT;
@@ -710,11 +715,11 @@ send_common3:
 					XTAL_VM_CONTINUE(call_state.poped_pc);
 				}
 
-				XTAL_VM_CONTINUE(push_except(call_state.pc, unsupported_error(ap(call_state.cls), (IDPtr&)call_state.primary, ap(call_state.secondary))));
+				XTAL_VM_CONTINUE(push_except(call_state.pc, unsupported_error(ap(call_state.acls), (IDPtr&)call_state.aprimary, ap(call_state.asecondary))));
 			}
 		}
 
-		call_state.self = call_state.target;
+		call_state.aself = call_state.atarget;
 	}
 
 	{
@@ -733,14 +738,14 @@ call_common2:
 		XTAL_VM_LOCK{
 			push_ff(call_state);
 			
-			switch(XTAL_detail_type(call_state.member)){
+			switch(XTAL_detail_type(call_state.amember)){
 				case TYPE_FUN:
-					set_arg_this(unchecked_cast<Fun*>(ap(call_state.member))->self());
+					set_arg_this(unchecked_cast<Fun*>(ap(call_state.amember))->self());
 
 					// ÉXÉãÅ[
 
 				case TYPE_METHOD:{
-					Method* p = unchecked_cast<Method*>(ap(call_state.member));
+					Method* p = unchecked_cast<Method*>(ap(call_state.amember));
 					if(call_state.ordered!=p->info()->max_param_count){
 						if(!p->check_arg(to_smartptr(this))){
 							break;
@@ -751,31 +756,31 @@ call_common2:
 				}
 
 				XTAL_DEFAULT{
-					ap(call_state.member)->rawcall(to_smartptr(this));
+					ap(call_state.amember)->rawcall(to_smartptr(this));
 				}
 
 				XTAL_CASE(TYPE_BASE){ 
-					XTAL_detail_pvalue(ap(call_state.member))->rawcall(to_smartptr(this)); 
+					XTAL_detail_pvalue(ap(call_state.amember))->rawcall(to_smartptr(this)); 
 				}
 				
 				XTAL_CASE(TYPE_STATELESS_NATIVE_METHOD){ 
-					unchecked_ptr_cast<StatelessNativeMethod>(ap(call_state.member))->on_rawcall(to_smartptr(this)); 
+					unchecked_ptr_cast<StatelessNativeMethod>(ap(call_state.amember))->on_rawcall(to_smartptr(this)); 
 				}
 
 				XTAL_CASE(TYPE_NATIVE_METHOD){ 
-					unchecked_ptr_cast<NativeMethod>(ap(call_state.member))->on_rawcall(to_smartptr(this)); 
+					unchecked_ptr_cast<NativeMethod>(ap(call_state.amember))->on_rawcall(to_smartptr(this)); 
 				}
 
 				XTAL_CASE(TYPE_NATIVE_FUN){ 
-					unchecked_ptr_cast<NativeFun>(ap(call_state.member))->on_rawcall(to_smartptr(this)); 
+					unchecked_ptr_cast<NativeFun>(ap(call_state.amember))->on_rawcall(to_smartptr(this)); 
 				}
 
 				XTAL_CASE(TYPE_LAMBDA){ 
-					unchecked_ptr_cast<Lambda>(ap(call_state.member))->on_rawcall(to_smartptr(this)); 
+					unchecked_ptr_cast<Lambda>(ap(call_state.amember))->on_rawcall(to_smartptr(this)); 
 				}
 
 				XTAL_CASE(TYPE_FIBER){ 
-					unchecked_ptr_cast<Fiber>(ap(call_state.member))->on_rawcall(to_smartptr(this)); 
+					unchecked_ptr_cast<Fiber>(ap(call_state.amember))->on_rawcall(to_smartptr(this)); 
 				}
 			}
 
@@ -784,7 +789,7 @@ call_common2:
 					XTAL_VM_CONTINUE(push_except(call_state.pc, except_[0]));
 				}
 
-				XTAL_VM_CONTINUE(push_except(call_state.pc, unsupported_error(ap(call_state.member)->get_class(), fetch_defined_id(DefinedID::id_op_call), undefined)));
+				XTAL_VM_CONTINUE(push_except(call_state.pc, unsupported_error(ap(call_state.amember)->get_class(), fetch_defined_id(DefinedID::id_op_call), undefined)));
 			}
 		}
 
@@ -953,6 +958,18 @@ XTAL_VM_LOOP
 		goto send_una;
 	}
 
+/*
+#define XTAL_VM_bin_to_f2 \
+	i2f va; va.i = XTAL_detail_ivalue(a)&(~0+(1-atype));\
+	float_t fa = (XTAL_detail_ivalue(a)&(~0+atype)) + va.f;\
+	i2f vb; vb.i = XTAL_detail_ivalue(b)&(~0+(1-btype));\
+	float_t fb = (XTAL_detail_ivalue(b)&(~0+btype)) + vb.f
+
+#define XTAL_VM_bin_to_f \
+	float_t fa = atype?XTAL_detail_fvalue(a):XTAL_detail_ivalue(a);\
+	float_t fb = btype?XTAL_detail_fvalue(b):XTAL_detail_ivalue(b)
+*/
+
 	XTAL_VM_CASE(InstAdd){ // 50
 		AnyPtr& a = XTAL_VM_local_variable(inst.lhs); uint_t atype = XTAL_detail_urawtype(a) - TYPE_INT;
 		AnyPtr& b = XTAL_VM_local_variable(inst.rhs); uint_t btype = XTAL_detail_urawtype(b) - TYPE_INT;
@@ -968,8 +985,23 @@ XTAL_VM_LOOP
 				XTAL_CASE((0<<1) | 1){ result.value_.init_float(XTAL_detail_ivalue(a) + XTAL_detail_fvalue(b)); } 
 				XTAL_CASE((1<<1) | 1){ result.value_.init_float(XTAL_detail_fvalue(a) + XTAL_detail_fvalue(b)); } 
 			}
+
 			XTAL_VM_CONTINUE(pc + inst.ISIZE);
 		}
+
+		/*
+		if((atype|btype)==0){
+			XTAL_VM_DEC(result);
+			result.value_.init_int(XTAL_detail_ivalue(a) + XTAL_detail_ivalue(b));
+			XTAL_VM_CONTINUE(pc + inst.ISIZE);
+		}
+		else if((atype|btype)==1){
+			XTAL_VM_bin_to_f;
+			XTAL_VM_DEC(result);
+			result.value_.init_float(fa + fb);
+			XTAL_VM_CONTINUE(pc + inst.ISIZE);
+		}
+		*/
 
 		iprimary = inst.assign ? DefinedID::id_op_add_assign : DefinedID::id_op_add;
 		next_pc = &inst;
@@ -993,6 +1025,20 @@ XTAL_VM_LOOP
 			}
 			XTAL_VM_CONTINUE(pc + inst.ISIZE);
 		}
+
+		/*
+		if((atype|btype)==0){
+			XTAL_VM_DEC(result);
+			result.value_.init_int(XTAL_detail_ivalue(a) - XTAL_detail_ivalue(b));
+			XTAL_VM_CONTINUE(pc + inst.ISIZE);
+		}
+		else if((atype|btype)==1){
+			XTAL_VM_bin_to_f;
+			XTAL_VM_DEC(result);
+			result.value_.init_float(fa - fb);
+			XTAL_VM_CONTINUE(pc + inst.ISIZE);
+		}
+		*/
 
 		iprimary = inst.assign ? DefinedID::id_op_sub_assign : DefinedID::id_op_sub;
 		next_pc = &inst;
@@ -1214,7 +1260,7 @@ zerodiv3:
 			set_local_variable(inst.stack_base, b);
 			//call_state = reserve_ff();
 			call_state.set(pc, pc+inst.ISIZE, inst.result, 1, inst.stack_base, 1, 0, 0);
-			call_state.target = a;
+			call_state.atarget = a;
 			iprimary = DefinedID::id_op_at;
 			goto send_common_iprimary_nosecondary;
 		}
@@ -1251,7 +1297,7 @@ zerodiv3:
 			set_local_variable(inst.stack_base+0, b);
 			set_local_variable(inst.stack_base+1, c);
 			call_state.set(pc, pc + inst.ISIZE, inst.stack_base, 0, inst.stack_base, 2, 0, 0);
-			call_state.target = a;
+			call_state.atarget = a;
 			iprimary = DefinedID::id_op_set_at;
 			goto send_common_iprimary_nosecondary;
 		}
@@ -1462,13 +1508,13 @@ zerodiv3:
 		call_state.need_result_count = 1;
 		call_state.poped_pc = pc + inst.ISIZE;
 		call_state.flags = 0;
-		call_state.primary = XTAL_VM_ff().identifiers[inst.primary];
-		call_state.secondary = undefined;
-		call_state.cls = XTAL_VM_local_variable(inst.target);
-		call_state.self = XTAL_VM_ff().self;
+		call_state.aprimary = XTAL_VM_ff().identifiers[inst.primary];
+		call_state.asecondary = undefined;
+		call_state.acls = XTAL_VM_local_variable(inst.target);
+		call_state.aself = XTAL_VM_ff().self;
 
 		common_flag = MEMBER;
-		if(!XTAL_detail_is_pvalue(call_state.cls)){
+		if(!XTAL_detail_is_pvalue(call_state.acls)){
 			goto send_common3;
 		}
 		goto send_common2;	
@@ -1480,13 +1526,13 @@ zerodiv3:
 		call_state.need_result_count = 1;
 		call_state.poped_pc = pc + inst.ISIZE;
 		call_state.flags = flags;
-		call_state.primary = (flags&MEMBER_FLAG_P_BIT) ? unchecked_ptr_cast<ID>(XTAL_VM_local_variable(inst.primary)) : XTAL_VM_ff().identifiers[inst.primary];
-		call_state.secondary = (flags&MEMBER_FLAG_S_BIT) ? XTAL_VM_local_variable(inst.secondary) : undefined;
-		call_state.cls = XTAL_VM_local_variable(inst.target);
-		call_state.self = XTAL_VM_ff().self;
+		call_state.aprimary = (flags&MEMBER_FLAG_P_BIT) ? unchecked_ptr_cast<ID>(XTAL_VM_local_variable(inst.primary)) : XTAL_VM_ff().identifiers[inst.primary];
+		call_state.asecondary = (flags&MEMBER_FLAG_S_BIT) ? XTAL_VM_local_variable(inst.secondary) : undefined;
+		call_state.acls = XTAL_VM_local_variable(inst.target);
+		call_state.aself = XTAL_VM_ff().self;
 
 		common_flag = MEMBER;
-		if(!XTAL_detail_is_pvalue(call_state.cls)){
+		if(!XTAL_detail_is_pvalue(call_state.acls)){
 			goto send_common3;
 		}
 		goto send_common2;	
@@ -1494,43 +1540,43 @@ zerodiv3:
 
 	XTAL_VM_CASE(InstCall){ // 6
 		call_state.set(pc, pc + inst.ISIZE, inst.result, inst.need_result, inst.stack_base, inst.ordered, 0, 0);
-		call_state.member = XTAL_VM_local_variable(inst.target);
-		call_state.self = XTAL_VM_ff().self;
+		call_state.amember = XTAL_VM_local_variable(inst.target);
+		call_state.aself = XTAL_VM_ff().self;
 		goto call_common2;
 	}
 
 	XTAL_VM_CASE(InstCallEx){ // 6
 		int_t flags = inst.flags;
 		call_state.set(pc, pc + inst.ISIZE, inst.result, inst.need_result, inst.stack_base, inst.ordered, inst.named, flags);
-		call_state.member = XTAL_VM_local_variable(inst.target);
-		call_state.self = (flags&CALL_FLAG_THIS) ? XTAL_VM_local_variable(inst.self) : XTAL_VM_ff().self;
+		call_state.amember = XTAL_VM_local_variable(inst.target);
+		call_state.aself = (flags&CALL_FLAG_THIS) ? XTAL_VM_local_variable(inst.self) : XTAL_VM_ff().self;
 		goto call_common;
 	}
 
 	XTAL_VM_CASE(InstSend){ // 8
 		call_state.set(pc, pc + inst.ISIZE, inst.result, inst.need_result, inst.stack_base, inst.ordered, 0, 0);
-		call_state.target = XTAL_VM_local_variable(inst.target);
-		call_state.primary = XTAL_VM_ff().identifiers[inst.primary];
+		call_state.atarget = XTAL_VM_local_variable(inst.target);
+		call_state.aprimary = XTAL_VM_ff().identifiers[inst.primary];
 		goto send_common_nosecondary;
 	}
 
 	XTAL_VM_CASE(InstSendEx){ // 8
 		int_t flags = inst.flags;
 		call_state.set(pc, pc + inst.ISIZE, inst.result, inst.need_result, inst.stack_base, inst.ordered, inst.named, flags);
-		call_state.target = XTAL_VM_local_variable(inst.target);
-		call_state.primary = (flags&MEMBER_FLAG_P_BIT) ? unchecked_ptr_cast<ID>(XTAL_VM_local_variable(inst.primary)) : XTAL_VM_ff().identifiers[inst.primary];
-		call_state.secondary = (flags&MEMBER_FLAG_S_BIT) ? XTAL_VM_local_variable(inst.secondary) : undefined;
-		call_state.self = XTAL_VM_ff().self;
+		call_state.atarget = XTAL_VM_local_variable(inst.target);
+		call_state.aprimary = (flags&MEMBER_FLAG_P_BIT) ? unchecked_ptr_cast<ID>(XTAL_VM_local_variable(inst.primary)) : XTAL_VM_ff().identifiers[inst.primary];
+		call_state.asecondary = (flags&MEMBER_FLAG_S_BIT) ? XTAL_VM_local_variable(inst.secondary) : undefined;
+		call_state.aself = XTAL_VM_ff().self;
 		goto send_common;
 	}
 
 	XTAL_VM_CASE(InstProperty){ // 7
 		call_state.set(pc, pc + inst.ISIZE, inst.result, 1, inst.stack_base, 0, 0, 0);
-		call_state.target = XTAL_VM_local_variable(inst.target);
-		call_state.primary = XTAL_VM_ff().identifiers[inst.primary];
-		call_state.secondary = undefined;
-		call_state.self = XTAL_VM_ff().self;
-		call_state.cls = call_state.target.get_class();
+		call_state.atarget = XTAL_VM_local_variable(inst.target);
+		call_state.aprimary = XTAL_VM_ff().identifiers[inst.primary];
+		call_state.asecondary = undefined;
+		call_state.aself = XTAL_VM_ff().self;
+		call_state.acls = call_state.atarget.get_class();
 		common_flag = PROPERTY;
 		goto send_common2;
 
@@ -1538,11 +1584,11 @@ zerodiv3:
 
 	XTAL_VM_CASE(InstSetProperty){ // 7
 		call_state.set(pc, pc + inst.ISIZE, inst.stack_base, 0, inst.stack_base, 1, 0, 0);
-		call_state.target = XTAL_VM_local_variable(inst.target);
-		call_state.primary = XTAL_VM_ff().identifiers[inst.primary];
-		call_state.secondary = undefined;
-		call_state.self = XTAL_VM_ff().self;
-		call_state.cls = call_state.target.get_class();
+		call_state.atarget = XTAL_VM_local_variable(inst.target);
+		call_state.aprimary = XTAL_VM_ff().identifiers[inst.primary];
+		call_state.asecondary = undefined;
+		call_state.aself = XTAL_VM_ff().self;
+		call_state.acls = call_state.atarget.get_class();
 		common_flag = SET_PROPERTY;
 		goto send_common2;
 	}
@@ -1601,7 +1647,7 @@ zerodiv3:
 		set_local_variable(inst.stack_base+0, b);
 		set_local_variable(inst.stack_base+1, Int(inst.kind));
 		call_state.set(pc, pc + inst.ISIZE, inst.result, 1, inst.stack_base, 2, 0, 0);
-		call_state.target = a;
+		call_state.atarget = a;
 		iprimary = DefinedID::id_op_range;
 		goto send_common_iprimary_nosecondary;
 	}
@@ -1686,7 +1732,7 @@ zerodiv3:
 		cp->unset_orphan();
 
 		CallState call_state;
-		call_state.self = cp;
+		call_state.aself = cp;
 		call_state.next_pc = pc + inst.ISIZE;
 		call_state.result = 0;
 		call_state.need_result_count = 0;
@@ -1908,7 +1954,7 @@ const inst_t* VMachine::FunInstClassBegin(const inst_t* pc){
 		cp->unset_orphan();
 
 		CallState call_state;
-		call_state.self = cp;
+		call_state.aself = cp;
 		call_state.poped_pc = pc + inst.ISIZE;
 		call_state.result = 0;
 		call_state.need_result_count = 0;

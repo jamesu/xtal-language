@@ -978,7 +978,7 @@ int main2(int argc, char** argv){
 
 		debug::enable();
 		if(CodePtr code = Xsrc((
-			foo: fun(){
+			/*foo: fun(){
 				v: lib::Vec2D(0, 0);
 				u: lib::Vec2D(1, 2);
 				for(i: 0; i<5000000; ++i){
@@ -989,7 +989,7 @@ int main2(int argc, char** argv){
 			}
 
 
-			foo();
+			foo();*/
 
 		))){
 		   //code->inspect()->p();

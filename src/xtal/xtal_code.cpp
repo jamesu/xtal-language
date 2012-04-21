@@ -8,7 +8,7 @@ namespace xtal{
 namespace{
 
 void filelocal_check_implicit_lookup(const AnyPtr& a){
-	if(const CodePtr& code = ptr_cast<Code>(a->member(Xid(code)))){
+	if(const CodePtr& code = ptr_cast<Code>(a)){	// C³ by ¯‚­‚¸”Þ•û‚É
 		code->check_implicit_lookup();
 	}
 }

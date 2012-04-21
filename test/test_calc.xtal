@@ -84,6 +84,15 @@ class Calc{
 		assert ("foo"&&null)===null;
 		assert ("eee"&&"aaa")=="aaa";
 	}
+	
+	calc6#Test{
+		a: undefined;
+		b: null;
+		assert a==undefined;
+		assert b!=undefined;
+		assert b==null;
+		assert a!=null;
+	}
 }
 
 

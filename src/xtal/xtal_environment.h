@@ -604,7 +604,7 @@ CodePtr compile_file(const StringPtr& file_name);
 * \param source Xtalスクリプトが記述されたStringかStream
 * \return 実行できるCodeオブジェクト
 */
-CodePtr compile(const AnyPtr& source);
+CodePtr compile(const AnyPtr& source, const StringPtr& source_name = empty_string);
 
 /**
 * \xbind lib::builtin

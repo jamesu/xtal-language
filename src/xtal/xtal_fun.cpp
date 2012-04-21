@@ -146,11 +146,7 @@ void InstanceVariableSetter::on_rawcall(const VMachinePtr& vm) const{
 }
 
 Method::Method(const FramePtr& outer, const CodePtr& code, FunInfo* info)
-	:outer_(outer), code_(code), info_(info){
-}
-
-const inst_t* Method::source(){ 
-	return code_->bytecode_data()+info_->pc; 
+	:outer_(outer), code_(code), info_(info), source_(code->bytecode_data()+info->pc){
 }
 
 const IDPtr& Method::param_name_at(size_t i){ 
@@ -196,7 +192,7 @@ Fun::Fun(const FramePtr& outer, const AnyPtr& athis, const CodePtr& code, FunInf
 }
 
 void Fun::on_rawcall(const VMachinePtr& vm){
-	if(vm->ordered_arg_count()!=info_->max_param_count){
+	if(vm->ordered_arg_count()!=info()->max_param_count){
 		if(!check_arg(vm)){
 			return;
 		}

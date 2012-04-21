@@ -326,7 +326,7 @@ bool String::is_ch() const{
 }
 
 bool String::is_empty() const{
-	return XTAL_detail_raweq(*this, empty_string);
+	return XTAL_detail_raweq(*this, empty_string)!=0;
 }
 
 int_t String::ascii() const{

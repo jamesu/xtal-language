@@ -294,11 +294,15 @@ void ObjectSpace::initialize(){
 }
 
 void ObjectSpace::uninitialize(){
-	value_map_.destroy();
-
-	clear_cache();
-
 	disable_finalizer_ = true;
+
+	value_map_.erase(CppClassSymbol<Global>::value.key());
+	clear_cache();
+	full_gc();
+
+	unset_finalize_objects(ConnectedPointer(0, objects_list_begin_), ConnectedPointer(objects_count_, objects_list_begin_));
+
+	value_map_.destroy();
 	full_gc();
 
 	if(objects_count_ != 0){
@@ -497,6 +501,13 @@ ConnectedPointer ObjectSpace::sweep_dead_objects(ConnectedPointer first, Connect
 	}
 
 	return end;
+}
+
+void ObjectSpace::unset_finalize_objects(ConnectedPointer it, ConnectedPointer end){
+	ConnectedPointerEnumerator e(it, end);
+	do for(RefCountingBase** pp=e.begin(), **ppend=e.end(); pp!=ppend; ++pp){
+		(*pp)->unset_finalizer_flag();
+	}while(e.move());
 }
 
 void ObjectSpace::destroy_objects(ConnectedPointer it, ConnectedPointer end){

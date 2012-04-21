@@ -161,8 +161,8 @@ void VMachine::setup_call(int_t need_result_count){
 	call_state.result = base;
 	call_state.need_result_count = need_result_count;
 	call_state.stack_base = base;
-	call_state.ordered = 0;
-	call_state.named = 0;
+	call_state.ordered_arg_count = 0;
+	call_state.named_arg_count = 0;
 	push_ff(call_state);	
 }
 
@@ -428,8 +428,8 @@ const inst_t* VMachine::start_fiber(Fiber* fun, VMachine* vm, bool add_succ_or_f
 	call_state.result = XTAL_VM_variables_top();
 	call_state.need_result_count = vm->need_result_count();
 	call_state.stack_base = 0;
-	call_state.ordered = vm->ordered_arg_count();
-	call_state.named = vm->named_arg_count();
+	call_state.ordered_arg_count = vm->ordered_arg_count();
+	call_state.named_arg_count = vm->named_arg_count();
 	push_ff(call_state);
 	
 	move_variables(vm, vm->ordered_arg_count()+vm->named_arg_count()*2);

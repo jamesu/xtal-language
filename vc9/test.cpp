@@ -973,15 +973,15 @@ int main2(int argc, char** argv){
 		//AnyPtr map = xnew<CompressDecoder>(xnew<FileStream>("../debugger/pd", "r"))->deserialize();
 		//set_require_source_map(map);
 
-		debug::set_hook(BREAKPOINT_CALL_PROFILE, fun(&profile));
-		debug::set_hook(BREAKPOINT_RETURN_PROFILE, fun(&profile));
+		//debug::set_hook(BREAKPOINT_CALL_PROFILE, fun(&profile));
+		//debug::set_hook(BREAKPOINT_RETURN_PROFILE, fun(&profile));
 
-		debug::enable();
+		//debug::enable();
 		if(CodePtr code = Xsrc((
 			/*foo: fun(){
 				v: lib::Vec2D(0, 0);
 				u: lib::Vec2D(1, 2);
-				for(i: 0; i<5000000; ++i){
+				for(i: 0; i<500; ++i){
 					v += u;
 				}
 				
@@ -1041,8 +1041,8 @@ int main2(int argc, char** argv){
 
 	int c;	
 	
-	debug::enable();
-	debug::enable_debug_compile();
+	//debug::enable();
+	//debug::enable_debug_compile();
 
 	/*		
 	c = clock();
@@ -1060,11 +1060,11 @@ int main2(int argc, char** argv){
 	c = clock();
 	load("../bench/vec.xtal");
 	printf("vec %g\n\n", (clock()-c)/1000.0f);		
-	
+	*/
+/*
 	c = clock();
 	load("../bench/inst.xtal");
 	printf("inst %g\n\n", (clock()-c)/1000.0f);
-
 	c = clock();
 	load("../bench/gc.xtal");
 	printf("gc %g\n\n", (clock()-c)/1000.0f);
@@ -1838,7 +1838,78 @@ struct TestB : TestA{
 	virtual void a(){}
 };
 
-int main(int argc, char** argv){
+
+xtal::Setting setting_;
+
+void exec_xtal(){
+	using namespace xtal;
+	initialize(setting_);
+	bind_error_message();
+	{AnyPtr src(Xsrc((
+class Actor
+{
+    _fib : null;
+    + _is_alive : false;
+
+    create(x, dx)
+    {
+        _is_alive = true;
+        _fib = fiber(){
+            for (;;){
+                yield;
+            }
+        }
+    }
+
+    update()
+    {
+        _fib();
+    }
+}
+
+actors : [];
+for (i : 0; i < 128; ++i){
+    actors.push_back(Actor());
+}
+
+fun global::update()
+{
+    for (i : 0; i < 128; ++i){
+        if (!actors[i].is_alive){
+            actors[i].create(0, 0);
+            break;
+        }
+    }
+    actors{if(it.is_alive)it.update;}
+}
+	)));
+	src->call();}
+    for (int i = 0; i < 100; ++i){
+        xtal::global()->member(Xid(update))->call();
+    }
+	uninitialize();
+}
+
+int main(int argc, char* argv){
+	using namespace xtal;
+	
+	CStdioStdStreamLib std_stream_lib;
+	WinThreadLib thread_lib;
+	WinFilesystemLib filesystem_lib;
+	SJISChCodeLib ch_code_lib;
+	
+	setting_.std_stream_lib = &std_stream_lib;
+	setting_.thread_lib = &thread_lib;
+	setting_.filesystem_lib = &filesystem_lib;
+	setting_.ch_code_lib = &ch_code_lib;
+
+    exec_xtal();
+
+	return 0;
+}
+
+
+int main4(int argc, char** argv){
 	TestB aa;
 	TestA* pb = &aa;
 

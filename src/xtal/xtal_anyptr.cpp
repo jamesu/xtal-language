@@ -67,14 +67,6 @@ SmartPtr<Any>::~SmartPtr(){
 	XTAL_detail_dec_ref_count(*this);
 }	
 
-SmartPtr<Any>::SmartPtr(const NullPtr&){
-	value_.init_primitive(TYPE_NULL);
-}
-
-SmartPtr<Any>::SmartPtr(const UndefinedPtr&){
-	value_.init_primitive(TYPE_UNDEFINED);
-}
-
 SmartPtr<Any>::SmartPtr(const IDPtr& p){
 	Any::operator=(p);
 	XTAL_ASSERT(XTAL_detail_type(*this)<TYPE_BASE);

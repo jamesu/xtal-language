@@ -235,18 +235,6 @@ void Frame::on_visit_members(Visitor& m){
 	}
 }
 
-void Frame::attach(ScopeInfo* info, Code* code, AnyPtr* values, uint_t size){
-	scope_info_ = info;
-	code_ = code;
-	members_.attach(values, size);
-}
-
-void Frame::detach(){
-	members_.detach();
-	outer_ = null;
-	code_ = null;
-}
-
 AnyPtr Frame::members(){
 	if(!orphan()){
 		return XNew<MembersIter2>(to_smartptr(this));

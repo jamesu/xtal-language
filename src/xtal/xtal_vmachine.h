@@ -5,6 +5,8 @@
 #ifndef XTAL_VMACHINE_H_INCLUDE_GUARD
 #define XTAL_VMACHINE_H_INCLUDE_GUARD
 
+#include "xtal_cache.h"
+
 #pragma once
 
 namespace xtal{
@@ -64,6 +66,8 @@ struct FastStackDefaultValue<AnyPtr>{
 #define XTAL_VM_DEC(v) (void)(XTAL_detail_is_rcpvalue(v) && !XTAL_detail_rcpvalue(v)->atomic_dec_ref_count() && (XTAL_LOCK_DIRECT, XTAL_detail_rcpvalue(v)->object_destroy(), XTAL_UNLOCK_DIRECT, 1))
 
 #endif
+
+#define XTAL_VM_set(dest, src) (XTAL_VM_INC(src), XTAL_VM_DEC(dest), XTAL_detail_copy(dest, src))
 
 #define XTAL_VM_variables_top() (variables_top_ - variables_.data())
 #define XTAL_VM_set_variables_top(top) (variables_top_ = variables_.data() + top)
@@ -391,7 +395,7 @@ public:
 
 	void move_variables(VMachine* src, int_t size){
 		for(int_t i=0; i<size; ++i){
-			set_local_variable(i, src->local_variable(i));
+			XTAL_VM_set_local_variable(i, src->local_variable(i));
 		}
 	}
 
@@ -412,28 +416,34 @@ public: // eval系
 public:
 
 	struct CallState{
-		Any acls;
-		Any atarget;
+		Any amember;  
+		Any acls; 
+		Any atarget; 
 		Any aprimary;
 		Any asecondary;
 		Any aself;
-		Any amember;
-
-		CallState()
-			:acls(null), atarget(null), aprimary(null), asecondary(null), aself(null), amember(null){} 
+		
+		void clear(){
+			acls = null;
+			atarget = null;
+			aprimary = null;
+			asecondary = null;
+			aself = null;
+			amember = null;
+		}
 
 		const inst_t* pc;
 		const inst_t* poped_pc;
 		int_t result;
 		int_t need_result_count;
 		int_t stack_base;
-		int_t ordered;
-		int_t named;
+		int_t ordered_arg_count;
+		int_t named_arg_count;
 		int_t flags;
 
 		void set(const inst_t* pc, const inst_t* poped_pc,
 			int_t result, int_t need_result_count, 
-			int_t stack_base, int_t ordered, int_t named, 
+			int_t stack_base, int_t ordered_arg_count, int_t named_arg_count, 
 			int_t flags){
 
 			this->pc = pc;
@@ -441,59 +451,28 @@ public:
 			this->result = result; 
 			this->need_result_count = need_result_count;
 			this->stack_base = stack_base;
-			this->ordered = ordered;
-			this->named = named;
+			this->ordered_arg_count = ordered_arg_count;
+			this->named_arg_count = named_arg_count;
 			this->flags = flags;
 		}
 	};
 
 	struct FunFrame{
-		FunFrame()
-			:acls(null), atarget(null), aprimary(null), asecondary(null), aself(null), amember(null){}
 
-		void set(const inst_t* pc, const inst_t* next_pc,
-			int_t result, int_t need_result_count, 
-			int_t stack_base, int_t ordered, int_t named, 
-			int_t flags){
-
-			this->pc = pc;
-			this->next_pc = next_pc; 
-			this->result = result; 
-			this->need_result_count = need_result_count;
-			this->stack_base = stack_base;
-			this->ordered = ordered;
-			this->named = named;
-			this->flags = flags;
-		}
-
-		//{ 一時的なテンポラリとして使う
-		Any acls;
-		Any atarget;
-		Any aprimary;
-		Any asecondary;
-		Any aself;
-		Any amember;
-		const inst_t* pc;
-		int_t stack_base;
-		int_t ordered;
-		int_t named;
-		int_t flags;
-		//}
+		// callしたときはこのpcから実行する
+		const inst_t* next_pc;
 
 		// pop_ffしたときはこのpcから実行する
 		const inst_t* poped_pc;
 
-		// callしたときはこのpcから実行する
-		const inst_t* next_pc;
+		// 関数呼び出し側が必要とする戻り値の数
+		int_t need_result_count;
 
 		// 関数が呼ばれたときの順番指定引数の数
 		int_t ordered_arg_count;
 		
 		// 関数が呼ばれたときの名前指定引数の数
 		int_t named_arg_count;
-
-		// 関数呼び出し側が必要とする戻り値の数
-		int_t need_result_count;
 
 		// yieldが可能かフラグ。このフラグは呼び出しを跨いで伝播する。
 		int_t yieldable;
@@ -544,7 +523,6 @@ private:
 	void push_scope(ScopeInfo* info = &empty_scope_info);
 	void pop_scope();
 
-	FunFrame* reserve_ff();
 	void push_ff(CallState& call_state);
 	const inst_t* pop_ff(int_t base, int_t result_count);
 	void pop_ff_non();
@@ -573,7 +551,7 @@ public: // ローカル変数系
 	void set_local_variable_out_of_fun(uint_t pos, uint_t depth, const AnyPtr& value);
 	AnyPtr& local_variable_out_of_fun(uint_t pos, uint_t depth);
 
-	void set_local_variable(int_t pos, const AnyPtr& value){ /*XTAL_ASSERT(pos<variables_.size());*/ XTAL_VM_set_local_variable(pos, value); }
+	void set_local_variable(int_t pos, const AnyPtr& value){ XTAL_VM_set_local_variable(pos, value); }
 	AnyPtr& local_variable(int_t pos){ return XTAL_VM_local_variable(pos); }
 
 private: // 例外系
@@ -596,6 +574,19 @@ private: // ブレークポイント系
 	}
 
 public:
+	const inst_t* execute_divzero();
+	const inst_t* execute_member(const inst_t* pc, CallState& call_state);
+	const inst_t* execute_member2(const inst_t* pc, CallState& call_state);
+	const inst_t* execute_member2q(const inst_t* pc, CallState& call_state);
+	const inst_t* execute_call(const inst_t* pc, CallState& call_state);
+	const inst_t* execute_calla(const inst_t* pc, CallState& call_state);
+	const inst_t* execute_send(const inst_t* pc, int_t accessibility, CallState& call_state);
+	const inst_t* execute_property(const inst_t* pc, int_t accessibility, CallState& call_state);
+	const inst_t* execute_set_property(const inst_t* pc, int_t accessibility, CallState& call_state);
+	const inst_t* execute_send_iprimary_nosecondary(const inst_t* pc, int_t iprimary, CallState& call_state);
+	const inst_t* execute_send_comp(const inst_t* pc, const void* inst, int_t iprimary);
+	const inst_t* execute_send_bin(const inst_t* pc, const void* inst, int_t iprimary);
+	const inst_t* execute_send_una(const inst_t* pc, const void* inst, int_t iprimary);
 
 //{DECLS{{
 	const inst_t* FunInstLine(const inst_t* pc);
@@ -606,18 +597,33 @@ public:
 	const inst_t* FunInstLoadCallee(const inst_t* pc);
 	const inst_t* FunInstLoadThis(const inst_t* pc);
 	const inst_t* FunInstCopy(const inst_t* pc);
-	const inst_t* FunInstMember(const inst_t* pc);
-	const inst_t* FunInstUna(const inst_t* pc);
-	const inst_t* FunInstArith(const inst_t* pc);
-	const inst_t* FunInstBitwise(const inst_t* pc);
+	const inst_t* FunInstInc(const inst_t* pc);
+	const inst_t* FunInstDec(const inst_t* pc);
+	const inst_t* FunInstPos(const inst_t* pc);
+	const inst_t* FunInstNeg(const inst_t* pc);
+	const inst_t* FunInstCom(const inst_t* pc);
+	const inst_t* FunInstAdd(const inst_t* pc);
+	const inst_t* FunInstSub(const inst_t* pc);
+	const inst_t* FunInstCat(const inst_t* pc);
+	const inst_t* FunInstMul(const inst_t* pc);
+	const inst_t* FunInstDiv(const inst_t* pc);
+	const inst_t* FunInstMod(const inst_t* pc);
+	const inst_t* FunInstAnd(const inst_t* pc);
+	const inst_t* FunInstOr(const inst_t* pc);
+	const inst_t* FunInstXor(const inst_t* pc);
+	const inst_t* FunInstShl(const inst_t* pc);
+	const inst_t* FunInstShr(const inst_t* pc);
+	const inst_t* FunInstUshr(const inst_t* pc);
 	const inst_t* FunInstAt(const inst_t* pc);
 	const inst_t* FunInstSetAt(const inst_t* pc);
 	const inst_t* FunInstGoto(const inst_t* pc);
 	const inst_t* FunInstNot(const inst_t* pc);
 	const inst_t* FunInstIf(const inst_t* pc);
-	const inst_t* FunInstIfComp(const inst_t* pc);
+	const inst_t* FunInstIfEq(const inst_t* pc);
+	const inst_t* FunInstIfLt(const inst_t* pc);
 	const inst_t* FunInstIfRawEq(const inst_t* pc);
 	const inst_t* FunInstIfIs(const inst_t* pc);
+	const inst_t* FunInstIfIn(const inst_t* pc);
 	const inst_t* FunInstIfUndefined(const inst_t* pc);
 	const inst_t* FunInstIfDebug(const inst_t* pc);
 	const inst_t* FunInstPush(const inst_t* pc);
@@ -628,13 +634,17 @@ public:
 	const inst_t* FunInstInstanceVariable(const inst_t* pc);
 	const inst_t* FunInstSetInstanceVariable(const inst_t* pc);
 	const inst_t* FunInstInstanceVariableByName(const inst_t* pc);
-	const inst_t* FunInstSetInstanceVariableByname(const inst_t* pc);
+	const inst_t* FunInstSetInstanceVariableByName(const inst_t* pc);
 	const inst_t* FunInstFilelocalVariable(const inst_t* pc);
 	const inst_t* FunInstSetFilelocalVariable(const inst_t* pc);
 	const inst_t* FunInstFilelocalVariableByName(const inst_t* pc);
 	const inst_t* FunInstSetFilelocalVariableByName(const inst_t* pc);
+	const inst_t* FunInstMember(const inst_t* pc);
+	const inst_t* FunInstMemberEx(const inst_t* pc);
 	const inst_t* FunInstCall(const inst_t* pc);
+	const inst_t* FunInstCallEx(const inst_t* pc);
 	const inst_t* FunInstSend(const inst_t* pc);
+	const inst_t* FunInstSendEx(const inst_t* pc);
 	const inst_t* FunInstProperty(const inst_t* pc);
 	const inst_t* FunInstSetProperty(const inst_t* pc);
 	const inst_t* FunInstScopeBegin(const inst_t* pc);
@@ -720,6 +730,9 @@ private:
 	uint_t* hook_setting_bit_;
 
 	int_t thread_yield_count_;
+
+	//MemberCacheTable member_cache_table_;
+	//MemberCacheTable2 member_cache_table2_;
 
 	VMachine* parent_vm_;
 

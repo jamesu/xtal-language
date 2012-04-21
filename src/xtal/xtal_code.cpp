@@ -25,8 +25,6 @@ Code::Code(){
 	set_singleton();
 	set_object_temporary_name(XTAL_DEFINED_ID(filelocal));
 	set_object_force(500);
-
-	first_fun_ = XNew<Method>(nul<Frame>(), to_smartptr(this), (FunInfo*)0);
 }
 
 Code::~Code(){
@@ -85,7 +83,7 @@ void Code::generated(){
 		def(XTAL_DEFINED_ID(filelocal), to_smartptr(this));
 	}
 
-	first_fun_->set_info(&xfun_info_table_[0]);
+	first_fun_ = XNew<Method>(nul<Frame>(), to_smartptr(this), &xfun_info_table_[0]);
 }
 
 void Code::add_breakpoint(int_t lineno, const AnyPtr& cond){

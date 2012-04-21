@@ -123,7 +123,7 @@ protected:
 protected:
 
 	static uint_t hashcode(const IDPtr& primary_key, const AnyPtr& secondary_key){
-		return rawhash(primary_key) ^ rawhash(secondary_key);
+		return XTAL_detail_rawhash(primary_key) ^ XTAL_detail_rawhash(secondary_key);
 	}
 
 	void expand_buckets();
@@ -177,9 +177,17 @@ public:
 
 	void on_visit_members(Visitor& m);
 
-	void attach(ScopeInfo* info, Code* code, AnyPtr* values, uint_t size);
+	void attach(ScopeInfo* info, Code* code, AnyPtr* values, uint_t size){
+		scope_info_ = info;
+		code_ = code;
+		members_.attach(values, size);
+	}
 
-	void detach();
+	void detach(){
+		members_.detach();
+		outer_ = null;
+		code_ = null;
+	}
 
 protected:
 	BasePtr<Frame> outer_;

@@ -219,11 +219,25 @@ protected:
 
 public:
 
-	SmartPtr(const NullPtr&);
-	SmartPtr<Any>& operator =(const NullPtr& p);
+	SmartPtr(const NullPtr&){
+		value_.init_primitive(TYPE_NULL);
+	}
 
-	SmartPtr(const UndefinedPtr&);
-	SmartPtr<Any>& operator =(const UndefinedPtr& p);
+	SmartPtr<Any>& operator =(const NullPtr&){
+		XTAL_detail_dec_ref_count(*this);
+		value_.init_primitive(TYPE_NULL);
+		return *this;
+	}
+
+	SmartPtr(const UndefinedPtr&){
+		value_.init_primitive(TYPE_UNDEFINED);
+	}
+
+	SmartPtr<Any>& operator =(const UndefinedPtr&){
+		XTAL_detail_dec_ref_count(*this);
+		value_.init_primitive(TYPE_UNDEFINED);
+		return *this;
+	}
 
 	SmartPtr(const IDPtr& p);
 	SmartPtr<Any>& operator =(const IDPtr& p);
@@ -336,11 +350,19 @@ private:
 ///////////////////////////////////////////
 
 inline bool raweq(const AnyPtr& a, const AnyPtr& b){
-	return XTAL_detail_raweq(a, b);
+	return XTAL_detail_raweq(a, b)!=0;
 }
 
 inline bool rawne(const AnyPtr& a, const AnyPtr& b){
-	return !XTAL_detail_raweq(a, b);
+	return XTAL_detail_raweq(a, b)==0;
+}
+
+inline uint_t rawbitxor(const AnyPtr& a, const AnyPtr& b){
+	return XTAL_detail_rawbitxor(a, b);
+}
+
+inline uint_t rawhash(const AnyPtr& v){
+	return XTAL_detail_rawhash(v);
 }
 
 inline uint_t type(const AnyPtr& v){
@@ -380,11 +402,11 @@ inline bool is_float(const AnyPtr& v){
 }
 
 inline bool operator==(const AnyPtr& a, const AnyPtr& b){
-	return XTAL_detail_raweq(a, b);
+	return XTAL_detail_raweq(a, b)!=0;
 }
 
 inline bool operator!=(const AnyPtr& a, const AnyPtr& b){
-	return !XTAL_detail_raweq(a, b);
+	return XTAL_detail_raweq(a, b)==0;
 }
 
 ///////////////////////////////////////////

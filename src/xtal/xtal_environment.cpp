@@ -270,7 +270,9 @@ public:
 
 namespace xtal{
 
-Environment* last_environment_;
+Environment* last_environment_ = 0;
+uint_t member_mutate_count_ = 0;
+uint_t is_mutate_count_ = 0;
 XTAL_TLS_PTR(Environment) environment_;
 XTAL_TLS_PTR(VMachine) vmachine_;
 
@@ -704,14 +706,12 @@ void clear_cache(){
 }
 
 void invalidate_cache_member(){
-	environment_->member_cache_table_.invalidate();
-	environment_->member_cache_table2_.invalidate();
+	member_mutate_count_++;
 }
 
 void invalidate_cache_is(){
-	environment_->is_cache_table_.invalidate();
-	environment_->member_cache_table_.invalidate();
-	environment_->member_cache_table2_.invalidate();
+	member_mutate_count_++;
+	is_mutate_count_++;
 }
 
 
@@ -942,8 +942,8 @@ CodePtr compile_file(const StringPtr& file_name){
 	return nul<Code>();
 }
 
-CodePtr compile(const AnyPtr& source){
-	return compile_or_deserialize(source, empty_string);
+CodePtr compile(const AnyPtr& source, const StringPtr& source_name){
+	return compile_or_deserialize(source, source_name);
 }
 
 CodePtr eval_compile(const AnyPtr& source){

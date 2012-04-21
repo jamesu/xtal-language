@@ -8,6 +8,9 @@
 
 namespace xtal{
 
+extern uint_t member_mutate_count_;
+extern uint_t is_mutate_count_;
+
 struct MemberCacheTable{
 	struct Unit{
 		uint_t mutate_count;
@@ -17,18 +20,16 @@ struct MemberCacheTable{
 		AnyPtr member;
 	};
 
-	enum{ CACHE_MAX = 128, CACHE_MASK = CACHE_MAX-1 };
+	enum{ CACHE_MAX = 64, CACHE_MASK = CACHE_MAX-1 };
 
 	Unit table_[CACHE_MAX];
 
 	int_t hit_;
 	int_t miss_;
-	uint_t mutate_count_;
 
 	MemberCacheTable(){
 		hit_ = 0;
 		miss_ = 0;
-		mutate_count_ = 0;
 	}
 
 	int_t hit_count(){
@@ -39,43 +40,7 @@ struct MemberCacheTable{
 		return miss_;
 	}
 
-	void invalidate(){
-		mutate_count_++;
-	}
-
-	const AnyPtr& cache(Base* target_class, const IDPtr& primary_key, int_t& accessibility){
-		//bool nocache = false;
-		//return target_class->rawmember(primary_key, undefined, true, accessibility, nocache);
-
-		uint_t itarget_class = (uint_t)target_class >> 2;
-		uint_t iprimary_key = XTAL_detail_uvalue(primary_key);
-
-		uint_t hash = itarget_class ^ (iprimary_key ^ (iprimary_key>>24));
-		Unit& unit = table_[hash & CACHE_MASK];
-
-		if(((mutate_count_ ^ unit.mutate_count) | 
-			XTAL_detail_rawbitxor(primary_key, unit.primary_key) | 
-			((uint_t)target_class ^ XTAL_detail_uvalue(unit.target_class)))==0){
-
-			hit_++;
-			accessibility = unit.accessibility;
-			return unit.member;
-		}
-		else{
-			miss_++;
-
-			bool nocache = false;
-			const AnyPtr& ret = target_class->rawmember(primary_key, undefined, true, accessibility, nocache);
-			if(!nocache){
-				unit.member = ret;
-				unit.target_class = to_smartptr(target_class);
-				unit.primary_key = primary_key;
-				unit.accessibility = accessibility;
-				unit.mutate_count = mutate_count_;
-			}
-			return ret;
-		}
-	}
+	const AnyPtr& cache(Base* target_class, const IDPtr& primary_key, int_t& accessibility);
 
 	void clear(){
 		for(int_t i=0; i<CACHE_MAX; ++i){
@@ -84,7 +49,6 @@ struct MemberCacheTable{
 			unit.primary_key = null;
 			unit.member = null;	
 		}
-		mutate_count_++;
 	}
 };
 
@@ -104,12 +68,10 @@ struct MemberCacheTable2{
 
 	int_t hit_;
 	int_t miss_;
-	uint_t mutate_count_;
 
 	MemberCacheTable2(){
 		hit_ = 0;
 		miss_ = 0;
-		mutate_count_ = 0;
 	}
 
 	int_t hit_count(){
@@ -120,44 +82,7 @@ struct MemberCacheTable2{
 		return miss_;
 	}
 
-	void invalidate(){
-		mutate_count_++;
-	}
-
-	const AnyPtr& cache(Base* target_class, const IDPtr& primary_key, const AnyPtr& secondary_key, int_t& accessibility){
-		uint_t itarget_class = (uint_t)target_class >> 2;
-		uint_t iprimary_key = XTAL_detail_uvalue(primary_key);
-		uint_t isecondary_key = XTAL_detail_uvalue(secondary_key);
-
-		uint_t hash = itarget_class ^ (iprimary_key ^ (iprimary_key>>24)) ^ isecondary_key;
-		Unit& unit = table_[hash & CACHE_MASK];
-
-		if(((mutate_count_ ^ unit.mutate_count) | 
-			XTAL_detail_rawbitxor(primary_key, unit.primary_key) | 
-			((uint_t)target_class ^ XTAL_detail_uvalue(unit.target_class)) | 
-			XTAL_detail_rawbitxor(secondary_key, unit.secondary_key))==0){
-
-			hit_++;
-			accessibility = unit.accessibility;
-			return unit.member;
-		}
-		else{
-
-			miss_++;
-
-			bool nocache = false;
-			const AnyPtr& ret = target_class->rawmember(primary_key, secondary_key, true, accessibility, nocache);
-			if(!nocache){
-				unit.member = ret;
-				unit.target_class = to_smartptr(target_class);
-				unit.primary_key = primary_key;
-				unit.secondary_key = secondary_key;
-				unit.accessibility = accessibility;
-				unit.mutate_count = mutate_count_;
-			}
-			return ret;
-		}
-	}
+	const AnyPtr& cache(Base* target_class, const IDPtr& primary_key, const AnyPtr& secondary_key, int_t& accessibility);
 
 	void clear(){
 		for(int_t i=0; i<CACHE_MAX; ++i){
@@ -167,7 +92,6 @@ struct MemberCacheTable2{
 			unit.secondary_key = null;
 			unit.member = null;	
 		}
-		mutate_count_++;
 	}
 };
 
@@ -186,12 +110,10 @@ struct IsCacheTable{
 
 	int_t hit_;
 	int_t miss_;
-	uint_t mutate_count_;
 
 	IsCacheTable(){
 		hit_ = 0;
 		miss_ = 0;
-		mutate_count_ = 0;
 	}
 
 	int_t hit_count(){
@@ -201,10 +123,6 @@ struct IsCacheTable{
 	int_t miss_count(){
 		return miss_;
 	}
-	
-	void invalidate(){
-		mutate_count_++;
-	}
 
 	bool cache(const AnyPtr& target_class, const AnyPtr& klass){
 		uint_t itarget_class = XTAL_detail_uvalue(target_class);
@@ -213,7 +131,7 @@ struct IsCacheTable{
 		uint_t hash = (itarget_class>>3) ^ (iklass>>2);
 		Unit& unit = table_[hash & CACHE_MASK];
 		
-		if(mutate_count_==unit.mutate_count && 
+		if(is_mutate_count_==unit.mutate_count && 
 			XTAL_detail_raweq(target_class, unit.target_class) && 
 			XTAL_detail_raweq(klass, unit.klass)){
 
@@ -227,7 +145,7 @@ struct IsCacheTable{
 
 			unit.target_class = target_class;
 			unit.klass = klass;
-			unit.mutate_count = mutate_count_;
+			unit.mutate_count = is_mutate_count_;
 			unit.result = ret;
 			return ret;
 		}
@@ -239,7 +157,6 @@ struct IsCacheTable{
 			unit.target_class = null;
 			unit.klass = null;
 		}
-		mutate_count_++;
 	}
 };
 

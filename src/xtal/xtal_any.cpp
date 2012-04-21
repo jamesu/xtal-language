@@ -93,38 +93,6 @@ void Any::rawsend(const VMachinePtr& vm, const IDPtr& primary_key, const AnyPtr&
 	rawsend(vm, primary_key, secondary_key, inherited_too, false);
 }
 
-void Any::rawcall(const VMachinePtr& vm) const{
-	switch(XTAL_detail_type(*this)){
-		XTAL_DEFAULT{
-			rawsend(vm, XTAL_DEFINED_ID(op_call));
-		}
-
-		XTAL_CASE(TYPE_BASE){ 
-			XTAL_detail_pvalue(*this)->rawcall(vm);
-		}
-
-		XTAL_CASE(TYPE_IVAR_GETTER){ unchecked_ptr_cast<InstanceVariableGetter>(ap(*this))->on_rawcall(vm); }
-		XTAL_CASE(TYPE_IVAR_SETTER){ unchecked_ptr_cast<InstanceVariableSetter>(ap(*this))->on_rawcall(vm); }
-		XTAL_CASE(TYPE_STATELESS_NATIVE_METHOD){ unchecked_ptr_cast<StatelessNativeMethod>(ap(*this))->on_rawcall(vm); }
-		XTAL_CASE(TYPE_NATIVE_METHOD){ unchecked_ptr_cast<NativeMethod>(ap(*this))->on_rawcall(vm); }
-		XTAL_CASE(TYPE_NATIVE_FUN){ unchecked_ptr_cast<NativeFun>(ap(*this))->on_rawcall(vm); }
-		XTAL_CASE(TYPE_METHOD){ unchecked_ptr_cast<Method>(ap(*this))->on_rawcall(vm); }
-		XTAL_CASE(TYPE_FUN){ unchecked_ptr_cast<Fun>(ap(*this))->on_rawcall(vm); }
-		XTAL_CASE(TYPE_LAMBDA){ unchecked_ptr_cast<Lambda>(ap(*this))->on_rawcall(vm); }
-		XTAL_CASE(TYPE_FIBER){ unchecked_ptr_cast<Fiber>(ap(*this))->on_rawcall(vm); }
-	}
-
-	if(vm->is_executed()==0){
-		if(vm->except()){ 
-			return;
-		}
-
-		set_unsupported_error(get_class(), XTAL_DEFINED_ID(op_call), undefined, vm);
-		return;
-	}
-}
-
-
 void Any::init(RefCountingBase* p){ 
 	value_ = p->value_;
 	register_gc(p);
@@ -316,7 +284,7 @@ bool Any::is_inherited(const AnyPtr& klass) const{
 }
 
 bool Any::op_eq( const AnyPtr& v) const{
-  return XTAL_detail_raweq(*this, *v); 
+  return XTAL_detail_raweq(*this, *v)!=0; 
 } 
 
 const AnyPtr& Any::p() const{

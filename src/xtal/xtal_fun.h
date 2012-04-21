@@ -164,7 +164,7 @@ public:
 
 	int_t pc(){ return info_->pc; }
 
-	const inst_t* source();
+	const inst_t* source(){ return source_; }
 
 	const IDPtr& param_name_at(size_t i);
 
@@ -174,7 +174,7 @@ public:
 
 	FunInfo* info(){ return info_; }
 
-	void set_info(FunInfo* fc){ info_ = fc; }
+	//void set_info(FunInfo* fc){ info_ = fc; }
 
 	bool check_arg(const VMachinePtr& vm);
 
@@ -189,10 +189,11 @@ public:
 		m & outer_ & code_;
 	}
 
-protected:
+private:
 	BasePtr<Frame> outer_;
 	BasePtr<Code> code_;
 	FunInfo* info_;
+	const inst_t* source_;
 
 	friend class VMachine;
 };

@@ -40,7 +40,7 @@ enum{
 #	endif
 #endif 
 
-#if !defined(XTAL_USE_COMPUTED_GOTO) && defined(__GNUC__)
+#if !defined(XTAL_USE_COMPUTED_GOTO) && (defined(__GNUC__) || defined(__ARMCC_VERSION))
 #define XTAL_USE_COMPUTED_GOTO
 #endif
 
@@ -48,7 +48,7 @@ enum{
 #define XTAL_CAT(x, y) XTAL_CAT_(x, y)
 #define XTAL_UNIQUE(x) XTAL_CAT(x, __LINE__)
 
-#if defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96))
+#if (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96))) || defined(__ARMCC_VERSION)
 #define XTAL_PREFETCH(x) __builtin_prefetch(x)
 #define XTAL_PREFETCHW(x) __builtin_prefetch(x, 2)
 #define XTAL_LIKELY(x) __builtin_expect(!!(x), 1)
@@ -171,6 +171,14 @@ private:
 #define XTAL_CASE2(key, key2) XTAL_CASE1(key) case key2:
 #define XTAL_CASE3(key, key2, key3) XTAL_CASE2(key, key2) case key3:
 #define XTAL_CASE4(key, key2, key3, key4) XTAL_CASE3(key, key2, key3) case key4:
+#define XTAL_CASE5(key, key2, key3, key4, key5) XTAL_CASE4(key, key2, key3, key4) case key5:
+#define XTAL_CASE6(key, key2, key3, key4, key5, key6) XTAL_CASE5(key, key2, key3, key4, key5) case key6:
+#define XTAL_CASE7(key, key2, key3, key4, key5, key6, key7) XTAL_CASE6(key, key2, key3, key4, key5, key6) case key7:
+#define XTAL_CASE8(key, key2, key3, key4, key5, key6, key7, key8) XTAL_CASE7(key, key2, key3, key4, key5, key6, key7) case key8:
+
+#define XTAL_TYPE_SWITCH(value, N) \
+	XTAL_STATIC_ASSERT(N==::xtal::TYPE_MAX);\
+	switch(XTAL_detail_type(value))
 
 #ifdef __GNUC__
 #	define XTAL_NOINLINE __attribute__((noinline)) 

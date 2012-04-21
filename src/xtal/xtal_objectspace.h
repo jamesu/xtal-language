@@ -75,6 +75,8 @@ private:
 	
 	ConnectedPointer sweep_dead_objects(ConnectedPointer first, ConnectedPointer last, ConnectedPointer end);
 
+	void unset_finalize_objects(ConnectedPointer it, ConnectedPointer end);
+
 	void destroy_objects(ConnectedPointer it, ConnectedPointer current);
 
 	void free_objects(ConnectedPointer it, ConnectedPointer current);

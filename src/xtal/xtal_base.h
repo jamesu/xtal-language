@@ -301,6 +301,18 @@ private:
 
 };
 
+inline void XTAL_detail_inc_ref_count(const Any& v){ 
+	if(XTAL_detail_is_rcpvalue(v)){
+		XTAL_detail_rcpvalue(v)->inc_ref_count();
+	}
+}
+
+inline void XTAL_detail_dec_ref_count(const Any& v){ 
+	if(XTAL_detail_is_rcpvalue(v)){
+		XTAL_detail_rcpvalue(v)->dec_ref_count();
+	}
+}
+
 /**
 * @brief Šî’êƒNƒ‰ƒX
 */

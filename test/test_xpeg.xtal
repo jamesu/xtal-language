@@ -39,7 +39,7 @@ class TestXpeg{
 	
 	tee#Test{
 		pattern: ">" >> cap(test: any/0) >> (eol | eos);
-		
+
 		assert ">test\n>aaa".scan(pattern).map(|it| it["test"])[].size==2;
 	}
 	

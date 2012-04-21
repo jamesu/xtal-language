@@ -212,7 +212,7 @@ public:
 			return XTAL_detail_rawhash(key);
 		}
 
-		static bool eq(const AnyPtr& a, const AnyPtr& b){
+		static uint_t eq(const AnyPtr& a, const AnyPtr& b){
 			return XTAL_detail_raweq(a, b);
 		}
 	};

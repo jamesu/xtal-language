@@ -530,27 +530,12 @@ public: // 性能確保のためpublicにするが、基本的に直接触ることはよろしくない
 //#define XTAL_detail_is_rcpvalue(v) (XTAL_detail_type(v)>=::xtal::TYPE_BASE)
 #define XTAL_detail_is_rcpvalue(v) (XTAL_detail_rawtype(v)&::xtal::TYPE_BASE)
 
-#define XTAL_detail_copy(a, b) (XTAL_detail_rawvalue(a) = XTAL_detail_rawvalue(b))
-#define XTAL_detail_swap(a, b) (std::swap(XTAL_detail_rawvalue(a), XTAL_detail_rawvalue(b)))
+inline void XTAL_detail_copy(Any& a, const Any& b){ (XTAL_detail_rawvalue(a) = XTAL_detail_rawvalue(b)); }
+inline void XTAL_detail_swap(Any& a, Any& b){ (std::swap(XTAL_detail_rawvalue(a), XTAL_detail_rawvalue(b))); }
 
-#define XTAL_detail_rawbitxor(a, b) (::xtal::rawbitxor(a, b))
-#define XTAL_detail_raweq(a, b) (XTAL_detail_rawbitxor(a, b)==0)
-#define XTAL_detail_rawhash(v) (::xtal::rawhash(v))
-
-inline uint_t rawbitxor(const Any& a, const Any& b){
-	return ((XTAL_detail_urawtype(a)^XTAL_detail_urawtype(b))&TYPE_MASK) | (XTAL_detail_ivalue(a)^XTAL_detail_ivalue(b));
-}
-
-inline uint_t rawhash(const Any& v){
-	return XTAL_detail_uvalue(v) ^ XTAL_detail_type(v) ^ (XTAL_detail_uvalue(v)>>3);
-}
-
-#define XTAL_detail_rawbitxor(a, b) (::xtal::rawbitxor(a, b))
-#define XTAL_detail_raweq(a, b) (XTAL_detail_rawbitxor(a, b)==0)
-#define XTAL_detail_rawhash(v) (::xtal::rawhash(v))
-
-#define XTAL_detail_inc_ref_count(v) (void)(XTAL_detail_is_rcpvalue(v) && (XTAL_detail_rcpvalue(v)->inc_ref_count(), 1))
-#define XTAL_detail_dec_ref_count(v) (void)(XTAL_detail_is_rcpvalue(v) && (XTAL_detail_rcpvalue(v)->dec_ref_count(), 1))
+inline uint_t XTAL_detail_rawbitxor(const Any& a, const Any& b){ return (((XTAL_detail_urawtype(a)^XTAL_detail_urawtype(b))&TYPE_MASK) | (XTAL_detail_ivalue(a)^XTAL_detail_ivalue(b))); }
+inline uint_t XTAL_detail_raweq(const Any& a, const Any& b){ return (XTAL_detail_rawbitxor(a, b)==0); }
+inline uint_t XTAL_detail_rawhash(const Any& v){ return (XTAL_detail_uvalue(v) ^ XTAL_detail_type(v) ^ (XTAL_detail_uvalue(v)>>3)); }
 
 //////////////////////////////////////////////////////
 

@@ -21,6 +21,8 @@ public:
 
 	void uninitialize();
 
+	void halt_fibers();
+
 	void print_all_objects();
 
 	void enable_gc();

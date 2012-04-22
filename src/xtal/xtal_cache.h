@@ -40,7 +40,7 @@ struct MemberCacheTable{
 		return miss_;
 	}
 
-	const AnyPtr& cache(Base* target_class, const IDPtr& primary_key, int_t& accessibility);
+	const AnyPtr& cache(const AnyPtr& target_class, const IDPtr& primary_key, int_t& accessibility);
 
 	void clear(){
 		for(int_t i=0; i<CACHE_MAX; ++i){
@@ -82,7 +82,7 @@ struct MemberCacheTable2{
 		return miss_;
 	}
 
-	const AnyPtr& cache(Base* target_class, const IDPtr& primary_key, const AnyPtr& secondary_key, int_t& accessibility);
+	const AnyPtr& cache(const AnyPtr& target_class, const IDPtr& primary_key, const AnyPtr& secondary_key, int_t& accessibility);
 
 	void clear(){
 		for(int_t i=0; i<CACHE_MAX; ++i){

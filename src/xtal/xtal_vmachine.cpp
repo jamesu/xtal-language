@@ -176,6 +176,46 @@ SmartPtr<Any>& SmartPtr<Any>::operator =(const SmartPtr<Any>& p){
 	return *this;
 }
 
+const AnyPtr& InstanceVariables::variable(uint_t index, ClassInfo* class_info){
+	char* buf = (char*)(this + 1);
+	if(class_info==info_){
+		return ((AnyPtr*)buf)[index];
+	}
+
+	if(!info_){
+		int_t install_count = *(int_t*)buf; buf += sizeof(int_t);
+		AnyPtr* values = (AnyPtr*)buf;
+		for(int_t i=0; i<install_count; ++i){
+			if(class_info==XTAL_detail_rawvalue(values[i]).immediate_second_vpvalue()){
+				int_t pos = XTAL_detail_rawvalue(values[i]).immediate_first_value();
+				return values[install_count+pos+index];
+			}
+		}
+	}
+
+	return undefined;
+}
+
+void InstanceVariables::set_variable(uint_t index, ClassInfo* class_info, const AnyPtr& value){
+	char* buf = (char*)(this + 1);
+	if(class_info==info_){
+		((AnyPtr*)buf)[index] = value;
+		return;
+	}
+
+	if(!info_){
+		int_t install_count = *(int_t*)buf; buf += sizeof(int_t);
+		AnyPtr* values = (AnyPtr*)buf;
+		for(int_t i=0; i<install_count; ++i){
+			if(class_info==XTAL_detail_rawvalue(values[i]).immediate_second_vpvalue()){
+				int_t pos = XTAL_detail_rawvalue(values[i]).immediate_first_value();
+				values[install_count+pos+index] = value;
+				return;
+			}
+		}
+	}
+}
+
 ////////////////////////////////////////////////
 
 void VMachine::carry_over(Method* fun, bool adjust_arguments){
@@ -329,11 +369,8 @@ void VMachine::upsize_variables_detail(uint_t upsize){
 	}
 }
 
-const AnyPtr& MemberCacheTable::cache(Base* target_class, const IDPtr& primary_key, int_t& accessibility){
-	//bool nocache = false;
-	//return target_class->rawmember(primary_key, undefined, true, accessibility, nocache);
-
-	uint_t itarget_class = (uint_t)target_class >> 2;
+const AnyPtr& MemberCacheTable::cache(const AnyPtr& target_class, const IDPtr& primary_key, int_t& accessibility){
+	uint_t itarget_class = XTAL_detail_rawhash(target_class);
 	uint_t iprimary_key = XTAL_detail_uvalue(primary_key);
 
 	uint_t hash = itarget_class ^ (iprimary_key ^ (iprimary_key>>24));
@@ -341,21 +378,31 @@ const AnyPtr& MemberCacheTable::cache(Base* target_class, const IDPtr& primary_k
 
 	if(((member_mutate_count_ ^ unit.mutate_count) | 
 		XTAL_detail_rawbitxor(primary_key, unit.primary_key) | 
-		((uint_t)target_class ^ XTAL_detail_uvalue(unit.target_class)))==0){
-
+		XTAL_detail_rawbitxor(target_class, unit.target_class))==0){
 		hit_++;
 		accessibility = unit.accessibility;
 		return unit.member;
 	}
 	else{
+		if(!XTAL_detail_is_pvalue(target_class)){
+			accessibility = -1;
+			return undefined;
+		}
+
 		miss_++;
 
 		bool nocache = false;
 		accessibility = 0;
-		const AnyPtr& ret = target_class->rawmember(primary_key, undefined, true, accessibility, nocache);
+		const AnyPtr& ret = XTAL_detail_pvalue(target_class)->rawmember(primary_key, undefined, true, accessibility, nocache);
+
+		if(XTAL_detail_is_undefined(ret)){
+			accessibility = -1;
+			return undefined;
+		}
+
 		if(!nocache){
 			unit.member = ret;
-			unit.target_class = to_smartptr(target_class);
+			unit.target_class = target_class;
 			unit.primary_key = primary_key;
 			unit.accessibility = accessibility;
 			unit.mutate_count = member_mutate_count_;
@@ -364,8 +411,8 @@ const AnyPtr& MemberCacheTable::cache(Base* target_class, const IDPtr& primary_k
 	}
 }
 
-const AnyPtr& MemberCacheTable2::cache(Base* target_class, const IDPtr& primary_key, const AnyPtr& secondary_key, int_t& accessibility){
-	uint_t itarget_class = (uint_t)target_class >> 2;
+const AnyPtr& MemberCacheTable2::cache(const AnyPtr& target_class, const IDPtr& primary_key, const AnyPtr& secondary_key, int_t& accessibility){
+	uint_t itarget_class = XTAL_detail_rawhash(target_class);
 	uint_t iprimary_key = XTAL_detail_uvalue(primary_key);
 	uint_t isecondary_key = XTAL_detail_uvalue(secondary_key);
 
@@ -374,7 +421,7 @@ const AnyPtr& MemberCacheTable2::cache(Base* target_class, const IDPtr& primary_
 
 	if(((member_mutate_count_ ^ unit.mutate_count) | 
 		XTAL_detail_rawbitxor(primary_key, unit.primary_key) | 
-		((uint_t)target_class ^ XTAL_detail_uvalue(unit.target_class)) | 
+		XTAL_detail_rawbitxor(target_class, unit.target_class) | 
 		XTAL_detail_rawbitxor(secondary_key, unit.secondary_key))==0){
 
 		hit_++;
@@ -382,15 +429,25 @@ const AnyPtr& MemberCacheTable2::cache(Base* target_class, const IDPtr& primary_
 		return unit.member;
 	}
 	else{
+		if(!XTAL_detail_is_pvalue(target_class)){
+			accessibility = -1;
+			return undefined;
+		}
 
 		miss_++;
 
 		bool nocache = false;
 		accessibility = 0;
-		const AnyPtr& ret = target_class->rawmember(primary_key, secondary_key, true, accessibility, nocache);
+		const AnyPtr& ret = XTAL_detail_pvalue(target_class)->rawmember(primary_key, secondary_key, true, accessibility, nocache);
+
+		if(XTAL_detail_is_undefined(ret)){
+			accessibility = -1;
+			return undefined;
+		}
+
 		if(!nocache){
 			unit.member = ret;
-			unit.target_class = to_smartptr(target_class);
+			unit.target_class = target_class;
 			unit.primary_key = primary_key;
 			unit.secondary_key = secondary_key;
 			unit.accessibility = accessibility;
@@ -1357,23 +1414,20 @@ XTAL_VM_LOOP
 		call_state.aself = XTAL_VM_ff().self;
 
 		XTAL_VM_LOCK{
-			if(XTAL_detail_is_pvalue(call_state.acls)){
-				int_t accessibility;
-				call_state.amember = environment_->member_cache_table_.cache(XTAL_detail_pvalue(call_state.acls), (IDPtr&)call_state.aprimary, accessibility);
+			int_t accessibility;
+			call_state.amember = environment_->member_cache_table_.cache(ap(call_state.acls), (IDPtr&)call_state.aprimary, accessibility);
 
-				if(accessibility){
-					if(const inst_t* epc = check_accessibility(call_state, accessibility)){
-						XTAL_VM_CONTINUE(epc);
-					}
+			if(accessibility){
+				if(accessibility<0){
+					XTAL_VM_CONTINUE(execute_member2q(pc, call_state));
 				}
-
-				if(!XTAL_detail_is_undefined(call_state.amember)){
-					set_local_variable(call_state.result, ap(call_state.amember));
-					XTAL_VM_CONTINUE(call_state.poped_pc);
+				else if(const inst_t* epc = check_accessibility(call_state, accessibility)){
+					XTAL_VM_CONTINUE(epc);
 				}
 			}
 
-			XTAL_VM_CONTINUE(execute_member2q(pc, call_state));
+			set_local_variable(call_state.result, ap(call_state.amember));
+			XTAL_VM_CONTINUE(call_state.poped_pc);
 		}
 	}
 
@@ -1391,23 +1445,20 @@ XTAL_VM_LOOP
 		call_state.aself = XTAL_VM_ff().self;
 
 		XTAL_VM_LOCK{
-			if(XTAL_detail_is_pvalue(call_state.acls)){
-				int_t accessibility;
-				call_state.amember = environment_->member_cache_table2_.cache(XTAL_detail_pvalue(call_state.acls), (IDPtr&)call_state.aprimary, ap(call_state.asecondary), accessibility);
+			int_t accessibility;
+			call_state.amember = environment_->member_cache_table2_.cache(ap(call_state.acls), (IDPtr&)call_state.aprimary, ap(call_state.asecondary), accessibility);
 
-				if(accessibility){
-					if(const inst_t* epc = check_accessibility(call_state, accessibility)){
-						XTAL_VM_CONTINUE(epc);
-					}
+			if(accessibility){
+				if(accessibility<0){
+					XTAL_VM_CONTINUE(execute_member2q(pc, call_state));
 				}
-
-				if(!XTAL_detail_is_undefined(call_state.amember)){
-					set_local_variable(call_state.result, ap(call_state.amember));
-					XTAL_VM_CONTINUE(call_state.poped_pc);
+				else if(const inst_t* epc = check_accessibility(call_state, accessibility)){
+					XTAL_VM_CONTINUE(epc);
 				}
 			}
 
-			XTAL_VM_CONTINUE(execute_member2q(pc, call_state));
+			set_local_variable(call_state.result, ap(call_state.amember));
+			XTAL_VM_CONTINUE(call_state.poped_pc);
 		}
 	}
 
@@ -1427,7 +1478,7 @@ XTAL_VM_LOOP
 		call_state.amember = XTAL_VM_local_variable(inst.target);
 		call_state.aself = (flags&CALL_FLAG_THIS) ? XTAL_VM_local_variable(inst.self) : XTAL_VM_ff().self;
 		
-		XTAL_VM_CONTINUE(execute_calla(pc, call_state));
+		XTAL_VM_CONTINUE(execute_callex(pc, call_state));
 	}
 
 	XTAL_VM_CASE(InstSend){ // 8
@@ -1440,9 +1491,7 @@ XTAL_VM_LOOP
 		call_state.aself = XTAL_VM_ff().self;
 		call_state.acls = call_state.atarget.get_class();
 
-		int_t accessibility;
-		call_state.amember = environment_->member_cache_table_.cache(XTAL_detail_pvalue(call_state.acls), (IDPtr&)call_state.aprimary, accessibility);
-		XTAL_VM_CONTINUE(execute_send(pc, accessibility, call_state));
+		XTAL_VM_CONTINUE(execute_send(pc, call_state));
 	}
 
 	XTAL_VM_CASE(InstSendEx){ // 8
@@ -1455,9 +1504,7 @@ XTAL_VM_LOOP
 		call_state.aself = XTAL_VM_ff().self;
 		call_state.acls = call_state.atarget.get_class();
 
-		int_t accessibility;
-		call_state.amember = environment_->member_cache_table2_.cache(XTAL_detail_pvalue(call_state.acls), (IDPtr&)call_state.aprimary, ap(call_state.asecondary), accessibility);
-		XTAL_VM_CONTINUE(execute_send(pc, accessibility, call_state));
+		XTAL_VM_CONTINUE(execute_sendex(pc, call_state));
 	}
 
 	XTAL_VM_CASE(InstProperty){ // 7
@@ -1471,10 +1518,13 @@ XTAL_VM_LOOP
 
 		XTAL_VM_LOCK{
 			int_t accessibility;
-			call_state.amember = environment_->member_cache_table_.cache(XTAL_detail_pvalue(call_state.acls), (IDPtr&)call_state.aprimary, accessibility);
+			call_state.amember = environment_->member_cache_table_.cache(ap(call_state.acls), (IDPtr&)call_state.aprimary, accessibility);
 
 			if(accessibility){
-				if(const inst_t* epc = check_accessibility(call_state, accessibility)){
+				if(accessibility<0){
+					XTAL_VM_CONTINUE(execute_member2q(pc, call_state));
+				}				
+				else if(const inst_t* epc = check_accessibility(call_state, accessibility)){
 					XTAL_VM_CONTINUE(epc);
 				}
 			}
@@ -1485,14 +1535,10 @@ XTAL_VM_LOOP
 				XTAL_VM_CONTINUE(call_state.poped_pc);
 			}
 
-			if(XTAL_detail_is_undefined(call_state.amember)){
-				XTAL_VM_CONTINUE(execute_member2q(pc, call_state));
-			}
-
 			call_state.aself = call_state.atarget;
 		}
 
-		XTAL_VM_CONTINUE(execute_calla(pc, call_state));
+		XTAL_VM_CONTINUE(execute_callex(pc, call_state));
 	}
 
 	XTAL_VM_CASE(InstSetProperty){ // 7
@@ -1504,12 +1550,15 @@ XTAL_VM_LOOP
 		call_state.aself = XTAL_VM_ff().self;
 		call_state.acls = call_state.atarget.get_class();
 
-		int_t accessibility;
-		call_state.amember = environment_->member_cache_table_.cache(XTAL_detail_pvalue(call_state.acls), (IDPtr&)call_state.aprimary, accessibility);
-
 		XTAL_VM_LOCK{
+			int_t accessibility;
+			call_state.amember = environment_->member_cache_table_.cache(ap(call_state.acls), (IDPtr&)call_state.aprimary, accessibility);
+
 			if(accessibility){
-				if(const inst_t* epc = check_accessibility(call_state, accessibility)){
+				if(accessibility<0){
+					XTAL_VM_CONTINUE(execute_member2q(pc, call_state));
+				}
+				else if(const inst_t* epc = check_accessibility(call_state, accessibility)){
 					XTAL_VM_CONTINUE(epc);
 				}
 			}
@@ -1520,14 +1569,10 @@ XTAL_VM_LOOP
 				XTAL_VM_CONTINUE(call_state.poped_pc);
 			}
 
-			if(XTAL_detail_is_undefined(call_state.amember)){
-				XTAL_VM_CONTINUE(execute_member2q(pc, call_state));
-			}
-
 			call_state.aself = call_state.atarget;
 		}
 
-		XTAL_VM_CONTINUE(execute_calla(pc, call_state));
+		XTAL_VM_CONTINUE(execute_callex(pc, call_state));
 	}
 
 	XTAL_VM_CASE(InstScopeBegin){ // 3
@@ -1855,25 +1900,47 @@ XTAL_VM_LOOP_END
 
 ////////////////////////////////////////////////////////////////
 
-const inst_t* VMachine::execute_send(const inst_t* pc, int_t accessibility, CallState& call_state){
+const inst_t* VMachine::execute_send(const inst_t* pc, CallState& call_state){
 	XTAL_VM_LOCK{
+		int_t accessibility;
+		call_state.amember = environment_->member_cache_table_.cache(ap(call_state.acls), (IDPtr&)call_state.aprimary, accessibility);
+
 		if(accessibility){
-			if(const inst_t* epc = check_accessibility(call_state, accessibility)){
+			if(accessibility<0){
+				XTAL_VM_CONTINUE(execute_member2q(pc, call_state));
+			}
+			else if(const inst_t* epc = check_accessibility(call_state, accessibility)){
 				XTAL_VM_CONTINUE(epc);
 			}
-		}
-
-		if(XTAL_detail_is_undefined(call_state.amember)){
-			XTAL_VM_CONTINUE(execute_member2q(pc, call_state));
 		}
 
 		call_state.aself = call_state.atarget;
 	}
 
-	XTAL_VM_CONTINUE(execute_calla(pc, call_state));
+	XTAL_VM_CONTINUE(execute_call(pc, call_state));
 }
 
-const inst_t* VMachine::execute_calla(const inst_t* pc, CallState& call_state){
+const inst_t* VMachine::execute_sendex(const inst_t* pc, CallState& call_state){
+	XTAL_VM_LOCK{
+		int_t accessibility;
+		call_state.amember = environment_->member_cache_table2_.cache(ap(call_state.acls), (IDPtr&)call_state.aprimary, ap(call_state.asecondary), accessibility);
+
+		if(accessibility){
+			if(accessibility<0){
+				XTAL_VM_CONTINUE(execute_member2q(pc, call_state));
+			}
+			else if(const inst_t* epc = check_accessibility(call_state, accessibility)){
+				XTAL_VM_CONTINUE(epc);
+			}
+		}
+
+		call_state.aself = call_state.atarget;
+	}
+
+	XTAL_VM_CONTINUE(execute_callex(pc, call_state));
+}
+
+const inst_t* VMachine::execute_callex(const inst_t* pc, CallState& call_state){
 	if(call_state.flags&CALL_FLAG_ARGS_BIT){
 		XTAL_VM_LOCK{
 			if(ArgumentsPtr args = ptr_cast<Arguments>(XTAL_VM_local_variable(call_state.stack_base+call_state.ordered_arg_count+call_state.named_arg_count*2))){
@@ -1922,9 +1989,8 @@ const inst_t* VMachine::execute_send_iprimary_nosecondary(const inst_t* pc, int_
 		call_state.asecondary = undefined;
 		call_state.aself = XTAL_VM_ff().self;
 		call_state.acls = call_state.atarget.get_class();
-		int_t accessibility;
-		call_state.amember = environment_->member_cache_table_.cache(XTAL_detail_pvalue(call_state.acls), (IDPtr&)call_state.aprimary, accessibility);
-		XTAL_VM_CONTINUE(execute_send(pc, accessibility, call_state));
+
+		XTAL_VM_CONTINUE(execute_send(pc, call_state));
 	}
 }
 

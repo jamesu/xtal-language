@@ -586,19 +586,11 @@ void Environment::initialize(const Setting& setting){
 }
 
 void Environment::uninitialize(){
-
-//#ifdef XTAL_DEBUG_PRINT
-	{
-//		printf("member hit=%d miss=%d rate=%g\n", member_cache_table_.hit_count(), member_cache_table_.miss_count(), member_cache_table_.hit_count()/(float)(member_cache_table_.hit_count()+member_cache_table_.miss_count()));
-//		printf("member2 hit=%d miss=%d rate=%g\n", member_cache_table2_.hit_count(), member_cache_table2_.miss_count(), member_cache_table2_.hit_count()/(float)(member_cache_table2_.hit_count()+member_cache_table2_.miss_count()));
-//		printf("is hit=%d miss=%d rate=%g\n", is_cache_table_.hit_count(), is_cache_table_.miss_count(), is_cache_table_.hit_count()/(float)(is_cache_table_.hit_count()+is_cache_table_.miss_count()));
-	}
-//#endif
-
 	thread_space_.join_all_threads();
 
-	clear_cache();
+	object_space_.halt_fibers(); // ファイバーを終わらせる
 
+	clear_cache();
 	full_gc();
 
 	builtin_ = null;
@@ -700,6 +692,8 @@ void set_cpp_class(CppClassSymbolData* key, const ClassPtr& cls){
 }
 
 void clear_cache(){
+	invalidate_cache_member();
+	invalidate_cache_is();
 	environment_->member_cache_table_.clear();
 	environment_->member_cache_table2_.clear();
 	environment_->is_cache_table_.clear();

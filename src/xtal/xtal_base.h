@@ -279,7 +279,6 @@ public:
 	void object_free(){ virtual_members()->object_free(this); }
 
 public:
-
 	void special_initialize(const VirtualMembers* vmembers);
 
 	const VirtualMembers* virtual_members() const{

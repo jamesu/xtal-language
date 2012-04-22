@@ -575,14 +575,11 @@ private: // ブレークポイント系
 
 public:
 	const inst_t* execute_divzero();
-	const inst_t* execute_member(const inst_t* pc, CallState& call_state);
-	const inst_t* execute_member2(const inst_t* pc, CallState& call_state);
 	const inst_t* execute_member2q(const inst_t* pc, CallState& call_state);
 	const inst_t* execute_call(const inst_t* pc, CallState& call_state);
-	const inst_t* execute_calla(const inst_t* pc, CallState& call_state);
-	const inst_t* execute_send(const inst_t* pc, int_t accessibility, CallState& call_state);
-	const inst_t* execute_property(const inst_t* pc, int_t accessibility, CallState& call_state);
-	const inst_t* execute_set_property(const inst_t* pc, int_t accessibility, CallState& call_state);
+	const inst_t* execute_callex(const inst_t* pc, CallState& call_state);
+	const inst_t* execute_send(const inst_t* pc, CallState& call_state);
+	const inst_t* execute_sendex(const inst_t* pc, CallState& call_state);
 	const inst_t* execute_send_iprimary_nosecondary(const inst_t* pc, int_t iprimary, CallState& call_state);
 	const inst_t* execute_send_comp(const inst_t* pc, const void* inst, int_t iprimary);
 	const inst_t* execute_send_bin(const inst_t* pc, const void* inst, int_t iprimary);

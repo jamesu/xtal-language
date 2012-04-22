@@ -296,6 +296,9 @@ void ObjectSpace::initialize(){
 void ObjectSpace::uninitialize(){
 	disable_finalizer_ = true;
 
+	clear_cache();
+	full_gc();
+
 	value_map_.erase(CppClassSymbol<Global>::value.key());
 	clear_cache();
 	full_gc();
@@ -303,6 +306,7 @@ void ObjectSpace::uninitialize(){
 	unset_finalize_objects(ConnectedPointer(0, objects_list_begin_), ConnectedPointer(objects_count_, objects_list_begin_));
 
 	value_map_.destroy();
+	clear_cache();
 	full_gc();
 
 	if(objects_count_ != 0){
@@ -342,7 +346,17 @@ void ObjectSpace::uninitialize(){
 	objects_list_current_ = objects_list_begin_;
 	fit_simple_dynamic_pointer_array(&objects_list_begin_, &objects_list_end_, &objects_list_current_);
 }
-	
+
+void ObjectSpace::halt_fibers(){
+	for(int_t i=0; i<alive_object_count(); ++i){
+		RefCountingBase* p = alive_object(i);
+		if(p && XTAL_detail_type(*p)==TYPE_FIBER){
+			Fiber* fib = (Fiber*)p;
+			fib->halt();
+		}
+	}
+}
+
 void ObjectSpace::shrink_to_fit(){
 	if(cycle_count_>0){
 		return;
@@ -504,10 +518,10 @@ ConnectedPointer ObjectSpace::sweep_dead_objects(ConnectedPointer first, Connect
 }
 
 void ObjectSpace::unset_finalize_objects(ConnectedPointer it, ConnectedPointer end){
-	ConnectedPointerEnumerator e(it, end);
-	do for(RefCountingBase** pp=e.begin(), **ppend=e.end(); pp!=ppend; ++pp){
-		(*pp)->unset_finalizer_flag();
-	}while(e.move());
+	for(int_t i=0; i<alive_object_count(); ++i){
+		RefCountingBase* p = alive_object(i);
+		p->unset_finalizer_flag();
+	}
 }
 
 void ObjectSpace::destroy_objects(ConnectedPointer it, ConnectedPointer end){

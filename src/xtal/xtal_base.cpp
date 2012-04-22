@@ -19,6 +19,14 @@ void RefCountingBase::on_rawcall(const VMachinePtr& vm){
 	to_smartptr(this)->rawsend(vm, XTAL_DEFINED_ID(op_call));
 }
 
+const AnyPtr& RefCountingBase::on_rawmember(const IDPtr& /*primary_key*/, const AnyPtr& /*secondary_key*/, bool /*inherited_too*/, int_t& /*accessibility*/, bool& /*nocache*/){
+	return undefined; 
+}
+	
+const ClassPtr& RefCountingBase::on_object_parent(){ 
+	return nul<Class>(); 
+}
+
 void RefCountingBase::special_initialize(const VirtualMembers* vmembers){
 	value_.init_rcbase(vmembers->rcbase_class_type, this);
 	vmembers_ = vmembers;

@@ -991,8 +991,15 @@ int main2(int argc, char** argv){
 
 			foo();*/
 
+1.p;
+fib:fiber(){ 2.p; for(;;){ 3.p; 1.times{ 4.p; yield; 5.p; } 6.p; } 7.p; }
+fib();
+fib();
+
+			fun foo(a: 0){}
+			foo(b: 1);
 		))){
-		   //code->inspect()->p();
+		   code->inspect()->p();
 		   //code->def(Xid(AA), 20);
 
 			XTAL_CATCH_EXCEPT(e){
@@ -1890,7 +1897,7 @@ fun global::update()
 	uninitialize();
 }
 
-int main(int argc, char* argv){
+int main4(int argc, char* argv){
 	using namespace xtal;
 	
 	CStdioStdStreamLib std_stream_lib;
@@ -1909,7 +1916,7 @@ int main(int argc, char* argv){
 }
 
 
-int main4(int argc, char** argv){
+int main(int argc, char** argv){
 	TestB aa;
 	TestA* pb = &aa;
 

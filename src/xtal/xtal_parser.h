@@ -28,7 +28,7 @@ public:
 	};
 
 	Token()
-		:ImmediateValue(0, 0){}
+		:ImmediateValue(0, (int_t)0){}
 	
 	Token(int_t type, int_t flags, int_t value)
 		:ImmediateValue(type | (flags<<4), value){}

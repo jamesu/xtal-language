@@ -176,7 +176,7 @@ void Tokenizer::push_keyword_token(int_t num){
 }
 	
 void Tokenizer::push_identifier_token(const IDPtr& identifier){
-	token_buf_[token_read_ & TOKEN_BUF_MASK] = Token(Token::TYPE_IDENTIFIER, left_space_ | test_right_space(executor_->peek_ascii()), 0);
+	token_buf_[token_read_ & TOKEN_BUF_MASK] = Token(Token::TYPE_IDENTIFIER, left_space_ | test_right_space(executor_->peek_ascii()), (int_t)0);
 	token_read_++;
 	token_buf_[token_read_ & TOKEN_BUF_MASK] = identifier;
 	token_read_++;
@@ -1033,7 +1033,7 @@ bool Parser::cmp_pri(int_t pri, int_t op, int_t l_space, int_t r_space){
 }
 
 bool Parser::expr_end(){
-	const Token& prevch = (Token&)last_;
+	const Token& prevch = *ptr_cast<Token>(last_);
 	return prevch.type()==Token::TYPE_TOKEN && prevch.ivalue()=='}';
 }
 
@@ -2032,7 +2032,7 @@ bool Parser::parse_expr(int_t pri, int_t space){
 }
 
 bool Parser::parse_expr(){
-	return parse_expr(0, 0);
+	return parse_expr(0, (int_t)0);
 }
 
 void Parser::expect_parse_expr(int_t pri, int_t space){

@@ -54,7 +54,9 @@ public:
 	* \param primary_key メンバ名
 	* \param secondary_key セカンダリキー
 	*/
-	void def(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key = (const AnyPtr&)undefined, int_t accessibility = 0) const;
+	void def(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key, int_t accessibility) const;
+	void def(const IDPtr& primary_key, const AnyPtr& value) const;
+	void def(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key) const;
 
 	/**
 	* \xbind

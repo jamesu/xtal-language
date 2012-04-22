@@ -348,7 +348,7 @@ void ObjectSpace::uninitialize(){
 }
 
 void ObjectSpace::halt_fibers(){
-	for(int_t i=0; i<alive_object_count(); ++i){
+	for(uint_t i=0; i<alive_object_count(); ++i){
 		RefCountingBase* p = alive_object(i);
 		if(p && XTAL_detail_type(*p)==TYPE_FIBER){
 			Fiber* fib = (Fiber*)p;
@@ -518,7 +518,7 @@ ConnectedPointer ObjectSpace::sweep_dead_objects(ConnectedPointer first, Connect
 }
 
 void ObjectSpace::unset_finalize_objects(ConnectedPointer it, ConnectedPointer end){
-	for(int_t i=0; i<alive_object_count(); ++i){
+	for(uint_t i=0; i<alive_object_count(); ++i){
 		RefCountingBase* p = alive_object(i);
 		p->unset_finalizer_flag();
 	}

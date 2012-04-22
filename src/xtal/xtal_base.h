@@ -231,9 +231,9 @@ public:
 	
 	void on_def(const IDPtr& /*primary_key*/, const AnyPtr& /*value*/, const AnyPtr& /*secondary_key*/, int_t /*accessibility*/){}
 	
-	const AnyPtr& on_rawmember(const IDPtr& /*primary_key*/, const AnyPtr& /*secondary_key*/, bool /*inherited_too*/, int_t& /*accessibility*/, bool& /*nocache*/){ return *(AnyPtr*)&undefined; }
+	const AnyPtr& on_rawmember(const IDPtr& /*primary_key*/, const AnyPtr& /*secondary_key*/, bool /*inherited_too*/, int_t& /*accessibility*/, bool& /*nocache*/);
 	
-	const ClassPtr& on_object_parent(){ return *(ClassPtr*)&null; }
+	const ClassPtr& on_object_parent();
 	
 	void on_set_object_parent(const ClassPtr& /*parent*/){}
 	

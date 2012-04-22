@@ -66,6 +66,14 @@ void Any::def(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secon
 	}
 }
 
+void Any::def(const IDPtr& primary_key, const AnyPtr& value) const{
+	def(primary_key, value, undefined, KIND_DEFAULT);
+}
+
+void Any::def(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key) const{
+	def(primary_key, value, secondary_key, KIND_DEFAULT);
+}
+
 void Any::rawsend(const VMachinePtr& vm, const IDPtr& primary_key, const AnyPtr& secondary_key, bool inherited_too, bool q) const{
 	const ClassPtr& cls = get_class();
 	Any mem = cls->member(primary_key, secondary_key, inherited_too);

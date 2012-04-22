@@ -67,11 +67,11 @@ void Any::def(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secon
 }
 
 void Any::def(const IDPtr& primary_key, const AnyPtr& value) const{
-	def(primary_key, value, undefined, KIND_DEFAULT);
+	def(primary_key, value, undefined, KIND_PUBLIC);
 }
 
 void Any::def(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key) const{
-	def(primary_key, value, secondary_key, KIND_DEFAULT);
+	def(primary_key, value, secondary_key, KIND_PUBLIC);
 }
 
 void Any::rawsend(const VMachinePtr& vm, const IDPtr& primary_key, const AnyPtr& secondary_key, bool inherited_too, bool q) const{

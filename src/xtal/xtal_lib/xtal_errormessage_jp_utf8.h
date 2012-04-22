@@ -71,7 +71,7 @@ inline void bind_error_message(){
 		XTAL_L("XRE1036"), XTAL_L("XRE1036:'%(object)s' 関数呼び出しの引数の名前が不正です。関数側で必要とされていない名前付き引数'%(name)s'が渡されました"),	
 	};
 	
-	for(int i=0; i<sizeof(messages)/sizeof(*messages)/2; ++i){
+	for(unsigned int i=0; i<sizeof(messages)/sizeof(*messages)/2; ++i){
 		IDPtr key(*(LongLivedString*)messages[i*2+0]);
 		text_map()->set_at(key, *(LongLivedString*)messages[i*2+1]);
 	}

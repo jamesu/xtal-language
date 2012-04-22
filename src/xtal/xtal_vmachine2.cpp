@@ -276,7 +276,7 @@ bool VMachine::adjust_args(const NamedParam* params, int_t num){
 	int_t base = f.ordered_arg_count + f.named_arg_count*2;
 	int_t offset = base;
 	
-	int_t argcheck[256];
+	int_t argcheck[138]; // バイトコードの仕様からいって128を超えることはありえない
 	for(int_t i=0, sz=f.named_arg_count; i<sz; ++i){
 		argcheck[i] = 0;
 	}
@@ -321,7 +321,7 @@ bool VMachine::adjust_args(Method* names){
 	int_t base = f.ordered_arg_count + f.named_arg_count*2;
 	int_t offset = base;
 
-	int_t argcheck[256];
+	int_t argcheck[138]; // バイトコードの仕様からいって128を超えることはありえない
 	for(int_t i=0, sz=f.named_arg_count; i<sz; ++i){
 		argcheck[i] = 0;
 	}

@@ -307,9 +307,9 @@ public:
 	
 public:
 
-	void adjust_args(const NamedParam* params, int_t num);
+	bool adjust_args(const NamedParam* params, int_t num);
 
-	void adjust_args(Method* params);
+	bool adjust_args(Method* params);
 
 	const AnyPtr& arg_unchecked(int_t pos){
 		return XTAL_VM_local_variable(pos);

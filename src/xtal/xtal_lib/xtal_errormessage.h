@@ -68,6 +68,7 @@ inline void bind_error_message(){
 		XTAL_L("XRE1033"), XTAL_L("XRE1033:ストリームの終端以降を読み取ろうとしました。"),
 		XTAL_L("XRE1034"), XTAL_L("XRE1034:無限ループが発生する可能性があるxpeg要素を実行しようとしました"),
 		XTAL_L("XRE1035"), XTAL_L("XRE1035:実行中で非yield中のファイバーに対する不正な操作です"),	
+		XTAL_L("XRE1036"), XTAL_L("XRE1036:'%(object)s' 関数呼び出しの引数の名前が不正です。関数側で必要とされていない名前付き引数'%(name)s'が渡されました"),	
 	};
 	
 	for(int i=0; i<sizeof(messages)/sizeof(*messages)/2; ++i){

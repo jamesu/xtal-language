@@ -271,14 +271,22 @@ const AnyPtr& VMachine::arg_default(int_t pos, const IDPtr& name, const AnyPtr& 
 	return arg_default(name, def);
 }
 
-void VMachine::adjust_args(const NamedParam* params, int_t num){
+bool VMachine::adjust_args(const NamedParam* params, int_t num){
 	FunFrame& f = XTAL_VM_ff();
 	int_t base = f.ordered_arg_count + f.named_arg_count*2;
 	int_t offset = base;
+	
+	int_t argcheck[256];
+	for(int_t i=0, sz=f.named_arg_count; i<sz; ++i){
+		argcheck[i] = 0;
+	}
+
 	for(int_t j=f.ordered_arg_count; j<num; ++j){
 		bool hit = false;
 		for(int_t i = 0, sz = f.named_arg_count; i<sz; ++i){
+			// –¼‘O•t‚«ˆø”‚É“¯‚¶–¼‘O‚Ì‚à‚Ì‚ª‚ ‚Á‚½
 			if(XTAL_detail_raweq(XTAL_VM_local_variable(f.ordered_arg_count + i*2 + 0), params[j].name)){
+				argcheck[i] = 1;
 				set_local_variable(offset++, XTAL_VM_local_variable(f.ordered_arg_count + i*2 + 1));
 				hit = true;
 				break;
@@ -290,19 +298,39 @@ void VMachine::adjust_args(const NamedParam* params, int_t num){
 		}
 	}
 
+	for(int_t i=0, sz=f.named_arg_count; i<sz; ++i){
+		if(argcheck[i]==0){
+			set_except(cpp_class<ArgumentError>()->call(
+				Xt2("XRE1036",
+					object, f.fun->object_name(),
+					name, XTAL_VM_local_variable(f.ordered_arg_count + i*2 + 0)
+				)
+			));
+			return false;
+		}
+	}
+
 	int_t top = XTAL_VM_variables_top();
 	variables_.move(top + f.ordered_arg_count, base + top, offset-base);
+	return true;
 }
 
-void VMachine::adjust_args(Method* names){
+bool VMachine::adjust_args(Method* names){
 	FunFrame& f = XTAL_VM_ff();
 	int_t num = names->param_size();
 	int_t base = f.ordered_arg_count + f.named_arg_count*2;
 	int_t offset = base;
+
+	int_t argcheck[256];
+	for(int_t i=0, sz=f.named_arg_count; i<sz; ++i){
+		argcheck[i] = 0;
+	}
+
 	for(int_t j=f.ordered_arg_count; j<num; ++j){
 		bool hit = false;
 		for(int_t i = 0, sz = f.named_arg_count; i<sz; ++i){
 			if(XTAL_detail_raweq(XTAL_VM_local_variable(f.ordered_arg_count + i*2 + 0), names->param_name_at(j))){
+				argcheck[i] = 1;
 				set_local_variable(offset++, XTAL_VM_local_variable(f.ordered_arg_count + i*2 + 1));
 				hit = true;
 				break;
@@ -314,8 +342,21 @@ void VMachine::adjust_args(Method* names){
 		}
 	}
 
+	for(int_t i=0, sz=f.named_arg_count; i<sz; ++i){
+		if(argcheck[i]==0){
+			set_except(cpp_class<ArgumentError>()->call(
+				Xt2("XRE1036",
+					object, f.fun->object_name(),
+					name, XTAL_VM_local_variable(f.ordered_arg_count + i*2 + 0)
+				)
+			));
+			return false;
+		}
+	}
+
 	int_t top = XTAL_VM_variables_top();
 	variables_.move(top + f.ordered_arg_count, base + top, offset-base);
+	return true;
 }
 
 void VMachine::return_result(){

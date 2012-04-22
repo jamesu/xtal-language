@@ -256,7 +256,9 @@ void VMachine::carry_over(Method* fun, bool adjust_arguments){
 		}
 		else{
 			if(f.ordered_arg_count!=fun->param_size()){
-				adjust_args(fun);
+				if(!adjust_args(fun)){
+					return;
+				}
 			}
 		}
 		f.ordered_arg_count = f.named_arg_count = 0;

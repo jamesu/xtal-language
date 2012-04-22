@@ -209,7 +209,9 @@ void NativeMethod::on_rawcall(const VMachinePtr& vm){
 			}
 			else{
 				if(vm->ordered_arg_count()!=pth.param_n){
-					vm->adjust_args(params, pth.param_n);
+					if(!vm->adjust_args(params, pth.param_n)){
+						return;
+					}
 				}
 			}
 

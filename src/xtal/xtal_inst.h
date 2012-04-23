@@ -453,6 +453,8 @@ inline void Inst::checked_assign(T& ref, int v){
 		}\
 	}
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+
 /**
 * \internal
 * \brief 行が変わるごとに挟まれる命令
@@ -467,9 +469,15 @@ enum{
 	LOAD_TRUE
 };
 
+/**
+* \internal
+* \brief nullかundefinedかfalseかtrue値を取り出す
+*
+*/
 XTAL_DEF_INST_2(1, InstLoadValue,
-	inst_i8_t, result,
-	inst_u8_t, value);
+	inst_i8_t, result, // 値を代入するローカル変数番号
+	inst_u8_t, value // nullかundefinedかfalseかtrue番号
+);
 
 /**
 * \internal

@@ -23,7 +23,7 @@ class Executor : public Base{
 public:
 	Executor(const StringPtr& source_name = empty_string);
 
-	~Executor();
+	virtual ~Executor();
 
 public:
 	/**

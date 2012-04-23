@@ -358,8 +358,6 @@ private:
 	bool pause_;
 };
 
-typedef SmartPtr<CommandReceiver> CommandReceiverPtr;
-
 ////////////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -369,6 +367,8 @@ class CommandSender{
 public:
 
 	CommandSender();
+
+	virtual ~CommandSender(){}
 
 	/**
 	* \brief デバッガをスタートする
@@ -478,8 +478,6 @@ private:
 
 	IDPtr prev_command_;
 };
-
-typedef SmartPtr<CommandSender> CommandSenderPtr;
 
 }
 

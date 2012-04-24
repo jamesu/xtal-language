@@ -217,7 +217,7 @@ public:
 
 template<class T>
 FastStack<T>::FastStack(){
-	begin_=(T*)stack_dummy_allocate()+1;
+	begin_ = (T*)stack_dummy_allocate()+1;
 	current_ = begin_-1;
 	end_ = begin_+0;
 }

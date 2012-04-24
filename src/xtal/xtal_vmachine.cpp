@@ -169,6 +169,184 @@ bool Any::is(CppClassSymbolData* key) const{
 	return is(cpp_class(key));
 }
 
+void StatelessNativeMethod::on_rawcall(const VMachinePtr& vm) const{
+	const param_types_holder_n& pth = *XTAL_detail_pthvalue(*this);
+
+	FunctorParam fp;
+	fp.vm = &*vm;
+	fp.fun = 0;
+	fp.result = undefined;
+
+	if(pth.vm){ // 第一引数がVMachine
+		fp.args[0] = (Any&)vm->arg_this();
+		fp.args[1] = (Any&)vm->arg_unchecked(0);
+	}
+	else{
+		int_t param_n = pth.param_n;
+
+		if(vm->ordered_arg_count()!=param_n){
+			if(!pth.extendable || vm->ordered_arg_count()<param_n){
+				set_argument_num_error(Xid(NativeFunction), vm->ordered_arg_count(), param_n, param_n, vm);
+				return;
+			}
+		}
+
+		{ // check arg type
+
+			const CppClassSymbolData* anycls = &CppClassSymbol<Any>::value;
+			const CppClassSymbolData* intcls = &CppClassSymbol<Int>::value;
+			const CppClassSymbolData* floatcls = &CppClassSymbol<Float>::value;
+
+			int_t num = 1;
+			fp.args[0] = (Any&)vm->arg_this();
+
+			if(pth.extendable){
+				vm->set_local_variable(param_n, vm->make_arguments(param_n));
+				fp.args[param_n+1] = (Any&)vm->arg_unchecked(param_n);
+			}
+
+			for(int_t i=0; i<param_n; ++i){
+				fp.args[i+1] = (Any&)vm->arg_unchecked(i);
+			}
+
+			num = param_n+1;
+				
+			// 型チエック
+			for(int_t i=0; i<num; ++i){
+				if(pth.param_types[i]==anycls){
+					continue;
+				}
+				else{
+					const AnyPtr& arg = ap(fp.args[i]);
+					const ClassPtr& cls = cpp_class(pth.param_types[i]);
+					if(!arg->is(cls)){ 
+						set_argument_type_error(object_name(), i, cls, arg->get_class(), vm);
+						return;
+					}
+
+					if(pth.param_types[i]==intcls){
+						fp.args[i].value_.init_int(arg->to_i());
+					}
+					else if(pth.param_types[i]==floatcls){
+						fp.args[i].value_.init_float(arg->to_f());
+					}
+				}
+			}
+		}
+	}
+
+	pth.fun(fp);
+
+	if(!vm->is_executed()){
+		vm->return_result(ap(fp.result));
+	}
+}
+
+void NativeMethod::on_rawcall(const VMachinePtr& vm){
+	const param_types_holder_n& pth = *pth_;
+	int_t param_n = pth.param_n;
+
+	if(vm->ordered_arg_count()!=min_param_count_){
+		int_t n = vm->ordered_arg_count();
+		if(n<min_param_count_ || n>max_param_count_){
+			set_argument_num_error(Xid(NativeFunction), n, min_param_count_, max_param_count_, vm);
+			return;
+		}
+	}
+
+	FunctorParam fp;
+	fp.vm = &*vm;
+	fp.fun = data_;
+	fp.result = undefined;
+	
+	{ // check arg type
+		NamedParam* params = (NamedParam*)((u8*)data_ + val_size_);
+
+		const CppClassSymbolData* anycls = &CppClassSymbol<Any>::value;
+		const CppClassSymbolData* intcls = &CppClassSymbol<Int>::value;
+		const CppClassSymbolData* floatcls = &CppClassSymbol<Float>::value;
+
+		int_t num = 1;
+		fp.args[0] = (Any&)vm->arg_this();
+
+		if(!pth.vm){
+			if(pth.extendable){
+				vm->set_local_variable(param_n, vm->inner_make_arguments(params, param_n));
+				fp.args[param_n+1] = (Any&)vm->arg_unchecked(param_n);
+			}
+			else{
+				if(vm->ordered_arg_count()!=pth.param_n){
+					if(!vm->adjust_args(params, pth.param_n)){
+						return;
+					}
+				}
+			}
+
+			for(int_t i=0; i<param_n; ++i){
+				fp.args[i+1] = (Any&)vm->arg_unchecked(i);
+			}
+			num = pth.param_n+1;
+		}
+
+		if(num>FunctorParam::MAX_ARGS){
+			num = FunctorParam::MAX_ARGS;
+		}
+			
+		for(int_t i=0; i<num; ++i){
+			if(pth.param_types[i]==anycls){
+				continue;
+			}
+			else{
+				const AnyPtr& arg = ap(fp.args[i]);
+				const ClassPtr& cls = cpp_class(pth.param_types[i]);
+				if(!arg->is(cls)){ 
+					set_argument_type_error(object_name(), i, cls, arg->get_class(), vm);
+					return;
+				}
+
+				if(pth.param_types[i]==intcls){
+					fp.args[i].value_.init_int(arg->to_i());
+				}
+				else if(pth.param_types[i]==floatcls){
+					fp.args[i].value_.init_float(arg->to_f());
+				}
+			}
+		}
+	}
+
+	pth.fun(fp);
+
+	if(!vm->is_executed()){
+		vm->return_result(ap(fp.result));
+	}
+}
+
+void Method::on_rawcall(const VMachinePtr& vm){
+	if(vm->ordered_arg_count()!=info_->max_param_count){
+		if(!check_arg(vm)){
+			return;
+		}
+	}
+
+	vm->carry_over(this);
+}
+
+void Fun::on_rawcall(const VMachinePtr& vm){
+	if(vm->ordered_arg_count()!=info()->max_param_count){
+		if(!check_arg(vm)){
+			return;
+		}
+	}
+
+	vm->set_arg_this(this_);
+	vm->carry_over(this);
+}
+
+void Lambda::on_rawcall(const VMachinePtr& vm){
+	vm->set_arg_this(this_);
+	vm->carry_over(this, true);
+}
+
 SmartPtr<Any>& SmartPtr<Any>::operator =(const SmartPtr<Any>& p){
 	XTAL_detail_inc_ref_count(p);
 	XTAL_detail_dec_ref_count(*this);
@@ -376,7 +554,7 @@ const AnyPtr& MemberCacheTable::cache(const AnyPtr& target_class, const IDPtr& p
 	uint_t iprimary_key = XTAL_detail_uvalue(primary_key);
 
 	uint_t hash = itarget_class ^ (iprimary_key ^ (iprimary_key>>24));
-	Unit& unit = table_[hash & CACHE_MASK];
+	Unit& unit = table_[hash % CACHE_MASK];
 
 	if(((member_mutate_count_ ^ unit.mutate_count) | 
 		XTAL_detail_rawbitxor(primary_key, unit.primary_key) | 
@@ -419,7 +597,7 @@ const AnyPtr& MemberCacheTable2::cache(const AnyPtr& target_class, const IDPtr& 
 	uint_t isecondary_key = XTAL_detail_uvalue(secondary_key);
 
 	uint_t hash = itarget_class ^ (iprimary_key ^ (iprimary_key>>24)) ^ isecondary_key;
-	Unit& unit = table_[hash & CACHE_MASK];
+	Unit& unit = table_[hash % CACHE_MASK];
 
 	if(((member_mutate_count_ ^ unit.mutate_count) | 
 		XTAL_detail_rawbitxor(primary_key, unit.primary_key) | 
@@ -504,9 +682,9 @@ const inst_t* VMachine::pop_ff(int_t base, int_t result_count){
 			set_local_variable(result_base_ + i, variables_.at(src_base + i));
 		}
 
-		f.fun = null;
-		f.outer = null;
-		f.self = null;
+		//f.fun = null;
+		//f.outer = null;
+		//f.self = null;
 	}
 
 	fun_frames_.downsize(1);
@@ -543,7 +721,7 @@ void VMachine::push_scope(ScopeInfo* info){
 void VMachine::pop_scope(){
 	Scope& scope = scopes_.top();
 	if(scope.flags==Scope::NONE){
-		scope.frame->detach();
+		//scope.frame->detach();
 	}
 	else{
 		if(scope.flags==Scope::FRAME){

@@ -264,6 +264,7 @@ public:
 	void add_ref_count(int_t n){ ref_count_ += n; }
 	void inc_ref_count(){ ++ref_count_; }
 	void dec_ref_count(){ if(XTAL_UNLIKELY(!--ref_count_)){ object_destroy(); } }
+	//void dec_ref_count(){ --ref_count_; }
 
 	void atomic_inc_ref_count(){ ++ref_count_; }
 	int_t atomic_dec_ref_count(){ return --ref_count_; }

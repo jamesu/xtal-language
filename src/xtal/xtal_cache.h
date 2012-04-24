@@ -20,7 +20,7 @@ struct MemberCacheTable{
 		AnyPtr member;
 	};
 
-	enum{ CACHE_MAX = 64, CACHE_MASK = CACHE_MAX-1 };
+	enum{ CACHE_MAX = 127, CACHE_MASK = CACHE_MAX };
 
 	Unit table_[CACHE_MAX];
 
@@ -62,7 +62,7 @@ struct MemberCacheTable2{
 		AnyPtr member;
 	};
 
-	enum{ CACHE_MAX = 64, CACHE_MASK = CACHE_MAX-1 };
+	enum{ CACHE_MAX = 127, CACHE_MASK = CACHE_MAX };
 
 	Unit table_[CACHE_MAX];
 
@@ -103,7 +103,7 @@ struct IsCacheTable{
 		bool result;
 	};
 
-	enum{ CACHE_MAX = 128, CACHE_MASK = CACHE_MAX-1 };
+	enum{ CACHE_MAX = 127, CACHE_MASK = CACHE_MAX };
 
 
 	Unit table_[CACHE_MAX];
@@ -129,7 +129,7 @@ struct IsCacheTable{
 		uint_t iklass = XTAL_detail_uvalue(klass);
 
 		uint_t hash = (itarget_class>>3) ^ (iklass>>2);
-		Unit& unit = table_[hash & CACHE_MASK];
+		Unit& unit = table_[hash % CACHE_MASK];
 		
 		if(is_mutate_count_==unit.mutate_count && 
 			XTAL_detail_raweq(target_class, unit.target_class) && 

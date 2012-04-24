@@ -522,6 +522,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\xtal\xtal_lib\xtal_errormessage_jp_sjis.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\xtal\xtal_lib\xtal_errormessage_jp_utf8.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\xtal\xtal_lib\xtal_posixfilesystem.h"
 					>
 				</File>

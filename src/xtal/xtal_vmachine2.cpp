@@ -920,6 +920,8 @@ const inst_t* VMachine::catch_body(const inst_t* pc, const ExceptFrame& nef){
 			pc = ef.info->finally_pc +  code->bytecode_data();
 			stack_.push(e);
 			stack_.push(AnyPtr(code->bytecode_size()-1));
+			const inst_t* pcode = code->bytecode_data() + (code->bytecode_size()-1);
+			pcode = pcode;
 		}
 
 		except_frames_.downsize(1);

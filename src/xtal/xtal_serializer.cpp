@@ -6,8 +6,8 @@
 namespace xtal{
 	
 enum{
-	SERIALIZE_VERSION1 = 1,
-	SERIALIZE_VERSION2 = 1
+	SERIALIZE_VERSION1 = 2,
+	SERIALIZE_VERSION2 = 0
 };
 
 Serializer::Serializer(const StreamPtr& s)
@@ -169,8 +169,11 @@ void Serializer::inner_serialize(const AnyPtr& v){
 		uint_t sz;
 		sz = p->code_.size();
 		stream_->put_u32be(sz);
-		if(sz!=0){ stream_->write(&p->code_[0], sz); }	
-		
+		//if(sz!=0){ stream_->write(&p->code_[0], sz); }	
+		for(uint_t i=0; i<sz; ++i){
+			stream_->put_u16be(p->code_[i]);
+		}
+
 		sz = p->scope_info_table_.size();
 		stream_->put_u16be((u16)sz);
 		for(uint_t i=0; i<sz; ++i){
@@ -375,7 +378,7 @@ CodePtr Serializer::inner_deserialize_code(){
 		return null;
 	}
 
-	if(head[3]!=SERIALIZE_VERSION1){
+	if(head[3]!=SERIALIZE_VERSION1 && head[4]!=SERIALIZE_VERSION2){
 		set_runtime_error(Xt("XRE1009"));
 		return null;
 	}
@@ -383,8 +386,11 @@ CodePtr Serializer::inner_deserialize_code(){
 	uint_t sz;
 	sz = stream_->get_u32be();
 	p->code_.resize(sz);
-	if(sz){ stream_->read(&p->code_[0], sz); }
-	
+	//if(sz){ stream_->read(&p->code_[0], sz); }
+	for(uint_t i=0; i<sz; ++i){
+		p->code_[i] = stream_->get_u16be();
+	}	
+
 	sz = stream_->get_u16be();
 	p->scope_info_table_.resize(sz);
 	for(uint_t i=0; i<sz; ++i){
@@ -456,12 +462,7 @@ CodePtr Serializer::inner_deserialize_code(){
 		p->value_table_.set_at(i, inner_deserialize());
 	}
 
-	if(head[4]==0){
-
-	}
-	else if(head[4]==1){
-		p->breakpoint_cond_map_ = ptr_cast<Map>(inner_deserialize());
-	}
+	p->breakpoint_cond_map_ = ptr_cast<Map>(inner_deserialize());
 
 	p->generated();
 

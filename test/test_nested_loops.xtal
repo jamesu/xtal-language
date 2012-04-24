@@ -16,6 +16,6 @@ class NLoopTest{
 	}
 
 	exec#Test{
-		assert nested_loops(5)==15625;
+		assert nested_loops(2)==64;
 	}
 }

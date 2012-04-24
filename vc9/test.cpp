@@ -9,8 +9,10 @@
 #include "../src/xtal/xtal_lib/xtal_cstdiostream.h"
 #include "../src/xtal/xtal_lib/xtal_winfilesystem.h"
 #include "../src/xtal/xtal_lib/xtal_chcode.h"
-#include "../src/xtal/xtal_lib/xtal_errormessage.h"
+//#include "../src/xtal/xtal_lib/xtal_errormessage.h"
 #include "../src/xtal/xtal_lib/xtal_tcpstream.h"
+//#include "../src/xtal/xtal_lib/xtal_errormessage_jp_utf8.h"
+#include "../src/xtal/xtal_lib/xtal_errormessage_jp_sjis.h"
 
 #include "time.h"
 
@@ -28,7 +30,7 @@ public:
 };
 
 int WINAPI getset(TestGetterSetterBind* b){
-	return b->x * 10;	
+	return (int)(b->x * 10);	
 }
 
 XTAL_PREBIND(TestGetterSetterBind){
@@ -231,7 +233,7 @@ public:
 	BinaryArrayData(const BinaryTypePtr& element_type, int_t len = 0)
 		:element_type_(element_type), data_(xnew<Array>(len)){}
 
-	void fillup(int_t i){
+	void fillup(uint_t i){
 		if(data_->length()<=i){
 			data_->resize(i+1);
 		}
@@ -452,7 +454,7 @@ public:
 		return type_;
 	}
 
-	void fillup(int_t i){
+	void fillup(uint_t i){
 		if(data_->length()<=i){
 			data_->resize(i+1);
 		}
@@ -774,7 +776,7 @@ struct ProfileData{
 		}
 
 		static bool eq(const MethodPtr& a, const MethodPtr& b){
-			return XTAL_detail_raweq(a, b);
+			return XTAL_detail_raweq(a, b)!=0;
 		}
 	};
 
@@ -855,7 +857,7 @@ struct ProfileData{
 
 		std::sort(&results[0], &results[0] + results.size(), Cmp());
 
-		for(int i=0; i<results.size(); ++i){
+		for(unsigned int i=0; i<results.size(); ++i){
 			ResultRecord rr = results[i];
 			Xf("fun:%s, count%d, sum:%d")->call(rr.fun, rr.count, rr.sum)->p();
 		}
@@ -991,13 +993,46 @@ int main2(int argc, char** argv){
 
 			foo();*/
 
-1.p;
-fib:fiber(){ 2.p; for(;;){ 3.p; 1.times{ 4.p; yield; 5.p; } 6.p; } 7.p; }
-fib();
-fib();
+			/*
+			1.p;
+			fib:fiber(){ 2.p; for(;;){ 3.p; 1.times{ 4.p; yield; 5.p; } 6.p; } 7.p; }
+			fib();
+			fib();
+			*/
 
-			fun foo(a: 0){}
-			foo(b: 1);
+			class Foo{
+				check_change_state_req(a){}
+				check_command(a){}
+				check_alive(a){}
+				check_damage(a){}
+				check_attack_hit(a){}
+				check_shift(a){}
+
+				exec ( xfighter )
+				{
+					// 状態遷移リクエストのチェック.
+					check_change_state_req( xfighter );
+					
+					// プレイヤー入力情報の更新.
+					//set_player_sw( xfighter );
+
+					// コマンドチェック.
+					check_command( xfighter );
+
+					// 生死チェック.
+					check_alive( xfighter );
+
+					// ダメージチェック.
+					check_damage( xfighter );
+
+					// 自分の攻撃ヒットしたかチェック.
+					check_attack_hit ( xfighter );
+					
+					// シフトチェックルーチン実行.
+					check_shift ( xfighter );
+				}
+			}
+
 		))){
 		   code->inspect()->p();
 		   //code->def(Xid(AA), 20);
@@ -1317,9 +1352,9 @@ private :
 		return ch->is_red_color();
 	}
 
-	Chunk* chunk_align(Chunk* it, int alignment);
+	Chunk* chunk_align(Chunk* it, size_t alignment);
 
-	void* malloc_inner(size_t size, int alignment = MIN_ALIGNMENT, const char* file = "" , int line = 0);
+	void* malloc_inner(size_t size, size_t alignment = MIN_ALIGNMENT, const char* file = "" , int line = 0);
 
 	void free_inner(void* p);
 
@@ -1455,7 +1490,7 @@ void MemoryManager::free(void* p){
 #endif
 }
 
-MemoryManager::Chunk* MemoryManager::chunk_align(Chunk* it, int alignment){
+MemoryManager::Chunk* MemoryManager::chunk_align(Chunk* it, size_t alignment){
 	// ユーザーへ返すメモリの先頭アドレスを計算
 	void* p = align_p(it->buf(), alignment);
 
@@ -1474,7 +1509,7 @@ MemoryManager::Chunk* MemoryManager::chunk_align(Chunk* it, int alignment){
 /**
 * \brief メモリ確保
 */
-void* MemoryManager::malloc_inner(size_t size, int alignment, const char* file, int line){
+void* MemoryManager::malloc_inner(size_t size, size_t alignment, const char* file, int line){
 	if(alignment>MIN_ALIGNMENT){
 		alignment = align_2(alignment);
 	}

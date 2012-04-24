@@ -54,7 +54,7 @@ class EvalTest{
 	}
 
 	nested_loops2#Test(){
-		n: 3;
+		n: 2;
 		x: 0;
 		for(a: 0; a<n; a++){
 			for(b: 0; b<n; b++)
@@ -76,7 +76,7 @@ class EvalTest{
 							}
 		}
 		
-		assert x==729;
+		assert x==64;
 	}
 	
 	class_loop#Test(){

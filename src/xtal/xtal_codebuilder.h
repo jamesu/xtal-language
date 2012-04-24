@@ -32,7 +32,7 @@ private:
 
 	CodePtr compile_toplevel(const ExprPtr& e, const StringPtr& source_file_name);
 	void adjust_values(int_t need_result_count, int_t result_count);
-	inst_address_t calc_address(const inst_t* pc, inst_address_t address);
+	address16 calc_address(const inst_t* pc, address16 address);
 	void opt_jump();
 	int_t reserve_label();
 	void set_label(int_t lableno);
@@ -73,8 +73,61 @@ private:
 	int_t compile_fun(const ExprPtr& e, int_t stack_top, int_t result);
 	int_t compile_e(const ExprPtr& e, int_t stack_top, int_t result, int_t result_count);
 	bool is_comp_bin(const ExprPtr& e);
-	void put_inst2(const Inst& t, uint_t sz);
-	template<class T> void put_inst(const T& t){ put_inst2(t, sizeof(t)); }
+
+	template<class T> void put_inst(){ 
+		T::set(code_reserve(T::ISIZE));
+		code_wrote(T::ISIZE);
+	}
+
+	template<class T> void put_inst(int m1){ 
+		T::set(code_reserve(T::ISIZE), m1);
+		code_wrote(T::ISIZE);
+	}
+
+	template<class T> void put_inst(int m1, int m2){ 
+		T::set(code_reserve(T::ISIZE), m1, m2);
+		code_wrote(T::ISIZE);
+	}
+
+	template<class T> void put_inst(int m1, int m2, int m3){ 
+		T::set(code_reserve(T::ISIZE), m1, m2, m3);
+		code_wrote(T::ISIZE);
+	}
+
+	template<class T> void put_inst(int m1, int m2, int m3, int m4){ 
+		T::set(code_reserve(T::ISIZE), m1, m2, m3, m4);
+		code_wrote(T::ISIZE);
+	}
+
+	template<class T> void put_inst(int m1, int m2, int m3, int m4, int m5){ 
+		T::set(code_reserve(T::ISIZE), m1, m2, m3, m4, m5);
+		code_wrote(T::ISIZE);
+	}
+
+	template<class T> void put_inst(int m1, int m2, int m3, int m4, int m5, int m6){ 
+		T::set(code_reserve(T::ISIZE), m1, m2, m3, m4, m5, m6);
+		code_wrote(T::ISIZE);
+	}
+
+	template<class T> void put_inst(int m1, int m2, int m3, int m4, int m5, int m6, int m7){ 
+		T::set(code_reserve(T::ISIZE), m1, m2, m3, m4, m5, m6, m7);
+		code_wrote(T::ISIZE);
+	}
+
+	template<class T> void put_inst(int m1, int m2, int m3, int m4, int m5, int m6, int m7, int m8){ 
+		T::set(code_reserve(T::ISIZE), m1, m2, m3, m4, m5, m6, m7, m8);
+		code_wrote(T::ISIZE);
+	}
+
+	template<class T> void put_inst(int m1, int m2, int m3, int m4, int m5, int m6, int m7, int m8, int m9){ 
+		T::set(code_reserve(T::ISIZE), m1, m2, m3, m4, m5, m6, m7, m8, m9);
+		code_wrote(T::ISIZE);
+	}
+
+	inst_t* code_reserve(size_t size);
+
+	void code_wrote(size_t size);
+
 	int_t code_size();
 	
 private:

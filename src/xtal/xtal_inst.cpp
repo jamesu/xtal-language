@@ -5,7 +5,7 @@ namespace xtal{
 
 #ifdef XTAL_DEBUG
 
-int_t inst_inspect(inst_address_t& value, Inst* inst, const CodePtr& code){
+int_t inst_inspect(address16 value, inst_t* inst, const CodePtr& code){
 	int_t pc = (inst_t*)inst - code->bytecode_data();
 	return pc + value;
 }
@@ -66,6 +66,7 @@ StringPtr inspect_range(const CodePtr& code, const inst_t* start, const inst_t* 
 	StringPtr temp;
 	MemoryStreamPtr ms = xnew<MemoryStream>();
 
+	/*
 	for(; pc < end;){switch(*pc){
 		XTAL_NODEFAULT;
 
@@ -159,7 +160,7 @@ StringPtr inspect_range(const CodePtr& code, const inst_t* start, const inst_t* 
 		XTAL_INST_CASE(InstMAX);
 //}}INST_INSPECT}
 	} ms->put_s(Xf("%04d(%04d):%s\n")->call((int_t)(pc-start), code->compliant_lineno(pc), temp)->to_s()); pc += sz; }
-
+*/
 	ms->seek(0);
 	return ms->get_s(ms->size());
 }

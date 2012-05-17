@@ -222,6 +222,7 @@ CodePtr CodeBuilder::compile_toplevel(const ExprPtr& ae, const StringPtr& source
 CodeBuilder::FunFrame& CodeBuilder::push_ff(){
 	fun_frame_stack_.push(new_object_xmalloc<FunFrame>());
 	ff().var_frame_count = scope_stack_.size();
+	ff().return_value = -1;
 	return ff();
 }
 	

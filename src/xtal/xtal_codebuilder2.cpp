@@ -827,6 +827,11 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 			}
 
 			break_off(ff().var_frame_count+1);
+
+			if(ff().return_value<0){
+				ff().return_value = count;
+			}
+
 			put_inst<InstReturn>(base, count);
 			if(count>=256){
 				error(Xt("XCE1022"));

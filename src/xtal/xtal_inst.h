@@ -47,7 +47,7 @@ inline int_t inst_inspect_i8(int value, const inst_t*, const CodePtr&){ return (
 inline int_t inst_inspect_u8(int value, const inst_t*, const CodePtr&){ return (int_t)value; }
 inline int_t inst_inspect_i16(int value, const inst_t*, const CodePtr&){ return (int_t)value; }
 inline int_t inst_inspect_u16(int value, const inst_t*, const CodePtr&){ return (int_t)value; }
-inline int_t inst_inspect_address16(int value, const inst_t*, const CodePtr&){ return (int_t)value; }
+int_t inst_inspect_address16(int value, const inst_t*, const CodePtr&);
 
 
 #define XTAL_ALIGN(V,N) ((V+(N-1))&~(N-1))
@@ -156,7 +156,7 @@ inline void XTAL_set_op_i8(int A, int B, inst_t* x, int value){
 		static int Name1(const inst_t* x){ return XTAL_op(Type1, A1, B1, x); } static void set_##Name1(inst_t* x, int v){ XTAL_set_op(Type1, A1, B1, x, v); }\
 		static int Name2(const inst_t* x){ return XTAL_op(Type2, A2, B2, x); } static void set_##Name2(inst_t* x, int v){ XTAL_set_op(Type2, A2, B2, x, v); }\
 \
-		static StringPtr inspect(inst_t* x, const CodePtr& code){\
+		static StringPtr inspect(const inst_t* x, const CodePtr& code){\
 			return make_inst_string(\
 					XTAL_STRING(#InstName),\
 					XTAL_STRING(#Name1), inst_inspect_##Type1(Name1(x), x, code),\
@@ -186,7 +186,7 @@ inline void XTAL_set_op_i8(int A, int B, inst_t* x, int value){
 		static int Name2(const inst_t* x){ return XTAL_op(Type2, A2, B2, x); } static void set_##Name2(inst_t* x, int v){ XTAL_set_op(Type2, A2, B2, x, v); }\
 		static int Name3(const inst_t* x){ return XTAL_op(Type3, A3, B3, x); } static void set_##Name3(inst_t* x, int v){ XTAL_set_op(Type3, A3, B3, x, v); }\
 \
-		static StringPtr inspect(inst_t* x, const CodePtr& code){\
+		static StringPtr inspect(const inst_t* x, const CodePtr& code){\
 			return make_inst_string(\
 					XTAL_STRING(#InstName),\
 					XTAL_STRING(#Name1), inst_inspect_##Type1(Name1(x), x, code),\
@@ -220,7 +220,7 @@ inline void XTAL_set_op_i8(int A, int B, inst_t* x, int value){
 		static int Name3(const inst_t* x){ return XTAL_op(Type3, A3, B3, x); } static void set_##Name3(inst_t* x, int v){ XTAL_set_op(Type3, A3, B3, x, v); }\
 		static int Name4(const inst_t* x){ return XTAL_op(Type4, A4, B4, x); } static void set_##Name4(inst_t* x, int v){ XTAL_set_op(Type4, A4, B4, x, v); }\
 \
-		static StringPtr inspect(inst_t* x, const CodePtr& code){\
+		static StringPtr inspect(const inst_t* x, const CodePtr& code){\
 			return make_inst_string(\
 					XTAL_STRING(#InstName),\
 					XTAL_STRING(#Name1), inst_inspect_##Type1(Name1(x), x, code),\
@@ -258,7 +258,7 @@ inline void XTAL_set_op_i8(int A, int B, inst_t* x, int value){
 		static int Name4(const inst_t* x){ return XTAL_op(Type4, A4, B4, x); } static void set_##Name4(inst_t* x, int v){ XTAL_set_op(Type4, A4, B4, x, v); }\
 		static int Name5(const inst_t* x){ return XTAL_op(Type5, A5, B5, x); } static void set_##Name5(inst_t* x, int v){ XTAL_set_op(Type5, A5, B5, x, v); }\
 \
-		static StringPtr inspect(inst_t* x, const CodePtr& code){\
+		static StringPtr inspect(const inst_t* x, const CodePtr& code){\
 			return make_inst_string(\
 					XTAL_STRING(#InstName),\
 					XTAL_STRING(#Name1), inst_inspect_##Type1(Name1(x), x, code),\
@@ -300,7 +300,7 @@ inline void XTAL_set_op_i8(int A, int B, inst_t* x, int value){
 		static int Name5(const inst_t* x){ return XTAL_op(Type5, A5, B5, x); } static void set_##Name5(inst_t* x, int v){ XTAL_set_op(Type5, A5, B5, x, v); }\
 		static int Name6(const inst_t* x){ return XTAL_op(Type6, A6, B6, x); } static void set_##Name6(inst_t* x, int v){ XTAL_set_op(Type6, A6, B6, x, v); }\
 \
-		static StringPtr inspect(inst_t* x, const CodePtr& code){\
+		static StringPtr inspect(const inst_t* x, const CodePtr& code){\
 			return make_inst_string(\
 					XTAL_STRING(#InstName),\
 					XTAL_STRING(#Name1), inst_inspect_##Type1(Name1(x), x, code),\
@@ -345,7 +345,7 @@ inline void XTAL_set_op_i8(int A, int B, inst_t* x, int value){
 		static int Name6(const inst_t* x){ return XTAL_op(Type6, A6, B6, x); } static void set_##Name6(inst_t* x, int v){ XTAL_set_op(Type6, A6, B6, x, v); }\
 		static int Name7(const inst_t* x){ return XTAL_op(Type7, A7, B7, x); } static void set_##Name7(inst_t* x, int v){ XTAL_set_op(Type7, A7, B7, x, v); }\
 \
-		static StringPtr inspect(inst_t* x, const CodePtr& code){\
+		static StringPtr inspect(const inst_t* x, const CodePtr& code){\
 			return make_inst_string(\
 					XTAL_STRING(#InstName),\
 					XTAL_STRING(#Name1), inst_inspect_##Type1(Name1(x), x, code),\
@@ -393,7 +393,7 @@ inline void XTAL_set_op_i8(int A, int B, inst_t* x, int value){
 		static int Name7(const inst_t* x){ return XTAL_op(Type7, A7, B7, x); } static void set_##Name7(inst_t* x, int v){ XTAL_set_op(Type7, A7, B7, x, v); }\
 		static int Name8(const inst_t* x){ return XTAL_op(Type8, A8, B8, x); } static void set_##Name8(inst_t* x, int v){ XTAL_set_op(Type8, A8, B8, x, v); }\
 \
-		static StringPtr inspect(inst_t* x, const CodePtr& code){\
+		static StringPtr inspect(const inst_t* x, const CodePtr& code){\
 			return make_inst_string(\
 					XTAL_STRING(#InstName),\
 					XTAL_STRING(#Name1), inst_inspect_##Type1(Name1(x), x, code),\
@@ -444,7 +444,7 @@ inline void XTAL_set_op_i8(int A, int B, inst_t* x, int value){
 		static int Name8(const inst_t* x){ return XTAL_op(Type8, A8, B8, x); } static void set_##Name8(inst_t* x, int v){ XTAL_set_op(Type8, A8, B8, x, v); }\
 		static int Name9(const inst_t* x){ return XTAL_op(Type9, A9, B9, x); } static void set_##Name9(inst_t* x, int v){ XTAL_set_op(Type9, A9, B9, x, v); }\
 \
-		static StringPtr inspect(inst_t* x, const CodePtr& code){\
+		static StringPtr inspect(const inst_t* x, const CodePtr& code){\
 			return make_inst_string(\
 					XTAL_STRING(#InstName),\
 					XTAL_STRING(#Name1), inst_inspect_##Type1(Name1(x), x, code),\

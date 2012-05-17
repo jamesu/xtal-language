@@ -185,8 +185,8 @@ public:
 
 	void detach(){
 		members_.detach();
-		outer_ = null;
-		code_ = null;
+		//outer_ = null;
+		//code_ = null;
 	}
 
 protected:

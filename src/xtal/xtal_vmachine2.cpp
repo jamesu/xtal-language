@@ -24,8 +24,8 @@ VMachine::VMachine(){
 
 VMachine::~VMachine(){
 	variables_.clear();
-	for(int_t i=0, size=fun_frames_.capacity(); i<size; ++i){
-		if(FunFrame* p = fun_frames_.reverse_at_unchecked(i)){
+	for(int_t i=0, size=fun_frame_stack_.capacity(); i<size; ++i){
+		if(FunFrame* p = fun_frame_stack_.reverse_at_unchecked(i)){
 			delete_object_xfree<FunFrame>(p);
 		}
 	}
@@ -38,7 +38,7 @@ VMachine::~VMachine(){
 void VMachine::reset(){
 	stack_.resize(0);
 	except_frames_.resize(0);
-	fun_frames_.resize(0);
+	fun_frame_stack_.resize(0);
 
 	ready();
 	
@@ -122,12 +122,7 @@ void VMachine::push_arg(const ArgumentsPtr& args){
 }
 
 void VMachine::ready(){
-	FunFrame* fp = fun_frames_.push();
-	if(!fp){ 
-		fun_frames_.top() = fp = new_object_xmalloc<FunFrame>();
-	}
-
-	FunFrame& f = *fp;
+	FunFrame& f = *push_ff_simple();
 	f.is_executed = 0;
 	f.need_result_count = 0;
 	f.ordered_arg_count = 0;
@@ -433,7 +428,7 @@ void VMachine::present_for_vm(Fiber* fun, VMachine* vm, bool add_succ_or_fail_re
 	if(const AnyPtr& e = catch_except()){
 		vm->set_except_x(e);
 		vm->stack_.push(e);
-		vm->fun_frames_.top()->next_pc = &throw_code_;
+		vm->fun_frame_stack_.top()->next_pc = &throw_code_;
 		resume_pc_ = 0;
 		return;
 	}
@@ -675,16 +670,16 @@ debug::CallerInfoPtr VMachine::caller(uint_t n){
 		return nul<debug::CallerInfo>();
 	}
 
-	if(n>=fun_frames_.size()-1){
+	if(n>=fun_frame_stack_.size()-1){
 		if(parent_vm_){
-			return parent_vm_->caller(n-(fun_frames_.size()-1));
+			return parent_vm_->caller(n-(fun_frame_stack_.size()-1));
 		}
 		return nul<debug::CallerInfo>();
 	}
 
-	FunFrame& f = *fun_frames_[n];
-	FunFrame& pf = n==0 ? f : *fun_frames_[n-1];
-	int_t scope_lower = n==0 ? 0 : fun_frames_[n-1]->scope_lower;
+	FunFrame& f = *fun_frame_stack_[n];
+	FunFrame& pf = n==0 ? f : *fun_frame_stack_[n-1];
+	int_t scope_lower = n==0 ? 0 : fun_frame_stack_[n-1]->scope_lower;
 
 	debug::CallerInfoPtr ret = xnew<debug::CallerInfo>();
 
@@ -705,13 +700,13 @@ debug::CallerInfoPtr VMachine::caller(uint_t n){
 
 int_t VMachine::call_stack_size(){
 	int_t n = parent_vm_ ? parent_vm_->call_stack_size()-1 : -1; 
-	return n + fun_frames_.size()-1;
+	return n + fun_frame_stack_.size()-1;
 }
 
 AnyPtr VMachine::eval_local_variable(const IDPtr& var, uint_t call_n){
-	if(call_n<fun_frames_.size()-1){
-		int_t scope_upper = fun_frames_[call_n-1]->scope_lower;
-		int_t scope_lower = fun_frames_[call_n]->scope_lower;
+	if(call_n<fun_frame_stack_.size()-1){
+		int_t scope_upper = fun_frame_stack_[call_n-1]->scope_lower;
+		int_t scope_lower = fun_frame_stack_[call_n]->scope_lower;
 
 		FramePtr frame;
 		for(int_t i=0; i<scope_upper - scope_lower; ++i){
@@ -722,7 +717,7 @@ AnyPtr VMachine::eval_local_variable(const IDPtr& var, uint_t call_n){
 			}
 		}
 
-		frame = fun_frames_[call_n]->outer;
+		frame = fun_frame_stack_[call_n]->outer;
 		while(frame){
 			const AnyPtr& ret = frame->member(var);
 			if(!XTAL_detail_is_undefined(ret)){
@@ -732,8 +727,8 @@ AnyPtr VMachine::eval_local_variable(const IDPtr& var, uint_t call_n){
 			frame = frame->outer();
 		}
 
-		if(fun_frames_[call_n]->fun){
-			const AnyPtr& ret = fun_frames_[call_n]->code->member(var);
+		if(fun_frame_stack_[call_n]->fun){
+			const AnyPtr& ret = fun_frame_stack_[call_n]->code->member(var);
 			if(!XTAL_detail_is_undefined(ret)){
 				return ret;
 			}
@@ -741,7 +736,7 @@ AnyPtr VMachine::eval_local_variable(const IDPtr& var, uint_t call_n){
 	}
 	else{
 		if(parent_vm_){
-			return parent_vm_->eval_local_variable(var, call_n-(fun_frames_.size()-1));
+			return parent_vm_->eval_local_variable(var, call_n-(fun_frame_stack_.size()-1));
 		}
 	}
 		
@@ -749,10 +744,10 @@ AnyPtr VMachine::eval_local_variable(const IDPtr& var, uint_t call_n){
 }
 
 bool VMachine::eval_set_local_variable(const IDPtr& var, const AnyPtr& value, uint_t call_n){
-	if(call_n<fun_frames_.size()-1){
+	if(call_n<fun_frame_stack_.size()-1){
 
-		int_t scope_upper = fun_frames_[call_n-1]->scope_lower;
-		int_t scope_lower = fun_frames_[call_n]->scope_lower;
+		int_t scope_upper = fun_frame_stack_[call_n-1]->scope_lower;
+		int_t scope_lower = fun_frame_stack_[call_n]->scope_lower;
 
 		FramePtr frame;
 		for(int_t i=0; i<scope_upper - scope_lower; ++i){
@@ -763,7 +758,7 @@ bool VMachine::eval_set_local_variable(const IDPtr& var, const AnyPtr& value, ui
 			}
 		}
 
-		frame = fun_frames_[call_n]->outer;
+		frame = fun_frame_stack_[call_n]->outer;
 		while(frame){
 			if(frame->replace_member(var, value)){
 				return true;
@@ -772,15 +767,15 @@ bool VMachine::eval_set_local_variable(const IDPtr& var, const AnyPtr& value, ui
 			frame = frame->outer();
 		}
 
-		if(fun_frames_[call_n]->fun){
-			if(fun_frames_[call_n]->code->replace_member(var, value)){
+		if(fun_frame_stack_[call_n]->fun){
+			if(fun_frame_stack_[call_n]->code->replace_member(var, value)){
 				return true;
 			}
 		}
 	}
 	else{
 		if(parent_vm_){
-			return parent_vm_->eval_set_local_variable(var, value, call_n-(fun_frames_.size()-1));
+			return parent_vm_->eval_set_local_variable(var, value, call_n-(fun_frame_stack_.size()-1));
 		}
 	}
 		
@@ -867,6 +862,18 @@ void VMachine::breakpoint_hook(const inst_t* pc, const MethodPtr& fun, int_t kin
 	vmachine_take_back(set_vmachine(oldvm));
 }
 
+void VMachine::pop_ff_non(){
+	FunFrame& f = *fun_frame_stack_.top();
+
+	f.fun = null;
+	f.outer = null;
+	f.self = null;
+
+	pop_ff_simple();
+	current_fun_frame_->is_executed = 2;
+	current_fun_frame_->next_pc = f.poped_pc; 
+}
+
 const inst_t* VMachine::catch_body(const inst_t* pc, const ExceptFrame& nef){
 	AnyPtr e = catch_except();
 
@@ -879,7 +886,7 @@ const inst_t* VMachine::catch_body(const inst_t* pc, const ExceptFrame& nef){
 	}
 
 	// Xtalの関数を脱出していく
-	while((size_t)ef.fun_frame_size<fun_frames_.size()){
+	while((size_t)ef.fun_frame_size<fun_frame_stack_.size()){
 		while(scopes_.size()>XTAL_VM_ff().scope_lower){
 			pop_scope();
 		}
@@ -983,8 +990,8 @@ void VMachine::on_visit_members(Visitor& m){
 		m & stack_[i];
 	}
 
-	for(int_t i=0, size=fun_frames_.size(); i<size; ++i){
-		if(FunFrame* f = fun_frames_[i]){
+	for(int_t i=0, size=fun_frame_stack_.size(); i<size; ++i){
+		if(FunFrame* f = fun_frame_stack_[i]){
 			m & f->fun;
 			m & f->self;
 			m & f->outer;
@@ -1023,7 +1030,7 @@ AnyPtr VMachine::eval(const CodePtr& code, uint_t n){
 		return undefined;
 	}
 
-	AnyPtr self = fun_frames_[n]->self;
+	AnyPtr self = fun_frame_stack_[n]->self;
 
 	// eval中の例外の発生による影響範囲抑制のため、関数呼び出しを一段はさむ
 	setup_call(1); 

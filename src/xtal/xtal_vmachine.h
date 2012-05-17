@@ -74,9 +74,9 @@ struct FastStackDefaultValue<AnyPtr>{
 #define XTAL_VM_local_variable(pos) (*(variables_top_ + pos))
 #define XTAL_VM_set_local_variable(pos, value) (XTAL_VM_INC(value), XTAL_VM_DEC(XTAL_VM_local_variable(pos)), XTAL_detail_copy(XTAL_VM_local_variable(pos), value))
 
-#define XTAL_VM_ff() (**fun_frames_.current_)
-#define XTAL_VM_prev_ff() (**(fun_frames_.current_-1))
-#define XTAL_VM_identifier(n) (XTAL_VM_ff().identifier_[n])
+#define XTAL_VM_ff() (*current_fun_frame_)
+#define XTAL_VM_prev_ff() (**(fun_frame_stack_.current_-1))
+#define XTAL_VM_identifier(n) (identifier_[n])
 
 // XTAL仮想マシン
 class VMachine : public Base{
@@ -581,9 +581,9 @@ public:
 	const inst_t* execute_send(const inst_t* pc, CallState& call_state);
 	const inst_t* execute_sendex(const inst_t* pc, CallState& call_state);
 	const inst_t* execute_send_iprimary_nosecondary(const inst_t* pc, int_t iprimary, CallState& call_state);
-	const inst_t* execute_send_comp(const inst_t* pc, const void* inst, int_t iprimary);
-	const inst_t* execute_send_bin(const inst_t* pc, const void* inst, int_t iprimary);
-	const inst_t* execute_send_una(const inst_t* pc, const void* inst, int_t iprimary);
+	const inst_t* execute_send_comp(const inst_t* pc, int_t iprimary);
+	const inst_t* execute_send_bin(const inst_t* pc, int_t iprimary);
+	const inst_t* execute_send_una(const inst_t* pc, int_t iprimary);
 
 //{DECLS{{
 	const inst_t* FunInstLine(const inst_t* pc);
@@ -697,7 +697,25 @@ private:
 	FastStack<AnyPtr> stack_;
 
 	// 関数呼び出しの度に積まれるフレーム
-	FastStack<FunFrame*> fun_frames_;
+	FastStack<FunFrame*> fun_frame_stack_;
+	FunFrame* current_fun_frame_;
+
+	FunFrame* push_ff_simple(){
+		current_fun_frame_ = fun_frame_stack_.push();
+		if(!current_fun_frame_){ 
+			fun_frame_stack_.top() = current_fun_frame_ = new_object_xmalloc<FunFrame>();
+		}
+		return current_fun_frame_;
+	}
+
+	void pop_ff_simple(){
+		fun_frame_stack_.pop();
+		current_fun_frame_ = fun_frame_stack_.top();
+	}
+
+	int_t fun_frame_size(){
+		return fun_frame_stack_.size();
+	}
 
 	struct Scope{
 		BasePtr<Frame> frame;
@@ -742,10 +760,6 @@ public:
 	}
 
 	void on_visit_members(Visitor& m);
-
-	int_t fun_frame_size(){
-		return fun_frames_.size();
-	}
 
 protected:
 

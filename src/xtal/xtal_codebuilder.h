@@ -135,6 +135,7 @@ private:
 	struct FunFrame{
 		int_t var_frame_count;
 		int_t fun_info_num;
+		int_t return_value;
 
 		struct Label{
 			int_t pos;

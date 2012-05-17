@@ -31,6 +31,10 @@ const AnyPtr& AutoLoader::on_rawmember(const IDPtr& primary_key, const AnyPtr& s
 
 			if(code){
 				value = code->call();
+				
+				XTAL_CHECK_EXCEPT(e){
+					return undefined;					
+				}
 			}
 			else{
 				XTAL_CATCH_EXCEPT(e){

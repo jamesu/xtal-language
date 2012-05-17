@@ -993,11 +993,8 @@ CodePtr require_source(const StringPtr& name){
 					return code;
 				}
 
-				XTAL_CATCH_EXCEPT(e){
-					if(e->is(cpp_class<CompileError>())){
-						XTAL_SET_EXCEPT(e);
-						return nul<Code>();
-					}
+				XTAL_CHECK_EXCEPT(e){
+					return nul<Code>();
 				}
 			}
 			else{
@@ -1005,11 +1002,8 @@ CodePtr require_source(const StringPtr& name){
 					return ret;
 				}
 
-				XTAL_CATCH_EXCEPT(e){
-					if(e->is(cpp_class<CompileError>())){
-						XTAL_SET_EXCEPT(e);
-						return nul<Code>();
-					}
+				XTAL_CHECK_EXCEPT(e){
+					return nul<Code>();
 				}
 			}
 		}
@@ -1021,17 +1015,18 @@ CodePtr require_source(const StringPtr& name){
 			return code;
 		}
 	}
-	else{
-		temp = Xf1("%s.xtal", 0, name);
-		if(CodePtr ret = compile_file(temp)){
-			return ret;
-		}
+	
+	XTAL_CATCH_EXCEPT(e){}
 
-		XTAL_CATCH_EXCEPT(e){
-			if(e->is(cpp_class<CompileError>())){
-				XTAL_SET_EXCEPT(e);
-				return nul<Code>();
-			}
+	temp = Xf1("%s.xtal", 0, name);
+	if(CodePtr ret = compile_file(temp)){
+		return ret;
+	}
+
+	XTAL_CATCH_EXCEPT(e){
+		if(e->is(cpp_class<CompileError>())){
+			XTAL_SET_EXCEPT(e);
+			return nul<Code>();
 		}
 	}
 

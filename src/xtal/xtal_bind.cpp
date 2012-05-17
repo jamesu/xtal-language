@@ -162,6 +162,7 @@ XTAL_BIND(String){
 	Xdef_method(to_s);
 	Xdef_method(clone);
 	Xdef_method(length);
+	Xdef_method(data_size);
 	Xdef_method(intern);
 	Xdef_method(is_interned);	// ƒoƒCƒ“ƒh˜R‚êC³ by ¯‚­‚¸”Ş•û‚É
 	Xdef_method(is_ch);

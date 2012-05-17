@@ -574,7 +574,7 @@ private: // ブレークポイント系
 	}
 
 public:
-	const inst_t* execute_divzero();
+	const inst_t* execute_divzero(const inst_t* pc);
 	const inst_t* execute_member2q(const inst_t* pc, CallState& call_state);
 	const inst_t* execute_call(const inst_t* pc, CallState& call_state);
 	const inst_t* execute_callex(const inst_t* pc, CallState& call_state);

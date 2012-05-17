@@ -3,7 +3,7 @@ inherit(lib::test);
 class Calc{
 
 	calc#Test{
-		assert 10+20 == 30;
+		assert 10+20 == 30/0;
 		assert 50-100 == -50;
 		assert 10*5 == 50;
 		assert 50/10 == 5;

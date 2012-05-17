@@ -1076,7 +1076,7 @@ XTAL_VM_LOOP
 			if(btype==0){
 				if(XTAL_detail_ivalue(b)==0){
 					result.value_.init_null();
-					XTAL_VM_CONTINUE(execute_divzero());
+					XTAL_VM_CONTINUE(execute_divzero(pc));
 				}
 
 				if(atype==0){
@@ -1091,7 +1091,7 @@ XTAL_VM_LOOP
 			else{
 				if(XTAL_detail_fvalue(b)==0){
 					result.value_.init_null();
-					XTAL_VM_CONTINUE(execute_divzero());
+					XTAL_VM_CONTINUE(execute_divzero(pc));
 				}
 
 				if(atype==0){
@@ -1120,7 +1120,7 @@ XTAL_VM_LOOP
 			if(btype==0){
 				if(XTAL_detail_ivalue(b)==0){
 					result.value_.init_null();
-					XTAL_VM_CONTINUE(execute_divzero());
+					XTAL_VM_CONTINUE(execute_divzero(pc));
 				}
 
 				if(atype==0){
@@ -1135,7 +1135,7 @@ XTAL_VM_LOOP
 			else{
 				if(XTAL_detail_fvalue(b)==0){
 					result.value_.init_null();
-					XTAL_VM_CONTINUE(execute_divzero());
+					XTAL_VM_CONTINUE(execute_divzero(pc));
 				}
 
 				if(atype==0){
@@ -2157,12 +2157,12 @@ const inst_t* VMachine::execute_send_una(const inst_t* pc, int_t iprimary){
 	XTAL_VM_CONTINUE(execute_send_iprimary_nosecondary(pc, iprimary, call_state));
 }
 
-const inst_t* VMachine::execute_divzero(){
+const inst_t* VMachine::execute_divzero(const inst_t* pc){
 	XTAL_VM_LOCK{
-		set_runtime_error(Xt("XRE1024"), to_smartptr(this));
+		pc = push_except(pc, cpp_class<RuntimeError>()->call(Xt("XRE1024")));
 	}
 
-	XTAL_VM_CONTINUE(&throw_code_);
+	XTAL_VM_CONTINUE(pc);
 }
 
 ////////////////////////////////////////////////////////////////

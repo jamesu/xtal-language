@@ -21,14 +21,14 @@ namespace xtal{
 #	define XTAL_VM_CASE(key) } Label##key: { XTAL_VM_DEF_INST(key);
 #	define XTAL_VM_LOOP vmloopbegin: goto *labels[XTAL_opc(pc)];
 #	define XTAL_VM_LOOP_END }
-#	define XTAL_VM_CONTINUE(x) { pc = (x); goto *labels[XTAL_opc(pc)]; }
+#	define XTAL_VM_CONTINUE(x) { prev_pc = pc; pc = (x); goto *labels[XTAL_opc(pc)]; }
 #	define XTAL_VM_CONTINUE0 goto *labels[XTAL_opc(pc)]
 #else
 #	define XTAL_VM_CASE_FIRST(key) case key::NUMBER: { XTAL_VM_DEF_INST(key);
 #	define XTAL_VM_CASE(key) } case key::NUMBER: { XTAL_VM_DEF_INST(key);
 #	define XTAL_VM_LOOP switch(XTAL_opc(pc)){
 #	define XTAL_VM_LOOP_END } XTAL_NODEFAULT; }
-#	define XTAL_VM_CONTINUE(x) { pc = (x); goto vmloopbegin; }
+#	define XTAL_VM_CONTINUE(x) { prev_pc = pc; pc = (x); goto vmloopbegin; }
 #	define XTAL_VM_CONTINUE0 goto vmloopbegin
 #endif
 
@@ -724,6 +724,7 @@ void VMachine::execute_inner2(const inst_t* start, int_t XTAL_VM_eval_n, ExceptF
 	static Any XTAL_VM_values[4] = { null, undefined, Bool(false), Bool(true) };
 
 	register const inst_t* pc = start;
+	register const inst_t* prev_pc = start;
 	int_t eval_base_n = fun_frame_stack_.size();
 
 	XTAL_ASSERT(cur.stack_size>=0);
@@ -1962,6 +1963,9 @@ XTAL_VM_LOOP
 
 		if(pc!=&throw_code_){
 			throw_pc_ = pc;
+		}
+		else{
+			throw_pc_ = prev_pc;
 		}
 
 		if(!except->is(cpp_class<Exception>())){

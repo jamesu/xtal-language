@@ -692,6 +692,7 @@ private:
 	int_t yield_result_count_;
 
 	const inst_t* throw_pc_;
+	bool exit_fiber_;
 
 	// 値保持用スタック
 	FastStack<AnyPtr> stack_;

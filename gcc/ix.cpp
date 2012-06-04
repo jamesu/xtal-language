@@ -1,17 +1,15 @@
 
 #include "../src/xtal/xtal.h"
+#include "../src/xtal/xtal_macro.h"
 
 #include "../src/xtal/xtal_lib/xtal_pthread.h"
 #include "../src/xtal/xtal_lib/xtal_cstdiostream.h"
 #include "../src/xtal/xtal_lib/xtal_posixfilesystem.h"
 #include "../src/xtal/xtal_lib/xtal_chcode.h"
-#include "../src/xtal/xtal_lib/xtal_errormessage.h"
+#include "../src/xtal/xtal_lib/xtal_errormessage_jp_utf8.h"
 
 #include "../src/xtal/xtal_codebuilder.h"
-#include "../src/xtal/xtal_macro.h"
 
-#include "../src/xtal/xtal_codebuilder.h"
-	
 using namespace xtal;
 
 class InteractiveStream : public Stream{
@@ -23,16 +21,18 @@ public:
 		continue_line_ = false;
 	}
 	
-	virtual uint_t read_charactors(AnyPtr* buffer, uint_t max){
+	virtual uint_t on_read_charactors(AnyPtr* buffer, uint_t max){
 		if(continue_line_){
 			return read_line(buffer, max);
 		}
 		else{
 			if(continue_stmt_){
-				stdout_stream()->put_s(format(XTAL_STRING("ix:%03d>    "))->call(line_));
+				stdout_stream()->print(format(XTAL_STRING("ix:%03d>    "))->call(line_));
+				fflush(stdout);
 			}
 			else{
-				stdout_stream()->put_s(format(XTAL_STRING("ix:%03d>"))->call(line_));
+				stdout_stream()->print(format(XTAL_STRING("ix:%03d>"))->call(line_));
+				fflush(stdout);
 			}
 
 			continue_stmt_ = true;
@@ -81,7 +81,7 @@ void interactive_compile_loop(const VMachinePtr& vm){
 	CodeBuilder cb;
 	CodePtr code = cb.eval_compile(exec);
 
-	vm->eval(code);
+	vm->eval(code, 1);
 	
 	XTAL_CATCH_EXCEPT(e){
 		exec->skip();
@@ -104,24 +104,23 @@ void interactive_compile(){
 	))){
 		code->def_fun(XTAL_STRING("interactive_compile_loop"), &interactive_compile_loop);
 		StreamPtr stream = xnew<InteractiveStream>();
-		xpeg::ExecutorPtr exec = xnew<xpeg::Executor>(stream, XTAL_STRING("ix"));
+		xpeg::ExecutorPtr exec = xnew<xpeg::StreamExecutor>(stream, XTAL_STRING("ix"));
 		code->call(stream, exec);
 	}
 }
 
 int main(int argc, char** argv){
-	using namespace xtal;
 
 	CStdioStdStreamLib stream_lib;
 	PThreadLib thread_lib;
 	PosixFilesystemLib filesystem_lib;
-	SJISChCodeLib ch_code_lib;
+	UTF8ChCodeLib utf8_ch_code_lib;
 
 	Setting setting;
 	setting.thread_lib = &thread_lib;
 	setting.std_stream_lib = &stream_lib;
 	setting.filesystem_lib = &filesystem_lib;
-	setting.ch_code_lib = &ch_code_lib;
+	setting.ch_code_lib = &utf8_ch_code_lib;
 
 	initialize(setting);
 

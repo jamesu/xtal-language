@@ -5,7 +5,7 @@
 #include "../src/xtal/xtal_lib/xtal_cstdiostream.h"
 #include "../src/xtal/xtal_lib/xtal_posixfilesystem.h"
 #include "../src/xtal/xtal_lib/xtal_chcode.h"
-//#include "../src/xtal/xtal_lib/xtal_errormessage.h"
+#include "../src/xtal/xtal_lib/xtal_errormessage_jp_utf8.h"
 
 using namespace xtal;
 
@@ -24,9 +24,13 @@ static void print_usage(){
 	);
 }
 
-static void handle_argv(char** argv){
+static int init_by_argv(int argc, char**argv){
 	int i;
-	for(i=1; argv[i]!=0; i++){
+	for(i=1; i<argc; i++){
+		if(strlen(argv[i])<2){
+			print_usage();
+			break;
+		}
 		if(argv[i][0]!='-')
 			break;
 
@@ -36,20 +40,24 @@ static void handle_argv(char** argv){
 			break;
 
 		case 'K':
-			kcode = argv[i][2];
-			break;
+			if (strlen(argv[i])>2){
+				kcode = argv[i][2];
+				break;
+			}
 
 		default:
 			print_usage();
-			return;
+			return 0;
 		}
-	
 	}
+	return i;
+}
 
-	if(argv[i]!=0){
+static void handle_argv(int i, int argc, char** argv){
+	if(i<argc){
 		ArrayPtr arg_list(xnew<Array>());
 		const char *filename = argv[i++];
-		for(i=1; argv[i]!=0; i++){
+		for(i=1; i<argc; i++){
 			arg_list->push_back(argv[i]);
 		}
 		builtin()->def("argv", arg_list);
@@ -70,6 +78,10 @@ int main(int argc, char** argv){
 	setting.std_stream_lib = &stream_lib;
 	setting.filesystem_lib = &filesystem_lib;
 	
+	int filename_index = init_by_argv(argc, argv);
+	if (filename_index == 0) {
+		return 1;
+	}
 	switch(kcode){
 	case 's': setting.ch_code_lib = &sjis_ch_code_lib; break;
 	case 'u': setting.ch_code_lib = &utf8_ch_code_lib; break;
@@ -77,12 +89,18 @@ int main(int argc, char** argv){
 	}
 
 	initialize(setting);
-	//bind_error_message();
 
-	handle_argv(argv);
-	
-	XTAL_CATCH_EXCEPT(e){
-		stderr_stream()->println(e);
+	XTAL_PROTECT{
+		bind_error_message();
+
+		handle_argv(filename_index, argc, argv);
+		
+		XTAL_CATCH_EXCEPT(e){
+			stderr_stream()->println(e);
+		}
+	}
+	XTAL_OUT_OF_MEMORY{
+		puts("out of memory");
 	}
 
 	uninitialize();

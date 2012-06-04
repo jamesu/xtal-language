@@ -1968,16 +1968,18 @@ XTAL_VM_LOOP
 			throw_pc_ = prev_pc;
 		}
 
-		if(!except->is(cpp_class<Exception>())){
-			except = cpp_class<RuntimeError>()->call(except);
+		if(!exit_fiber_){
+			if(!except->is(cpp_class<Exception>())){
+				except = cpp_class<RuntimeError>()->call(except);
+			}
+
+			except_[0] = except; 
+			check_breakpoint_hook(pc==&throw_code_ ? throw_pc_ : pc, BREAKPOINT_THROW); 
+
+			// 例外にバックトレースを追加する
+			AnyPtr e = catch_except();
+			set_except_x(append_backtrace(throw_pc_, e));
 		}
-
-		except_[0] = except; 
-		check_breakpoint_hook(pc==&throw_code_ ? throw_pc_ : pc, BREAKPOINT_THROW); 
-
-		// 例外にバックトレースを追加する
-		AnyPtr e = catch_except();
-		set_except_x(append_backtrace(throw_pc_, e));
 
 		// Xtalソース内でキャッチ等あるか調べる
 		pc = catch_body(throw_pc_, cur);

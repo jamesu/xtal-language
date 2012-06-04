@@ -891,7 +891,7 @@ protected:
 	}
 
 	virtual uint_t on_read_charactors(AnyPtr* buffer, uint_t max){
-		return Stream::read_charactors(buffer, max);
+		return Stream::on_read_charactors(buffer, max);
 	}
 
 private:

@@ -202,12 +202,12 @@ void Fiber::halt(){
 	}
 
 	if(resume_pc_!=0){
-		vm_->exit_fiber();
+		alive_ = false;
 		resume_pc_ = 0;
+		unset_finalizer_flag();
+		vm_->exit_fiber();
 		vmachine_take_back(vm_);
 		vm_ = null;
-		alive_ = false;
-		unset_finalizer_flag();
 	}
 }
 

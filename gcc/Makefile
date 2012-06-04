@@ -19,7 +19,7 @@ SRC = $(shell ls $(SRCDIR)/xtal_*.cpp)
 OBJ = $(patsubst $(SRCDIR)/%.cpp,%.o,$(SRC))
 HED = $(shell ls $(SRCDIR)/xtal_*.h)
 
-all: libxtal xtal
+all: libxtal xtal ixmake
 
 %.o: $(SRCDIR)/%.cpp
 	$(CC) -o $@ -c $< $(OPT)
@@ -48,7 +48,7 @@ $(BINDIR)/ix.exe: $(LIBDIR)/libxtal.a ix.cpp
 	$(CC) -o $(BINDIR)/ix.exe ./ix.cpp $(LIBDIR)/libxtal.a $(OPT) $(LOPT) 
 	strip --strip-all $(BINDIR)/ix.exe
 
-ix: $(BINDIR)/ix.exe
+ixmake: $(BINDIR)/ix.exe
 
 
 $(BINDIR)/test.exe: $(LIBDIR)/libxtal.a test.cpp

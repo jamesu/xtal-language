@@ -980,61 +980,12 @@ int main2(int argc, char** argv){
 
 		//debug::enable();
 		if(CodePtr code = Xsrc((
-			/*foo: fun(){
-				v: lib::Vec2D(0, 0);
-				u: lib::Vec2D(1, 2);
-				for(i: 0; i<500; ++i){
-					v += u;
-				}
-				
-				v.to_s.p;
+			fun f() {
+			   return fiber(){ yield; }
 			}
-
-
-			foo();*/
-
-			/*
-			1.p;
-			fib:fiber(){ 2.p; for(;;){ 3.p; 1.times{ 4.p; yield; 5.p; } 6.p; } 7.p; }
-			fib();
-			fib();
-			*/
-
-			class Foo{
-				check_change_state_req(a){}
-				check_command(a){}
-				check_alive(a){}
-				check_damage(a){}
-				check_attack_hit(a){}
-				check_shift(a){}
-
-				exec ( xfighter )
-				{
-					// 状態遷移リクエストのチェック.
-					check_change_state_req( xfighter );
-					
-					// プレイヤー入力情報の更新.
-					//set_player_sw( xfighter );
-
-					// コマンドチェック.
-					check_command( xfighter );
-
-					// 生死チェック.
-					check_alive( xfighter );
-
-					// ダメージチェック.
-					check_damage( xfighter );
-
-					// 自分の攻撃ヒットしたかチェック.
-					check_attack_hit ( xfighter );
-					
-					// シフトチェックルーチン実行.
-					check_shift ( xfighter );
-				}
-			}
-
+			f()();
 		))){
-		   code->inspect()->p();
+		   //code->inspect()->p();
 		   //code->def(Xid(AA), 20);
 
 			XTAL_CATCH_EXCEPT(e){
@@ -1075,7 +1026,7 @@ int main2(int argc, char** argv){
 
 	//compile_file("../test/compile_error/test.xtal");
 
-	//return 0;
+	return 0;
 	
 //*/
 

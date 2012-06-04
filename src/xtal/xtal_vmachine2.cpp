@@ -4,6 +4,7 @@
 namespace xtal{
 
 VMachine::VMachine(){
+	exit_fiber_ = false;
 	end_code_ = InstExit::NUMBER;
 	throw_code_ = InstThrow::NUMBER;
 	resume_pc_ = 0;
@@ -36,6 +37,7 @@ VMachine::~VMachine(){
 }
 
 void VMachine::reset(){
+	exit_fiber_ = false;
 	stack_.resize(0);
 	except_frames_.resize(0);
 	fun_frame_stack_.resize(0);
@@ -504,6 +506,7 @@ const inst_t* VMachine::resume_fiber(Fiber* fun, const inst_t* pc, VMachine* vm,
 }
 
 void VMachine::exit_fiber(){
+	exit_fiber_ = true;
 	yield_result_count_ = 0;
 	XTAL_VM_ff().next_pc = &throw_code_;
 	resume_pc_ = 0;

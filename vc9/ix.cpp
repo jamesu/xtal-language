@@ -21,7 +21,7 @@ public:
 		continue_line_ = false;
 	}
 	
-	virtual uint_t read_charactors(AnyPtr* buffer, uint_t max){
+	virtual uint_t on_read_charactors(AnyPtr* buffer, uint_t max){
 		if(continue_line_){
 			return read_line(buffer, max);
 		}
@@ -79,7 +79,7 @@ void interactive_compile_loop(const VMachinePtr& vm){
 	CodeBuilder cb;
 	CodePtr code = cb.eval_compile(exec);
 
-	vm->eval(code, 0);
+	vm->eval(code, 1);
 	
 	XTAL_CATCH_EXCEPT(e){
 		exec->skip();

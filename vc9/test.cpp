@@ -980,10 +980,9 @@ int main2(int argc, char** argv){
 
 		//debug::enable();
 		if(CodePtr code = Xsrc((
-			fun f() {
-			   return fiber(){ yield; }
+			singleton aa{
+				#_n:fun{}
 			}
-			f()();
 		))){
 		   //code->inspect()->p();
 		   //code->def(Xid(AA), 20);
@@ -1025,8 +1024,6 @@ int main2(int argc, char** argv){
 	full_gc();
 
 	//compile_file("../test/compile_error/test.xtal");
-
-	return 0;
 	
 //*/
 

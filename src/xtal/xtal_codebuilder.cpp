@@ -1603,7 +1603,7 @@ void CodeBuilder::compile_class(const ExprPtr& e, int_t stack_top, int_t result)
 		int_t number = 0;
 		XTAL_FOR_EXPR(v, e->class_stmts()){
 			ExprPtr v1 = ep(v);
-			if(v1->itag()==EXPR_CDEFINE_MEMBER){				
+			if(v1->itag()==EXPR_CDEFINE_MEMBER){		
 				compile_expr(v1->cdefine_member_term(), stack_top+1, stack_top);
 
 				int_t inumber = 0;
@@ -1660,7 +1660,8 @@ int_t CodeBuilder::compile_fun(const ExprPtr& e, int_t stack_top, int_t result){
 	int_t maxv = ordered + named;
 
 	// ゲッター、またはセッター用の最適化を行う
-	if(e->fun_kind()==KIND_METHOD){
+	//if(e->fun_kind()==KIND_METHOD)
+	{
 
 		// ゲッタか？
 		if(ordered==0 && named==0){

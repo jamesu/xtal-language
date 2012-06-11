@@ -1516,6 +1516,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 		}
 
 		XTAL_CASE_N(case EXPR_CDEFINE_MEMBER:){
+
 			return 0;
 		}
 

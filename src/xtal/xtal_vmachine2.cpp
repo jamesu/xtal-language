@@ -647,7 +647,8 @@ AnyPtr VMachine::append_backtrace(const inst_t* pc, const AnyPtr& e){
 
 		if(MethodPtr fun = XTAL_VM_ff().fun){
 			if(CodePtr code = fun->code()){
-				if((pc !=  code->bytecode_data() + code->bytecode_size()-1)){
+				//if((pc !=  code->bytecode_data() + code->bytecode_size()-1)){
+				if((code->bytecode_data() <= pc && pc < code->bytecode_data()+code->bytecode_size()-1)){
 					unchecked_ptr_cast<Exception>(ep)->append_backtrace(
 						code->source_file_name(),
 						code->compliant_lineno(pc),

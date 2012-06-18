@@ -409,14 +409,17 @@ void CodeBuilder::compile_stmt(const AnyPtr& p){
 		}
 	}
 	else{
-		result_->set_lineno_info(e->lineno());
+		if(e->lineno()!=0){
+			result_->set_lineno_info(e->lineno());
+		}
 	}
 
 	compile_e(e, 0, 0, 0);
 
 	//if(debug::is_debug_compile_enabled() && e->lineno()!=0){
+	if(e->lineno()!=0){
 		result_->set_lineno_info(e->lineno());
-	//}
+	}
 
 	linenos_.pop();
 }

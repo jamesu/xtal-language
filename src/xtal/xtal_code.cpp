@@ -123,8 +123,13 @@ CodePtr Code::breakpoint_cond(int_t lineno){
 }
 
 bool Code::set_lineno_info(uint_t line){
-	if(!lineno_table_.empty() && lineno_table_.back().lineno==line){
-		return false;
+	if(lineno_table_.empty()){
+
+	}
+	else{
+		if(lineno_table_.back().lineno==line || lineno_table_.back().start_pc==(u32)code_.size()){
+			return false;
+		}
 	}
 
 	LineNumberInfo lnt = {(u32)code_.size(), (u16)line};
@@ -133,8 +138,9 @@ bool Code::set_lineno_info(uint_t line){
 }
 	
 int_t Code::final_lineno(){
-	if(lineno_table_.empty())
+	if(lineno_table_.empty()){
 		return 0;
+	}
 	return lineno_table_.back().lineno;
 }
 

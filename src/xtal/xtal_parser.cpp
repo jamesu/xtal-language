@@ -1391,6 +1391,7 @@ void Parser::parse_while(){
 
 bool Parser::parse_loop(){
 	// label: while(true){ // というパターンかをチェック
+	State posa = save();
 	if(parse_var()){
 		{
 			State pos = save();
@@ -1420,10 +1421,14 @@ bool Parser::parse_loop(){
 				return true;
 			}
 		}
+		else{
+			executor_->error(Xt("XCE1001"));
+		}
 
 		load(pos);
 	}
 
+	load(posa);
 	return false;
 }
 

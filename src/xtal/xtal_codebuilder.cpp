@@ -524,12 +524,34 @@ void CodeBuilder::build_scope(const AnyPtr& a){
 		XTAL_CASE_N(
 			case EXPR_SCOPE:
 			case EXPR_SWITCH:
-			case EXPR_IF:
 		){
 			var_begin(e, Scope::FRAME);
 			XTAL_FOR_EXPR(v, e){
 				build_scope(v);
 			}	
+			var_end(e);
+		}
+
+		XTAL_CASE_N(
+			case EXPR_IF:
+		){
+			var_begin(e, Scope::FRAME);
+			
+			ExprPtr cond = e->if_cond();
+			AnyPtr val = do_expr(cond);
+			if(!XTAL_detail_is_undefined(val)){
+				if(val){
+					build_scope(e->if_body());
+				}
+				else{
+					build_scope(e->if_else());
+				}
+			}
+			else{
+				XTAL_FOR_EXPR(v, e){
+					build_scope(v);
+				}
+			}
 			var_end(e);
 		}
 
@@ -662,12 +684,33 @@ void CodeBuilder::build_scope2(const AnyPtr& a){
 		XTAL_CASE_N(
 			case EXPR_SCOPE:
 			case EXPR_SWITCH:
-			case EXPR_IF:
 		){
 			scope_optimize_begin(e);
 			XTAL_FOR_EXPR(v, e){
 				build_scope2(v);
 			}	
+			scope_optimize_end(e);
+		}
+
+		XTAL_CASE_N(
+			case EXPR_IF:
+		){
+			scope_optimize_begin(e);
+			ExprPtr cond = e->if_cond();
+			AnyPtr val = do_expr(cond);
+			if(!XTAL_detail_is_undefined(val)){
+				if(val){
+					build_scope2(e->if_body());
+				}
+				else{
+					build_scope2(e->if_else());
+				}
+			}
+			else{
+				XTAL_FOR_EXPR(v, e){
+					build_scope2(v);
+				}	
+			}
 			scope_optimize_end(e);
 		}
 

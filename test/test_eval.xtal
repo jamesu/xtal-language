@@ -20,6 +20,11 @@ class EvalTest{
 		}
 	}
 	
+	compile_test#Test{
+		assert compile("return 5;")()==5;
+		assert compile("return 5+10;")()==15;
+	}
+	
 	instance_var#Test{
 		n, m: 10, 20;
 		class A{

@@ -1273,6 +1273,7 @@ XTAL_BIND(Builtin){
 	Xdef_fun_alias(load, &builtin_load);
 	Xdef_fun_alias(compile_file, &compile_file);
 	Xdef_fun_alias(compile, &compile);
+		Xparam(source_name, XTAL_STRING(""));
 
 #ifndef XTAL_NO_PARSER
 	Xdef_fun_alias(eval_compile, &eval_compile);

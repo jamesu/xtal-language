@@ -70,8 +70,8 @@ struct FastStackDefaultValue<AnyPtr>{
 #define XTAL_VM_set(dest, src) (XTAL_VM_INC(src), XTAL_VM_DEC(dest), XTAL_detail_copy(dest, src))
 
 #define XTAL_VM_variables_top() (variables_top_ - variables_.data())
-#define XTAL_VM_set_variables_top(top) (variables_top_ = variables_.data() + top)
-#define XTAL_VM_local_variable(pos) (*(variables_top_ + pos))
+#define XTAL_VM_set_variables_top(top) (variables_top_ = variables_.data() + (top))
+#define XTAL_VM_local_variable(pos) (*(variables_top_ + (pos)))
 #define XTAL_VM_set_local_variable(pos, value) (XTAL_VM_INC(value), XTAL_VM_DEC(XTAL_VM_local_variable(pos)), XTAL_detail_copy(XTAL_VM_local_variable(pos), value))
 
 #define XTAL_VM_ff() (*current_fun_frame_)

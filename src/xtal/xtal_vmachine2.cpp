@@ -273,7 +273,7 @@ bool VMachine::adjust_args(const NamedParam* params, int_t num){
 	int_t base = f.ordered_arg_count + f.named_arg_count*2;
 	int_t offset = base;
 	
-	int_t argcheck[138]; // バイトコードの仕様からいって128を超えることはありえない
+	char argcheck[138]; // バイトコードの仕様からいって128を超えることはありえない
 	for(int_t i=0, sz=f.named_arg_count; i<sz; ++i){
 		argcheck[i] = 0;
 	}
@@ -318,7 +318,7 @@ bool VMachine::adjust_args(Method* names){
 	int_t base = f.ordered_arg_count + f.named_arg_count*2;
 	int_t offset = base;
 
-	int_t argcheck[138]; // バイトコードの仕様からいって128を超えることはありえない
+	char argcheck[138]; // バイトコードの仕様からいって128を超えることはありえない
 	for(int_t i=0, sz=f.named_arg_count; i<sz; ++i){
 		argcheck[i] = 0;
 	}
@@ -542,27 +542,27 @@ const inst_t* VMachine::check_accessibility(CallState& call_state, int_t accessi
 }
 
 void VMachine::push_args(const ArgumentsPtr& args, int_t stack_base, int_t ordered_arg_count, int_t named_arg_count){
+	uint_t baseplus = args->ordered_size();
 	if(!named_arg_count){
-		for(uint_t i = 0; i<args->ordered_size(); ++i){
+		for(uint_t i = 0; i<baseplus; ++i){
 			set_local_variable(stack_base+ordered_arg_count+i, args->op_at_int(i));
 		}
 	}
 	else{
-		int_t usize = args->ordered_size();
 		int_t offset = named_arg_count*2;
 		for(int_t i = 0; i<offset; ++i){
-			set_local_variable(stack_base+ordered_arg_count+i+usize, XTAL_VM_local_variable(ordered_arg_count+i));
+			set_local_variable(stack_base+ordered_arg_count+i+baseplus, XTAL_VM_local_variable(ordered_arg_count+i));
 		}
 
-		for(int_t i = 0; i<usize; ++i){
+		for(int_t i = 0; i<baseplus; ++i){
 			set_local_variable(stack_base+ordered_arg_count+i, args->op_at_int(i));
 		}
 	}
 
 	int_t i=0;
 	Xfor2(key, value, args->named_arguments()){
-		set_local_variable(stack_base+ordered_arg_count+named_arg_count*2+i*2+0, key);
-		set_local_variable(stack_base+ordered_arg_count+named_arg_count*2+i*2+1, value);
+		set_local_variable(stack_base+baseplus+ordered_arg_count+named_arg_count*2+i*2+0, key);
+		set_local_variable(stack_base+baseplus+ordered_arg_count+named_arg_count*2+i*2+1, value);
 		++i;
 	}
 }

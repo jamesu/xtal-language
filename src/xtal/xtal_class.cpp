@@ -675,7 +675,7 @@ IDPtr Class::object_temporary_name(){
 		return name;
 	}
 
-	if(symbol_data_ && (symbol_data_->flags&CppClassSymbolData::FLAG_NAME) && (flags_&FLAG_CPP_INHERIT)){
+	if(symbol_data_ && (symbol_data_->flags&CppClassSymbolData::FLAG_NAME) && !(flags_&FLAG_CPP_INHERIT)){
 		return XTAL_LONG_LIVED_STRING(symbol_data_->name);
 	}
 

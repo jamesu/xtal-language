@@ -514,7 +514,7 @@ const AnyPtr& MemberCacheTable::cache(const AnyPtr& target_class, const IDPtr& p
 	uint_t hash = itarget_class ^ (iprimary_key ^ (iprimary_key>>24));
 	Unit& unit = table_[hash % CACHE_MASK];
 
-	if(((member_mutate_count_ ^ unit.mutate_count) | 
+	if(cache_enable_ && ((member_mutate_count_ ^ unit.mutate_count) | 
 		XTAL_detail_rawbitxor(primary_key, unit.primary_key) | 
 		XTAL_detail_rawbitxor(target_class, unit.target_class))==0){
 		hit_++;
@@ -557,7 +557,7 @@ const AnyPtr& MemberCacheTable2::cache(const AnyPtr& target_class, const IDPtr& 
 	uint_t hash = itarget_class ^ (iprimary_key ^ (iprimary_key>>24)) ^ isecondary_key;
 	Unit& unit = table_[hash % CACHE_MASK];
 
-	if(((member_mutate_count_ ^ unit.mutate_count) | 
+	if(cache_enable_ && ((member_mutate_count_ ^ unit.mutate_count) | 
 		XTAL_detail_rawbitxor(primary_key, unit.primary_key) | 
 		XTAL_detail_rawbitxor(target_class, unit.target_class) | 
 		XTAL_detail_rawbitxor(secondary_key, unit.secondary_key))==0){

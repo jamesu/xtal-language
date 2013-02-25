@@ -273,6 +273,14 @@ namespace xtal{
 Environment* last_environment_ = 0;
 uint_t member_mutate_count_ = 0;
 uint_t is_mutate_count_ = 0;
+uint_t cache_enable_ = 1;
+
+void enable_cashe(uint_t v){
+	cache_enable_ = v;
+	member_mutate_count_++;
+	is_mutate_count_++;
+}
+
 XTAL_TLS_PTR(Environment) environment_;
 XTAL_TLS_PTR(VMachine) vmachine_;
 

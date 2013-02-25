@@ -191,7 +191,9 @@ void Class::overwrite_inner(const ClassPtr& p){
 	if(overwrite_now_){
 		return;
 	}
+
 	overwrite_now_ = true;
+	enable_cashe(0);
 
 	if(!is_native() && !p->is_native()){
 		
@@ -246,7 +248,7 @@ void Class::overwrite_inner(const ClassPtr& p){
 	}
 
 	overwrite_now_ = false;
-
+	enable_cashe(1);
 }
 
 void Class::inherit(const ClassPtr& cls){
@@ -293,6 +295,11 @@ void Class::inherit_first(const ClassPtr& cls){
 	if(!symbol_data_){
 		symbol_data_ = cls->symbol_data();
 		flags_ |= FLAG_CPP_INHERIT;
+	}
+
+	if(cls->is_native() && !cls->ctor()){
+		set_runtime_error(Xt1("XRE1028", name, cls->object_name()));
+		return;
 	}
 
 	if(cls->is_final()){
@@ -806,8 +813,19 @@ void Class::on_rawcall(const VMachinePtr& vm){
 	}
 	else{
 		AnyPtr instance;
+		AnyPtr initialize_member = member(XTAL_DEFINED_ID(initialize), undefined);
 		if(const NativeFunPtr& newfun = ctor()){
-			instance = newfun->call();
+			if(initialize_member){
+				instance = newfun->call();
+			}
+			else{
+				ArgumentsPtr args = vm->make_arguments();
+				newfun->call(args);
+
+				XTAL_CHECK_EXCEPT(e){ return; }
+
+				instance = vm->result_and_cleanup_call();
+			}
 		}
 		else{
 			instance = XNew<Base>();
@@ -821,10 +839,10 @@ void Class::on_rawcall(const VMachinePtr& vm){
 
 		XTAL_CHECK_EXCEPT(e){ return; }
 		
-		if(const AnyPtr& ret = member(XTAL_DEFINED_ID(initialize), undefined)){
+		if(initialize_member){
 			int_t n = vm->need_result_count();
 			vm->set_arg_this(instance);
-			ret->rawcall(vm);
+			initialize_member->rawcall(vm);
 			if(n!=0){
 				vm->replace_result(instance);
 			}

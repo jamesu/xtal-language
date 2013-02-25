@@ -554,7 +554,7 @@ void VMachine::push_args(const ArgumentsPtr& args, int_t stack_base, int_t order
 			set_local_variable(stack_base+ordered_arg_count+i+baseplus, XTAL_VM_local_variable(ordered_arg_count+i));
 		}
 
-		for(int_t i = 0; i<baseplus; ++i){
+		for(uint_t i = 0; i<baseplus; ++i){
 			set_local_variable(stack_base+ordered_arg_count+i, args->op_at_int(i));
 		}
 	}

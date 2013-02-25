@@ -10,6 +10,9 @@ namespace xtal{
 
 extern uint_t member_mutate_count_;
 extern uint_t is_mutate_count_;
+extern uint_t cache_enable_;
+
+void enable_cashe(uint_t);
 
 struct MemberCacheTable{
 	struct Unit{
@@ -131,7 +134,7 @@ struct IsCacheTable{
 		uint_t hash = (itarget_class>>3) ^ (iklass>>2);
 		Unit& unit = table_[hash % CACHE_MASK];
 		
-		if(is_mutate_count_==unit.mutate_count && 
+		if(cache_enable_ && is_mutate_count_==unit.mutate_count && 
 			XTAL_detail_raweq(target_class, unit.target_class) && 
 			XTAL_detail_raweq(klass, unit.klass)){
 

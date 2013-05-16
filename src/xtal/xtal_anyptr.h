@@ -609,7 +609,7 @@ struct CppValueSymbolData{
 	bind_var_fun_t maker;
 
 	uint_t key() const{
-		return ((uint_t)this >> 2) & 0xffffff;
+		return (uint_t)this;
 	}
 };
 

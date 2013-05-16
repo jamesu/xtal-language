@@ -516,7 +516,7 @@ struct CppClassSymbolData{
 	};
 
 	uint_t key() const{
-		return ((uint_t)this >> 3) & 0xffffff;
+		return (uint_t)this;
 	}
 
 	int_t flags;	

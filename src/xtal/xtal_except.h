@@ -95,14 +95,14 @@ void set_argument_num_error(const AnyPtr& funtion_name, int_t n, int_t min_count
 * \brief 例外が送出されているなら取り出す
 * \hideinitializer
 */
-#define XTAL_CATCH_EXCEPT(e) if(const ::xtal::ExceptionPtr& e = (XTAL_UNUSED_VAR(e), ::xtal::unchecked_ptr_cast< ::xtal::Exception>(::xtal::vmachine()->catch_except())))
+#define XTAL_CATCH_EXCEPT(e) if(const ::xtal::ExceptionPtr& e = (::xtal::unchecked_ptr_cast< ::xtal::Exception>(::xtal::vmachine()->catch_except())))
 
 /**
 * \brief 例外が送出されているか調べる
 * XTAL_CATCH_EXCEPTと違い、例外は設定されたまま。
 * \hideinitializer
 */
-#define XTAL_CHECK_EXCEPT(e) if(const ::xtal::ExceptionPtr& e = (XTAL_UNUSED_VAR(e), ::xtal::unchecked_ptr_cast< ::xtal::Exception>(::xtal::vmachine()->except())))
+#define XTAL_CHECK_EXCEPT(e) if(const ::xtal::ExceptionPtr& e = (::xtal::unchecked_ptr_cast< ::xtal::Exception>(::xtal::vmachine()->except())))
 
 }
 

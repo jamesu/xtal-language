@@ -243,7 +243,8 @@ void ObjectSpace::initialize(){
 
 	disable_gc();
 
-	value_map_.expand(5);
+	cpps_map_.expand(5);
+	values_map_.expand(5);
 
 	expand_objects_list();
 
@@ -263,7 +264,7 @@ void ObjectSpace::initialize(){
 		p->special_initialize();
 		new(p) Class(Class::cpp_class_t());
 
-		value_map_.insert(symbols[i]->key(), p);
+		cpps_map_.insert(symbols[i]->key(), p);
 		classes[i] = p;
 	}
 	
@@ -278,15 +279,22 @@ void ObjectSpace::initialize(){
 		register_gc(p);
 	}
 
+	make_cpp_class(&CppClassSymbol<Lib>::value);
+	make_cpp_class(&CppClassSymbol<AutoLoader>::value);
 	SmartPtr<Lib> lib = XNew<Lib>();
 	lib->inherit(cpp_class(&CppClassSymbol<AutoLoader>::value));
 	lib->append_load_path(empty_string);
 	lib->append_load_path(XTAL_STRING("."));
 	lib->set_cpp_singleton();
 
+	make_cpp_class(&CppClassSymbol<Global>::value);
 	SmartPtr<Global> global = XNew<Global>();
 	global->inherit(cpp_class(&CppClassSymbol<Class>::value));
 	global->set_cpp_singleton();
+
+	for(CppClassSymbolData* p=CppClassSymbolData::head; p; p=p->next){
+		make_cpp_class(p);
+	}
 
 	for(CppClassSymbolData* p=CppClassSymbolData::head; p; p=p->next){
 		cpp_class(p)->prebind();
@@ -299,13 +307,14 @@ void ObjectSpace::uninitialize(){
 	clear_cache();
 	full_gc();
 
-	value_map_.erase(CppClassSymbol<Global>::value.key());
+	cpps_map_.erase(CppClassSymbol<Global>::value.key());
 	clear_cache();
 	full_gc();
 
 	unset_finalize_objects(ConnectedPointer(0, objects_list_begin_), ConnectedPointer(objects_count_, objects_list_begin_));
 
-	value_map_.destroy();
+	cpps_map_.destroy();
+	values_map_.destroy();
 	clear_cache();
 	full_gc();
 
@@ -681,25 +690,49 @@ void ObjectSpace::full_gc(){
 }
 
 void ObjectSpace::set_cpp_class(CppClassSymbolData* key, const ClassPtr& cls){
-	if(map_t::Node* it = value_map_.find(key->key())){
+	if(cpp_map_iter_t it = cpps_map_.find(key->key())){
 		it->value() = cls;
 	}
 	else{
-		value_map_.insert(key->key(), cls);
+		cpps_map_.insert(key->key(), cls);
 	}
 }
 
-Class* ObjectSpace::make_cpp_class(CppClassSymbolData* key){
-	ClassPtr cls = xnew<Class>(Class::cpp_class_t());
-	cls->set_symbol_data(key);
-	value_map_.insert(key->key(), cls);
-	return cls.get();
+const ClassPtr& ObjectSpace::cpp_class_index(uint_t index){
+	return cpps_map_.find(index)->value();
 }
 
-RefCountingBase* ObjectSpace::make_cpp_value(CppValueSymbolData* key){
+const AnyPtr& ObjectSpace::cpp_value_index(uint_t index){
+	return to_smartptr(values_map_.find(index)->value().get());
+}
+
+const ClassPtr& ObjectSpace::cpp_class(CppClassSymbolData* key){
+	if(cpp_map_iter_t it = cpps_map_.find(key->key())){
+		return it->value();
+	}
+	return make_cpp_class(key);
+}
+
+const AnyPtr& ObjectSpace::cpp_value(CppValueSymbolData* key){
+	if(value_map_iter_t it = values_map_.find(key->key())){
+		return to_smartptr(it->value().get());
+	}
+	return make_cpp_value(key);
+}
+
+const ClassPtr& ObjectSpace::make_cpp_class(CppClassSymbolData* key){
+	if(cpp_map_iter_t it = cpps_map_.find(key->key())){
+		return it->value();
+	}
+
+	ClassPtr cls = xnew<Class>(Class::cpp_class_t());
+	cls->set_symbol_data(key);
+	return cpps_map_.insert(key->key(), cls)->value();
+}
+
+const AnyPtr& ObjectSpace::make_cpp_value(CppValueSymbolData* key){
 	AnyPtr any = key->maker();
-	value_map_.insert(key->key(), XTAL_detail_rcpvalue(any));
-	return XTAL_detail_rcpvalue(any);
+	return values_map_.insert(key->key(), any)->value();
 }
 
 void ObjectSpace::register_gc(RefCountingBase* p){

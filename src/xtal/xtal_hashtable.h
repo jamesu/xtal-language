@@ -20,6 +20,9 @@ public:
 		Node* next;
 		Node* ordered_next;
 		Node* ordered_prev;
+
+		Key& key(){ return pair.first; }
+		Val& value(){ return pair.second; }
 		
 		Node()
 			:next(0), ordered_next(0), ordered_prev(0){}
@@ -65,6 +68,10 @@ public:
 
 		friend bool operator !=(iterator a, iterator b){
 			return a.node_ != b.node_;
+		}
+
+		operator bool() const{
+			return node_!=0;
 		}
 
 		Node* to_node() const{

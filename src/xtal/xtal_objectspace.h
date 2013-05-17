@@ -13,9 +13,26 @@ struct ConnectedPointer;
 
 class ObjectSpace{
 public:
+	struct CppFun{
+		static uint_t hash(uint_t key){		
+			return key;
+		}
+
+		static bool eq(uint_t a, uint_t b){
+			return a==b;
+		}
+	};
+
+	typedef Hashtable<uint_t, ClassPtr, CppFun> cpp_map_t; 
+	typedef cpp_map_t::Node* cpp_map_iter_t;
+
+	typedef Hashtable<uint_t, AnyPtr, CppFun> value_map_t;
+	typedef value_map_t::Node* value_map_iter_t;
+
+public:
 
 	ObjectSpace()
-		:value_map_(map_t::no_use_memory_t()){}
+		:cpps_map_(cpp_map_t::no_use_memory_t()), values_map_(value_map_t::no_use_memory_t()){}
 
 	void initialize();
 
@@ -38,27 +55,17 @@ public:
 public:
 	void set_cpp_class(CppClassSymbolData* key, const ClassPtr& cls);
 
-	Class* make_cpp_class(CppClassSymbolData* key);
+	const ClassPtr& make_cpp_class(CppClassSymbolData* key);
 
-	const ClassPtr& cpp_class(CppClassSymbolData* key){
-		if(map_t::Node* it = value_map_.find(key->key())){
-			return to_smartptr((Class*)it->value().get());
-		}
-		return to_smartptr(make_cpp_class(key));
-	}
+	const ClassPtr& cpp_class(CppClassSymbolData* key);
 
-	const ClassPtr& cpp_class(uint_t key){
-		return to_smartptr((Class*)value_map_.find(key)->value().get());
-	}
+	const ClassPtr& cpp_class_index(uint_t index);
 
-	RefCountingBase* make_cpp_value(CppValueSymbolData* key);
+	const AnyPtr& make_cpp_value(CppValueSymbolData* key);
 
-	const AnyPtr& cpp_value(CppValueSymbolData* key){
-		if(map_t::Node* it = value_map_.find(key->key())){
-			return to_smartptr(it->value().get());
-		}
-		return to_smartptr(make_cpp_value(key));
-	}
+	const AnyPtr& cpp_value(CppValueSymbolData* key);
+
+	const AnyPtr& cpp_value_index(uint_t index);
 
 public:
 	uint_t alive_object_count();
@@ -106,21 +113,9 @@ private:
 
 	uint_t cycle_count_;
 
-public:
-	struct Fun{
-		static uint_t hash(uint_t key){
-			return key;
-		}
-
-		static bool eq(uint_t a, uint_t b){
-			return a==b;
-		}
-	};
-
-	typedef Hashtable<uint_t, BasePtr<RefCountingBase>, Fun> map_t; 
-
 private:
-	map_t value_map_;
+	cpp_map_t cpps_map_;
+	value_map_t values_map_;
 };
 
 }

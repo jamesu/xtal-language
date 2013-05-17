@@ -472,21 +472,18 @@ struct AlignOf{
 
 #if defined(_MSC_VER)
 
-struct align16_t{
-	__declspec(align(16)) int v;
-};
+#define XTAL_ALIGN_VAR(type, name, A) __declspec(align(A)) type name
 
 #elif defined(__GNUC__)
 
-struct align16_t{
-	int __attribute__((aligned(16))) v;
-};
-
-#else
-
-typedef void align16_t;
+#define XTAL_ALIGN_VAR(type, name, A) type __attribute__((aligned(A))) name;
 
 #endif
+
+struct align16_t{ XTAL_ALIGN_VAR(int, v, 16); };
+struct align32_t{ XTAL_ALIGN_VAR(int, v, 32); };
+struct align64_t{ XTAL_ALIGN_VAR(int, v, 64); };
+struct align128_t{ XTAL_ALIGN_VAR(int, v, 128); };
 
 template<int N>
 struct SelectAlignType{

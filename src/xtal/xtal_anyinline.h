@@ -10,6 +10,7 @@
 namespace xtal{
 
 inline const ClassPtr& Base::get_class(){ 
+	XTAL_ASSERT(class_!=0);
 	return to_smartptr(class_); 
 }
 

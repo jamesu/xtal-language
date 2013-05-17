@@ -515,15 +515,16 @@ struct CppClassSymbolData{
 		FLAG_NAME = 1<<3
 	};
 
-	uint_t key() const{
-		return (uint_t)this;
-	}
-
+	XTAL_ALIGN_VAR(char, aligndummy, 128);
 	int_t flags;	
 	XTAL_bind_t prebind;
 	XTAL_bind_t bind[BIND];	
 	const char_t* name;
 	CppClassSymbolData* next;
+
+	uint_t key() const{
+		return (uint_t)&aligndummy >> 7;
+	}
 
 	static CppClassSymbolData* head;
 };
@@ -535,7 +536,7 @@ struct CppClassSymbolBase{
 };
 
 template<class T>
-CppClassSymbolData CppClassSymbolBase<T>::value;
+CppClassSymbolData CppClassSymbolBase<T>::value = {0};
 
 
 template<class T>
@@ -606,10 +607,11 @@ struct Binder{
 typedef AnyPtr (*bind_var_fun_t)();
 
 struct CppValueSymbolData{ 
+	XTAL_ALIGN_VAR(char, aligndummy, 128);
 	bind_var_fun_t maker;
 
 	uint_t key() const{
-		return (uint_t)this;
+		return (uint_t)&aligndummy >> 7;
 	}
 };
 
@@ -620,7 +622,7 @@ struct CppValueSymbol{
 };
 
 template<class T>
-CppValueSymbolData CppValueSymbol<T>::value = {&CppValueSymbol<T>::maker};
+CppValueSymbolData CppValueSymbol<T>::value = {0, &CppValueSymbol<T>::maker};
 
 }//namespace 
 

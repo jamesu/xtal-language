@@ -33,6 +33,7 @@ const AnyPtr& AutoLoader::on_rawmember(const IDPtr& primary_key, const AnyPtr& s
 				value = code->call();
 				
 				XTAL_CHECK_EXCEPT(e){
+					XTAL_UNUSED_VAR(e);
 					return undefined;					
 				}
 			}

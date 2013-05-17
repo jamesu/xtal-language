@@ -211,7 +211,7 @@ public:
 			/*
 			std::free(p);
 			mem_map_.erase(p);
-			//*/
+			*/
 		}
 	}
 
@@ -687,8 +687,8 @@ const ClassPtr& cpp_class(CppClassSymbolData* key){
 	return environment_->object_space_.cpp_class(key);
 }
 
-const ClassPtr& cpp_class(int_t index){
-	return environment_->object_space_.cpp_class(index);
+const ClassPtr& cpp_class_index(uint_t index){
+	return environment_->object_space_.cpp_class_index(index);
 }
 
 const AnyPtr& cpp_value(CppValueSymbolData* key){

@@ -67,6 +67,7 @@ void Base::special_initialize(){
 void Base::special_initialize(const VirtualMembers* vmembers){
 	value_.init_base(this);
 	class_ = cpp_class(vmembers->cpp_class_symbol_data).get();
+	XTAL_ASSERT(class_!=0);
 	instance_variables_ = &empty_instance_variables; 
 	vmembers_ = vmembers;
 

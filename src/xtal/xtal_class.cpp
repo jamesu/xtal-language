@@ -255,7 +255,7 @@ void Class::inherit(const ClassPtr& cls){
 	if(is_inherited(cls))
 		return;
 
-	XTAL_ASSERT(cls);
+	XTAL_ASSERT(!!cls);
 
 	int_t count = 0;
 	for(Class** pp=inherited_classes_; *pp; ++pp){
@@ -837,7 +837,10 @@ void Class::on_rawcall(const VMachinePtr& vm){
 
 		init_instance(instance, vm);
 
-		XTAL_CHECK_EXCEPT(e){ return; }
+		XTAL_CHECK_EXCEPT(e){ 
+			XTAL_UNUSED_VAR(e);
+			return; 
+		}
 		
 		if(initialize_member){
 			int_t n = vm->need_result_count();

@@ -288,7 +288,7 @@ FastStack<T> &FastStack<T>::operator =(const FastStack<T> &a){
 
 template<class T>
 void FastStack<T>::resize(size_t newsize){
-	XTAL_ASSERT(newsize>=0);
+	//XTAL_ASSERT(newsize>=0);
 
 	size_t oldsize = size();
 	if(newsize>oldsize){
@@ -301,7 +301,7 @@ void FastStack<T>::resize(size_t newsize){
 
 template<class T>
 void FastStack<T>::upsize_detail(size_t us){
-	XTAL_ASSERT(us>=0);
+	//XTAL_ASSERT(us>=0);
 
 	current_ -= us;
 
@@ -629,7 +629,7 @@ void PODStack<T>::resize(size_t newsize){
 
 template<class T>
 void PODStack<T>::upsize_detail(size_t us){
-	XTAL_ASSERT(us>=0);
+	//XTAL_ASSERT(us>=0);
 
 	current_-=us;
 

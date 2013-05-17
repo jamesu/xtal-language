@@ -24,7 +24,10 @@ void Serializer::serialize(const AnyPtr& v){
 AnyPtr Serializer::deserialize(){
 	clear();
 	AnyPtr ret = inner_deserialize();
-	XTAL_CHECK_EXCEPT(e){ return undefined; }
+	XTAL_CHECK_EXCEPT(e){ 
+		XTAL_UNUSED_VAR(e);
+		return undefined; 
+	}
 	return ret;
 }
 

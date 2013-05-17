@@ -293,7 +293,7 @@ protected:
 private:
 
 #ifdef XTAL_DEBUG // VCなど、仮想関数を持つクラスはデバッグがしやすくなることがあるので
-	virtual void virtual_function(){}
+	//virtual void virtual_function(){}
 #endif
 
 private:

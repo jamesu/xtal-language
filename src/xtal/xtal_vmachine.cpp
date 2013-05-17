@@ -43,7 +43,7 @@ namespace xtal{
 const ClassPtr& Any::get_class_except_base() const{
 	int_t t = XTAL_detail_type(*this);
 	//if(t==TYPE_BASE){ return XTAL_detail_pvalue(*this)->get_class(); }
-	if(t==TYPE_POINTER){ return cpp_class(value_.cpp_class_index()); }
+	if(t==TYPE_POINTER){ return cpp_class_index(value_.cpp_class_index()); }
 
 	static CppClassSymbolData* const data[] = {
 		&CppClassSymbol<Null>::value,
@@ -53,7 +53,7 @@ const ClassPtr& Any::get_class_except_base() const{
 		&CppClassSymbol<Int>::value,
 		&CppClassSymbol<Float>::value,
 		&CppClassSymbol<ImmediateValue>::value,
-		&CppClassSymbol<Any>::value,
+		&CppClassSymbol<Any>::value, // padding 2
 		&CppClassSymbol<StatelessNativeMethod>::value,
 		&CppClassSymbol<InstanceVariableGetter>::value,
 		&CppClassSymbol<InstanceVariableSetter>::value,
@@ -726,7 +726,7 @@ void VMachine::execute_inner2(const inst_t* start, int_t XTAL_VM_eval_n, ExceptF
 	register const inst_t* pc = start;
 	int_t eval_base_n = fun_frame_stack_.size();
 
-	XTAL_ASSERT(cur.stack_size>=0);
+	XTAL_ASSERT((int)cur.stack_size>=0);
 
 /*		
 	union i2f{

@@ -301,7 +301,6 @@ AnyPtr alive_object(uint_t i);
 * \brief keyに対応するC++のクラスのクラスオブジェクトを返す。
 */
 const ClassPtr& cpp_class(CppClassSymbolData* key);
-const ClassPtr& cpp_class(int_t index);
 
 /**
 * \brief クラスTに対応するC++のクラスのクラスオブジェクトを返す。
@@ -310,6 +309,8 @@ template<class T>
 inline const ClassPtr& cpp_class(){
 	return cpp_class(&CppClassSymbol<T>::value);
 }
+
+const ClassPtr& cpp_class_index(uint_t index);
 
 void set_cpp_class(CppClassSymbolData* key, const ClassPtr& cls);
 

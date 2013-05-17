@@ -841,7 +841,7 @@ void CommandSender::add_breakpoint_inner(const StringPtr& path, int n, const Str
 		else{
 			a->push_back(null);
 			XTAL_CATCH_EXCEPT(e){
-
+				XTAL_UNUSED_VAR(e);
 			}
 		}
 	}

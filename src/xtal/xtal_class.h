@@ -11,8 +11,8 @@ namespace xtal{
 
 struct param_types_holder_n;
 
-// ƒCƒ“ƒXƒ^ƒ“ƒX•Ï”‚ğ•Û‚·‚é‚½‚ß‚ÌŒ^
-// ƒƒ‚ƒŠß–ñ‚Ì‚½‚ßA“Áê‚ÈÀ‘•‚É‚È‚Á‚Ä‚¢‚é
+// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°ã‚’ä¿æŒã™ã‚‹ãŸã‚ã®å‹
+// ãƒ¡ãƒ¢ãƒªç¯€ç´„ã®ãŸã‚ã€ç‰¹æ®Šãªå®Ÿè£…ã«ãªã£ã¦ã„ã‚‹
 class InstanceVariables{
 public:
 
@@ -65,14 +65,14 @@ public:
 public:
 	ClassInfo* info_;
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX•Ï”‚Ì‘ŒvBinfo_‚Ìæ‚ÍÁ‚¦‚é‰Â”\«‚ª‚ ‚é‚Ì‚ÅAdestroy‚Å³Šm‚ÈƒCƒ“ƒXƒ^ƒ“ƒX•Ï”‚Ì”‚ğ“¾‚é‚½‚ß‚ÉB
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°ã®ç·è¨ˆã€‚info_ã®å…ˆã¯æ¶ˆãˆã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã®ã§ã€destroyã§æ­£ç¢ºãªã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°ã®æ•°ã‚’å¾—ã‚‹ãŸã‚ã«ã€‚
 	int_t sum_;
 };
 
 /**
 * \xbind lib::builtin
 * \xinherit lib::builtin::Frame
-* \brief ƒNƒ‰ƒX
+* \brief ã‚¯ãƒ©ã‚¹
 */
 class Class : public Frame{
 public:
@@ -93,76 +93,76 @@ public:
 	using RefCountingBase::def;
 
 	/**
-	* \brief V‚µ‚¢ƒƒ“ƒo‚ğ’è‹`‚·‚é
-	* \param primary_key V‚µ‚­’è‹`‚·‚éƒƒ“ƒo‚Ì–¼‘O
-	* \param value İ’è‚·‚é’l
-	* \param secondary_key ƒZƒJƒ“ƒ_ƒŠƒL[
-	* \param accessibility ‰ÂI«
+	* \brief æ–°ã—ã„ãƒ¡ãƒ³ãƒã‚’å®šç¾©ã™ã‚‹
+	* \param primary_key æ–°ã—ãå®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã®åå‰
+	* \param value è¨­å®šã™ã‚‹å€¤
+	* \param secondary_key ã‚»ã‚«ãƒ³ãƒ€ãƒªã‚­ãƒ¼
+	* \param accessibility å¯è•æ€§
 	*/
 	void def(const char_t* primary_key, const AnyPtr& value, const AnyPtr& secondary_key, int_t accessibility = KIND_DEFAULT);
 
 	/**
-	* \brief V‚µ‚¢ƒƒ“ƒo‚ğ’è‹`‚·‚é
-	* \param primary_key V‚µ‚­’è‹`‚·‚éƒƒ“ƒo‚Ì–¼‘O
-	* \param value İ’è‚·‚é’l
+	* \brief æ–°ã—ã„ãƒ¡ãƒ³ãƒã‚’å®šç¾©ã™ã‚‹
+	* \param primary_key æ–°ã—ãå®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã®åå‰
+	* \param value è¨­å®šã™ã‚‹å€¤
 	*/
 	void def(const IDPtr& primary_key, const AnyPtr& value);
 
 	/**
-	* \brief V‚µ‚¢ƒƒ“ƒo‚ğ’è‹`‚·‚é
-	* \param primary_key V‚µ‚­’è‹`‚·‚éƒƒ“ƒo‚Ì–¼‘O
-	* \param value İ’è‚·‚é’l
+	* \brief æ–°ã—ã„ãƒ¡ãƒ³ãƒã‚’å®šç¾©ã™ã‚‹
+	* \param primary_key æ–°ã—ãå®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã®åå‰
+	* \param value è¨­å®šã™ã‚‹å€¤
 	*/
 	void def(const char_t* primary_key, const AnyPtr& value);
 
 	/**
-	* \brief ƒƒ“ƒo‚ğÄİ’è‚·‚é
-	* XtalƒŒƒxƒ‹‚Å‚Í‹Ö~‚³‚ê‚Ä‚¢‚é‘€ì‚¾‚ªAC++ƒŒƒxƒ‹‚Å‚Í‰Â”\‚É‚µ‚Ä‚¨‚­
-	* \param primary_key V‚µ‚­’è‹`‚·‚éƒƒ“ƒo‚Ì–¼‘O
-	* \param value İ’è‚·‚é’l
-	* \param secondary_key ƒZƒJƒ“ƒ_ƒŠƒL[
+	* \brief ãƒ¡ãƒ³ãƒã‚’å†è¨­å®šã™ã‚‹
+	* Xtalãƒ¬ãƒ™ãƒ«ã§ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã‚‹æ“ä½œã ãŒã€C++ãƒ¬ãƒ™ãƒ«ã§ã¯å¯èƒ½ã«ã—ã¦ãŠã
+	* \param primary_key æ–°ã—ãå®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã®åå‰
+	* \param value è¨­å®šã™ã‚‹å€¤
+	* \param secondary_key ã‚»ã‚«ãƒ³ãƒ€ãƒªã‚­ãƒ¼
 	*/
 	bool set_member(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key = undefined);
 
 	/**
 	* \xbind
-	* \brief Œp³
-	* \param cls Œp³‚·‚éƒNƒ‰ƒXƒIƒuƒWƒFƒNƒg
+	* \brief ç¶™æ‰¿
+	* \param cls ç¶™æ‰¿ã™ã‚‹ã‚¯ãƒ©ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	*/
 	void inherit(const ClassPtr& cls);
 
 	/**
-	* \brief Œp³‚·‚é
-	* XtalƒŒƒxƒ‹‚ÅAƒNƒ‰ƒX’è‹`‚ÉŒp³‚·‚éê‡‚ÉŒÄ‚Î‚ê‚é
-	* \param cls Œp³‚·‚éƒNƒ‰ƒXƒIƒuƒWƒFƒNƒg
+	* \brief ç¶™æ‰¿ã™ã‚‹
+	* Xtalãƒ¬ãƒ™ãƒ«ã§ã€ã‚¯ãƒ©ã‚¹å®šç¾©æ™‚ã«ç¶™æ‰¿ã™ã‚‹å ´åˆã«å‘¼ã°ã‚Œã‚‹
+	* \param cls ç¶™æ‰¿ã™ã‚‹ã‚¯ãƒ©ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	*/
 	void inherit_first(const ClassPtr& cls);
 
 	/**
-	* \brief Œp³‚·‚é
-	* \param cls Œp³‚·‚éƒNƒ‰ƒXƒIƒuƒWƒFƒNƒg
+	* \brief ç¶™æ‰¿ã™ã‚‹
+	* \param cls ç¶™æ‰¿ã™ã‚‹ã‚¯ãƒ©ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	*/
 	void inherit_strict(const ClassPtr& cls);
 
 	/**
-	* \brief Œp³‚³‚ê‚Ä‚¢‚é‚©’²‚×‚é
-	* \param cls Œp³‚³‚ê‚Ä‚¢‚é’²‚×‚½‚¢ƒNƒ‰ƒXƒIƒuƒWƒFƒNƒg
+	* \brief ç¶™æ‰¿ã•ã‚Œã¦ã„ã‚‹ã‹èª¿ã¹ã‚‹
+	* \param cls ç¶™æ‰¿ã•ã‚Œã¦ã„ã‚‹èª¿ã¹ãŸã„ã‚¯ãƒ©ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	*/
 	bool is_inherited(const AnyPtr& cls);
 
 	/**
-	* \brief C++‚ÌƒNƒ‰ƒX‚ªŒp³‚³‚ê‚Ä‚¢‚é‚©’²‚×‚é
+	* \brief C++ã®ã‚¯ãƒ©ã‚¹ãŒç¶™æ‰¿ã•ã‚Œã¦ã„ã‚‹ã‹èª¿ã¹ã‚‹
 	*/
 	bool is_inherited_cpp_class();
 
 	/**
 	* \xbind
-	* \brief Œp³‚³‚ê‚Ä‚¢‚éƒNƒ‰ƒX‚ğ—ñ‹“‚·‚éIterator‚ğ•Ô‚·
+	* \brief ç¶™æ‰¿ã•ã‚Œã¦ã„ã‚‹ã‚¯ãƒ©ã‚¹ã‚’åˆ—æŒ™ã™ã‚‹Iteratorã‚’è¿”ã™
 	*/
 	AnyPtr inherited_classes();
 
 	/**
-	* \brief ‹ß‚¢–¼‘O‚Ìƒƒ“ƒo‚ğŒŸõ‚·‚é
+	* \brief è¿‘ã„åå‰ã®ãƒ¡ãƒ³ãƒã‚’æ¤œç´¢ã™ã‚‹
 	*/
 	IDPtr find_near_member(const IDPtr& primary_key, const AnyPtr& secondary_key = undefined){
 		int_t dist = 0xffffff;
@@ -173,19 +173,19 @@ public:
 	
 	/**
 	* \xbind
-	* \brief ‘cæƒNƒ‰ƒX‚ğ—ñ‹“‚·‚éIterator‚ğ•Ô‚·
+	* \brief ç¥–å…ˆã‚¯ãƒ©ã‚¹ã‚’åˆ—æŒ™ã™ã‚‹Iteratorã‚’è¿”ã™
 	*/
 	AnyPtr ancestors();
 
 public:
 
 	/**
-	* \brief ŠÖ”‚ğ’è‹`‚·‚é
-	* cls->def_fun(Xid(name), &foo); ‚Í cls->def(Xid(name), xtal::fun(&foo)); ‚Æ“¯ˆê
-	* \param primary_key V‚µ‚­’è‹`‚·‚éƒƒ“ƒo‚Ì–¼‘O
-	* \param f İ’è‚·‚éŠÖ”
-	* \param secondary_key ƒZƒJƒ“ƒ_ƒŠƒL[
-	* \param accessibility ‰ÂI«
+	* \brief é–¢æ•°ã‚’å®šç¾©ã™ã‚‹
+	* cls->def_fun(Xid(name), &foo); ã¯ cls->def(Xid(name), xtal::fun(&foo)); ã¨åŒä¸€
+	* \param primary_key æ–°ã—ãå®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã®åå‰
+	* \param f è¨­å®šã™ã‚‹é–¢æ•°
+	* \param secondary_key ã‚»ã‚«ãƒ³ãƒ€ãƒªã‚­ãƒ¼
+	* \param accessibility å¯è•æ€§
 	*/
 	template<class TFun>
 	const NativeFunPtr& def_fun(const IDPtr& primary_key, const TFun& f, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_DEFAULT){
@@ -193,12 +193,12 @@ public:
 	}
 
 	/**
-	* \brief ƒƒ\ƒbƒh‚ğ’è‹`‚·‚é
-	* cls->def_method(Xid(name), &Klass::foo); ‚Í cls->def(Xid(name), xtal::method(&Klass::foo)); ‚Æ“¯ˆê
-	* \param primary_key V‚µ‚­’è‹`‚·‚éƒƒ“ƒo‚Ì–¼‘O
-	* \param f İ’è‚·‚éŠÖ”
-	* \param secondary_key ƒZƒJƒ“ƒ_ƒŠƒL[
-	* \param accessibility ‰ÂI«
+	* \brief ãƒ¡ã‚½ãƒƒãƒ‰ã‚’å®šç¾©ã™ã‚‹
+	* cls->def_method(Xid(name), &Klass::foo); ã¯ cls->def(Xid(name), xtal::method(&Klass::foo)); ã¨åŒä¸€
+	* \param primary_key æ–°ã—ãå®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã®åå‰
+	* \param f è¨­å®šã™ã‚‹é–¢æ•°
+	* \param secondary_key ã‚»ã‚«ãƒ³ãƒ€ãƒªã‚­ãƒ¼
+	* \param accessibility å¯è•æ€§
 	*/
 	template<class TFun>
 	const NativeFunPtr& def_method(const IDPtr& primary_key, const TFun& f, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_DEFAULT){
@@ -206,11 +206,11 @@ public:
 	}
 
 	/**
-	* \brief ƒƒ“ƒo•Ï”‚Ö‚Ìƒ|ƒCƒ“ƒ^‚©‚çƒQƒbƒ^[‚ğ¶¬‚µA’è‹`‚·‚é
-	* \param primary_key V‚µ‚­’è‹`‚·‚éƒƒ“ƒo‚Ì–¼‘O
-	* \param value İ’è‚·‚é’l
-	* \param secondary_key ƒZƒJƒ“ƒ_ƒŠƒL[
-	* \param accessibility ‰ÂI«
+	* \brief ãƒ¡ãƒ³ãƒå¤‰æ•°ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‹ã‚‰ã‚²ãƒƒã‚¿ãƒ¼ã‚’ç”Ÿæˆã—ã€å®šç¾©ã™ã‚‹
+	* \param primary_key æ–°ã—ãå®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã®åå‰
+	* \param value è¨­å®šã™ã‚‹å€¤
+	* \param secondary_key ã‚»ã‚«ãƒ³ãƒ€ãƒªã‚­ãƒ¼
+	* \param accessibility å¯è•æ€§
 	*/
 	template<class T, class C>
 	const NativeFunPtr& def_getter(const IDPtr& primary_key, T C::* v, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_DEFAULT){
@@ -218,13 +218,13 @@ public:
 	}
 	
 	/**
-	* \brief ƒƒ“ƒo•Ï”‚Ö‚Ìƒ|ƒCƒ“ƒ^‚©‚çƒZƒbƒ^[‚ğ¶¬‚µA’è‹`‚·‚é
-	* Xtal‚Å‚ÍAobj.name = 10; ‚Æ‚·‚é‚É‚Íset_name‚Æset_‚ğ‘O’u‚µ‚½ƒƒ\ƒbƒh‚ğ’è‹`‚·‚é•K—v‚ª‚ ‚é‚½‚ßA
-	* ’Pƒ‚ÈƒZƒbƒ^[‚ğ’è‹`‚µ‚½‚¢ê‡Aset_xxx‚Æ‚·‚é‚±‚Æ‚ğ–Y‚ê‚È‚¢‚±‚ÆB
-	* \param primary_key V‚µ‚­’è‹`‚·‚éƒƒ“ƒo‚Ì–¼‘O
-	* \param v İ’è‚·‚éƒƒ“ƒo•Ï”‚Ö‚Ìƒ|ƒCƒ“ƒ^
-	* \param secondary_key ƒZƒJƒ“ƒ_ƒŠƒL[
-	* \param accessibility ‰ÂI«
+	* \brief ãƒ¡ãƒ³ãƒå¤‰æ•°ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‹ã‚‰ã‚»ãƒƒã‚¿ãƒ¼ã‚’ç”Ÿæˆã—ã€å®šç¾©ã™ã‚‹
+	* Xtalã§ã¯ã€obj.name = 10; ã¨ã™ã‚‹ã«ã¯set_nameã¨set_ã‚’å‰ç½®ã—ãŸãƒ¡ã‚½ãƒƒãƒ‰ã‚’å®šç¾©ã™ã‚‹å¿…è¦ãŒã‚ã‚‹ãŸã‚ã€
+	* å˜ç´”ãªã‚»ãƒƒã‚¿ãƒ¼ã‚’å®šç¾©ã—ãŸã„å ´åˆã€set_xxxã¨ã™ã‚‹ã“ã¨ã‚’å¿˜ã‚Œãªã„ã“ã¨ã€‚
+	* \param primary_key æ–°ã—ãå®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã®åå‰
+	* \param v è¨­å®šã™ã‚‹ãƒ¡ãƒ³ãƒå¤‰æ•°ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+	* \param secondary_key ã‚»ã‚«ãƒ³ãƒ€ãƒªã‚­ãƒ¼
+	* \param accessibility å¯è•æ€§
 	*/
 	template<class T, class C>
 	const NativeFunPtr& def_setter(const IDPtr& primary_key, T C::* v, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_DEFAULT){
@@ -232,14 +232,14 @@ public:
 	}
 	
 	/**
-	* \brief ƒƒ“ƒo•Ï”‚Ö‚Ìƒ|ƒCƒ“ƒ^‚©‚çƒQƒbƒ^[AƒZƒbƒ^[‚ğ—¼•û¶¬‚µA’è‹`‚·‚é
+	* \brief ãƒ¡ãƒ³ãƒå¤‰æ•°ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‹ã‚‰ã‚²ãƒƒã‚¿ãƒ¼ã€ã‚»ãƒƒã‚¿ãƒ¼ã‚’ä¸¡æ–¹ç”Ÿæˆã—ã€å®šç¾©ã™ã‚‹
 	* cls->def_getter(primary_key, v, policy);
 	* cls->def_setter(StringPtr("set_")->cat(primary_key), v, policy);
-	* ‚Æ“™‚µ‚¢	
-	* \param primary_key V‚µ‚­’è‹`‚·‚éƒƒ“ƒo‚Ì–¼‘O
-	* \param v İ’è‚·‚éƒƒ“ƒo•Ï”‚Ö‚Ìƒ|ƒCƒ“ƒ^
-	* \param secondary_key ƒZƒJƒ“ƒ_ƒŠƒL[
-	* \param accessibility ‰ÂI«
+	* ã¨ç­‰ã—ã„	
+	* \param primary_key æ–°ã—ãå®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã®åå‰
+	* \param v è¨­å®šã™ã‚‹ãƒ¡ãƒ³ãƒå¤‰æ•°ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+	* \param secondary_key ã‚»ã‚«ãƒ³ãƒ€ãƒªã‚­ãƒ¼
+	* \param accessibility å¯è•æ€§
 	*/	
 	template<class T, class U>
 	void def_var(const IDPtr& primary_key, T U::* v, const AnyPtr& secondary_key = undefined, int_t accessibility = KIND_DEFAULT){
@@ -248,129 +248,129 @@ public:
 	}
 
 	/**
-	* \brief 2dƒfƒBƒXƒpƒbƒ`ƒƒ\ƒbƒh‚ğ’è‹`‚·‚éB
-	* \param primary_key V‚µ‚­’è‹`‚·‚éƒƒ“ƒo‚Ì–¼‘O
-	* \param accessibility ‰ÂI«
+	* \brief 2é‡ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒãƒ¡ã‚½ãƒƒãƒ‰ã‚’å®šç¾©ã™ã‚‹ã€‚
+	* \param primary_key æ–°ã—ãå®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã®åå‰
+	* \param accessibility å¯è•æ€§
 	*/
 	void def_double_dispatch_method(const IDPtr& primary_key, int_t accessibility = KIND_DEFAULT);
 
 	/**
-	* \brief 2dƒfƒBƒXƒpƒbƒ`ŠÖ”‚ğ’è‹`‚·‚éB
-	* \param primary_key V‚µ‚­’è‹`‚·‚éƒƒ“ƒo‚Ì–¼‘O
-	* \param accessibility ‰ÂI«
+	* \brief 2é‡ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒé–¢æ•°ã‚’å®šç¾©ã™ã‚‹ã€‚
+	* \param primary_key æ–°ã—ãå®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã®åå‰
+	* \param accessibility å¯è•æ€§
 	*/
 	void def_double_dispatch_fun(const IDPtr& primary_key, int_t accessibility = KIND_DEFAULT);
 
 public:
 
 	/**
-	* \brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	* \brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	*/
 	const NativeFunPtr& def_ctor(const NativeFunPtr& ctor_func);
 
 	/**
-	* \brief “o˜^‚³‚ê‚½ƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ•Ô‚·
+	* \brief ç™»éŒ²ã•ã‚ŒãŸã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’è¿”ã™
 	*/
 	const NativeFunPtr& ctor();
 
 	/**
-	* \brief ƒVƒŠƒAƒ‰ƒCƒY‚Ég‚í‚ê‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	* \brief ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã«ä½¿ã‚ã‚Œã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	*/
 	const NativeFunPtr& def_serial_ctor(const NativeFunPtr& ctor_func);
 
 	/**
-	* \brief “o˜^‚³‚ê‚½ƒVƒŠƒAƒ‰ƒCƒY‚Ég‚í‚ê‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ•Ô‚·
+	* \brief ç™»éŒ²ã•ã‚ŒãŸã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã«ä½¿ã‚ã‚Œã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’è¿”ã™
 	*/	
 	const NativeFunPtr& serial_ctor();
 
 //{REPEAT{{
 /*
-	/// `n`ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// `n`å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T #COMMA_REPEAT#class A`i`#>
 	const NativeFunPtr& def_ctor`n`(){
 		return def_ctor(xtal::ctor<T #COMMA_REPEAT#A`i`#>());
 	}
 */
 
-	/// 0ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// 0å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T >
 	const NativeFunPtr& def_ctor0(){
 		return def_ctor(xtal::ctor<T >());
 	}
 
-	/// 1ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// 1å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T , class A0>
 	const NativeFunPtr& def_ctor1(){
 		return def_ctor(xtal::ctor<T , A0>());
 	}
 
-	/// 2ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// 2å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T , class A0, class A1>
 	const NativeFunPtr& def_ctor2(){
 		return def_ctor(xtal::ctor<T , A0, A1>());
 	}
 
-	/// 3ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// 3å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T , class A0, class A1, class A2>
 	const NativeFunPtr& def_ctor3(){
 		return def_ctor(xtal::ctor<T , A0, A1, A2>());
 	}
 
-	/// 4ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// 4å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T , class A0, class A1, class A2, class A3>
 	const NativeFunPtr& def_ctor4(){
 		return def_ctor(xtal::ctor<T , A0, A1, A2, A3>());
 	}
 
-	/// 5ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// 5å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T , class A0, class A1, class A2, class A3, class A4>
 	const NativeFunPtr& def_ctor5(){
 		return def_ctor(xtal::ctor<T , A0, A1, A2, A3, A4>());
 	}
 
-	/// 6ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// 6å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T , class A0, class A1, class A2, class A3, class A4, class A5>
 	const NativeFunPtr& def_ctor6(){
 		return def_ctor(xtal::ctor<T , A0, A1, A2, A3, A4, A5>());
 	}
 
-	/// 7ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// 7å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T , class A0, class A1, class A2, class A3, class A4, class A5, class A6>
 	const NativeFunPtr& def_ctor7(){
 		return def_ctor(xtal::ctor<T , A0, A1, A2, A3, A4, A5, A6>());
 	}
 
-	/// 8ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// 8å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 	const NativeFunPtr& def_ctor8(){
 		return def_ctor(xtal::ctor<T , A0, A1, A2, A3, A4, A5, A6, A7>());
 	}
 
-	/// 9ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// 9å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 	const NativeFunPtr& def_ctor9(){
 		return def_ctor(xtal::ctor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8>());
 	}
 
-	/// 10ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// 10å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 	const NativeFunPtr& def_ctor10(){
 		return def_ctor(xtal::ctor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8, A9>());
 	}
 
-	/// 11ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// 11å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
 	const NativeFunPtr& def_ctor11(){
 		return def_ctor(xtal::ctor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10>());
 	}
 
-	/// 12ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// 12å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
 	const NativeFunPtr& def_ctor12(){
 		return def_ctor(xtal::ctor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11>());
 	}
 
-	/// 13ˆø”‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^ŠÖ”‚ğ“o˜^‚·‚é
+	/// 13å¼•æ•°ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
 	template<class T , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
 	const NativeFunPtr& def_ctor13(){
 		return def_ctor(xtal::ctor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>());
@@ -381,12 +381,12 @@ public:
 public:
 
 	/**
-	* \brief V‚µ‚¢ƒƒ“ƒo‚ğ’è‹`‚·‚é
-	* \param primary_key V‚µ‚­’è‹`‚·‚éƒƒ“ƒo‚Ì–¼‘O
-	* \param value İ’è‚·‚é’l
-	* \param secondary_key ƒZƒJƒ“ƒ_ƒŠƒL[
-	* \param accessibility ‰ÂI«
-	* ‚±‚ÌŠÖ”‚ğg‚¤‚Ì‚Å‚Í‚È‚­Adef‚ğg‚¤‚±‚ÆB
+	* \brief æ–°ã—ã„ãƒ¡ãƒ³ãƒã‚’å®šç¾©ã™ã‚‹
+	* \param primary_key æ–°ã—ãå®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã®åå‰
+	* \param value è¨­å®šã™ã‚‹å€¤
+	* \param secondary_key ã‚»ã‚«ãƒ³ãƒ€ãƒªã‚­ãƒ¼
+	* \param accessibility å¯è•æ€§
+	* ã“ã®é–¢æ•°ã‚’ä½¿ã†ã®ã§ã¯ãªãã€defã‚’ä½¿ã†ã“ã¨ã€‚
 	*/
 	void on_def(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key, int_t accessibility = KIND_DEFAULT);
 
@@ -394,9 +394,9 @@ public:
 
 	/**
 	* \internal
-	* \brief ƒƒ“ƒo‚ğæ‚èo‚·
+	* \brief ãƒ¡ãƒ³ãƒã‚’å–ã‚Šå‡ºã™
 	*
-	* ‚±‚ÌŠÖ”‚ğg‚¤‚Ì‚Å‚Í‚È‚­Amember‚ğg‚¤‚±‚ÆB
+	* ã“ã®é–¢æ•°ã‚’ä½¿ã†ã®ã§ã¯ãªãã€memberã‚’ä½¿ã†ã“ã¨ã€‚
 	*/
 	const AnyPtr& on_rawmember(const IDPtr& primary_key, const AnyPtr& secondary_key, bool inherited_too, int_t& accessibility, bool& nocache);
 

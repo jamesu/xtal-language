@@ -12,7 +12,7 @@ namespace xtal{
 /**
 * \xbind lib::builtin
 * \xinherit lib::builtin::Any
-* \brief ƒtƒŒ[ƒ€
+* \brief ãƒ•ãƒ¬ãƒ¼ãƒ 
 */
 class Frame : public HaveParentBase{
 public:
@@ -27,7 +27,7 @@ public:
 	
 	/**
 	* \xbind
-	* \brief ŠO‘¤‚ÌƒXƒR[ƒv‚ğ•\‚·FrameƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·B
+	* \brief å¤–å´ã®ã‚¹ã‚³ãƒ¼ãƒ—ã‚’è¡¨ã™Frameã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™ã€‚
 	*/
 	const FramePtr& outer(){ 
 		return outer_; 
@@ -50,7 +50,7 @@ public:
 	}
 
 	/**
-	* \brief ƒŠƒeƒ‰ƒ‹‚É’è‹`‚³‚ê‚½—v‘f‚Ì”‚ğ•Ô‚·B
+	* \brief ãƒªãƒ†ãƒ©ãƒ«æ™‚ã«å®šç¾©ã•ã‚ŒãŸè¦ç´ ã®æ•°ã‚’è¿”ã™ã€‚
 	*/
 	int_t block_size(){ 
 		return scope_info_->variable_size; 
@@ -58,22 +58,22 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒƒ“ƒo‚ªŠi”[‚³‚ê‚½AIterator‚ğ•Ô‚·
-	* ƒuƒƒbƒNƒpƒ‰ƒ[ƒ^‚Í(primary_key, secondary_key, value)
+	* \brief ãƒ¡ãƒ³ãƒãŒæ ¼ç´ã•ã‚ŒãŸã€Iteratorã‚’è¿”ã™
+	* ãƒ–ãƒ­ãƒƒã‚¯ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã¯(primary_key, secondary_key, value)
 	*/
 	AnyPtr members();
 
 public:
 
 	/**
-	* \brief i”Ô–Ú‚Ìƒƒ“ƒo[‚ğƒ_ƒCƒŒƒNƒg‚Éæ“¾B
+	* \brief iç•ªç›®ã®ãƒ¡ãƒ³ãƒãƒ¼ã‚’ãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã«å–å¾—ã€‚
 	*/
 	AnyPtr& member_direct(int_t i){
 		return (AnyPtr&)members_.at(i);
 	}
 
 	/**
-	* \brief i”Ô–Ú‚Ìƒƒ“ƒo[‚ğƒ_ƒCƒŒƒNƒg‚Éİ’èB
+	* \brief iç•ªç›®ã®ãƒ¡ãƒ³ãƒãƒ¼ã‚’ãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã«è¨­å®šã€‚
 	*/
 	void set_member_direct(int_t i, const AnyPtr& value){
 		members_.set_at(i, value);

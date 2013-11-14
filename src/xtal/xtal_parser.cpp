@@ -1239,7 +1239,7 @@ void Parser::parse_each(){
 	executor_->tree_splice(EXPR_LVAR, 1);
 	params->push_back(executor_->tree_pop_back());
 
-	if(eat('|')){ // ƒuƒƒbƒNƒpƒ‰ƒ[ƒ^
+	if(eat('|')){ // ãƒ–ãƒ­ãƒƒã‚¯ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		for(;;){
 			if(peek_token().type()==Token::TYPE_IDENTIFIER){
 				read_token();
@@ -1267,13 +1267,13 @@ void Parser::parse_each(){
 	ExprPtr scope = xnew<Expr>();
 	
 	{
-		executor_->tree_push_back(params); // ‘½d‘ã“ü‚Ì¶•Ó
+		executor_->tree_push_back(params); // å¤šé‡ä»£å…¥ã®å·¦è¾º
 
 		executor_->tree_push_back(lhs);
 		executor_->tree_push_back(Xid(block_first));
 		executor_->tree_push_back(null);
 		executor_->tree_splice(EXPR_PROPERTY, 3);
-		executor_->tree_splice(0, 1); // ‘½d‘ã“ü‚Ì‰E•Ó
+		executor_->tree_splice(0, 1); // å¤šé‡ä»£å…¥ã®å³è¾º
 
 		executor_->tree_splice(EXPR_MDEFINE, 2);
 	}
@@ -1390,12 +1390,12 @@ void Parser::parse_while(){
 }
 
 bool Parser::parse_loop(){
-	// label: while(true){ // ‚Æ‚¢‚¤ƒpƒ^[ƒ“‚©‚ğƒ`ƒFƒbƒN
+	// label: while(true){ // ã¨ã„ã†ãƒ‘ã‚¿ãƒ¼ãƒ³ã‹ã‚’ãƒã‚§ãƒƒã‚¯
 	State posa = save();
 	if(parse_var()){
 		{
 			State pos = save();
-			const Token& ch = read_token(); // :‚ÌŸ‚ğ“Ç‚İæ‚é
+			const Token& ch = read_token(); // :ã®æ¬¡ã‚’èª­ã¿å–ã‚‹
 			if(ch.type()==Token::TYPE_KEYWORD){
 				switch(ch.keyword_number()){
 					XTAL_DEFAULT{}
@@ -1413,7 +1413,7 @@ bool Parser::parse_loop(){
 				return true;
 			}
 			else{
-				// •Ï”’è‹`•¶‚¾‚Á‚½
+				// å¤‰æ•°å®šç¾©æ–‡ã ã£ãŸ
 				AnyPtr temp = executor_->tree_pop_back();
 				executor_->tree_splice(EXPR_LVAR, 1);
 				executor_->tree_push_back(temp);
@@ -1796,13 +1796,13 @@ void Parser::parse_class(int_t kind){
 	expect('{');
 	for(;;){
 		
-		if(eat('#') || eat_keyword(DefinedID::id_protected)){// ‰ÂG« protected w’è
+		if(eat('#') || eat_keyword(DefinedID::id_protected)){// å¯è§¦æ€§ protected æŒ‡å®š
 			executor_->tree_push_back(KIND_PROTECTED);
 		}
-		else if(eat('-') || eat_keyword(DefinedID::id_private)){// ‰ÂG« private w’è
+		else if(eat('-') || eat_keyword(DefinedID::id_private)){// å¯è§¦æ€§ private æŒ‡å®š
 			executor_->tree_push_back(KIND_PRIVATE);
 		}
-		else if(eat('+') || eat_keyword(DefinedID::id_public)){// ‰ÂG« public w’è
+		else if(eat('+') || eat_keyword(DefinedID::id_public)){// å¯è§¦æ€§ public æŒ‡å®š
 			executor_->tree_push_back(KIND_PUBLIC);
 		}
 		else{
@@ -1824,7 +1824,7 @@ void Parser::parse_class(int_t kind){
 		else if(eat_keyword(DefinedID::id_singleton)){
 			parse_class2(KIND_SINGLETON);
 		}
-		else if(parse_identifier()){ // ƒƒ“ƒo’è‹`
+		else if(parse_identifier()){ // ãƒ¡ãƒ³ãƒå®šç¾©
 			parse_secondary_key();
 
 			if(eat(':')){
@@ -1837,9 +1837,9 @@ void Parser::parse_class(int_t kind){
 			executor_->tree_splice(EXPR_CDEFINE_MEMBER, 4);
 			expect_stmt_end();
 		}
-		else if(eat('_')){// ƒCƒ“ƒXƒ^ƒ“ƒX•Ï”’è‹`
+		else if(eat('_')){// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°å®šç¾©
 			if(parse_identifier()){
-				if(eat(':')){ // ‰Šú’l‚İ
+				if(eat(':')){ // åˆæœŸå€¤è¾¼ã¿
 					expect_parse_expr();
 				}
 				else{
@@ -1987,7 +1987,7 @@ void Parser::parse_fun(int_t kind){
 }
 
 void Parser::parse_call(){
-	// ‡”Ôˆø”‚Ìƒ‹[ƒv
+	// é †ç•ªå¼•æ•°ã®ãƒ«ãƒ¼ãƒ—
 	xpeg::Executor::TreeNodeState state = executor_->tree_node_begin();
 	for(;;){
 		if(check(c3('.','.','.'))){ // extendable

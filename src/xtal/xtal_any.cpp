@@ -5,21 +5,21 @@
 
 namespace xtal{
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 AnyPtr Any::send(const IDPtr& primary_key) const{
 	const VMachinePtr& vm = setup_call();
 	rawsend(vm, primary_key);
 	return vm->result_and_cleanup_call();
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key) const{
 	const VMachinePtr& vm = setup_call();
 	rawsend(vm, primary_key, secondary_key);
 	return vm->result_and_cleanup_call();
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 AnyPtr Any::call() const{
 	const VMachinePtr& vm = setup_call();
 	rawcall(vm);

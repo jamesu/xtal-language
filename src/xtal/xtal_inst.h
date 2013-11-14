@@ -460,7 +460,7 @@ inline void XTAL_set_op_i8(int A, int B, inst_t* x, int value){
 
 /**
 * \internal
-* \brief s‚ª•Ï‚í‚é‚²‚Æ‚É‹²‚Ü‚ê‚é–½—ß
+* \brief è¡ŒãŒå¤‰ã‚ã‚‹ã”ã¨ã«æŒŸã¾ã‚Œã‚‹å‘½ä»¤
 *
 */
 XTAL_DEF_INST_0(0, InstLine);
@@ -474,104 +474,104 @@ enum{
 
 /**
 * \internal
-* \brief null‚©undefined‚©false‚©true’l‚ğæ‚èo‚·
+* \brief nullã‹undefinedã‹falseã‹trueå€¤ã‚’å–ã‚Šå‡ºã™
 *
 */
 XTAL_DEF_INST_2(1, InstLoadValue,
-	i8, result, // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
-	u8, value // null‚©undefined‚©false‚©true”Ô†
+	i8, result, // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
+	u8, value // nullã‹undefinedã‹falseã‹trueç•ªå·
 );
 
 /**
 * \internal
-* \brief ’lƒe[ƒuƒ‹‚©‚ç’l‚ğæ‚èo‚·
+* \brief å€¤ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰å€¤ã‚’å–ã‚Šå‡ºã™
 *
 */
 XTAL_DEF_INST_2(2, InstLoadConstant,
-	i8, result, // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
-    u16, value_number // ’l‚ğæ‚èo‚·ƒe[ƒuƒ‹”Ô†
+	i8, result, // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
+    u16, value_number // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ†ãƒ¼ãƒ–ãƒ«ç•ªå·
 );
 
 /**
 * \internal
-* \brief ƒ[ƒJƒ‹•Ï”‚Éint’l‚ğƒvƒbƒVƒ…‚·‚éB
+* \brief ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã«intå€¤ã‚’ãƒ—ãƒƒã‚·ãƒ¥ã™ã‚‹ã€‚
 *
 */
 XTAL_DEF_INST_2(3, InstLoadInt1Byte,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     i8, value
 );
 
 /**
 * \internal
-* \brief ƒ[ƒJƒ‹•Ï”‚Éfloat’l‚ğƒvƒbƒVƒ…‚·‚éB
+* \brief ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã«floatå€¤ã‚’ãƒ—ãƒƒã‚·ãƒ¥ã™ã‚‹ã€‚
 *
 */
 XTAL_DEF_INST_2(4, InstLoadFloat1Byte,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     i8, value
 );
 
 /**
 * \internal
-* \brief ƒ[ƒJƒ‹•Ï”‚ÉŒ»İÀs’†‚ÌŠÖ”‚ğƒvƒbƒVƒ…‚·‚éB
+* \brief ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã«ç¾åœ¨å®Ÿè¡Œä¸­ã®é–¢æ•°ã‚’ãƒ—ãƒƒã‚·ãƒ¥ã™ã‚‹ã€‚
 *
 */
 XTAL_DEF_INST_1(5, InstLoadCallee,
-	i8, result  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 );
 
 /**
 * \internal
-* \brief ƒ[ƒJƒ‹•Ï”‚ÉŒ»İ‚Ìthis‚ğ“ü‚ê‚éB
+* \brief ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã«ç¾åœ¨ã®thisã‚’å…¥ã‚Œã‚‹ã€‚
 *
 */
 XTAL_DEF_INST_1(6, InstLoadThis,
-	i8, result  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 );
 
 /**
 * \internal
-* \brief ƒRƒs[‚·‚é
+* \brief ã‚³ãƒ”ãƒ¼ã™ã‚‹
 *
 */
 XTAL_DEF_INST_2(7, InstCopy,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
-	i8, target // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
+	i8, target // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 );
 
 XTAL_DEF_INST_3(8, InstInc,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, stack_base
 );
 
 XTAL_DEF_INST_3(9, InstDec,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, stack_base
 );
 
 XTAL_DEF_INST_3(10, InstPos,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, stack_base
 );
 
 XTAL_DEF_INST_3(11, InstNeg,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, stack_base
 );
 
 XTAL_DEF_INST_3(12, InstCom,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, stack_base
 );
 
 XTAL_DEF_INST_5(13, InstAdd,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, lhs,
 	i8, rhs,
 	i8, stack_base,
@@ -579,7 +579,7 @@ XTAL_DEF_INST_5(13, InstAdd,
 );
 
 XTAL_DEF_INST_5(14, InstSub,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, lhs,
 	i8, rhs,
 	i8, stack_base,
@@ -587,7 +587,7 @@ XTAL_DEF_INST_5(14, InstSub,
 );
 
 XTAL_DEF_INST_5(15, InstCat,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, lhs,
 	i8, rhs,
 	i8, stack_base,
@@ -595,7 +595,7 @@ XTAL_DEF_INST_5(15, InstCat,
 );
 
 XTAL_DEF_INST_5(16, InstMul,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, lhs,
 	i8, rhs,
 	i8, stack_base,
@@ -603,7 +603,7 @@ XTAL_DEF_INST_5(16, InstMul,
 );
 
 XTAL_DEF_INST_5(17, InstDiv,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, lhs,
 	i8, rhs,
 	i8, stack_base,
@@ -611,7 +611,7 @@ XTAL_DEF_INST_5(17, InstDiv,
 );
 
 XTAL_DEF_INST_5(18, InstMod,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, lhs,
 	i8, rhs,
 	i8, stack_base,
@@ -619,7 +619,7 @@ XTAL_DEF_INST_5(18, InstMod,
 );
 
 XTAL_DEF_INST_5(19, InstAnd,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, lhs,
 	i8, rhs,
 	i8, stack_base,
@@ -627,7 +627,7 @@ XTAL_DEF_INST_5(19, InstAnd,
 );
 
 XTAL_DEF_INST_5(20, InstOr,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, lhs,
 	i8, rhs,
 	i8, stack_base,
@@ -635,7 +635,7 @@ XTAL_DEF_INST_5(20, InstOr,
 	);
 
 XTAL_DEF_INST_5(21, InstXor,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, lhs,
 	i8, rhs,
 	i8, stack_base,
@@ -643,7 +643,7 @@ XTAL_DEF_INST_5(21, InstXor,
 );
 
 XTAL_DEF_INST_5(22, InstShl,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, lhs,
 	i8, rhs,
 	i8, stack_base,
@@ -651,7 +651,7 @@ XTAL_DEF_INST_5(22, InstShl,
 );
 
 XTAL_DEF_INST_5(23, InstShr,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, lhs,
 	i8, rhs,
 	i8, stack_base,
@@ -659,7 +659,7 @@ XTAL_DEF_INST_5(23, InstShr,
 );
 
 XTAL_DEF_INST_5(24, InstUshr,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, lhs,
 	i8, rhs,
 	i8, stack_base,
@@ -667,14 +667,14 @@ XTAL_DEF_INST_5(24, InstUshr,
 );
 
 XTAL_DEF_INST_4(25, InstAt,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, index,
 	i8, stack_base
 );
 
 XTAL_DEF_INST_4(26, InstSetAt,
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, index,
 	i8, value,
 	i8, stack_base
@@ -682,7 +682,7 @@ XTAL_DEF_INST_4(26, InstSetAt,
 
 /**
 * \internal
-* \brief –³ğŒ•ªŠò
+* \brief ç„¡æ¡ä»¶åˆ†å²
 *
 */
 XTAL_DEF_INST_1(27, InstGoto,
@@ -690,16 +690,16 @@ XTAL_DEF_INST_1(27, InstGoto,
 );
 
 XTAL_DEF_INST_2(28, InstNot,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, target);
 
 /**
 * \internal
-* \brief ğŒ•ªŠò
+* \brief æ¡ä»¶åˆ†å²
 *
 */
 XTAL_DEF_INST_3(29, InstIf,
-		i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+		i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
         address16, address_true,
 		address16, address_false
 );
@@ -735,7 +735,7 @@ XTAL_DEF_INST_3(34, InstIfIn,
 );
 
 XTAL_DEF_INST_3(35, InstIfUndefined,
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     address16, address_true,
 	address16, address_false
 );
@@ -746,7 +746,7 @@ XTAL_DEF_INST_1(36, InstIfDebug,
 
 
 XTAL_DEF_INST_1(37, InstPush,
-	i8, target // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, target // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 );
 
 XTAL_DEF_INST_1(38, InstPop,
@@ -755,7 +755,7 @@ XTAL_DEF_INST_1(38, InstPop,
 
 /**
 * \internal
-* \brief ’l‚Ì”‚ğ’²®‚·‚é
+* \brief å€¤ã®æ•°ã‚’èª¿æ•´ã™ã‚‹
 *
 */
 XTAL_DEF_INST_3(39, InstAdjustValues,
@@ -766,18 +766,18 @@ XTAL_DEF_INST_3(39, InstAdjustValues,
 
 /**
 * \internal
-* \brief ƒ[ƒJƒ‹•Ï”‚ğæ‚èo‚·B
+* \brief ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’å–ã‚Šå‡ºã™ã€‚
 *
 */
 XTAL_DEF_INST_3(40, InstLocalVariable,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     u16, number,
 	u8, depth
 );
 
 /**
 * \internal
-* \brief ƒ[ƒJƒ‹•Ï”‚É’l‚ğİ’è‚·‚éB
+* \brief ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã«å€¤ã‚’è¨­å®šã™ã‚‹ã€‚
 *
 */
 XTAL_DEF_INST_3(41, InstSetLocalVariable,
@@ -788,18 +788,18 @@ XTAL_DEF_INST_3(41, InstSetLocalVariable,
 
 /**
 * \internal
-* \brief ƒCƒ“ƒXƒ^ƒ“ƒX•Ï”‚ğæ‚èo‚·B
+* \brief ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°ã‚’å–ã‚Šå‡ºã™ã€‚
 *
 */
 XTAL_DEF_INST_3(42, InstInstanceVariable,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     u16, info_number,
     u8, number
 );
 
 /**
 * \internal
-* \brief ƒCƒ“ƒXƒ^ƒ“ƒX•Ï”‚É’l‚ğİ’è‚·‚éB
+* \brief ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°ã«å€¤ã‚’è¨­å®šã™ã‚‹ã€‚
 *
 */
 XTAL_DEF_INST_3(43, InstSetInstanceVariable,
@@ -810,17 +810,17 @@ XTAL_DEF_INST_3(43, InstSetInstanceVariable,
 
 /**
 * \internal
-* \brief ƒCƒ“ƒXƒ^ƒ“ƒX•Ï”‚ğæ‚èo‚·B
+* \brief ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°ã‚’å–ã‚Šå‡ºã™ã€‚
 *
 */
 XTAL_DEF_INST_2(44, InstInstanceVariableByName,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     u16, identifier_number
 );
 
 /**
 * \internal
-* \brief ƒCƒ“ƒXƒ^ƒ“ƒX•Ï”‚É’l‚ğİ’è‚·‚éB
+* \brief ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°ã«å€¤ã‚’è¨­å®šã™ã‚‹ã€‚
 *
 */
 XTAL_DEF_INST_2(45, InstSetInstanceVariableByName,
@@ -830,17 +830,17 @@ XTAL_DEF_INST_2(45, InstSetInstanceVariableByName,
 
 /**
 * \internal
-* \brief ƒtƒ@ƒCƒ‹ƒ[ƒJƒ‹•Ï”‚ğæ‚èo‚·B
+* \brief ãƒ•ã‚¡ã‚¤ãƒ«ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’å–ã‚Šå‡ºã™ã€‚
 *
 */
 XTAL_DEF_INST_2(46, InstFilelocalVariable,
-	i8, result, // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result, // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     u16, value_number
 );
 
 /**
 * \internal
-* \brief ƒtƒ@ƒCƒ‹ƒ[ƒJƒ‹•Ï”‚É’l‚ğİ’è‚·‚éB
+* \brief ãƒ•ã‚¡ã‚¤ãƒ«ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã«å€¤ã‚’è¨­å®šã™ã‚‹ã€‚
 *
 */
 XTAL_DEF_INST_2(47, InstSetFilelocalVariable,
@@ -850,17 +850,17 @@ XTAL_DEF_INST_2(47, InstSetFilelocalVariable,
 
 /**
 * \internal
-* \brief ƒtƒ@ƒCƒ‹ƒ[ƒJƒ‹•Ï”‚ğæ‚èo‚·B
+* \brief ãƒ•ã‚¡ã‚¤ãƒ«ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚’å–ã‚Šå‡ºã™ã€‚
 *
 */
 XTAL_DEF_INST_2(48, InstFilelocalVariableByName,
-		i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+		i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
         u16, identifier_number
 );
 
 /**
 * \internal
-* \brief ƒtƒ@ƒCƒ‹ƒ[ƒJƒ‹•Ï”‚É’l‚ğİ’è‚·‚éB
+* \brief ãƒ•ã‚¡ã‚¤ãƒ«ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã«å€¤ã‚’è¨­å®šã™ã‚‹ã€‚
 *
 */
 XTAL_DEF_INST_2(49, InstSetFilelocalVariableByName,
@@ -888,35 +888,35 @@ enum{
 
 /**
 * \internal
-* \brief ƒIƒuƒWƒFƒNƒg‚Ìƒƒ“ƒo‚ğæ‚èo‚·B
+* \brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ³ãƒã‚’å–ã‚Šå‡ºã™ã€‚
 *
 */
 XTAL_DEF_INST_3(50, InstMember,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i16, primary
 );
 
 XTAL_DEF_INST_5(51, InstMemberEx,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i16, primary,
 	i8, secondary,
 	u8, flags
 );
 
 XTAL_DEF_INST_5(52, InstCall,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     u8, need_result,
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, stack_base,
     u8, ordered
 );
 
 XTAL_DEF_INST_8(53, InstCallEx,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     u8, need_result,
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, self,
 	i8, stack_base,
     u8, ordered,
@@ -925,9 +925,9 @@ XTAL_DEF_INST_8(53, InstCallEx,
 );
 
 XTAL_DEF_INST_7(54, InstSend,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     u8, need_result,
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i16, primary,
 	i8, secondary,
 	i8, stack_base,
@@ -935,9 +935,9 @@ XTAL_DEF_INST_7(54, InstSend,
 );
 
 XTAL_DEF_INST_9(55, InstSendEx,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     u8, need_result,
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i16, primary,
 	i8, secondary,
 	i8, stack_base,
@@ -947,15 +947,15 @@ XTAL_DEF_INST_9(55, InstSendEx,
 );
 
 XTAL_DEF_INST_4(56, InstProperty,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     i16, primary,
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, stack_base
 );
 
 XTAL_DEF_INST_3(57, InstSetProperty,
     i16, primary,
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, stack_base
 );
 
@@ -967,7 +967,7 @@ XTAL_DEF_INST_0(59, InstScopeEnd);
 
 /**
 * \internal
-* \brief ŠÖ”‚©‚ç”²‚¯‚é
+* \brief é–¢æ•°ã‹ã‚‰æŠœã‘ã‚‹
 *
 */
 XTAL_DEF_INST_2(60, InstReturn,
@@ -977,11 +977,11 @@ XTAL_DEF_INST_2(60, InstReturn,
 
 /**
 * \internal
-* \brief fiber‚ÌÀs‚ğˆê’†’f‚·‚é
+* \brief fiberã®å®Ÿè¡Œã‚’ä¸€æ™‚ä¸­æ–­ã™ã‚‹
 *
 */
 XTAL_DEF_INST_4(61, InstYield,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	u8, need_result_count,
 	u8, base,
     i8, result_count
@@ -989,13 +989,13 @@ XTAL_DEF_INST_4(61, InstYield,
 
 /**
 * \internal
-* \brief ‰¼‘zƒ}ƒVƒ“‚Ìƒ‹[ƒv‚©‚ç’Eo‚·‚éB
+* \brief ä»®æƒ³ãƒã‚·ãƒ³ã®ãƒ«ãƒ¼ãƒ—ã‹ã‚‰è„±å‡ºã™ã‚‹ã€‚
 *
 */
 XTAL_DEF_INST_0(62, InstExit);
 
 XTAL_DEF_INST_5(63, InstRange,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	u8, kind,
 	i8, lhs,
 	i8, rhs,
@@ -1003,37 +1003,37 @@ XTAL_DEF_INST_5(63, InstRange,
 );
 
 XTAL_DEF_INST_3(64, InstOnce,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     address16, address,
     u16, value_number
 );
 
 XTAL_DEF_INST_2(65, InstSetOnce,
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     u16, value_number
 );
 
 XTAL_DEF_INST_1(66, InstMakeArray,
-	i8, result  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 );
 
 XTAL_DEF_INST_2(67, InstArrayAppend,
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, value
 );
 
 XTAL_DEF_INST_1(68, InstMakeMap,
-	i8, result  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 );
 
 XTAL_DEF_INST_3(69, InstMapInsert,
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, key,
 	i8, value
 );
 
 XTAL_DEF_INST_2(70, InstMapSetDefault,
-	i8, target, // ’l‚ğæ‚èo‚·ƒ[ƒJƒ‹•Ï””Ô†
+	i8, target, // å€¤ã‚’å–ã‚Šå‡ºã™ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	i8, value
 );
 
@@ -1043,7 +1043,7 @@ XTAL_DEF_INST_2(71, InstClassBegin,
 );
 
 XTAL_DEF_INST_1(72, InstClassEnd,
-	i8, result  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 );
 
 XTAL_DEF_INST_5(73, InstDefineClassMember,
@@ -1056,7 +1056,7 @@ XTAL_DEF_INST_5(73, InstDefineClassMember,
 
 /**
 * \internal
-* \brief ƒIƒuƒWƒFƒNƒg‚Ìƒƒ“ƒo‚ğ’è‹`‚·‚éB
+* \brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ¡ãƒ³ãƒã‚’å®šç¾©ã™ã‚‹ã€‚
 *
 */
 XTAL_DEF_INST_5(74, InstDefineMember,
@@ -1068,13 +1068,13 @@ XTAL_DEF_INST_5(74, InstDefineMember,
 );
 
 XTAL_DEF_INST_3(75, InstMakeFun,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
     u16, info_number,
 	address16, address
 );
 
 XTAL_DEF_INST_4(76, InstMakeInstanceVariableAccessor,
-	i8, result,  // ’l‚ğ‘ã“ü‚·‚éƒ[ƒJƒ‹•Ï””Ô†
+	i8, result,  // å€¤ã‚’ä»£å…¥ã™ã‚‹ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç•ªå·
 	u8, type,
 	u8, number,
     u16, info_number

@@ -60,13 +60,13 @@ void* MemoryPool::malloc(Chunk** out){
 		XTAL_ASSERT(chunk->count>0);
 		chunk->count--;
 		if(chunk->count==0){
-			// free chunk list‚©‚ç‚Í‚¸‚·
+			// free chunk listã‹ã‚‰ã¯ãšã™
 			if(chunk->next){
 				chunk->next->prev = 0;
 			}
 			free_chunk_ = chunk->next;
 
-			// full chunk list‚É‚Â‚È‚®
+			// full chunk listã«ã¤ãªã
 			chunk->prev = 0;
 			chunk->next = full_chunk_;
 			if(full_chunk_){
@@ -87,7 +87,7 @@ void MemoryPool::free(void* mem, Chunk* chunk){
 	chunk->free_data = static_cast<data_t*>(mem);
 
 	if(chunk->count==0){
-		// full chunk list‚©‚ç‚Í‚¸‚·
+		// full chunk listã‹ã‚‰ã¯ãšã™
 		if(chunk->next){
 			chunk->next->prev = chunk->prev;
 		}
@@ -99,7 +99,7 @@ void MemoryPool::free(void* mem, Chunk* chunk){
 			full_chunk_ = chunk->next;
 		}
 
-		// free chunk list‚É‚Â‚È‚®
+		// free chunk listã«ã¤ãªã
 		chunk->prev = 0;
 		chunk->next = free_chunk_;
 		if(free_chunk_){
@@ -110,7 +110,7 @@ void MemoryPool::free(void* mem, Chunk* chunk){
 		chunk->count = 1;
 	}
 	else if(chunk->count==BLOCK_COUNT-1){
-		// free chunk list‚©‚ç‚Í‚¸‚·
+		// free chunk listã‹ã‚‰ã¯ãšã™
 		if(chunk->next){
 			chunk->next->prev = chunk->prev;
 		}
@@ -190,13 +190,13 @@ void* FixedAllocator::malloc(){
 		XTAL_ASSERT(chunk->count>0);
 		chunk->count--;
 		if(chunk->count==0){
-			// free chunk list‚©‚ç‚Í‚¸‚·
+			// free chunk listã‹ã‚‰ã¯ãšã™
 			if(chunk->next){
 				chunk->next->prev = 0;
 			}
 			free_chunk_ = chunk->next;
 
-			// full chunk list‚É‚Â‚È‚®
+			// full chunk listã«ã¤ãªã
 			chunk->prev = 0;
 			chunk->next = full_chunk_;
 			if(full_chunk_){
@@ -217,7 +217,7 @@ void FixedAllocator::free(void* mem){
 	chunk->free_data = static_cast<data_t*>(mem);
 
 	if(chunk->count==0){
-		// full chunk list‚©‚ç‚Í‚¸‚·
+		// full chunk listã‹ã‚‰ã¯ãšã™
 		if(chunk->next){
 			chunk->next->prev = chunk->prev;
 		}
@@ -229,7 +229,7 @@ void FixedAllocator::free(void* mem){
 			full_chunk_ = chunk->next;
 		}
 
-		// free chunk list‚É‚Â‚È‚®
+		// free chunk listã«ã¤ãªã
 		chunk->prev = 0;
 		chunk->next = free_chunk_;
 		if(free_chunk_){
@@ -240,7 +240,7 @@ void FixedAllocator::free(void* mem){
 		chunk->count = 1;
 	}
 	else if(chunk->count==block_count_-1){
-		// free chunk list‚©‚ç‚Í‚¸‚·
+		// free chunk listã‹ã‚‰ã¯ãšã™
 		if(chunk->next){
 			chunk->next->prev = chunk->prev;
 		}

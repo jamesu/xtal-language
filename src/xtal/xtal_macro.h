@@ -9,7 +9,7 @@
 
 /**
 * \hideinitializer
-* \brief foreach���ȒP�ɋL�q���邽�߂̃}�N��
+* \brief foreachを簡単に記述するためのマクロ
 *
 * \code
 * Xfor(value, array){
@@ -25,7 +25,7 @@
 
 /**
 * \hideinitializer
-* \brief foreach���ȒP�ɋL�q���邽�߂̃}�N��
+* \brief foreachを簡単に記述するためのマクロ
 *
 * \code
 * Xfor2(key, value, map){
@@ -41,7 +41,7 @@
 
 /**
 * \hideinitializer
-* \brief foreach���ȒP�ɋL�q���邽�߂̃}�N��
+* \brief foreachを簡単に記述するためのマクロ
 *
 * \code
 * Xfor3(v1, v2, v3, hoge.send("each3")){
@@ -58,15 +58,15 @@
 
 /**
 * \hideinitializer
-* \brief foreach���ȒP�ɋL�q���邽�߂̃}�N��
+* \brief foreachを簡単に記述するためのマクロ
 *
-* �e�v�f���󂯎��ϐ��Ɍ^�����邱�Ƃ��o����B
+* 各要素を受け取る変数に型をつけることが出来る。
 * \code
 * Xfor_cast(StringPtr value, array){
-*   // value��StringPtr�ɃL���X�g����Ă���
+*   // valueはStringPtrにキャストされている
 * }
 * else{
-*   // else������ƁA�L���X�g�Ɏ��s��������s�����
+*   // elseをつけると、キャストに失敗したら実行される
 * }
 * \endcode
 */
@@ -78,15 +78,15 @@
 
 /**
 * \hideinitializer
-* \brief foreach���ȒP�ɋL�q���邽�߂̃}�N��
+* \brief foreachを簡単に記述するためのマクロ
 *
-* �e�v�f���󂯎��ϐ��Ɍ^�����邱�Ƃ��o����B
+* 各要素を受け取る変数に型をつけることが出来る。
 * \code
 * Xfor_unchecked_cast(StringPtr value, array){
-*   // value��StringPtr�ɃL���X�g����Ă���
+*   // valueはStringPtrにキャストされている
 * }
 * else{
-*   // else������ƁA�L���X�g�Ɏ��s��������s�����
+*   // elseをつけると、キャストに失敗したら実行される
 * }
 * \endcode
 */
@@ -98,7 +98,7 @@
 
 /**
 * \hideinitializer
-* \brief text���ȒP�ɋL�q���邽�߂̃}�N��
+* \brief textを簡単に記述するためのマクロ
 *
 * \code
 * TextPtr text = Xt("Text");
@@ -107,7 +107,7 @@
 #define Xt(txt) ::xtal::text(XTAL_STRING(txt)) 
 
 /**
-* \brief format���ȒP�ɋL�q���邽�߂̃}�N��
+* \brief formatを簡単に記述するためのマクロ
 *
 * \hideinitializer
 * \code
@@ -120,7 +120,7 @@
 
 /**
 * \hideinitializer
-* \brief Xtal�̃\�[�X���ȒP�ɋL�q���邽�߂̃}�N��
+* \brief Xtalのソースを簡単に記述するためのマクロ
 *
 * \code
 * AnyPtr src = Xsrc((
@@ -146,7 +146,7 @@
 
 /*
 * \hideinitializer
-* \brief �C���^�[�����ꂽ��������ȒP�ɋL�q���邽�߂̃}�N��
+* \brief インターンされた文字列を簡単に記述するためのマクロ
 *
 * \code
 * IDPtr id = Xid(test);
@@ -164,7 +164,7 @@
 
 /*
 * \hideinitializer
-* \brief �����񃊃e����
+* \brief 文字列リテラル
 *
 * \code
 * StringPtr str = Xs("This is a pen.");

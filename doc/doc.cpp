@@ -80,7 +80,7 @@ XtalはRuby, Python, Lua, NewtonScript, ECMAScript等、とても多くの言語
 
 /** \page expr 式
 - \subpage pseudovar
-- \subpage numberlit
+- \subpage numberliteral
 - \subpage string
 - \subpage array_map
 - \subpage fun
@@ -397,7 +397,7 @@ Integer::x2: method(){
 既に同名のメンバが定義されている場合、例外が発生します。 \n
 */
 
-/* \page numberlit 数値リテラル
+/** \page numberliteral 数値リテラル
 \section integer 整数リテラル 
 整数を生成する式は次のように記述します。\n
 \code
@@ -1074,7 +1074,7 @@ foo.bar(); //=> foo::bar
 Xtalでは、C++の名前空間と同じような用途には、このシングルトンクラスを使います。\n
 */
 
-/* \page assign 代入文
+/** \page assign 代入文
 変数の参照先を変えるのは代入文を使います。\n
 
 \code

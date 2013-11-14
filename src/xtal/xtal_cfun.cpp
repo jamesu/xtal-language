@@ -25,7 +25,7 @@ NativeMethod::NativeMethod(const param_types_holder_n& pth, const void* val){
 	uint_t data_size = val_size_ + pth.param_n*sizeof(NamedParam);
 	data_ = data_size==0 ? 0 : xmalloc(data_size);
 
-	// ŠÖ”‚ğƒRƒs[
+	// é–¢æ•°ã‚’ã‚³ãƒ”ãƒ¼
 	std::memcpy(data_, val, val_size_);
 
 	if(pth.param_n){
@@ -49,20 +49,20 @@ NativeMethod::~NativeMethod(){
 }
 
 const NativeFunPtr& NativeMethod::param(int_t i, const IDPtr& key, const AnyPtr& value){
-	// i‚Í1n‚Ü‚è
+	// iã¯1å§‹ã¾ã‚Š
 	XTAL_ASSERT(i!=0);
 
-	// ¡‚Ì‚Æ‚±‚ëA‰Â•Ï’·ˆø”‚ğ‚Æ‚éŠÖ”‚ÍAparam‚Íİ’è‚Å‚È‚¢§ŒÀ‚ ‚è
+	// ä»Šã®ã¨ã“ã‚ã€å¯å¤‰é•·å¼•æ•°ã‚’ã¨ã‚‹é–¢æ•°ã¯ã€paramã¯è¨­å®šã§ãªã„åˆ¶é™ã‚ã‚Š
 	XTAL_ASSERT(pth_->vm==0 && pth_->extendable==0);
 
-	// i‚ªˆø”‚Ì”‚æ‚è‘å‚«‚·‚¬‚é
+	// iãŒå¼•æ•°ã®æ•°ã‚ˆã‚Šå¤§ãã™ãã‚‹
 	XTAL_ASSERT(i<=pth_->param_n);
 
 	i--;
 
 	NamedParam* params = (NamedParam*)((u8*)data_ + val_size_);
 
-	// Šù‚Éİ’èÏ‚İ
+	// æ—¢ã«è¨­å®šæ¸ˆã¿
 	XTAL_ASSERT(XTAL_detail_raweq(params[i].name, null) && XTAL_detail_raweq(params[i].value, undefined));
 
 	params[i].name = key;
@@ -78,10 +78,10 @@ const NativeFunPtr& NativeMethod::param(int_t i, const IDPtr& key, const AnyPtr&
 const NativeFunPtr& NativeMethod::add_param(const IDPtr& key, const AnyPtr& value){
 	NamedParam* params = (NamedParam*)((u8*)data_ + val_size_);
 
-	// ¡‚Ì‚Æ‚±‚ëA‰Â•Ï’·ˆø”‚ğ‚Æ‚éŠÖ”‚ÍAparam‚Íİ’è‚Å‚È‚¢§ŒÀ‚ ‚è
+	// ä»Šã®ã¨ã“ã‚ã€å¯å¤‰é•·å¼•æ•°ã‚’ã¨ã‚‹é–¢æ•°ã¯ã€paramã¯è¨­å®šã§ãªã„åˆ¶é™ã‚ã‚Š
 	XTAL_ASSERT(pth_->vm==0 && pth_->extendable==0);
 
-	// ˆø”‚Ì”‚æ‚èparam‚ğ‘½‚­İ’è‚µ‚Ä‚¢‚é
+	// å¼•æ•°ã®æ•°ã‚ˆã‚Šparamã‚’å¤šãè¨­å®šã—ã¦ã„ã‚‹
 	XTAL_ASSERT(min_param_count_>0);
 
 	min_param_count_--;

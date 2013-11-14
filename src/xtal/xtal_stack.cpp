@@ -110,7 +110,7 @@ void PODArrayBase::upsize(uint_t sz){
 			capa_ = newcapa;
 		}
 		else{
-			// 一番最初のリサイズは、きっかりに取る
+			// 荳逡ｪ譛蛻昴�ｮ繝ｪ繧ｵ繧､繧ｺ縺ｯ縲√″縺｣縺九ｊ縺ｫ蜿悶ｋ
 			uint_t newcapa = sz;
 			values_ = xmalloc(one_size_*newcapa);
 			size_ = sz;

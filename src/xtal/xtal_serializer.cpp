@@ -42,7 +42,7 @@ void Serializer::inner_serialize_scope_info(ScopeInfo& info){
 
 void Serializer::inner_serialize(const AnyPtr& v){
 	
-	// Šî–{Œ^‚©ƒ`ƒFƒbƒN
+	// åŸºæœ¬å‹ã‹ãƒã‚§ãƒƒã‚¯
 	switch(XTAL_detail_type(v)){
 		XTAL_DEFAULT;
 
@@ -95,7 +95,7 @@ void Serializer::inner_serialize(const AnyPtr& v){
 
 	int_t num = register_value(v);
 	if(num>=0){
-		// Šù‚É•Û‘¶‚³‚ê‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚È‚Ì‚ÅQÆˆÊ’u‚¾‚¯•Û‘¶‚·‚é
+		// æ—¢ã«ä¿å­˜ã•ã‚Œã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãªã®ã§å‚ç…§ä½ç½®ã ã‘ä¿å­˜ã™ã‚‹
 		stream_->put_u8(REFERENCE);
 		stream_->put_u32be(num);
 		return;
@@ -248,7 +248,7 @@ void Serializer::inner_serialize(const AnyPtr& v){
 		return;
 	}
 	
-	// –¼‘O‚Å•Û‘¶‚µ‚½‚ç“Ç‚Å‚«‚»‚¤‚©
+	// åå‰ã§ä¿å­˜ã—ãŸã‚‰èª­è¾¼ã§ããã†ã‹
 	ArrayPtr name_list = v->object_name_list();
 	if(name_list && !name_list->is_empty()){
 		stream_->put_u8(NAME);
@@ -266,13 +266,13 @@ void Serializer::inner_serialize(const AnyPtr& v){
 		}
 	}
 	else{
-		// serial_new‚Å‹óƒIƒuƒWƒFƒNƒg‚ğ¶¬‚·‚éƒRƒ}ƒ“ƒh‚ğ–„‚ß‚Ş
+		// serial_newã§ç©ºã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã™ã‚‹ã‚³ãƒãƒ³ãƒ‰ã‚’åŸ‹ã‚è¾¼ã‚€
 		stream_->put_u8(SERIAL_NEW);
 
-		// ƒNƒ‰ƒX‚ğ–„‚ß‚Ş
+		// ã‚¯ãƒ©ã‚¹ã‚’åŸ‹ã‚è¾¼ã‚€
 		inner_serialize(v->get_class()); 
 
-		// s_save‚Åserializable‚ÈƒIƒuƒWƒFƒNƒg‚ğæ‚èo‚µserialize‚·‚é
+		// s_saveã§serializableãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–ã‚Šå‡ºã—serializeã™ã‚‹
 		inner_serialize(v->s_save());
 	}
 }
@@ -280,9 +280,9 @@ void Serializer::inner_serialize(const AnyPtr& v){
 AnyPtr Serializer::inner_deserialize_serial_new(){
 	int_t num = append_value(null);
 
-	// serial_new‚ğ‚·‚éƒNƒ‰ƒX‚ğæ‚èo‚·
+	// serial_newã‚’ã™ã‚‹ã‚¯ãƒ©ã‚¹ã‚’å–ã‚Šå‡ºã™
 	if(ClassPtr c = ptr_cast<Class>(inner_deserialize())){
-		// serial_new‚ğŒÄ‚Ño‚µ‚ÄA•Û‘¶‚µ‚Ä‚¨‚­
+		// serial_newã‚’å‘¼ã³å‡ºã—ã¦ã€ä¿å­˜ã—ã¦ãŠã
 		const VMachinePtr& vm = setup_call(1);
 		c->s_new(vm);
 		AnyPtr ret = vm->result();

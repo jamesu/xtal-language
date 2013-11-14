@@ -86,7 +86,7 @@ private:\
 	static type cast(const ::xtal::AnyPtr& a);\
 }
 
-// ˆÈ‰º‚ÌŒ^‚ÍQÆŒ^‚ÉƒLƒƒƒXƒg‚Å‚«‚È‚¢BconstQÆŒ^‚É‚ÍƒLƒƒƒXƒg‚Å‚«‚éB
+// ä»¥ä¸‹ã®å‹ã¯å‚ç…§å‹ã«ã‚­ãƒ£ã‚¹ãƒˆã§ããªã„ã€‚constå‚ç…§å‹ã«ã¯ã‚­ãƒ£ã‚¹ãƒˆã§ãã‚‹ã€‚
 
 XTAL_CAST_HELPER(char, Int, XTAL_detail_ivalue);
 XTAL_CAST_HELPER(signed char, Int, XTAL_detail_ivalue);
@@ -106,11 +106,11 @@ XTAL_CAST_HELPER(long double, Float, XTAL_detail_fvalue);
 
 //////////////////////////////////////////////////////////////////////////////
 
-/// \name Œ^•ÏŠ·
+/// \name å‹å¤‰æ›
 //@{
 
 /**
-* \brief TŒ^‚É•ÏŠ·‚Å‚«‚é‚©’²‚×‚éB
+* \brief Tå‹ã«å¤‰æ›ã§ãã‚‹ã‹èª¿ã¹ã‚‹ã€‚
 *
 */
 template<class T>
@@ -119,7 +119,7 @@ inline bool can_cast(const AnyPtr& a){
 }
 
 /**
-* \brief TŒ^‚Éƒ`ƒFƒbƒN–³‚µ‚Å•ÏŠ·‚·‚éB
+* \brief Tå‹ã«ãƒã‚§ãƒƒã‚¯ç„¡ã—ã§å¤‰æ›ã™ã‚‹ã€‚
 *
 */
 template<class T>
@@ -129,12 +129,12 @@ unchecked_cast(const AnyPtr& a){
 }
 
 /**
-* \brief TŒ^‚É•ÏŠ·‚·‚éB
+* \brief Tå‹ã«å¤‰æ›ã™ã‚‹ã€‚
 *
-* T‚É•ÏŠ·‚Å‚«‚È‚¢ê‡A
-* T‚ªƒ|ƒCƒ“ƒ^Œ^‚È‚ç(T*)NULL‚ğ•Ô‚·B
-* T‚ª’l‚©QÆ‚ÅAAnyPtr‚ğŒp³‚µ‚½Œ^‚È‚çxtal::null‚ğ•Ô‚·B
-* ‚»‚êˆÈŠO‚ÌŒ^‚Ìê‡‚ÍƒRƒ“ƒpƒCƒ‹ƒGƒ‰[‚Æ‚È‚éB
+* Tã«å¤‰æ›ã§ããªã„å ´åˆã€
+* TãŒãƒã‚¤ãƒ³ã‚¿å‹ãªã‚‰(T*)NULLã‚’è¿”ã™ã€‚
+* TãŒå€¤ã‹å‚ç…§ã§ã€AnyPtrã‚’ç¶™æ‰¿ã—ãŸå‹ãªã‚‰xtal::nullã‚’è¿”ã™ã€‚
+* ãã‚Œä»¥å¤–ã®å‹ã®å ´åˆã¯ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã‚¨ãƒ©ãƒ¼ã¨ãªã‚‹ã€‚
 */
 template<class T>
 typename Caster<T>::type 
@@ -148,7 +148,7 @@ cast(const AnyPtr& a){
 }
 
 /**
-* \brief SmartPtr<T>Œ^‚ÉAÀÛ‚ÌŒ^‚ª‚Ç‚¤‚Å‚ ‚é‚©‚ğ–³‹‚µ‚Ä‹­§•ÏŠ·‚·‚éB
+* \brief SmartPtr<T>å‹ã«ã€å®Ÿéš›ã®å‹ãŒã©ã†ã§ã‚ã‚‹ã‹ã‚’ç„¡è¦–ã—ã¦å¼·åˆ¶å¤‰æ›ã™ã‚‹ã€‚
 */
 template<class T>
 inline const SmartPtr<T>&
@@ -159,9 +159,9 @@ unchecked_ptr_cast(const AnyPtr& a){
 }
 
 /**
-* \brief SmartPtr<T>Œ^‚É•ÏŠ·‚·‚éB
+* \brief SmartPtr<T>å‹ã«å¤‰æ›ã™ã‚‹ã€‚
 *
-* T‚É•ÏŠ·‚Å‚«‚È‚¢ê‡xtal::null‚ğ•Ô‚·B
+* Tã«å¤‰æ›ã§ããªã„å ´åˆxtal::nullã‚’è¿”ã™ã€‚
 */
 template<class T>
 const SmartPtr<T>&

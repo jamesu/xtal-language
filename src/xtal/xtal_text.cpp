@@ -73,13 +73,13 @@ int_t FormatSpecifier::max_buffer_size(){
 void FormatSpecifier::make_format_specifier(char_t* dest, char_t type, bool int_type){
 	*dest++ = '%';
 
-	{ // ‘®w’èq‚ğ–„‚ß‚Ş
+	{ // æ›¸å¼æŒ‡å®šå­ã‚’åŸ‹ã‚è¾¼ã‚€
 		const char_t* src = buf_;
 		while((*dest++ = *src++)!=0){}
 		--dest;
 	}
 
-	if(int_type){ // int_t ‚ª64-bit‚Ì‚É“Á•Ê‚È‘®w’èq‚ğ–„‚ß‚Ş
+	if(int_type){ // int_t ãŒ64-bitã®æ™‚ã«ç‰¹åˆ¥ãªæ›¸å¼æŒ‡å®šå­ã‚’åŸ‹ã‚è¾¼ã‚€
 		const char_t* src = XTAL_INT_FMT;
 		while((*dest++ = *src++)!=0){}
 		--dest;

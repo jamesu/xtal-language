@@ -18,12 +18,12 @@ struct FunctorParam;
 typedef void (*native_functon_t)(FunctorParam&);
 
 struct param_types_holder_n{
-	native_functon_t fun; // ŠÖ”
-	CppClassSymbolData* const * param_types; // this‚Æˆø”‚ÌŒ^‚ğ•\‚·ƒNƒ‰ƒXƒVƒ“ƒ{ƒ‹‚Ö‚Ìƒ|ƒCƒ“ƒ^
-	u8 size; // ŠÖ”‚ÌƒTƒCƒY
-	u8 param_n; // ˆø”‚Ì”
-	u8 extendable; // ‰Â•Ï’·‚©‚Ç‚¤‚©
-	u8 vm; // ‰¼‘zƒ}ƒVƒ“‚ğ“§‰ß‚·‚é‚©‚Ç‚¤‚©
+	native_functon_t fun; // é–¢æ•°
+	CppClassSymbolData* const * param_types; // thisã¨å¼•æ•°ã®å‹ã‚’è¡¨ã™ã‚¯ãƒ©ã‚¹ã‚·ãƒ³ãƒœãƒ«ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+	u8 size; // é–¢æ•°ã®ã‚µã‚¤ã‚º
+	u8 param_n; // å¼•æ•°ã®æ•°
+	u8 extendable; // å¯å¤‰é•·ã‹ã©ã†ã‹
+	u8 vm; // ä»®æƒ³ãƒã‚·ãƒ³ã‚’é€éã™ã‚‹ã‹ã©ã†ã‹
 };
 
 template<class TFun>
@@ -152,7 +152,7 @@ NativeFunPtr new_native_fun(const param_types_holder_n& pth, const void* val, co
 //////////////////////////////////////////////////////////////
 
 /*
-* \brief C++‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğXtal‚©‚çŒÄ‚Ño‚¹‚éƒIƒuƒWƒFƒNƒg‚É•ÏŠ·‚·‚é‚½‚ß‚Ì‹[—ŠÖ”
+* \brief C++ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’Xtalã‹ã‚‰å‘¼ã³å‡ºã›ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›ã™ã‚‹ãŸã‚ã®æ“¬ä¼¼é–¢æ•°
 *
 */
 template<class T, 
@@ -167,7 +167,7 @@ struct ctor : public NativeFunPtr{
 };
 	
 /**
-* @brief 2dƒfƒBƒXƒpƒbƒ`ƒƒ\ƒbƒh
+* @brief 2é‡ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒãƒ¡ã‚½ãƒƒãƒ‰
 */
 class DoubleDispatchMethod : public Base{
 public:
@@ -181,7 +181,7 @@ private:
 };
 
 /**
-* @brief 2dƒfƒBƒXƒpƒbƒ`ŠÖ”
+* @brief 2é‡ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒé–¢æ•°
 */
 class DoubleDispatchFun : public Base{
 public:
@@ -197,11 +197,11 @@ private:
 	IDPtr primary_key_;
 };
 
-/// \name ƒlƒCƒeƒBƒuŠÖ”‚ğXtal‚ÅŒÄ‚Ño‚¹‚éƒIƒuƒWƒFƒNƒg‚É•ÏŠ·‚·‚é‚½‚ß‚ÌŠÖ”ŒQ
+/// \name ãƒã‚¤ãƒ†ã‚£ãƒ–é–¢æ•°ã‚’Xtalã§å‘¼ã³å‡ºã›ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›ã™ã‚‹ãŸã‚ã®é–¢æ•°ç¾¤
 //@{
 
 /**
-* \brief C++‚ÌŠÖ”‚ğXtal‚©‚çŒÄ‚Ño‚¹‚éƒIƒuƒWƒFƒNƒg‚É•ÏŠ·‚·‚é‚½‚ß‚ÌŠÖ”
+* \brief C++ã®é–¢æ•°ã‚’Xtalã‹ã‚‰å‘¼ã³å‡ºã›ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›ã™ã‚‹ãŸã‚ã®é–¢æ•°
 *
 */
 template<class Fun>
@@ -210,9 +210,9 @@ inline NativeFunPtr fun(const Fun& f){
 }
 
 /**
-* \brief C++‚Ìƒƒ“ƒoŠÖ”‚ğXtal‚©‚çŒÄ‚Ño‚¹‚éƒIƒuƒWƒFƒNƒg‚É•ÏŠ·‚·‚é‚½‚ß‚ÌŠÖ”
+* \brief C++ã®ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’Xtalã‹ã‚‰å‘¼ã³å‡ºã›ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›ã™ã‚‹ãŸã‚ã®é–¢æ•°
 *
-* •’Ê‚ÌŠÖ”‚ğƒƒ\ƒbƒh‚Æ‚µ‚Ä•ÏŠ·‚µ‚½‚¢ê‡A‘æˆêˆø”‚ğ‚»‚ÌŒ^‚É‚·‚é‚±‚ÆB
+* æ™®é€šã®é–¢æ•°ã‚’ãƒ¡ã‚½ãƒƒãƒ‰ã¨ã—ã¦å¤‰æ›ã—ãŸã„å ´åˆã€ç¬¬ä¸€å¼•æ•°ã‚’ãã®å‹ã«ã™ã‚‹ã“ã¨ã€‚
 */
 template<class Fun>
 inline NativeFunPtr method(const Fun& f){
@@ -220,10 +220,10 @@ inline NativeFunPtr method(const Fun& f){
 }
 
 /**
-* \brief C++‚Ìƒƒ“ƒoŠÖ”‚ğXtal‚©‚çŒÄ‚Ño‚¹‚éƒIƒuƒWƒFƒNƒg‚É•ÏŠ·‚·‚é‚½‚ß‚ÌŠÖ”
+* \brief C++ã®ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’Xtalã‹ã‚‰å‘¼ã³å‡ºã›ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›ã™ã‚‹ãŸã‚ã®é–¢æ•°
 *
-* •’Ê‚ÌŠÖ”‚ğƒƒ\ƒbƒh‚Æ‚µ‚Ä•ÏŠ·‚µ‚½‚¢ê‡A‘æˆêˆø”‚ğ‚»‚ÌŒ^‚É‚·‚é‚±‚ÆB
-* \param this_ this‚ÉƒoƒCƒ“ƒh‚µ‚½‚¢ƒIƒuƒWƒFƒNƒg‚ğw’è‚·‚é
+* æ™®é€šã®é–¢æ•°ã‚’ãƒ¡ã‚½ãƒƒãƒ‰ã¨ã—ã¦å¤‰æ›ã—ãŸã„å ´åˆã€ç¬¬ä¸€å¼•æ•°ã‚’ãã®å‹ã«ã™ã‚‹ã“ã¨ã€‚
+* \param this_ thisã«ãƒã‚¤ãƒ³ãƒ‰ã—ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æŒ‡å®šã™ã‚‹
 */
 template<class Fun>
 inline NativeFunPtr method(const Fun& f, const AnyPtr& this_){
@@ -231,7 +231,7 @@ inline NativeFunPtr method(const Fun& f, const AnyPtr& this_){
 }
 
 /**
-* \brief ƒƒ“ƒo•Ï”‚Ö‚Ìƒ|ƒCƒ“ƒ^‚©‚çƒQƒbƒ^[ŠÖ”‚ğ¶¬‚·‚é
+* \brief ãƒ¡ãƒ³ãƒå¤‰æ•°ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‹ã‚‰ã‚²ãƒƒã‚¿ãƒ¼é–¢æ•°ã‚’ç”Ÿæˆã™ã‚‹
 *
 */
 template<class T, class C>
@@ -245,7 +245,7 @@ inline NativeFunPtr getter(T C::* f, const AnyPtr& this_){
 }
 
 /**
-* \brief ƒƒ“ƒo•Ï”‚Ö‚Ìƒ|ƒCƒ“ƒ^‚©‚çƒZƒbƒ^[ŠÖ”‚ğ¶¬‚·‚é
+* \brief ãƒ¡ãƒ³ãƒå¤‰æ•°ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‹ã‚‰ã‚»ãƒƒã‚¿ãƒ¼é–¢æ•°ã‚’ç”Ÿæˆã™ã‚‹
 *
 */
 template<class T, class C>
@@ -259,13 +259,13 @@ inline NativeFunPtr setter(T C::* f, const AnyPtr& this_){
 }
 
 /**
-* \brief 2dƒfƒBƒXƒpƒbƒ`ƒƒ\ƒbƒhƒIƒuƒWƒFƒNƒg‚ğ¶¬‚·‚é
+* \brief 2é‡ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒãƒ¡ã‚½ãƒƒãƒ‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã™ã‚‹
 *
 */
 DoubleDispatchMethodPtr double_dispatch_method(const IDPtr& primary_key);
 
 /**
-* \brief 2dƒfƒBƒXƒpƒbƒ`ƒƒ\ƒbƒhƒIƒuƒWƒFƒNƒg‚ğ¶¬‚·‚é
+* \brief 2é‡ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒãƒ¡ã‚½ãƒƒãƒ‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã™ã‚‹
 *
 */
 DoubleDispatchFunPtr double_dispatch_fun(const ClassPtr& klass, const IDPtr& primary_key);

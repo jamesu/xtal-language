@@ -15,12 +15,12 @@ void sleep_thread(float_t sec);
 /**
 * \xbind
 * \xinherit lib::builtin::Any
-* \brief ƒXƒŒƒbƒh
+* \brief ã‚¹ãƒ¬ãƒƒãƒ‰
 */
 class Thread : public Base{
 public:
 	/**
-	* \brief ƒXƒŒƒbƒhƒIƒuƒWƒFƒNƒg‚ð¶¬‚·‚é
+	* \brief ã‚¹ãƒ¬ãƒƒãƒ‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã™ã‚‹
 	*/
 	Thread(){
 		thread_lib_ = thread_lib();
@@ -34,7 +34,7 @@ public:
 public:
 
 	/**
-	* \brief ƒXƒŒƒbƒh‚ðŠJŽn‚·‚é
+	* \brief ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’é–‹å§‹ã™ã‚‹
 	*/
 	void start(const AnyPtr& callback){
 		callback_ = callback;
@@ -43,7 +43,7 @@ public:
 	}
 
 	/**
-	* \brief ƒXƒŒƒbƒh‚ªI‚í‚é‚Ü‚Å‘Ò‹@‚·‚é
+	* \brief ã‚¹ãƒ¬ãƒƒãƒ‰ãŒçµ‚ã‚ã‚‹ã¾ã§å¾…æ©Ÿã™ã‚‹
 	*/
 	void join(){
 		XTAL_UNLOCK{
@@ -54,14 +54,14 @@ public:
 public:
 
 	/**
-	* \brief ƒXƒŒƒbƒh‚ðØ‚è‘Ö‚¦‚é
+	* \brief ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
 	*/
 	static void yield(){
 		yield_thread();
 	}
 		
 	/**
-	* \brief ƒJƒŒƒ“ƒgƒXƒŒƒbƒh‚ðsec•b–°‚ç‚¹‚é
+	* \brief ã‚«ãƒ¬ãƒ³ãƒˆã‚¹ãƒ¬ãƒƒãƒ‰ã‚’secç§’çœ ã‚‰ã›ã‚‹
 	*/
 	static void sleep(float_t sec){
 		sleep_thread(sec);
@@ -104,7 +104,7 @@ protected:
 /**
 * \xbind
 * \xinherit lib::builtin::Any
-* \brief ƒ~ƒ…[ƒeƒbƒNƒX
+* \brief ãƒŸãƒ¥ãƒ¼ãƒ†ãƒƒã‚¯ã‚¹
 */
 class Mutex : public Base{
 public:
@@ -119,7 +119,7 @@ public:
 	}
 
 	/**
-	* \brief ƒƒbƒN‚·‚é
+	* \brief ãƒ­ãƒƒã‚¯ã™ã‚‹
 	*/
 	void lock(){
 		XTAL_UNLOCK{
@@ -128,7 +128,7 @@ public:
 	}
 
 	/**
-	* \brief ƒAƒ“ƒƒbƒN‚·‚é
+	* \brief ã‚¢ãƒ³ãƒ­ãƒƒã‚¯ã™ã‚‹
 	*/
 	void unlock(){
 		thread_lib_->unlock_mutex(impl_);

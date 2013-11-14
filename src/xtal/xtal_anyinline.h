@@ -37,7 +37,7 @@ inline void Any::visit_members(Visitor& m) const{
 //{REPEAT{{
 /*
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 #COMMA_REPEAT#class A`i+1`#>
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  #COMMA_REPEAT#const A`i+1`& a`i+1`#) const{
 	const VMachinePtr& vm = setup_call();
@@ -46,7 +46,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  #COMMA_REPEAT#co
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 #COMMA_REPEAT#class A`i+1`#>
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  #COMMA_REPEAT#const A`i+1`& a`i+1`#) const{
 	const VMachinePtr& vm = setup_call();
@@ -55,7 +55,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 #COMMA_REPEAT#class A`i+1`#>
 inline AnyPtr Any::call(const A0& a0  #COMMA_REPEAT#const A`i+1`& a`i+1`#) const{
 	const VMachinePtr& vm = setup_call();
@@ -67,7 +67,7 @@ inline AnyPtr Any::call(const A0& a0  #COMMA_REPEAT#const A`i+1`& a`i+1`#) const
 */
 
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 >
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  ) const{
 	const VMachinePtr& vm = setup_call();
@@ -76,7 +76,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  ) const{
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 >
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  ) const{
 	const VMachinePtr& vm = setup_call();
@@ -85,7 +85,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 >
 inline AnyPtr Any::call(const A0& a0  ) const{
 	const VMachinePtr& vm = setup_call();
@@ -96,7 +96,7 @@ inline AnyPtr Any::call(const A0& a0  ) const{
 
 
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1>
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1) const{
 	const VMachinePtr& vm = setup_call();
@@ -105,7 +105,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1) 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1>
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1) const{
 	const VMachinePtr& vm = setup_call();
@@ -114,7 +114,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1>
 inline AnyPtr Any::call(const A0& a0  , const A1& a1) const{
 	const VMachinePtr& vm = setup_call();
@@ -125,7 +125,7 @@ inline AnyPtr Any::call(const A0& a0  , const A1& a1) const{
 
 
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2>
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2) const{
 	const VMachinePtr& vm = setup_call();
@@ -134,7 +134,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2>
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2) const{
 	const VMachinePtr& vm = setup_call();
@@ -143,7 +143,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2>
 inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2) const{
 	const VMachinePtr& vm = setup_call();
@@ -154,7 +154,7 @@ inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2) const{
 
 
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3>
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3) const{
 	const VMachinePtr& vm = setup_call();
@@ -163,7 +163,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3>
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3) const{
 	const VMachinePtr& vm = setup_call();
@@ -172,7 +172,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3>
 inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3) const{
 	const VMachinePtr& vm = setup_call();
@@ -183,7 +183,7 @@ inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3
 
 
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4>
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4) const{
 	const VMachinePtr& vm = setup_call();
@@ -192,7 +192,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4>
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4) const{
 	const VMachinePtr& vm = setup_call();
@@ -201,7 +201,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4>
 inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4) const{
 	const VMachinePtr& vm = setup_call();
@@ -212,7 +212,7 @@ inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3
 
 
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5>
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5) const{
 	const VMachinePtr& vm = setup_call();
@@ -221,7 +221,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5>
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5) const{
 	const VMachinePtr& vm = setup_call();
@@ -230,7 +230,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5>
 inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5) const{
 	const VMachinePtr& vm = setup_call();
@@ -241,7 +241,7 @@ inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3
 
 
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6>
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6) const{
 	const VMachinePtr& vm = setup_call();
@@ -250,7 +250,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6>
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6) const{
 	const VMachinePtr& vm = setup_call();
@@ -259,7 +259,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6>
 inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6) const{
 	const VMachinePtr& vm = setup_call();
@@ -270,7 +270,7 @@ inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3
 
 
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7) const{
 	const VMachinePtr& vm = setup_call();
@@ -279,7 +279,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7) const{
 	const VMachinePtr& vm = setup_call();
@@ -288,7 +288,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7) const{
 	const VMachinePtr& vm = setup_call();
@@ -299,7 +299,7 @@ inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3
 
 
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8) const{
 	const VMachinePtr& vm = setup_call();
@@ -308,7 +308,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8) const{
 	const VMachinePtr& vm = setup_call();
@@ -317,7 +317,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8) const{
 	const VMachinePtr& vm = setup_call();
@@ -328,7 +328,7 @@ inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3
 
 
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9) const{
 	const VMachinePtr& vm = setup_call();
@@ -337,7 +337,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9) const{
 	const VMachinePtr& vm = setup_call();
@@ -346,7 +346,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9) const{
 	const VMachinePtr& vm = setup_call();
@@ -357,7 +357,7 @@ inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3
 
 
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10) const{
 	const VMachinePtr& vm = setup_call();
@@ -366,7 +366,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10) const{
 	const VMachinePtr& vm = setup_call();
@@ -375,7 +375,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
 inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10) const{
 	const VMachinePtr& vm = setup_call();
@@ -386,7 +386,7 @@ inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3
 
 
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11) const{
 	const VMachinePtr& vm = setup_call();
@@ -395,7 +395,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11) const{
 	const VMachinePtr& vm = setup_call();
@@ -404,7 +404,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
 inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11) const{
 	const VMachinePtr& vm = setup_call();
@@ -415,7 +415,7 @@ inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3
 
 
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11, const A12& a12) const{
 	const VMachinePtr& vm = setup_call();
@@ -424,7 +424,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11, const A12& a12) const{
 	const VMachinePtr& vm = setup_call();
@@ -433,7 +433,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
 inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11, const A12& a12) const{
 	const VMachinePtr& vm = setup_call();
@@ -444,7 +444,7 @@ inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3
 
 
 
-/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, class A13>
 inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11, const A12& a12, const A13& a13) const{
 	const VMachinePtr& vm = setup_call();
@@ -453,7 +453,7 @@ inline AnyPtr Any::send(const IDPtr& primary_key, const A0& a0  , const A1& a1, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, class A13>
 inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11, const A12& a12, const A13& a13) const{
 	const VMachinePtr& vm = setup_call();
@@ -462,7 +462,7 @@ inline AnyPtr Any::send2(const IDPtr& primary_key, const AnyPtr& secondary_key, 
 	return vm->result_and_cleanup_call();	
 }
 
-/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, class A13>
 inline AnyPtr Any::call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11, const A12& a12, const A13& a13) const{
 	const VMachinePtr& vm = setup_call();

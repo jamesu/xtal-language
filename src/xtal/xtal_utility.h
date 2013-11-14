@@ -30,7 +30,7 @@ enum{
 //#define XTAL_NO_ASSERT
 
 /**
-* \brief ‰Â”\‚ÈŒÀ‚è®”‚Ì”ÍˆÍ‚ð‘å‚«‚­‚·‚é
+* \brief å¯èƒ½ãªé™ã‚Šæ•´æ•°ã®ç¯„å›²ã‚’å¤§ããã™ã‚‹
 */
 //#define XTAL_USE_LARGE_INT
 
@@ -69,12 +69,12 @@ enum{
 
 #if defined(_MSC_VER)
 
-// VC‚É‚¨‚¯‚éXTAL_TLS_PTR‚ÌŽÀ‘•
+// VCã«ãŠã‘ã‚‹XTAL_TLS_PTRã®å®Ÿè£…
 #define XTAL_TLS_PTR(x) __declspec(thread) x*
 
 #elif defined(XTAL_USE_PTHREAD_TLS)
 
-// pthread‚ðŽg‚Á‚½XTAL_TLS_PTR‚ÌŽÀ‘•
+// pthreadã‚’ä½¿ã£ãŸXTAL_TLS_PTRã®å®Ÿè£…
 #include <pthread.h>
 template<class T>
 struct TLSPtr{
@@ -92,12 +92,12 @@ private:
 
 #elif defined(__GNUC__) && !defined(__CYGWIN__)
 			
-// gcc‚É‚¨‚¯‚éXTAL_TLS_PTR‚ÌŽÀ‘•
+// gccã«ãŠã‘ã‚‹XTAL_TLS_PTRã®å®Ÿè£…
 #define XTAL_TLS_PTR(x) __thread x*
 
 #elif defined(_WIN32)
 
-// win32 api‚ðŽg‚Á‚½XTAL_TLS_PTR‚ÌŽÀ‘•
+// win32 apiã‚’ä½¿ã£ãŸXTAL_TLS_PTRã®å®Ÿè£…
 #include <windows.h>
 template<class T>
 struct TLSPtr{
@@ -115,13 +115,13 @@ private:
 
 #else
 
-#error // XTAL_NO_THREAD‚ð’è‹`‚µ‚È‚¢ê‡ATLS‚ðŽÀŒ»‚·‚é‚½‚ß‚ÌXTAL_TLS_PTR(x)‚ÌŽÀ‘•‚ª•K—v
+#error // XTAL_NO_THREADã‚’å®šç¾©ã—ãªã„å ´åˆã€TLSã‚’å®Ÿç¾ã™ã‚‹ãŸã‚ã®XTAL_TLS_PTR(x)ã®å®Ÿè£…ãŒå¿…è¦
 
 #endif
 
 #else
 
-// ƒXƒŒƒbƒh‚ðŽg‚í‚È‚¢ê‡A’P‚È‚éƒ|ƒCƒ“ƒ^Œ^‚É‚·‚é
+// ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’ä½¿ã‚ãªã„å ´åˆã€å˜ãªã‚‹ãƒã‚¤ãƒ³ã‚¿åž‹ã«ã™ã‚‹
 #define XTAL_TLS_PTR(x) x*
 
 #endif 
@@ -225,7 +225,7 @@ private:
 
 namespace xtal{
 
-// Å’áŒÀ‚Ìƒƒ^ƒvƒƒOƒ‰ƒ~ƒ“ƒO‰º’n
+// æœ€ä½Žé™ã®ãƒ¡ã‚¿ãƒ—ãƒ­ã‚°ãƒ©ãƒŸãƒ³ã‚°ä¸‹åœ°
 
 template<bool>
 struct IfHelper{
@@ -274,7 +274,7 @@ struct IsInherited{
 	static T* makeT();
 
 	enum{ 
-		// Š®‘SŒ^ƒ`ƒFƒbƒN
+		// å®Œå…¨åž‹ãƒã‚§ãƒƒã‚¯
 		CHECK = sizeof(T) + sizeof(U),
 		
 		value = sizeof(IsInheritedFuncs<U>::test(makeT()))==sizeof(YesType) 
@@ -525,7 +525,7 @@ struct AlignBuffer{
 //////////////////////////////////////////////////
 
 /**
-* \brief ®”’l‚ÌƒAƒ‰ƒCƒƒ“ƒg’²®
+* \brief æ•´æ•°å€¤ã®ã‚¢ãƒ©ã‚¤ãƒ¡ãƒ³ãƒˆèª¿æ•´
 */
 template<class T>
 inline T align(T v, int N){
@@ -533,7 +533,7 @@ inline T align(T v, int N){
 }
 
 /**
-* \brief ƒ|ƒCƒ“ƒ^’l‚ÌƒAƒ‰ƒCƒƒ“ƒg’²®
+* \brief ãƒã‚¤ãƒ³ã‚¿å€¤ã®ã‚¢ãƒ©ã‚¤ãƒ¡ãƒ³ãƒˆèª¿æ•´
 */
 template<class T>
 inline T* align_p(T* v, int N){
@@ -541,7 +541,7 @@ inline T* align_p(T* v, int N){
 }
 
 /**
-* \brief ®”’l‚Ì2‚Ì—Ýæ‚ÌƒAƒ‰ƒCƒƒ“ƒg’²®
+* \brief æ•´æ•°å€¤ã®2ã®ç´¯ä¹—ã®ã‚¢ãƒ©ã‚¤ãƒ¡ãƒ³ãƒˆèª¿æ•´
 */
 template<class T>
 inline T align_2(T v){
@@ -556,7 +556,7 @@ inline T align_2(T v){
 }
 
 /**
-* \brief Ã“I‚Éƒrƒbƒg‚Ì”‚ð”‚¦‚éƒƒ^ŠÖ”
+* \brief é™çš„ã«ãƒ“ãƒƒãƒˆã®æ•°ã‚’æ•°ãˆã‚‹ãƒ¡ã‚¿é–¢æ•°
 */
 template<int N>
 class static_count_bits{
@@ -573,7 +573,7 @@ public:
 };
 
 /**
-* \brief Ã“I‚ÉNumber of Training Zero (NTZ)‚ðŒvŽZ‚·‚éƒƒ^ŠÖ”
+* \brief é™çš„ã«Number of Training Zero (NTZ)ã‚’è¨ˆç®—ã™ã‚‹ãƒ¡ã‚¿é–¢æ•°
 */
 template<int N>
 struct static_ntz{
@@ -803,16 +803,16 @@ unchecked_ptr_cast(const AnyPtr& a);
 ////////////////////////////////////////////
 
 /**
-* \brief ƒvƒŠƒ~ƒeƒBƒu‚ÈŒ^‚ÌŽí—Þ
+* \brief ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ãªåž‹ã®ç¨®é¡ž
 */
 enum PrimitiveType{
 	TYPE_NULL,
 	TYPE_UNDEFINED,
 
 	TYPE_FALSE,
-	// ‚±‚±‚©‚çã‚ÍAif‚È‚Ç‚Å‹U‚Æ•]‰¿‚³‚ê‚é
+	// ã“ã“ã‹ã‚‰ä¸Šã¯ã€ifãªã©ã§å½ã¨è©•ä¾¡ã•ã‚Œã‚‹
 
-	// ‚±‚±‚©‚ç‰º‚ÍA’l‚É‚æ‚ç‚¸^‚Æ•]‰¿‚³‚ê‚é
+	// ã“ã“ã‹ã‚‰ä¸‹ã¯ã€å€¤ã«ã‚ˆã‚‰ãšçœŸã¨è©•ä¾¡ã•ã‚Œã‚‹
 	TYPE_TRUE,
 	
 	TYPE_INT,
@@ -833,13 +833,13 @@ enum PrimitiveType{
 	TYPE_PADDING_0, // 14
 	TYPE_PADDING_1, // 15
 
-	// ‚±‚±‚©‚çã‚Íimmutable‚È’lŒ^‚Å‚ ‚é
+	// ã“ã“ã‹ã‚‰ä¸Šã¯immutableãªå€¤åž‹ã§ã‚ã‚‹
 };
 
 enum PrimitiveTypeRef{
 	TYPE_REF_SHIFT = 4,
 
-	// ‚±‚±‚©‚ç‰º‚ÍŽQÆŒ^‚Å‚ ‚é
+	// ã“ã“ã‹ã‚‰ä¸‹ã¯å‚ç…§åž‹ã§ã‚ã‚‹
 	TYPE_BASE = 16,
 
 	TYPE_STRING,
@@ -872,7 +872,7 @@ enum{
 };
 
 /**
-* \brief ƒuƒƒbƒN‚ÌŽí—Þ
+* \brief ãƒ–ãƒ­ãƒƒã‚¯ã®ç¨®é¡ž
 */
 enum BlockKind{
 	KIND_BLOCK,
@@ -886,7 +886,7 @@ enum BlockKind{
 };
 
 /**
-* \brief •¶Žš—ñ‚ÌŽí—Þ
+* \brief æ–‡å­—åˆ—ã®ç¨®é¡ž
 */
 enum StringKind{
 	KIND_STRING,
@@ -895,7 +895,7 @@ enum StringKind{
 };
 
 /**
-* \brief ‰ÂG«‚ÌŽí—Þ
+* \brief å¯è§¦æ€§ã®ç¨®é¡ž
 */
 enum AccessibilityKind{
 	/**
@@ -918,69 +918,69 @@ enum AccessibilityKind{
 };
 
 /**
-* \brief ƒuƒŒ[ƒNƒ|ƒCƒ“ƒg‚ÌŽí—Þ
+* \brief ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆã®ç¨®é¡ž
 */
 enum BreakPointKind{
 	/**
-	* \brief ƒuƒŒ[ƒNƒ|ƒCƒ“ƒg
+	* \brief ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆ
 	*/
 	BREAKPOINT,
-	BREAKPOINT_INNER_LINE, // “à•”‚ÅŽg—p‚·‚é—p
-	BREAKPOINT_INNER_RETURN, // “à•”‚ÅŽg—p‚·‚é—p
-	BREAKPOINT_INNER_CALL, // “à•”‚ÅŽg—p‚·‚é—p
+	BREAKPOINT_INNER_LINE, // å†…éƒ¨ã§ä½¿ç”¨ã™ã‚‹ç”¨
+	BREAKPOINT_INNER_RETURN, // å†…éƒ¨ã§ä½¿ç”¨ã™ã‚‹ç”¨
+	BREAKPOINT_INNER_CALL, // å†…éƒ¨ã§ä½¿ç”¨ã™ã‚‹ç”¨
 
 	/**
-	* \brief ƒ‰ƒCƒ“‚²‚Æ‚ÌƒuƒŒ[ƒNƒ|ƒCƒ“ƒg
+	* \brief ãƒ©ã‚¤ãƒ³ã”ã¨ã®ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆ
 	*/
 	BREAKPOINT_LINE,
 
 	/**
-	* \brief ŠÖ”ƒŠƒ^[ƒ“ŽžƒuƒŒ[ƒNƒ|ƒCƒ“ƒg
+	* \brief é–¢æ•°ãƒªã‚¿ãƒ¼ãƒ³æ™‚ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆ
 	*/
 	BREAKPOINT_RETURN,
 
 	/**
-	* \brief ŠÖ”ŒÄ‚Ño‚µŽžƒuƒŒ[ƒNƒ|ƒCƒ“ƒg
+	* \brief é–¢æ•°å‘¼ã³å‡ºã—æ™‚ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆ
 	*/
 	BREAKPOINT_CALL,
 
 	/**
-	* \brief —áŠO‘noŽžƒuƒŒ[ƒNƒ|ƒCƒ“ƒg
+	* \brief ä¾‹å¤–å‰µå‡ºæ™‚ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆ
 	*/
 	BREAKPOINT_THROW,
 
 	/**
-	* \brief •\–¾ŽžƒuƒŒ[ƒNƒ|ƒCƒ“ƒg
+	* \brief è¡¨æ˜Žæ™‚ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆ
 	*/
 	BREAKPOINT_ASSERT,
 
 	/**
-	* \brief ƒ‰ƒCƒ“‚²‚Æ‚ÌŒy—ÊƒuƒŒ[ƒNƒ|ƒCƒ“ƒg
+	* \brief ãƒ©ã‚¤ãƒ³ã”ã¨ã®è»½é‡ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆ
 	*/
 	BREAKPOINT_LINE_LIGHT_WEIGHT,
 
 	/**
-	* \brief ŠÖ”ƒŠƒ^[ƒ“ŽžŒy—ÊƒuƒŒ[ƒNƒ|ƒCƒ“ƒg
+	* \brief é–¢æ•°ãƒªã‚¿ãƒ¼ãƒ³æ™‚è»½é‡ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆ
 	*/
 	BREAKPOINT_RETURN_LIGHT_WEIGHT,
 
 	/**
-	* \brief ŠÖ”ŒÄ‚Ño‚µŽžŒy—ÊƒuƒŒ[ƒNƒ|ƒCƒ“ƒg
+	* \brief é–¢æ•°å‘¼ã³å‡ºã—æ™‚è»½é‡ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆ
 	*/
 	BREAKPOINT_CALL_LIGHT_WEIGHT,
 
 	/**
-	* \brief ƒ‰ƒCƒ“‚²‚Æ‚Ìƒvƒƒtƒ@ƒCƒ‹—pŒy—ÊƒuƒŒ[ƒNƒ|ƒCƒ“ƒg
+	* \brief ãƒ©ã‚¤ãƒ³ã”ã¨ã®ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«ç”¨è»½é‡ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆ
 	*/
 	BREAKPOINT_LINE_PROFILE,
 
 	/**
-	* \brief ŠÖ”ƒŠƒ^[ƒ“Žžƒvƒƒtƒ@ƒCƒ‹—pŒy—ÊƒuƒŒ[ƒNƒ|ƒCƒ“ƒg
+	* \brief é–¢æ•°ãƒªã‚¿ãƒ¼ãƒ³æ™‚ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«ç”¨è»½é‡ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆ
 	*/
 	BREAKPOINT_RETURN_PROFILE,
 
 	/**
-	* \brief ŠÖ”ŒÄ‚Ño‚µƒvƒƒtƒ@ƒCƒ‹—pŽžŒy—ÊƒuƒŒ[ƒNƒ|ƒCƒ“ƒg
+	* \brief é–¢æ•°å‘¼ã³å‡ºã—ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«ç”¨æ™‚è»½é‡ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆ
 	*/
 	BREAKPOINT_CALL_PROFILE,
 
@@ -988,32 +988,32 @@ enum BreakPointKind{
 };
 
 /**
-* \brief ‹æŠÔ‚ÌŽí—Þ
+* \brief åŒºé–“ã®ç¨®é¡ž
 */
 enum RangeKind{
 	/**
-	* \brief •Â‹æŠÔ[left, right]
+	* \brief é–‰åŒºé–“[left, right]
 	*/
 	RANGE_CLOSED = (0<<1) | (0<<0),
 
 	/**
-	* \brief ¶ŠJ‰E•Â‹æŠÔ [left, right)
+	* \brief å·¦é–‹å³é–‰åŒºé–“ [left, right)
 	*/
 	RANGE_LEFT_CLOSED_RIGHT_OPEN = (0<<1) | (1<<0),
 
 	/**
-	* \brief ¶ŠJ‰E•Â‹æŠÔ (left, right]
+	* \brief å·¦é–‹å³é–‰åŒºé–“ (left, right]
 	*/
 	RANGE_LEFT_OPEN_RIGHT_CLOSED = (1<<1) | (0<<0),
 
 	/**
-	* \brief ŠJ‹æŠÔ (left, right)
+	* \brief é–‹åŒºé–“ (left, right)
 	*/
 	RANGE_OPEN = (1<<1) | (1<<0)
 };
 
 /**
-* \brief ƒXƒR[ƒvî•ñ
+* \brief ã‚¹ã‚³ãƒ¼ãƒ—æƒ…å ±
 */
 struct ScopeInfo{
 	ScopeInfo()
@@ -1033,7 +1033,7 @@ struct ScopeInfo{
 };
 
 /**
-* \brief ƒNƒ‰ƒXƒXƒR[ƒvî•ñ
+* \brief ã‚¯ãƒ©ã‚¹ã‚¹ã‚³ãƒ¼ãƒ—æƒ…å ±
 */
 struct ClassInfo : public ScopeInfo{
 	ClassInfo(u16 size = 0, u16 offset = 0)
@@ -1046,7 +1046,7 @@ struct ClassInfo : public ScopeInfo{
 };
 
 /**
-* \brief ŠÖ”ƒXƒR[ƒvî•ñ
+* \brief é–¢æ•°ã‚¹ã‚³ãƒ¼ãƒ—æƒ…å ±
 */
 struct FunInfo : public ScopeInfo{
 	FunInfo()
@@ -1066,7 +1066,7 @@ struct FunInfo : public ScopeInfo{
 };
 
 /**
-* \brief —áŠOƒXƒR[ƒvî•ñ
+* \brief ä¾‹å¤–ã‚¹ã‚³ãƒ¼ãƒ—æƒ…å ±
 */
 struct ExceptInfo{
 	ExceptInfo()
@@ -1091,17 +1091,17 @@ extern InstanceVariables empty_instance_variables;
 extern NullPtr null;
 
 /**
-* \brief –¢’è‹`’l
+* \brief æœªå®šç¾©å€¤
 */
 extern UndefinedPtr undefined;
 
 /**
-* \brief ‹ó•¶Žš—ñ
+* \brief ç©ºæ–‡å­—åˆ—
 */
 extern IDPtr empty_id;
 
 /**
-* \brief ‹ó•¶Žš—ñ
+* \brief ç©ºæ–‡å­—åˆ—
 */
 extern StringPtr empty_string;
 	

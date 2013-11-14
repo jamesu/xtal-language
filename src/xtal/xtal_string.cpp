@@ -312,7 +312,7 @@ float_t String::to_f() const{
 		}
 
 		ret *= scale;
-		ret += str[i];
+		ret += str[i] - '0';
 	} 
 	return ret*sign; 
 }

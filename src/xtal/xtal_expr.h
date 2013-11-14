@@ -128,7 +128,7 @@ typedef TreeNodePtr ExprPtr;
 const ExprPtr& ep(const AnyPtr& a);
 
 /*
-* \brief \•¶–Ø‚Ìƒm[ƒh
+* \brief æ§‹æ–‡æœ¨ã®ãƒãƒ¼ãƒ‰
 */
 class TreeNode : public Array{
 public:

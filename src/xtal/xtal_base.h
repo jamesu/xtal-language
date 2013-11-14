@@ -160,46 +160,46 @@ const VirtualMembers VirtualMembersT<T>::value = {
 };
 
 /**
-* \brief QÆƒJƒEƒ“ƒ^‚Ì‹@”\‚ğ—L‚·‚éƒNƒ‰ƒX
+* \brief å‚ç…§ã‚«ã‚¦ãƒ³ã‚¿ã®æ©Ÿèƒ½ã‚’æœ‰ã™ã‚‹ã‚¯ãƒ©ã‚¹
 */
 class RefCountingBase : public Any{
 public:
 
 	/**
-	* \brief ŠÖ”ƒIƒuƒWƒFƒNƒg‚Æ‚İ‚È‚µAŠÖ”ŒÄ‚Ño‚µ‚ğ‚·‚éB
-	* ˆø”‚â–ß‚è’l‚Ívm‚ğ’Ê‚µ‚Ä‚â‚èæ‚è‚·‚éB
+	* \brief é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã¿ãªã—ã€é–¢æ•°å‘¼ã³å‡ºã—ã‚’ã™ã‚‹ã€‚
+	* å¼•æ•°ã‚„æˆ»ã‚Šå€¤ã¯vmã‚’é€šã—ã¦ã‚„ã‚Šå–ã‚Šã™ã‚‹ã€‚
 	*/
 	void rawcall(const VMachinePtr& vm){
 		virtual_members()->rawcall(this, vm);
 	}
 
 	/**
-	* \brief nameƒƒ“ƒo‚ğ‰Šú’lvalue‚Å’è‹`‚·‚éB
+	* \brief nameãƒ¡ãƒ³ãƒã‚’åˆæœŸå€¤valueã§å®šç¾©ã™ã‚‹ã€‚
 	*/
 	void def(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key, int_t accessibility){
 		virtual_members()->def(this, primary_key, value, secondary_key, accessibility);
 	}
 
 	/**
-	* \brief nameƒƒ“ƒo‚ğæ“¾‚·‚éB
-	* \retval undefined ‚»‚Ìƒƒ“ƒo‚Í‘¶İ‚µ‚È‚¢
-	* \retval ”ñundefined name‚É‘Î‰‚µ‚½ƒƒ“ƒo  
+	* \brief nameãƒ¡ãƒ³ãƒã‚’å–å¾—ã™ã‚‹ã€‚
+	* \retval undefined ãã®ãƒ¡ãƒ³ãƒã¯å­˜åœ¨ã—ãªã„
+	* \retval éundefined nameã«å¯¾å¿œã—ãŸãƒ¡ãƒ³ãƒ  
 	*/
 	const AnyPtr& rawmember(const IDPtr& primary_key, const AnyPtr& secondary_key, bool inherited_too, int_t& accessibility, bool& nocache){
 		return virtual_members()->rawmember(this, primary_key, secondary_key, inherited_too, accessibility, nocache);
 	}
 
 	/**
-	* \brief ‚±‚ÌƒIƒuƒWƒFƒNƒg‚ªƒƒ“ƒo‚Æ‚È‚Á‚Ä‚¢‚ée‚ÌƒNƒ‰ƒX‚ğ•Ô‚·B
+	* \brief ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒãƒ¡ãƒ³ãƒã¨ãªã£ã¦ã„ã‚‹è¦ªã®ã‚¯ãƒ©ã‚¹ã‚’è¿”ã™ã€‚
 	*/
 	const ClassPtr& object_parent(){
 		return virtual_members()->object_parent(this);
 	}
 	
 	/**
-	* \brief ‚±‚ÌƒIƒuƒWƒFƒNƒg‚Ée‚ğİ’è‚·‚éB
-	* e‚ğ‚Ä‚È‚¢ƒIƒuƒWƒFƒNƒg‚âA‘O‚É•t‚¯‚ç‚ê‚½e‚Ì•û‚ª‹­‚¢ê‡–³‹‚³‚ê‚éB
-	* \param parent e
+	* \brief ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«è¦ªã‚’è¨­å®šã™ã‚‹ã€‚
+	* è¦ªã‚’æŒã¦ãªã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã€å‰ã«ä»˜ã‘ã‚‰ã‚ŒãŸè¦ªã®æ–¹ãŒå¼·ã„å ´åˆç„¡è¦–ã•ã‚Œã‚‹ã€‚
+	* \param parent è¦ª
 	*/
 	void set_object_parent(const ClassPtr& parent){
 		virtual_members()->set_object_parent(this, parent);
@@ -292,7 +292,7 @@ protected:
 	
 private:
 
-#ifdef XTAL_DEBUG // VC‚È‚ÇA‰¼‘zŠÖ”‚ğ‚ÂƒNƒ‰ƒX‚ÍƒfƒoƒbƒO‚ª‚µ‚â‚·‚­‚È‚é‚±‚Æ‚ª‚ ‚é‚Ì‚Å
+#ifdef XTAL_DEBUG // VCãªã©ã€ä»®æƒ³é–¢æ•°ã‚’æŒã¤ã‚¯ãƒ©ã‚¹ã¯ãƒ‡ãƒãƒƒã‚°ãŒã—ã‚„ã™ããªã‚‹ã“ã¨ãŒã‚ã‚‹ã®ã§
 	//virtual void virtual_function(){}
 #endif
 
@@ -314,13 +314,13 @@ inline void XTAL_detail_dec_ref_count(const Any& v){
 }
 
 /**
-* @brief Šî’êƒNƒ‰ƒX
+* @brief åŸºåº•ã‚¯ãƒ©ã‚¹
 */
 class Base : public RefCountingBase{
 public:
 
 	/**
-	* \brief ‚±‚ÌƒIƒuƒWƒFƒNƒg‚ªŠ‘®‚·‚éƒNƒ‰ƒX‚ğ•Ô‚·B
+	* \brief ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒæ‰€å±ã™ã‚‹ã‚¯ãƒ©ã‚¹ã‚’è¿”ã™ã€‚
 	*/
 	const ClassPtr& get_class();
 
@@ -344,10 +344,10 @@ public:
 	
 private:
 
-	// ƒCƒ“ƒXƒ^ƒ“ƒX•Ï”ƒe[ƒuƒ‹
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°ãƒ†ãƒ¼ãƒ–ãƒ«
 	InstanceVariables* instance_variables_;
 
-	// Š‘®ƒNƒ‰ƒX
+	// æ‰€å±ã‚¯ãƒ©ã‚¹
 	Class* class_;
 
 private:

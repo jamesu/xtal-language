@@ -328,14 +328,14 @@ void ObjectSpace::uninitialize(){
 
 #ifndef XTAL_CHECK_REF_COUNT
 
-			// ‚±‚Ìassert‚Å‚Æ‚Ü‚éê‡AƒIƒuƒWƒFƒNƒg‚ğ‚·‚×‚ÄŠJ•ú‚Å‚«‚Ä‚¢‚È‚¢B
-			// ƒOƒ[ƒoƒ‹•Ï”‚È‚Ç‚ÅƒIƒuƒWƒFƒNƒg‚ğˆ¬‚Á‚Ä‚¢‚È‚¢‚©AzŠÂQÆ‚Í‚È‚¢‚©’²‚×‚é‚±‚ÆB
+			// ã“ã®assertã§ã¨ã¾ã‚‹å ´åˆã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã™ã¹ã¦é–‹æ”¾ã§ãã¦ã„ãªã„ã€‚
+			// ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ãªã©ã§ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ¡ã£ã¦ã„ãªã„ã‹ã€å¾ªç’°å‚ç…§ã¯ãªã„ã‹èª¿ã¹ã‚‹ã“ã¨ã€‚
 			XTAL_ASSERT(false);
 
 #endif
 		}
 
-		// ‹­§“I‚ÉŠJ•ú‚µ‚Ä‚µ‚Ü‚¨‚¤
+		// å¼·åˆ¶çš„ã«é–‹æ”¾ã—ã¦ã—ã¾ãŠã†
 		{
 			ConnectedPointer current(objects_count_, objects_list_begin_);
 			ConnectedPointer begin(0, objects_list_begin_);
@@ -583,7 +583,7 @@ void ObjectSpace::gc(){
 }
 
 ConnectedPointer ObjectSpace::find_alive_objects(ConnectedPointer alive, ConnectedPointer current){ 
-	// €Ò‚Ì’†‚©‚ç•œŠˆ‚µ‚½Ò‚ğŒ©‚Â‚¯‚é
+	// æ­»è€…ã®ä¸­ã‹ã‚‰å¾©æ´»ã—ãŸè€…ã‚’è¦‹ã¤ã‘ã‚‹
 	Visitor m(1);
 	bool end = false;
 	while(!end){
@@ -593,7 +593,7 @@ ConnectedPointer ObjectSpace::find_alive_objects(ConnectedPointer alive, Connect
 		do for(RefCountingBase** pp=e.begin(), **ppend=e.end(); pp!=ppend; ++pp){
 			if((*pp)->alive_ref_count()){
 				end = false;
-				(*pp)->visit_members(m); // ¶‘¶Šm’èƒIƒuƒWƒFƒNƒg‚ÍAQÆƒJƒEƒ“ƒ^‚ğŒ³‚É–ß‚·
+				(*pp)->visit_members(m); // ç”Ÿå­˜ç¢ºå®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ã€å‚ç…§ã‚«ã‚¦ãƒ³ã‚¿ã‚’å…ƒã«æˆ»ã™
 				std::swap(*pp, *alive++);
 			}
 		}while(e.move());
@@ -625,24 +625,24 @@ void ObjectSpace::full_gc(){
 			break;
 		}
 
-		// QÆƒJƒEƒ“ƒ^‚ğŒ¸‚ç‚·
-		// ‚±‚ê‚É‚æ‚èAƒ‹[ƒg‚©‚ç¦‚³‚ê‚Ä‚¢‚éˆÈŠO‚ÌƒIƒuƒWƒFƒNƒg‚ÍQÆƒJƒEƒ“ƒ^‚ª0‚Æ‚È‚é
+		// å‚ç…§ã‚«ã‚¦ãƒ³ã‚¿ã‚’æ¸›ã‚‰ã™
+		// ã“ã‚Œã«ã‚ˆã‚Šã€ãƒ«ãƒ¼ãƒˆã‹ã‚‰ç¤ºã•ã‚Œã¦ã„ã‚‹ä»¥å¤–ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯å‚ç…§ã‚«ã‚¦ãƒ³ã‚¿ãŒ0ã¨ãªã‚‹
 		add_ref_count_objects(begin, current, -1);
 	
 		ConnectedPointer alive = begin;
 
 		alive = find_alive_objects(alive, current);
 
-		// begin ` alive‚Ü‚Å‚ÌƒIƒuƒWƒFƒNƒg‚Í¶‘¶Šm’è
-		// alive ` current‚Ü‚Å‚ÌƒIƒuƒWƒFƒNƒg‚Í€–S—\’è
+		// begin ï½ aliveã¾ã§ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ç”Ÿå­˜ç¢ºå®š
+		// alive ï½ currentã¾ã§ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯æ­»äº¡äºˆå®š
 
-		// €Ò‚àAQÆƒJƒEƒ“ƒ^‚ğŒ³‚É–ß‚·
+		// æ­»è€…ã‚‚ã€å‚ç…§ã‚«ã‚¦ãƒ³ã‚¿ã‚’å…ƒã«æˆ»ã™
 		add_ref_count_objects(alive, current, 1);
 
 		if(!disable_finalizer_){
 			bool exists_have_finalizer = false;
 			
-			// €Ò‚Æ‚È‚é—\’è‚ÌƒIƒuƒWƒFƒNƒg‚Ìfinalizer‚ğ‘–‚ç‚¹‚é
+			// æ­»è€…ã¨ãªã‚‹äºˆå®šã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®finalizerã‚’èµ°ã‚‰ã›ã‚‹
 			for(ConnectedPointer it=alive; it!=current; ++it){
 				RefCountingBase* p = *it;
 				if(p->have_finalizer()){
@@ -654,21 +654,21 @@ void ObjectSpace::full_gc(){
 			}
 
 			if(exists_have_finalizer){
-				// finalizer‚ÅƒIƒuƒWƒFƒNƒg‚ªì‚ç‚ê‚½‚©‚à‚µ‚ê‚È‚¢‚Ì‚ÅAcurrent‚ğ”½‰f‚·‚é
+				// finalizerã§ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒä½œã‚‰ã‚ŒãŸã‹ã‚‚ã—ã‚Œãªã„ã®ã§ã€currentã‚’åæ˜ ã™ã‚‹
 				current = ConnectedPointer(objects_count_, objects_list_begin_);
 				begin = ConnectedPointer(0, objects_list_begin_);
 
-				// €Ò‚ª¶‚«•Ô‚Á‚½‚©‚à’m‚ê‚È‚¢‚Ì‚Åƒ`ƒFƒbƒN‚·‚é
+				// æ­»è€…ãŒç”Ÿãè¿”ã£ãŸã‹ã‚‚çŸ¥ã‚Œãªã„ã®ã§ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 
-				// QÆƒJƒEƒ“ƒ^‚ğŒ¸‚ç‚·
+				// å‚ç…§ã‚«ã‚¦ãƒ³ã‚¿ã‚’æ¸›ã‚‰ã™
 				add_ref_count_objects(alive, current, -1);
 				
 				alive = find_alive_objects(alive, current);
 
-				// begin ` alive‚Ü‚Å‚ÌƒIƒuƒWƒFƒNƒg‚Í¶‘¶Šm’è
-				// alive ` current‚Ü‚Å‚ÌƒIƒuƒWƒFƒNƒg‚Í€–SŠm’è
+				// begin ï½ aliveã¾ã§ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ç”Ÿå­˜ç¢ºå®š
+				// alive ï½ currentã¾ã§ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯æ­»äº¡ç¢ºå®š
 
-				// €Ò‚àAQÆƒJƒEƒ“ƒ^‚ğŒ³‚É–ß‚·
+				// æ­»è€…ã‚‚ã€å‚ç…§ã‚«ã‚¦ãƒ³ã‚¿ã‚’å…ƒã«æˆ»ã™
 				add_ref_count_objects(alive, current, 1);
 			}
 		}

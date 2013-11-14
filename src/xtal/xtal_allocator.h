@@ -13,12 +13,12 @@ void expand_simple_dynamic_pointer_array(void* begin, void* end, void* current, 
 
 /**
 * \internal
-* \brief “®“I‚Èƒ|ƒCƒ“ƒ^‚Ì”z—ñ‚ğì¬AŠg’£‚·‚éŠÖ”B
+* \brief å‹•çš„ãªãƒã‚¤ãƒ³ã‚¿ã®é…åˆ—ã‚’ä½œæˆã€æ‹¡å¼µã™ã‚‹é–¢æ•°ã€‚
 *
-* ˆê”ÔÅ‰‚Ìì¬‚ÍAˆø”‘S‚Ä‚ªnull‚Å‚ ‚é•K—v‚ª‚ ‚éB
-* \param begin ƒƒ‚ƒŠ‚Ìæ“ª
-* \param end ƒƒ‚ƒŠ‚ÌÅŒã‚Ìˆê‚ÂŸ
-* \param current g—p’†‚Ì—v‘f‚Ìˆê‚ÂŸ
+* ä¸€ç•ªæœ€åˆã®ä½œæˆæ™‚ã¯ã€å¼•æ•°å…¨ã¦ãŒnullã§ã‚ã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
+* \param begin ãƒ¡ãƒ¢ãƒªã®å…ˆé ­
+* \param end ãƒ¡ãƒ¢ãƒªã®æœ€å¾Œã®ä¸€ã¤æ¬¡
+* \param current ä½¿ç”¨ä¸­ã®è¦ç´ ã®ä¸€ã¤æ¬¡
 */
 template<class T>
 inline void expand_simple_dynamic_pointer_array(T*** begin, T*** end, T*** current, int addsize=1024){
@@ -29,12 +29,12 @@ void fit_simple_dynamic_pointer_array(void* begin, void* end, void* current);
 
 /**
 * \internal
-* \brief expand_simple_dynamic_pointer_array‚Å¶¬‚µ‚½”z—ñ‚ğAg‚í‚ê‚Ä‚¢‚éÀÛ‚ÌƒTƒCƒY‚Ü‚Åk¬‚·‚éB
+* \brief expand_simple_dynamic_pointer_arrayã§ç”Ÿæˆã—ãŸé…åˆ—ã‚’ã€ä½¿ã‚ã‚Œã¦ã„ã‚‹å®Ÿéš›ã®ã‚µã‚¤ã‚ºã¾ã§ç¸®å°ã™ã‚‹ã€‚
 *
-* —v‘f‚ªˆê‚Â‚à–³‚¢‚È‚ç(current==begin‚È‚ç)Š®‘S‚É‰ğ•ú‚³‚ê‚éB
-* \param begin ƒƒ‚ƒŠ‚Ìæ“ª
-* \param end ƒƒ‚ƒŠ‚ÌÅŒã‚Ìˆê‚ÂŸ
-* \param current g—p’†‚Ì—v‘f‚Ìˆê‚ÂŸ
+* è¦ç´ ãŒä¸€ã¤ã‚‚ç„¡ã„ãªã‚‰(current==beginãªã‚‰)å®Œå…¨ã«è§£æ”¾ã•ã‚Œã‚‹ã€‚
+* \param begin ãƒ¡ãƒ¢ãƒªã®å…ˆé ­
+* \param end ãƒ¡ãƒ¢ãƒªã®æœ€å¾Œã®ä¸€ã¤æ¬¡
+* \param current ä½¿ç”¨ä¸­ã®è¦ç´ ã®ä¸€ã¤æ¬¡
 */
 template<class T>
 inline void fit_simple_dynamic_pointer_array(T*** begin, T*** end, T*** current){
@@ -45,7 +45,7 @@ inline void fit_simple_dynamic_pointer_array(T*** begin, T*** end, T*** current)
 
 /**
 * \internal
-* \brief ŒÅ’èƒTƒCƒYƒƒ‚ƒŠƒAƒƒP[ƒ^
+* \brief å›ºå®šã‚µã‚¤ã‚ºãƒ¡ãƒ¢ãƒªã‚¢ãƒ­ã‚±ãƒ¼ã‚¿
 */
 class MemoryPool{
 public:
@@ -92,7 +92,7 @@ private:
 
 /**
 * \internal
-* \brief ŒÅ’èƒTƒCƒYƒƒ‚ƒŠƒAƒƒP[ƒ^
+* \brief å›ºå®šã‚µã‚¤ã‚ºãƒ¡ãƒ¢ãƒªã‚¢ãƒ­ã‚±ãƒ¼ã‚¿
 */
 class FixedAllocator{
 public:
@@ -150,7 +150,7 @@ private:
 
 /**
 * \internal
-* \brief ¬‚³‚¢ƒTƒCƒY‚Ìƒƒ‚ƒŠƒAƒƒP[ƒ^
+* \brief å°ã•ã„ã‚µã‚¤ã‚ºã®ãƒ¡ãƒ¢ãƒªã‚¢ãƒ­ã‚±ãƒ¼ã‚¿
 */
 class SmallObjectAllocator{	
 

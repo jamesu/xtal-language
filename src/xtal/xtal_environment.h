@@ -9,11 +9,11 @@
 
 namespace xtal{
 
-/// \name XtalŠÂ‹«‚Ì‰Šú‰»A”jŠüü‚è
+/// \name Xtalç’°å¢ƒã®åˆæœŸåŒ–ã€ç ´æ£„å‘¨ã‚Š
 //@{
 
 /**
-* \brief ƒAƒƒP[ƒ^ƒ‰ƒCƒuƒ‰ƒŠ
+* \brief ã‚¢ãƒ­ã‚±ãƒ¼ã‚¿ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 */
 class AllocatorLib{
 public:
@@ -29,7 +29,7 @@ public:
 };
 
 /**
-* \brief •¶šƒR[ƒhƒ‰ƒCƒuƒ‰ƒŠ
+* \brief æ–‡å­—ã‚³ãƒ¼ãƒ‰ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 */
 class ChCodeLib{
 public:
@@ -42,7 +42,7 @@ public:
 };
 
 /**
-* \brief ƒXƒŒƒbƒhƒ‰ƒCƒuƒ‰ƒŠ
+* \brief ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 */
 class ThreadLib{
 public:
@@ -68,7 +68,7 @@ public:
 };
 
 /**
-* \brief •W€“üo—Íƒ‰ƒCƒuƒ‰ƒŠ
+* \brief æ¨™æº–å…¥å‡ºåŠ›ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 */
 class StdStreamLib{
 public:
@@ -88,7 +88,7 @@ public:
 };
 
 /**
-* \brief ƒtƒ@ƒCƒ‹ƒVƒXƒeƒ€ƒ‰ƒCƒuƒ‰ƒŠ
+* \brief ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 */
 class FilesystemLib{
 public:
@@ -114,7 +114,7 @@ public:
 };
 
 /**
-* \brief g—pƒ‰ƒCƒuƒ‰ƒŠ‚Ìw’è‚Ì‚½‚ß‚Ì\‘¢‘Ì
+* \brief ä½¿ç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®æŒ‡å®šã®ãŸã‚ã®æ§‹é€ ä½“
 */
 struct Setting{
 	AllocatorLib* allocator_lib;
@@ -124,28 +124,28 @@ struct Setting{
 	FilesystemLib* filesystem_lib;
 
 	/**
-	* \brief ‚Ù‚Æ‚ñ‚Ç‰½‚à‚µ‚È‚¢“®ì‚ğİ’è‚·‚éB
+	* \brief ã»ã¨ã‚“ã©ä½•ã‚‚ã—ãªã„å‹•ä½œã‚’è¨­å®šã™ã‚‹ã€‚
 	*/
 	Setting();
 };
 
 /**
-* \brief XtalÀsŠÂ‹«‚ğì¬‚µA‰Šú‰»‚µAƒJƒŒƒ“ƒg‚Éİ’è‚·‚éB
+* \brief Xtalå®Ÿè¡Œç’°å¢ƒã‚’ä½œæˆã—ã€åˆæœŸåŒ–ã—ã€ã‚«ãƒ¬ãƒ³ãƒˆã«è¨­å®šã™ã‚‹ã€‚
 */
 void initialize(const Setting& setting);
 
 /**
-* \brief ƒJƒŒƒ“ƒg‚ÌXtalÀsŠÂ‹«‚ğ”jŠü‚·‚éB
+* \brief ã‚«ãƒ¬ãƒ³ãƒˆã®Xtalå®Ÿè¡Œç’°å¢ƒã‚’ç ´æ£„ã™ã‚‹ã€‚
 */
 void uninitialize();
 
 /**
-* \brief Œ»İ‚ÌƒJƒŒƒ“ƒg‚ÌXtalÀsŠÂ‹«‚ğæ“¾‚·‚éB
+* \brief ç¾åœ¨ã®ã‚«ãƒ¬ãƒ³ãƒˆã®Xtalå®Ÿè¡Œç’°å¢ƒã‚’å–å¾—ã™ã‚‹ã€‚
 */
 Environment* environment();
 
 /**
-* \brief ƒJƒŒƒ“ƒg‚ÌXtalÀsŠÂ‹«‚ğİ’è‚·‚éB
+* \brief ã‚«ãƒ¬ãƒ³ãƒˆã®Xtalå®Ÿè¡Œç’°å¢ƒã‚’è¨­å®šã™ã‚‹ã€‚
 */
 void set_environment(Environment* e);
 
@@ -159,52 +159,52 @@ FilesystemLib* filesystem_lib();
 
 /////////////////////////////////////////////////////
 
-/// \name ƒƒ‚ƒŠü‚è
+/// \name ãƒ¡ãƒ¢ãƒªå‘¨ã‚Š
 //@{
 
 /**
-* \brief ƒ†[ƒU[‚ª“o˜^‚µ‚½ƒƒ‚ƒŠƒAƒƒP[ƒgŠÖ”‚ğg‚Á‚Äƒƒ‚ƒŠŠm•Û‚·‚éB
+* \brief ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒç™»éŒ²ã—ãŸãƒ¡ãƒ¢ãƒªã‚¢ãƒ­ã‚±ãƒ¼ãƒˆé–¢æ•°ã‚’ä½¿ã£ã¦ãƒ¡ãƒ¢ãƒªç¢ºä¿ã™ã‚‹ã€‚
 */
 void* xmalloc(size_t size);
 
 /**
-* \brief ƒ†[ƒU[‚ª“o˜^‚µ‚½ƒƒ‚ƒŠƒfƒAƒƒP[ƒgŠÖ”‚ğg‚Á‚Äƒƒ‚ƒŠ‰ğ•ú‚·‚éB
+* \brief ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒç™»éŒ²ã—ãŸãƒ¡ãƒ¢ãƒªãƒ‡ã‚¢ãƒ­ã‚±ãƒ¼ãƒˆé–¢æ•°ã‚’ä½¿ã£ã¦ãƒ¡ãƒ¢ãƒªè§£æ”¾ã™ã‚‹ã€‚
 */
 void xfree(void* p, size_t size);
 
 /**
-* \brief ƒƒ‚ƒŠŠm•Û‚ğƒXƒR[ƒv‚É•Â‚¶‚ß‚é‚½‚ß‚Ìƒ†[ƒeƒBƒŠƒeƒBƒNƒ‰ƒX
+* \brief ãƒ¡ãƒ¢ãƒªç¢ºä¿ã‚’ã‚¹ã‚³ãƒ¼ãƒ—ã«é–‰ã˜è¾¼ã‚ã‚‹ãŸã‚ã®ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ã‚¯ãƒ©ã‚¹
 */
 struct XMallocGuard{
 	/**
-	* \brief Šm•Û‚¹‚¸‚É\’z‚³‚ê‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	* \brief ç¢ºä¿ã›ãšã«æ§‹ç¯‰ã•ã‚Œã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	*/
 	XMallocGuard():p(0){}
 	
 	/**
-	* \brief size•ª‚Ìƒƒ‚ƒŠŠm•Û‚·‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	* \brief sizeåˆ†ã®ãƒ¡ãƒ¢ãƒªç¢ºä¿ã™ã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	*/
 	explicit XMallocGuard(uint_t size):p(xmalloc(size)), sz(size){}
 
 	/**
-	* \brief ƒƒ‚ƒŠ‚ğ‰ğ•ú‚·‚é
+	* \brief ãƒ¡ãƒ¢ãƒªã‚’è§£æ”¾ã™ã‚‹
 	*/
 	~XMallocGuard(){ if(p)xfree(p, sz); }
 public:	
 
 	/**
-	* \brief ƒƒ‚ƒŠ‚ğŠm•Û‚·‚é
-	* ‚»‚ê‚Ü‚Å‚ÉŠm•Û‚³‚ê‚Ä‚¢‚½ƒƒ‚ƒŠ‚Í‰ğ•ú‚³‚ê‚é
+	* \brief ãƒ¡ãƒ¢ãƒªã‚’ç¢ºä¿ã™ã‚‹
+	* ãã‚Œã¾ã§ã«ç¢ºä¿ã•ã‚Œã¦ã„ãŸãƒ¡ãƒ¢ãƒªã¯è§£æ”¾ã•ã‚Œã‚‹
 	*/
 	void malloc(size_t size){ if(p)xfree(p, sz); p = xmalloc(size); sz = size; }
 
 	/**
-	* \brief ƒƒ‚ƒŠ‚Ìæ“ªƒAƒhƒŒƒX‚ğ•Ô‚·
+	* \brief ãƒ¡ãƒ¢ãƒªã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿”ã™
 	*/
 	void* get(){ return p; }
 
 	/**
-	* \brief ƒƒ‚ƒŠ‚Ìæ“ªƒAƒhƒŒƒX‚ğ•Ô‚·
+	* \brief ãƒ¡ãƒ¢ãƒªã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¿”ã™
 	*/
 	void* release(){
 		void* temp = p;
@@ -213,7 +213,7 @@ public:
 	}
 
 	/**
-	* \brief Šm•Û‚³‚ê‚Ä‚¢‚éƒƒ‚ƒŠ‚ÌƒTƒCƒY‚ğ•Ô‚·
+	* \brief ç¢ºä¿ã•ã‚Œã¦ã„ã‚‹ãƒ¡ãƒ¢ãƒªã®ã‚µã‚¤ã‚ºã‚’è¿”ã™
 	*/
 	uint_t size(){ return sz; }
 
@@ -232,7 +232,7 @@ private:
 
 /**
 * \internal
-* \brief jmp_buf‚ğ•Â‚¶‚ß‚é\‘¢‘Ì
+* \brief jmp_bufã‚’é–‰ã˜è¾¼ã‚ã‚‹æ§‹é€ ä½“
 */
 struct JmpBuf{
 	jmp_buf buf;
@@ -255,36 +255,36 @@ struct Protect{
 
 /**
 * \xbind lib::builtin
-* \brief ƒK[ƒxƒWƒRƒŒƒNƒVƒ‡ƒ“‚ğÀs‚·‚é
+* \brief ã‚¬ãƒ¼ãƒ™ã‚¸ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚’å®Ÿè¡Œã™ã‚‹
 *
-* ‚³‚Ù‚ÇŠÔ‚Í‚©‚©‚ç‚È‚¢‚ªAŠ®‘S‚ÉƒSƒ~‚ğ‰ğ•ú‚Å‚«‚È‚¢ƒK[ƒxƒWƒRƒŒƒNƒgŠÖ”
-* —á‚¦‚ÎzŠÂQÆ‚Í‚±‚ê‚Å‚ÍŒŸ’m‚Å‚«‚È‚¢B
+* ã•ã»ã©æ™‚é–“ã¯ã‹ã‹ã‚‰ãªã„ãŒã€å®Œå…¨ã«ã‚´ãƒŸã‚’è§£æ”¾ã§ããªã„ã‚¬ãƒ¼ãƒ™ã‚¸ã‚³ãƒ¬ã‚¯ãƒˆé–¢æ•°
+* ä¾‹ãˆã°å¾ªç’°å‚ç…§ã¯ã“ã‚Œã§ã¯æ¤œçŸ¥ã§ããªã„ã€‚
 */
 void gc();
 
 /**
 * \xbind lib::builtin
-* \brief zŠÂƒIƒuƒWƒFƒNƒg‚à‰ğ•ú‚·‚éƒtƒ‹ƒK[ƒxƒWƒRƒŒƒNƒVƒ‡ƒ“‚ğÀs‚·‚é
+* \brief å¾ªç’°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚‚è§£æ”¾ã™ã‚‹ãƒ•ãƒ«ã‚¬ãƒ¼ãƒ™ã‚¸ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚’å®Ÿè¡Œã™ã‚‹
 *
-* ŠÔ‚Í‚©‚©‚é‚ªAŒ»İƒSƒ~‚Æ‚È‚Á‚Ä‚¢‚é‚à‚Ì‚Í‚È‚é‚×‚­‘S‚Ä‰ğ•ú‚·‚éƒK[ƒxƒWƒRƒŒƒNƒgŠÖ”
-* zŠÂQÆ‚àŒŸ’m‚Å‚«‚éB
+* æ™‚é–“ã¯ã‹ã‹ã‚‹ãŒã€ç¾åœ¨ã‚´ãƒŸã¨ãªã£ã¦ã„ã‚‹ã‚‚ã®ã¯ãªã‚‹ã¹ãå…¨ã¦è§£æ”¾ã™ã‚‹ã‚¬ãƒ¼ãƒ™ã‚¸ã‚³ãƒ¬ã‚¯ãƒˆé–¢æ•°
+* å¾ªç’°å‚ç…§ã‚‚æ¤œçŸ¥ã§ãã‚‹ã€‚
 */
 void full_gc();
 
 /**
 * \xbind lib::builtin
-* \brief ƒK[ƒxƒWƒRƒŒƒNƒVƒ‡ƒ“‚ğ–³Œø‰»‚·‚é
+* \brief ã‚¬ãƒ¼ãƒ™ã‚¸ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚’ç„¡åŠ¹åŒ–ã™ã‚‹
 *
-* gc‚âfull_gc‚ÌŒÄ‚Ño‚µ‚ğ–³Œø‰»‚·‚éŠÖ”B
-* “à•”‚Å‚±‚ê‚ª‰½‰ñŒÄ‚Ño‚³‚ê‚½‚©‹L‰¯‚³‚ê‚Ä‚¨‚èAŒÄ‚Ño‚µ‚½‰ñ”enable_gc‚ğŒÄ‚Ñ‚È‚¢‚ÆƒK[ƒxƒWƒRƒŒƒNƒVƒ‡ƒ“‚Í—LŒø‚É‚È‚ç‚È‚¢
+* gcã‚„full_gcã®å‘¼ã³å‡ºã—ã‚’ç„¡åŠ¹åŒ–ã™ã‚‹é–¢æ•°ã€‚
+* å†…éƒ¨ã§ã“ã‚ŒãŒä½•å›å‘¼ã³å‡ºã•ã‚ŒãŸã‹è¨˜æ†¶ã•ã‚Œã¦ãŠã‚Šã€å‘¼ã³å‡ºã—ãŸå›æ•°enable_gcã‚’å‘¼ã³ãªã„ã¨ã‚¬ãƒ¼ãƒ™ã‚¸ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã¯æœ‰åŠ¹ã«ãªã‚‰ãªã„
 */
 void disable_gc();
 
 /**
 * \xbind lib::builtin
-* \brief ƒK[ƒxƒWƒRƒŒƒNƒVƒ‡ƒ“‚ğ—LŒø‰»‚·‚é
+* \brief ã‚¬ãƒ¼ãƒ™ã‚¸ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã‚’æœ‰åŠ¹åŒ–ã™ã‚‹
 
-* disable_gc‚ªŒÄ‚Î‚ê‚½‰ñ”‚Æ“¯‚¶‚¾‚¯ŒÄ‚Ño‚·‚ÆƒK[ƒxƒWƒRƒŒƒNƒVƒ‡ƒ“‚ª—LŒø‚É‚È‚é
+* disable_gcãŒå‘¼ã°ã‚ŒãŸå›æ•°ã¨åŒã˜ã ã‘å‘¼ã³å‡ºã™ã¨ã‚¬ãƒ¼ãƒ™ã‚¸ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãŒæœ‰åŠ¹ã«ãªã‚‹
 */
 void enable_gc();
 
@@ -298,12 +298,12 @@ AnyPtr alive_object(uint_t i);
 
 /**
 * \internal
-* \brief key‚É‘Î‰‚·‚éC++‚ÌƒNƒ‰ƒX‚ÌƒNƒ‰ƒXƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·B
+* \brief keyã«å¯¾å¿œã™ã‚‹C++ã®ã‚¯ãƒ©ã‚¹ã®ã‚¯ãƒ©ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™ã€‚
 */
 const ClassPtr& cpp_class(CppClassSymbolData* key);
 
 /**
-* \brief ƒNƒ‰ƒXT‚É‘Î‰‚·‚éC++‚ÌƒNƒ‰ƒX‚ÌƒNƒ‰ƒXƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·B
+* \brief ã‚¯ãƒ©ã‚¹Tã«å¯¾å¿œã™ã‚‹C++ã®ã‚¯ãƒ©ã‚¹ã®ã‚¯ãƒ©ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™ã€‚
 */
 template<class T>
 inline const ClassPtr& cpp_class(){
@@ -318,12 +318,12 @@ void set_cpp_class(CppClassSymbolData* key, const ClassPtr& cls);
 
 /**
 * \internal
-* \brief TŒ^‚ÌƒIƒuƒWƒFƒNƒg‚ğŠÂ‹«‚©‚çæ‚èo‚·
+* \brief Tå‹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç’°å¢ƒã‹ã‚‰å–ã‚Šå‡ºã™
 */
 const AnyPtr& cpp_value(CppValueSymbolData* key);
 
 /**
-* \brief TŒ^‚ÌƒIƒuƒWƒFƒNƒg‚ğŠÂ‹«‚©‚çæ‚èo‚·
+* \brief Tå‹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç’°å¢ƒã‹ã‚‰å–ã‚Šå‡ºã™
 */
 template<class T>
 const SmartPtr<T>& cpp_value(){
@@ -334,37 +334,37 @@ const SmartPtr<T>& cpp_value(){
 
 /**
 * \internal
-* \brief ƒNƒ‰ƒX‚Ìƒƒ“ƒo‚ğæ‚èo‚·B
+* \brief ã‚¯ãƒ©ã‚¹ã®ãƒ¡ãƒ³ãƒã‚’å–ã‚Šå‡ºã™ã€‚
 */
 //const AnyPtr& cache_member(Base* target_class, const IDPtr& primary_key, const AnyPtr& secondary_key, int_t& accessibility);
 
 /**
 * \internal
-* \brief ƒNƒ‰ƒX‚ÌŒp³ŠÖŒW‚ğ’²‚×‚éB
+* \brief ã‚¯ãƒ©ã‚¹ã®ç¶™æ‰¿é–¢ä¿‚ã‚’èª¿ã¹ã‚‹ã€‚
 */
 //bool cache_is(const AnyPtr& target_class, const AnyPtr& klass);
 
 /**
 * \internal
-* \brief ƒNƒ‰ƒX‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ªƒLƒƒƒbƒVƒ…‚³‚ê‚Ä‚¢‚é‚©‚ç’²‚×‚éB
+* \brief ã‚¯ãƒ©ã‚¹ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ãŒã‚­ãƒ£ãƒƒã‚·ãƒ¥ã•ã‚Œã¦ã„ã‚‹ã‹ã‚‰èª¿ã¹ã‚‹ã€‚
 */
 //bool cache_ctor(const AnyPtr& target_class, int_t kind);
 
 /**
 * \internal
-* \brief ƒLƒƒƒbƒVƒ…‚ğÁ‚·B
+* \brief ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’æ¶ˆã™ã€‚
 */
 void clear_cache();
 
 /**
 * \internal
-* \brief ƒƒ“ƒo[‚ÌƒLƒƒƒbƒVƒ…ƒe[ƒuƒ‹‚É“o˜^‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚ğ–³Œø‚É‚·‚éB
+* \brief ãƒ¡ãƒ³ãƒãƒ¼ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãƒ†ãƒ¼ãƒ–ãƒ«ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’ç„¡åŠ¹ã«ã™ã‚‹ã€‚
 */
 void invalidate_cache_member();
 
 /**
 * \internal
-* \brief Œp³ŠÖŒW‚ÌƒLƒƒƒbƒVƒ…ƒe[ƒuƒ‹‚É“o˜^‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚ğ–³Œø‚É‚·‚éB
+* \brief ç¶™æ‰¿é–¢ä¿‚ã®ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãƒ†ãƒ¼ãƒ–ãƒ«ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’ç„¡åŠ¹ã«ã™ã‚‹ã€‚
 */
 void invalidate_cache_is();
 
@@ -372,62 +372,62 @@ void invalidate_cache_is();
 
 /**
 * \internal
-* \brief VMachineƒCƒ“ƒXƒ^ƒ“ƒX‚ğƒŒƒ“ƒ^ƒ‹‚·‚éB
+* \brief VMachineã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ãƒ¬ãƒ³ã‚¿ãƒ«ã™ã‚‹ã€‚
 */
 VMachinePtr vmachine_take_over();
 
 /**
 * \internal
-* \brief VMachineƒCƒ“ƒXƒ^ƒ“ƒX‚ğ•Ô‹p‚·‚éB
+* \brief VMachineã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¿”å´ã™ã‚‹ã€‚
 */
 void vmachine_take_back(const VMachinePtr& vm);
 
 /**
 * \internal
-* \brief ƒfƒtƒHƒ‹ƒg‚Åg—p‚·‚éVMachineƒCƒ“ƒXƒ^ƒ“ƒX‚ğİ’è‚·‚éB
+* \brief ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ä½¿ç”¨ã™ã‚‹VMachineã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¨­å®šã™ã‚‹ã€‚
 */
 VMachinePtr set_vmachine(const VMachinePtr& vm);
 
 /////////////////////////////////////////////////////
 
-/// \name ƒ‰ƒCƒuƒ‰ƒŠƒIƒuƒWƒFƒNƒgæ“¾ŠÖ”
+/// \name ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå–å¾—é–¢æ•°
 // @{
 
 /**
-* \brief builtinƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
+* \brief builtinã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 */
 const ClassPtr& builtin();
 
 /**
-* \brief libƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
+* \brief libã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 */
 const LibPtr& lib();
 
 /**
-* \brief globalƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
+* \brief globalã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 */
 const ClassPtr& global();
 
 /**
-* \brief stdinƒXƒgƒŠ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
+* \brief stdinã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 */
 const StreamPtr& stdin_stream();
 
 /**
-* \brief stdoutƒXƒgƒŠ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
+* \brief stdoutã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 */
 const StreamPtr& stdout_stream();
 
 /**
-* \brief stderrƒXƒgƒŠ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
+* \brief stderrã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 */
 const StreamPtr& stderr_stream();
 
 /**
-* \brief VMachinePtrƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
+* \brief VMachinePtrã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 *
-* ƒOƒ[ƒoƒ‹‚ÈVMachinePtrƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·B
-* ƒXƒŒƒbƒh–ˆ‚É‚±‚ÌƒOƒ[ƒoƒ‹VMachinePtrƒIƒuƒWƒFƒNƒg‚Í‘¶İ‚·‚éB
+* ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªVMachinePtrã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™ã€‚
+* ã‚¹ãƒ¬ãƒƒãƒ‰æ¯ã«ã“ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«VMachinePtrã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯å­˜åœ¨ã™ã‚‹ã€‚
 */
 const VMachinePtr& vmachine();
 
@@ -439,24 +439,24 @@ const VMachinePtr& setup_call(int_t need_result_count);
 // @}
 
 /**
-* \brief •¶š—ñ‚ğƒCƒ“ƒ^[ƒ“Ï‚İ•¶š—ñ‚É•ÏŠ·‚·‚é
+* \brief æ–‡å­—åˆ—ã‚’ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ³æ¸ˆã¿æ–‡å­—åˆ—ã«å¤‰æ›ã™ã‚‹
 */
 IDPtr intern(const char_t* str);
 
 /**
-* \brief C•¶š—ñ‚©‚çsize•ª‚Ì’·‚³‚ğæ‚èo‚µƒCƒ“ƒ^[ƒ“Ï‚İ•¶š—ñ‚É•ÏŠ·‚·‚é
+* \brief Cæ–‡å­—åˆ—ã‹ã‚‰sizeåˆ†ã®é•·ã•ã‚’å–ã‚Šå‡ºã—ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ³æ¸ˆã¿æ–‡å­—åˆ—ã«å¤‰æ›ã™ã‚‹
 *
 */
 IDPtr intern(const char_t* str, uint_t size);
 
 /**
-* \brief C•¶š—ñ‚©‚çsize•ª‚Ì’·‚³‚ğæ‚èo‚µƒCƒ“ƒ^[ƒ“Ï‚İ•¶š—ñ‚É•ÏŠ·‚·‚é
+* \brief Cæ–‡å­—åˆ—ã‹ã‚‰sizeåˆ†ã®é•·ã•ã‚’å–ã‚Šå‡ºã—ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ³æ¸ˆã¿æ–‡å­—åˆ—ã«å¤‰æ›ã™ã‚‹
 *
 */
 IDPtr intern(const char_t* str, uint_t size, String::long_lived_t);
 
 /**
-* \brief C•¶š—ñƒŠƒeƒ‰ƒ‹‚©‚çƒCƒ“ƒ^[ƒ“Ï‚İ•¶š—ñ‚É•ÏŠ·‚·‚é
+* \brief Cæ–‡å­—åˆ—ãƒªãƒ†ãƒ©ãƒ«ã‹ã‚‰ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ³æ¸ˆã¿æ–‡å­—åˆ—ã«å¤‰æ›ã™ã‚‹
 *
 */
 template<int N>
@@ -465,30 +465,30 @@ inline IDPtr intern(const LongLivedStringN<N>& str){
 }
 
 /**
-* \brief C•¶š—ñƒŠƒeƒ‰ƒ‹‚©‚çƒCƒ“ƒ^[ƒ“Ï‚İ•¶š—ñ‚É•ÏŠ·‚·‚é
+* \brief Cæ–‡å­—åˆ—ãƒªãƒ†ãƒ©ãƒ«ã‹ã‚‰ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ³æ¸ˆã¿æ–‡å­—åˆ—ã«å¤‰æ›ã™ã‚‹
 *
 */
 IDPtr intern(const LongLivedString& str);
 
 /**
-* \brief String‚©‚çƒCƒ“ƒ^[ƒ“Ï‚İ•¶š—ñ‚É•ÏŠ·‚·‚é
+* \brief Stringã‹ã‚‰ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ³æ¸ˆã¿æ–‡å­—åˆ—ã«å¤‰æ›ã™ã‚‹
 *
 */
 IDPtr intern(const StringPtr& name);		
 
 /**
-* \brief ’è‹`Ï‚İƒCƒ“ƒ^[ƒ“Ï‚İ•¶š—ñ‚ğæ“¾‚·‚é
+* \brief å®šç¾©æ¸ˆã¿ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ³æ¸ˆã¿æ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹
 *
 */
 IDPtr fetch_defined_id(uint_t index);
 
 /**
-* \brief ŠÂ‹«‚ğƒƒbƒN‚·‚é
+* \brief ç’°å¢ƒã‚’ãƒ­ãƒƒã‚¯ã™ã‚‹
 */
 void xlock();
 
 /**
-* \brief ŠÂ‹«‚ğƒAƒ“ƒƒbƒN‚·‚é
+* \brief ç’°å¢ƒã‚’ã‚¢ãƒ³ãƒ­ãƒƒã‚¯ã™ã‚‹
 */
 void xunlock();
 
@@ -543,75 +543,75 @@ private:
 #define XTAL_INTERPOSE if(const ::xtal::XInterpose& xinterpose = (XTAL_UNUSED_VAR(xinterpose), 0))
 
 /**
-* \brief ƒeƒLƒXƒgƒ}ƒbƒv‚ğ•Ô‚·
+* \brief ãƒ†ã‚­ã‚¹ãƒˆãƒãƒƒãƒ—ã‚’è¿”ã™
 */
 const MapPtr& text_map();
 
 /**
 * \internal
-* \brief æ“ªƒoƒCƒg‚ğŒ©‚ÄA‚»‚Ìƒ}ƒ‹ƒ`ƒoƒCƒg•¶š‚ª‰½•¶š‚©‚ğ’²‚×‚éB
+* \brief å…ˆé ­ãƒã‚¤ãƒˆã‚’è¦‹ã¦ã€ãã®ãƒãƒ«ãƒãƒã‚¤ãƒˆæ–‡å­—ãŒä½•æ–‡å­—ã‹ã‚’èª¿ã¹ã‚‹ã€‚
 *
-* ƒ}ƒCƒiƒX‚Ì’l‚ª•Ô‚³‚ê‚½ê‡AÅ’á•¶š”‚ğ•Ô‚·B
-* -2‚Ìê‡AÅ’á2•¶šˆÈã‚Ì•¶š‚ÅA–{“–‚Ì’·‚³‚Í2•¶š–Ú‚ğ“Ç‚Ü‚È‚¢‚Æ”»’f‚Å‚«‚È‚¢A‚Æ‚¢‚¤ˆÓ–¡‚Æ‚È‚éB
+* ãƒã‚¤ãƒŠã‚¹ã®å€¤ãŒè¿”ã•ã‚ŒãŸå ´åˆã€æœ€ä½æ–‡å­—æ•°ã‚’è¿”ã™ã€‚
+* -2ã®å ´åˆã€æœ€ä½2æ–‡å­—ä»¥ä¸Šã®æ–‡å­—ã§ã€æœ¬å½“ã®é•·ã•ã¯2æ–‡å­—ç›®ã‚’èª­ã¾ãªã„ã¨åˆ¤æ–­ã§ããªã„ã€ã¨ã„ã†æ„å‘³ã¨ãªã‚‹ã€‚
 */
 int_t ch_len(char_t lead);
 
 /**
 * \internal
-* \brief ƒ}ƒ‹ƒ`ƒoƒCƒg•¶š‚ª‰½•¶š‚©‚ğ’²‚×‚éB
+* \brief ãƒãƒ«ãƒãƒã‚¤ãƒˆæ–‡å­—ãŒä½•æ–‡å­—ã‹ã‚’èª¿ã¹ã‚‹ã€‚
 *
-* int_t ch_len(char_t lead)‚ªŒÄ‚Î‚ê‚½ŒãAƒ}ƒCƒiƒX‚Ì’l‚ğ•Ô‚µ‚½ê‡‚É‘±‚¯‚ÄŒÄ‚ÔB
-* ch_len‚Å-2‚Ì’l‚ğ•Ô‚µ‚½Œã‚ÍAstr‚Ìæ‚É‚ÍÅ’á2ƒoƒCƒg•ª‚Ìƒf[ƒ^‚ğŠi”[‚·‚é‚±‚ÆB
+* int_t ch_len(char_t lead)ãŒå‘¼ã°ã‚ŒãŸå¾Œã€ãƒã‚¤ãƒŠã‚¹ã®å€¤ã‚’è¿”ã—ãŸå ´åˆã«ç¶šã‘ã¦å‘¼ã¶ã€‚
+* ch_lenã§-2ã®å€¤ã‚’è¿”ã—ãŸå¾Œã¯ã€strã®å…ˆã«ã¯æœ€ä½2ãƒã‚¤ãƒˆåˆ†ã®ãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´ã™ã‚‹ã“ã¨ã€‚
 */
 int_t ch_len2(const char_t* str);
 
 /**
 * \internal
-* \brief ˆê‚Âæ‚Ì•¶š‚ğ•Ô‚·
+* \brief ä¸€ã¤å…ˆã®æ–‡å­—ã‚’è¿”ã™
 *
-* —á‚¦‚Î a ‚ğ“n‚µ‚½ê‡Ab ‚ª•Ô‚é
+* ä¾‹ãˆã° a ã‚’æ¸¡ã—ãŸå ´åˆã€b ãŒè¿”ã‚‹
 */
 int_t ch_inc(const char_t* data, int_t data_size, char_t* dest, int_t dest_size);
 
 /**
 * \internal
-* \brief •¶š‚Ì‘å¬”»’è
+* \brief æ–‡å­—ã®å¤§å°åˆ¤å®š
 *
-* •‰‚Ì’l a ‚Ì•¶š‚Ì•û‚ªb‚Ì•¶š‚æ‚è¬‚³‚¢
-* 0‚Ì’l “™‚µ‚¢
-* ³‚Ì’l b‚Ì•¶š‚Ì•û‚ªa‚Ì•¶š‚æ‚è¬‚³‚¢
+* è² ã®å€¤ a ã®æ–‡å­—ã®æ–¹ãŒbã®æ–‡å­—ã‚ˆã‚Šå°ã•ã„
+* 0ã®å€¤ ç­‰ã—ã„
+* æ­£ã®å€¤ bã®æ–‡å­—ã®æ–¹ãŒaã®æ–‡å­—ã‚ˆã‚Šå°ã•ã„
 */
 int_t ch_cmp(const char_t* a, uint_t asize, const char_t* b, uint_t bsize);
 
 
 StreamPtr open(const StringPtr& file_name, const StringPtr& mode);
 
-/// \name ƒRƒ“ƒpƒCƒ‹ŒnŠÖ”
+/// \name ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ç³»é–¢æ•°
 //@{
 
 /**
 * \xbind lib::builtin
-* \brief file_nameƒtƒ@ƒCƒ‹‚ğƒRƒ“ƒpƒCƒ‹‚·‚éB
-* ‚±‚Ì–ß‚è’l‚ğserialize‚·‚é‚ÆAƒoƒCƒgƒR[ƒhŒ`®‚Å•Û‘¶‚³‚ê‚éB
-* \param file_name XtalƒXƒNƒŠƒvƒg‚ª‹Lq‚³‚ê‚½ƒtƒ@ƒCƒ‹‚Ì–¼‘O
-* \return Às‚Å‚«‚éCodeƒIƒuƒWƒFƒNƒg
+* \brief file_nameãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã™ã‚‹ã€‚
+* ã“ã®æˆ»ã‚Šå€¤ã‚’serializeã™ã‚‹ã¨ã€ãƒã‚¤ãƒˆã‚³ãƒ¼ãƒ‰å½¢å¼ã§ä¿å­˜ã•ã‚Œã‚‹ã€‚
+* \param file_name Xtalã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒè¨˜è¿°ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã®åå‰
+* \return å®Ÿè¡Œã§ãã‚‹Codeã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 */
 CodePtr compile_file(const StringPtr& file_name);
 
 /**
 * \xbind lib::builtin
-* \brief source‚ğƒRƒ“ƒpƒCƒ‹‚·‚éB
-* ‚±‚Ì–ß‚è’l‚ğserialize‚·‚é‚ÆAƒoƒCƒgƒR[ƒhŒ`®‚Å•Û‘¶‚³‚ê‚éB
-* \param source XtalƒXƒNƒŠƒvƒg‚ª‹Lq‚³‚ê‚½String‚©Stream
-* \return Às‚Å‚«‚éCodeƒIƒuƒWƒFƒNƒg
+* \brief sourceã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã™ã‚‹ã€‚
+* ã“ã®æˆ»ã‚Šå€¤ã‚’serializeã™ã‚‹ã¨ã€ãƒã‚¤ãƒˆã‚³ãƒ¼ãƒ‰å½¢å¼ã§ä¿å­˜ã•ã‚Œã‚‹ã€‚
+* \param source Xtalã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒè¨˜è¿°ã•ã‚ŒãŸStringã‹Stream
+* \return å®Ÿè¡Œã§ãã‚‹Codeã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 */
 CodePtr compile(const AnyPtr& source, const StringPtr& source_name = empty_string);
 
 /**
 * \xbind lib::builtin
-* \brief file_nameƒtƒ@ƒCƒ‹‚ğƒRƒ“ƒpƒCƒ‹‚µ‚ÄÀs‚·‚éB
-* \param file_name XtalƒXƒNƒŠƒvƒg‚ª‹Lq‚³‚ê‚½ƒtƒ@ƒCƒ‹‚Ì–¼‘O
-* \return ƒXƒNƒŠƒvƒg“à‚Åreturn‚³‚ê‚½’l
+* \brief file_nameãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã—ã¦å®Ÿè¡Œã™ã‚‹ã€‚
+* \param file_name Xtalã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒè¨˜è¿°ã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ã®åå‰
+* \return ã‚¹ã‚¯ãƒªãƒ—ãƒˆå†…ã§returnã•ã‚ŒãŸå€¤
 */
 AnyPtr load(const StringPtr& file_name);
 
@@ -624,34 +624,34 @@ CodePtr compiled_source(const void* src, int_t size);
 void exec_compiled_source(const void* src, int_t size);
 
 /**
-* \brief require‚ÌÀs‚ğhook‚·‚éŠÖ”‚ğ“o˜^‚·‚é
-* \param hook ƒtƒbƒN‚·‚éŠÖ”
+* \brief requireã®å®Ÿè¡Œã‚’hookã™ã‚‹é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
+* \param hook ãƒ•ãƒƒã‚¯ã™ã‚‹é–¢æ•°
 */
 void append_require_source_hook(const AnyPtr& hook);
 inline void set_require_source_hook(const AnyPtr& hook){ append_require_source_hook(hook); }
 
 /**
-* \brief require‚ÌÀs‚ğhook‚·‚éŠÖ”‚ğ“o˜^‰ğœ‚·‚é
-* \param hook “o˜^‚µ‚½ŠÖ”
+* \brief requireã®å®Ÿè¡Œã‚’hookã™ã‚‹é–¢æ•°ã‚’ç™»éŒ²è§£é™¤ã™ã‚‹
+* \param hook ç™»éŒ²ã—ãŸé–¢æ•°
 */
 void remove_require_source_hook(const AnyPtr& hook);
 
 /**
 * \xbind lib::builtin
-* \brief nameƒXƒNƒŠƒvƒg‚ğ—v‹‚µACodeƒIƒuƒWƒFƒNƒg‚Ìó‘Ô‚Å•Ô‚·
-* \param nameƒXƒNƒŠƒvƒg–¼
-* —á‚¦‚ÎAtest.xtal‚ğ“Ç‚İ‚İ‚½‚¢ê‡Arequire_source("test")‚Æ‚·‚éBtest.xtalc‚ª‚ ‚ê‚Î‚»‚¿‚ç‚ğ“Ç‚İA‚È‚¯‚ê‚Îtest.xtal‚ğ“Ç‚à‚¤‚Æ‚·‚é
-* ‚½‚¾‚µAset_require_source_hook‚ÅƒtƒbƒN‚³‚ê‚½ŠÖ”‚ª‚ ‚éê‡A
-* \return nameƒXƒNƒŠƒvƒg‚ÌCodeƒIƒuƒWƒFƒNƒg
+* \brief nameã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’è¦æ±‚ã—ã€Codeã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®çŠ¶æ…‹ã§è¿”ã™
+* \param nameã‚¹ã‚¯ãƒªãƒ—ãƒˆå
+* ä¾‹ãˆã°ã€test.xtalã‚’èª­ã¿è¾¼ã¿ãŸã„å ´åˆã€require_source("test")ã¨ã™ã‚‹ã€‚test.xtalcãŒã‚ã‚Œã°ãã¡ã‚‰ã‚’èª­ã¿ã€ãªã‘ã‚Œã°test.xtalã‚’èª­ã‚‚ã†ã¨ã™ã‚‹
+* ãŸã ã—ã€set_require_source_hookã§ãƒ•ãƒƒã‚¯ã•ã‚ŒãŸé–¢æ•°ãŒã‚ã‚‹å ´åˆã€
+* \return nameã‚¹ã‚¯ãƒªãƒ—ãƒˆã®Codeã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 */
 CodePtr require_source(const StringPtr& name);
 
 /**
 * \xbind lib::builtin
-* \brief nameƒXƒNƒŠƒvƒg‚ğ—v‹‚µAÀs‚µ‚½Œ‹‰Ê‚ğ•Ô‚·
-* \param nameƒXƒNƒŠƒvƒg–¼
-* —á‚¦‚ÎAtest.xtal‚ğ“Ç‚İ‚İ‚½‚¢ê‡Arequire("test")‚Æ‚·‚éBtest.xtalc‚ª‚ ‚ê‚Î‚»‚¿‚ç‚ğ“Ç‚İA‚È‚¯‚ê‚Îtest.xtal‚ğ“Ç‚à‚¤‚Æ‚·‚é
-* \return nameƒXƒNƒŠƒvƒg‚ª•Ô‚·ƒIƒuƒWƒFƒNƒgBnameƒXƒNƒŠƒvƒg‚ª–¾¦“I‚É’l‚ğ•Ô‚³‚È‚¢ê‡ACodeƒIƒuƒWƒFƒNƒg‚ª•Ô‚éB
+* \brief nameã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’è¦æ±‚ã—ã€å®Ÿè¡Œã—ãŸçµæœã‚’è¿”ã™
+* \param nameã‚¹ã‚¯ãƒªãƒ—ãƒˆå
+* ä¾‹ãˆã°ã€test.xtalã‚’èª­ã¿è¾¼ã¿ãŸã„å ´åˆã€require("test")ã¨ã™ã‚‹ã€‚test.xtalcãŒã‚ã‚Œã°ãã¡ã‚‰ã‚’èª­ã¿ã€ãªã‘ã‚Œã°test.xtalã‚’èª­ã‚‚ã†ã¨ã™ã‚‹
+* \return nameã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒè¿”ã™ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚nameã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒæ˜ç¤ºçš„ã«å€¤ã‚’è¿”ã•ãªã„å ´åˆã€Codeã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¿”ã‚‹ã€‚
 */
 AnyPtr require(const StringPtr& name);
 

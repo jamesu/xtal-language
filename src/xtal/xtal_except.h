@@ -11,7 +11,7 @@ namespace xtal{
 
 /**
 * \xbind lib::builtin
-* \brief —áŠO
+* \brief ä¾‹å¤–
 */
 class Exception : public Base{
 public:
@@ -20,25 +20,25 @@ public:
 
 	/**
 	* \xbind
-	* \brief ‰Šú‰»‚·‚é
+	* \brief åˆæœŸåŒ–ã™ã‚‹
 	*/
 	void initialize(const AnyPtr& message = empty_string);
 
 	/**
 	* \xbind
-	* \brief ƒoƒbƒNƒgƒŒ[ƒX‚ğ’Ç‰Á‚·‚é
+	* \brief ãƒãƒƒã‚¯ãƒˆãƒ¬ãƒ¼ã‚¹ã‚’è¿½åŠ ã™ã‚‹
 	*/
 	void append_backtrace(const AnyPtr& file, int_t line, const AnyPtr& function_name = empty_string);
 
 	/**
 	* \xbind
-	* \brief •¶š—ñ‰»‚·‚é
+	* \brief æ–‡å­—åˆ—åŒ–ã™ã‚‹
 	*/
 	StringPtr to_s();
 
 	/**
 	* \xbind
-	* \brief ƒƒbƒZ[ƒW‚ğ•Ô‚·
+	* \brief ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¿”ã™
 	*/
 	const StringPtr& message(){
 		return message_;
@@ -46,7 +46,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒoƒbƒNƒgƒŒ[ƒX‚Ìî•ñ‚ğ—v‘f‚Æ‚·‚éIterator‚ğ•Ô‚·
+	* \brief ãƒãƒƒã‚¯ãƒˆãƒ¬ãƒ¼ã‚¹ã®æƒ…å ±ã‚’è¦ç´ ã¨ã™ã‚‹Iteratorã‚’è¿”ã™
 	*/
 	AnyPtr backtrace(){
 		return backtrace_->each();
@@ -86,20 +86,20 @@ void set_argument_type_error(const AnyPtr& object, int_t no, const ClassPtr& req
 void set_argument_num_error(const AnyPtr& funtion_name, int_t n, int_t min_count, int_t max_count, const VMachinePtr& vm = vmachine());
 
 /**
-* \brief —áŠO‚ğİ’è‚·‚é
+* \brief ä¾‹å¤–ã‚’è¨­å®šã™ã‚‹
 * \hideinitializer
 */
 #define XTAL_SET_EXCEPT(e) ::xtal::vmachine()->set_except(e)
 
 /**
-* \brief —áŠO‚ª‘—o‚³‚ê‚Ä‚¢‚é‚È‚çæ‚èo‚·
+* \brief ä¾‹å¤–ãŒé€å‡ºã•ã‚Œã¦ã„ã‚‹ãªã‚‰å–ã‚Šå‡ºã™
 * \hideinitializer
 */
 #define XTAL_CATCH_EXCEPT(e) if(const ::xtal::ExceptionPtr& e = (::xtal::unchecked_ptr_cast< ::xtal::Exception>(::xtal::vmachine()->catch_except())))
 
 /**
-* \brief —áŠO‚ª‘—o‚³‚ê‚Ä‚¢‚é‚©’²‚×‚é
-* XTAL_CATCH_EXCEPT‚Æˆá‚¢A—áŠO‚Íİ’è‚³‚ê‚½‚Ü‚ÜB
+* \brief ä¾‹å¤–ãŒé€å‡ºã•ã‚Œã¦ã„ã‚‹ã‹èª¿ã¹ã‚‹
+* XTAL_CATCH_EXCEPTã¨é•ã„ã€ä¾‹å¤–ã¯è¨­å®šã•ã‚ŒãŸã¾ã¾ã€‚
 * \hideinitializer
 */
 #define XTAL_CHECK_EXCEPT(e) if(const ::xtal::ExceptionPtr& e = (::xtal::unchecked_ptr_cast< ::xtal::Exception>(::xtal::vmachine()->except())))

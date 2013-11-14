@@ -12,14 +12,14 @@ namespace xtal{
 /**
 * \xbind lib::builtin
 * \xinherit lib::builtin::Any
-* \brief ˆø”ƒIƒuƒWƒFƒNƒg
+* \brief å¼•æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 */
 class Arguments : public Base{
 public:
 
 	/**
 	* \xbind
-	* \brief ‡”Ôw’èˆø”A–¼‘O•t‚«ˆø”‚ğ“n‚µ‚Äˆø”ƒIƒuƒWƒFƒNƒg‚ğ\’z‚·‚é
+	* \brief é †ç•ªæŒ‡å®šå¼•æ•°ã€åå‰ä»˜ãå¼•æ•°ã‚’æ¸¡ã—ã¦å¼•æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ§‹ç¯‰ã™ã‚‹
 	*/
 	Arguments(const AnyPtr& ordered = undefined, const AnyPtr& named = undefined);
 
@@ -29,8 +29,8 @@ public:
 
 	/**
 	* \xbind
-	* \brief key‚É‘Î‰‚·‚éˆø”‚ğ•Ô‚·
-	* key‚ª®”‚Å‚ ‚ê‚ÎA‡”Ôw’èˆø”A•¶š—ñ‚Å‚ ‚ê‚Î–¼‘O•t‚«ˆø”‚ğ•Ô‚·
+	* \brief keyã«å¯¾å¿œã™ã‚‹å¼•æ•°ã‚’è¿”ã™
+	* keyãŒæ•´æ•°ã§ã‚ã‚Œã°ã€é †ç•ªæŒ‡å®šå¼•æ•°ã€æ–‡å­—åˆ—ã§ã‚ã‚Œã°åå‰ä»˜ãå¼•æ•°ã‚’è¿”ã™
 	*/
 	const AnyPtr& op_at(const AnyPtr& key){
 		if(XTAL_detail_is_ivalue(key)){
@@ -41,19 +41,19 @@ public:
 
 	/**
 	* \xbind
-	* \brief ‡”Ôw’èˆø”‚Ì”‚ğ•Ô‚·
+	* \brief é †ç•ªæŒ‡å®šå¼•æ•°ã®æ•°ã‚’è¿”ã™
 	*/
 	uint_t length();
 	
 	/**
 	* \xbind
-	* \brief ‡”Ôw’èˆø”‚ğ—ñ‹“‚·‚é‚½‚ß‚ÌƒCƒeƒŒ[ƒ^‚ğ•Ô‚·
+	* \brief é †ç•ªæŒ‡å®šå¼•æ•°ã‚’åˆ—æŒ™ã™ã‚‹ãŸã‚ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã‚’è¿”ã™
 	*/
 	AnyPtr ordered_arguments();
 	
 	/**
 	* \xbind
-	* \brief –¼‘O•t‚«ˆø”‚ğ—ñ‹“‚·‚é‚½‚ß‚ÌƒCƒeƒŒ[ƒ^‚ğ•Ô‚·
+	* \brief åå‰ä»˜ãå¼•æ•°ã‚’åˆ—æŒ™ã™ã‚‹ãŸã‚ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã‚’è¿”ã™
 	*/
 	AnyPtr named_arguments();
 
@@ -150,7 +150,7 @@ public:
 /**
 * \xbind lib::builtin
 * \xinherit lib::builtin::Any
-* \brief ƒƒ\ƒbƒhƒIƒuƒWƒFƒNƒg
+* \brief ãƒ¡ã‚½ãƒƒãƒ‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 */
 class Method : public HaveParentRefCountingBase{
 public:
@@ -201,7 +201,7 @@ private:
 /**
 * \xbind lib::builtin
 * \xinherit lib::builtin::Method
-* \brief ŠÖ”ƒIƒuƒWƒFƒNƒg
+* \brief é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 */
 class Fun : public Method{
 public:
@@ -230,7 +230,7 @@ protected:
 /**
 * \xbind lib::builtin
 * \xinherit lib::builtin::Fun
-* \brief ƒ‰ƒ€ƒ_ƒIƒuƒWƒFƒNƒg
+* \brief ãƒ©ãƒ ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 */
 class Lambda : public Fun{
 public:
@@ -246,7 +246,7 @@ public:
 /**
 * \xbind lib::builtin
 * \xinherit lib::builtin::Fun
-* \brief ƒtƒ@ƒCƒo[ƒIƒuƒWƒFƒNƒg
+* \brief ãƒ•ã‚¡ã‚¤ãƒãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 */
 class Fiber : public Fun{
 public:
@@ -261,19 +261,19 @@ public:
 	}
 
 	/**
-	* \brief Às‚ğ‹­§’â~‚·‚é
+	* \brief å®Ÿè¡Œã‚’å¼·åˆ¶åœæ­¢ã™ã‚‹
 	*/
 	void halt();
 
 	/**
-	* \brief ƒtƒ@ƒCƒo[ƒIƒuƒWƒFƒNƒg‚ªÀs’†‚©‚Ç‚¤‚©
+	* \brief ãƒ•ã‚¡ã‚¤ãƒãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå®Ÿè¡Œä¸­ã‹ã©ã†ã‹
 	*/
 	bool is_alive(){
 		return alive_;
 	}
 
 	/**
-	* \brief ƒtƒ@ƒCƒo[‚ğ‹­§’â~‚µA‰Šúó‘Ô‚É–ß‚·
+	* \brief ãƒ•ã‚¡ã‚¤ãƒãƒ¼ã‚’å¼·åˆ¶åœæ­¢ã—ã€åˆæœŸçŠ¶æ…‹ã«æˆ»ã™
 	*/
 	const FiberPtr& reset();
 

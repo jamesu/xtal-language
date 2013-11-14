@@ -10,7 +10,7 @@
 namespace xtal{
 
 /**
-* \brief ƒRƒ“ƒpƒCƒ‹‚³‚ê‚½ƒoƒCƒgƒR[ƒh
+* \brief ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã•ã‚ŒãŸãƒã‚¤ãƒˆã‚³ãƒ¼ãƒ‰
 */
 class Code : public Class{
 public:
@@ -22,17 +22,17 @@ public:
 public:
 
 	/**
-	* \brief ƒR[ƒhƒIƒuƒWƒFƒNƒg‚ğƒŠƒ[ƒh‚·‚é
+	* \brief ã‚³ãƒ¼ãƒ‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒªãƒ­ãƒ¼ãƒ‰ã™ã‚‹
 	*/
 	void reload(const CodePtr& new_code);
 
 	/**
-	* \brief ƒR[ƒh‚É‘Î‰‚µ‚½ƒ\[ƒXs”‚ğ•Ô‚·B
+	* \brief ã‚³ãƒ¼ãƒ‰ã«å¯¾å¿œã—ãŸã‚½ãƒ¼ã‚¹è¡Œæ•°ã‚’è¿”ã™ã€‚
 	*/
 	int_t compliant_lineno(const inst_t* p);
 
 	/**
-	* \brief ƒ\[ƒXs”‚É‘Î‰‚µ‚½ƒR[ƒhˆÊ’u‚ğ•Ô‚·B
+	* \brief ã‚½ãƒ¼ã‚¹è¡Œæ•°ã«å¯¾å¿œã—ãŸã‚³ãƒ¼ãƒ‰ä½ç½®ã‚’è¿”ã™ã€‚
 	*/
 	const inst_t* compliant_pc(int_t p);
 		
@@ -41,28 +41,28 @@ public:
 	int_t final_lineno();
 
 	/**
-	* \brief ƒoƒCƒgƒR[ƒh‚Ìƒf[ƒ^‚ğ•Ô‚·
+	* \brief ãƒã‚¤ãƒˆã‚³ãƒ¼ãƒ‰ã®ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
 	*/
 	const inst_t* bytecode_data(){
 		return code_.data();
 	}
 
 	/**
-	* \brief ƒoƒCƒgƒR[ƒh‚ÌƒTƒCƒY‚ğ•Ô‚·
+	* \brief ãƒã‚¤ãƒˆã‚³ãƒ¼ãƒ‰ã®ã‚µã‚¤ã‚ºã‚’è¿”ã™
 	*/
 	int_t bytecode_size(){
 		return (int_t)code_.size();
 	}
 
 	/**
-	* \brief ‚±‚ÌƒR[ƒh‚ğcall‚µ‚½‚Æ‚«‚¾‚¯‚ÍÄ’è‹`‚µ‚Ä‚àƒGƒ‰[‚É‚È‚ç‚È‚¢‚æ‚¤‚É‚·‚é
+	* \brief ã“ã®ã‚³ãƒ¼ãƒ‰ã‚’callã—ãŸã¨ãã ã‘ã¯å†å®šç¾©ã—ã¦ã‚‚ã‚¨ãƒ©ãƒ¼ã«ãªã‚‰ãªã„ã‚ˆã†ã«ã™ã‚‹
 	*/
 	void enable_redefine(){
 		enable_redefine_ = true;
 	}
 
 	/**
-	* \brief ƒVƒ“ƒ{ƒ‹ƒe[ƒuƒ‹‚©‚çi”Ô–Ú‚ÌƒVƒ“ƒ{ƒ‹‚ğæ‚èo‚·B
+	* \brief ã‚·ãƒ³ãƒœãƒ«ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰iç•ªç›®ã®ã‚·ãƒ³ãƒœãƒ«ã‚’å–ã‚Šå‡ºã™ã€‚
 	*/
 	const IDPtr& identifier(int_t i){
 		return unchecked_ptr_cast<ID>(identifier_table_.at(i));
@@ -77,7 +77,7 @@ public:
 	}
 
 	/**
-	* \brief ’lƒe[ƒuƒ‹‚©‚çi”Ô–Ú‚Ì’l‚ğæ‚èo‚·B
+	* \brief å€¤ãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰iç•ªç›®ã®å€¤ã‚’å–ã‚Šå‡ºã™ã€‚
 	*/
 	const AnyPtr& value(int_t i){
 		return value_table_.at(i);
@@ -88,14 +88,14 @@ public:
 	}
 
 	/**
-	* \brief onceƒe[ƒuƒ‹‚©‚çi”Ô–Ú‚Ì’l‚ğæ‚èo‚·B
+	* \brief onceãƒ†ãƒ¼ãƒ–ãƒ«ã‹ã‚‰iç•ªç›®ã®å€¤ã‚’å–ã‚Šå‡ºã™ã€‚
 	*/
 	const AnyPtr& once_value(int_t i){
 		return once_table_.at(i);
 	}
 
 	/**
-	* \brief onceƒe[ƒuƒ‹‚Ìi”Ô–Ú‚É’l‚ğİ’è‚·‚éB
+	* \brief onceãƒ†ãƒ¼ãƒ–ãƒ«ã®iç•ªç›®ã«å€¤ã‚’è¨­å®šã™ã‚‹ã€‚
 	*/
 	void set_once_value(int_t i, const AnyPtr& v){
 		once_table_.set_at(i, v);

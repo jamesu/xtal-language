@@ -411,7 +411,7 @@ void CommandReceiver::check(HookInfoPtr){
 }
 
 void CommandReceiver::update(){
-	// Ÿ‚ÌƒRƒ}ƒ“ƒh‚ª“’…‚µ‚Ä‚¢‚½‚çƒRƒ}ƒ“ƒh‚ğƒfƒVƒŠƒAƒ‰ƒCƒY‚µ‚ÄÀs‚·‚é
+	// æ¬¡ã®ã‚³ãƒãƒ³ãƒ‰ãŒåˆ°ç€ã—ã¦ã„ãŸã‚‰ã‚³ãƒãƒ³ãƒ‰ã‚’ãƒ‡ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã—ã¦å®Ÿè¡Œã™ã‚‹
 	while(stream_->available()){
 		exec_command(ptr_cast<Array>(stream_->deserialize()));
 	}
@@ -459,7 +459,7 @@ void CommandReceiver::exec_command(const ArrayPtr& cmd){
 
 	AnyPtr type = cmd->at(0);
 
-	if(XTAL_detail_raweq(type, Xid(add_breakpoint))){ // ƒuƒŒ[ƒNƒ|ƒCƒ“ƒg‚Ì’Ç‰Á
+	if(XTAL_detail_raweq(type, Xid(add_breakpoint))){ // ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆã®è¿½åŠ 
 		if(CodePtr code = ptr_cast<Code>(code_map_->at(cmd->at(1)))){
 			code->add_breakpoint(cmd->at(2)->to_i(), cmd->at(3));
 		}
@@ -467,7 +467,7 @@ void CommandReceiver::exec_command(const ArrayPtr& cmd){
 		return;
 	}
 
-	if(XTAL_detail_raweq(type, Xid(remove_breakpoint))){ // ƒuƒŒ[ƒNƒ|ƒCƒ“ƒg‚Ìíœ
+	if(XTAL_detail_raweq(type, Xid(remove_breakpoint))){ // ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆã®å‰Šé™¤
 		if(CodePtr code = ptr_cast<Code>(code_map_->at(cmd->at(1)))){
 			code->remove_breakpoint(cmd->at(2)->to_i());
 		}
@@ -475,17 +475,17 @@ void CommandReceiver::exec_command(const ArrayPtr& cmd){
 		return;
 	}
 
-	if(XTAL_detail_raweq(type, Xid(add_eval_expr))){ // •]‰¿®‚Ì’Ç‰Á
+	if(XTAL_detail_raweq(type, Xid(add_eval_expr))){ // è©•ä¾¡å¼ã®è¿½åŠ 
 		eval_exprs_->set_at(cmd->at(1), cmd->at(2));
 		return;
 	}
 
-	if(XTAL_detail_raweq(type, Xid(remove_eval_expr))){ // •]‰¿®‚Ìíœ
+	if(XTAL_detail_raweq(type, Xid(remove_eval_expr))){ // è©•ä¾¡å¼ã®å‰Šé™¤
 		eval_exprs_->erase(cmd->at(1));
 		return;
 	}
 
-	if(XTAL_detail_raweq(type, Xid(pause))){ // ˆê’â~
+	if(XTAL_detail_raweq(type, Xid(pause))){ // ä¸€æ™‚åœæ­¢
 		pause_ = true;
 		return;
 	}
@@ -496,7 +496,7 @@ ArrayPtr CommandReceiver::make_debug_object(const AnyPtr& v, int depth){
 	ret->set_at(0, v->get_class()->to_s());
 	ret->set_at(1, v->to_s());
 
-	// Šî–{Œ^‚©ƒ`ƒFƒbƒN
+	// åŸºæœ¬å‹ã‹ãƒã‚§ãƒƒã‚¯
 	switch(XTAL_detail_type(v)){
 		case TYPE_NULL:
 		case TYPE_UNDEFINED:
@@ -978,7 +978,7 @@ void CommandSender::update(){
 void CommandSender::start(const StreamPtr& stream){
 	stream_ = stream;
 
-	// ®‚ğ‚·‚×‚Ä“]‘—‚·‚é
+	// å¼ã‚’ã™ã¹ã¦è»¢é€ã™ã‚‹
 	Xfor2(k, v, exprs_){
 		add_eval_expr_inner(ptr_cast<String>(k));
 	}

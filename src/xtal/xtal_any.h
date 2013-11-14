@@ -11,25 +11,25 @@ namespace xtal{
 
 /**
 * \xbind lib::builtin
-* \brief ‚·‚×‚Ä‚ÌƒNƒ‰ƒX‚ÌŠî’êƒNƒ‰ƒX
+* \brief ã™ã¹ã¦ã®ã‚¯ãƒ©ã‚¹ã®åŸºåº•ã‚¯ãƒ©ã‚¹
 */
 class Any{
 public:
 
 	/**
-	* \brief ŠÖ”ƒIƒuƒWƒFƒNƒg‚Æ‚İ‚È‚µAŠÖ”ŒÄ‚Ño‚µ‚ğ‚·‚éB
-	* ˆø”‚â–ß‚è’l‚Ívm‚ğ’Ê‚µ‚Ä‚â‚èæ‚è‚·‚éB
+	* \brief é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã¿ãªã—ã€é–¢æ•°å‘¼ã³å‡ºã—ã‚’ã™ã‚‹ã€‚
+	* å¼•æ•°ã‚„æˆ»ã‚Šå€¤ã¯vmã‚’é€šã—ã¦ã‚„ã‚Šå–ã‚Šã™ã‚‹ã€‚
 	*/
 	void rawcall(const VMachinePtr& vm) const;
 	
 	/**
-	* \brief ƒƒ\ƒbƒhŒÄ‚Ño‚µ‚ğ‚·‚é
-	* ˆø”‚â–ß‚è’l‚Ívm‚ğ’Ê‚µ‚Ä‚â‚èæ‚è‚·‚éB
-	* \param vm ‰¼‘zƒ}ƒVƒ“
-	* \param primary_key ƒƒ“ƒo–¼
-	* \param secondary_key ƒZƒJƒ“ƒ_ƒŠƒL[
-	* \param inherited_too Œp³Œ³ƒNƒ‰ƒX‚©‚ç‚àƒƒ\ƒbƒhŒŸõ‚ğ‚·‚é‚©‚Ç‚¤‚©
-	* \param q ‚à‚µŒ©‚Â‚©‚ç‚È‚¢‚È‚ç—áŠO‚ğİ’è‚·‚é‚È‚çtrue
+	* \brief ãƒ¡ã‚½ãƒƒãƒ‰å‘¼ã³å‡ºã—ã‚’ã™ã‚‹
+	* å¼•æ•°ã‚„æˆ»ã‚Šå€¤ã¯vmã‚’é€šã—ã¦ã‚„ã‚Šå–ã‚Šã™ã‚‹ã€‚
+	* \param vm ä»®æƒ³ãƒã‚·ãƒ³
+	* \param primary_key ãƒ¡ãƒ³ãƒå
+	* \param secondary_key ã‚»ã‚«ãƒ³ãƒ€ãƒªã‚­ãƒ¼
+	* \param inherited_too ç¶™æ‰¿å…ƒã‚¯ãƒ©ã‚¹ã‹ã‚‰ã‚‚ãƒ¡ã‚½ãƒƒãƒ‰æ¤œç´¢ã‚’ã™ã‚‹ã‹ã©ã†ã‹
+	* \param q ã‚‚ã—è¦‹ã¤ã‹ã‚‰ãªã„ãªã‚‰ä¾‹å¤–ã‚’è¨­å®šã™ã‚‹ãªã‚‰true
 	*/
 	void rawsend(const VMachinePtr& vm, const IDPtr& primary_key, const AnyPtr& secondary_key, bool inherited_too, bool q) const;
 	void rawsend(const VMachinePtr& vm, const IDPtr& primary_key) const;
@@ -37,12 +37,12 @@ public:
 	void rawsend(const VMachinePtr& vm, const IDPtr& primary_key, const AnyPtr& secondary_key, bool inherited_too) const;
 
 	/**
-	* \brief ƒƒ“ƒo‚ğæ“¾‚·‚éB
-	* \param primary_key ƒƒ“ƒo–¼
-	* \param secondary_key ƒZƒJƒ“ƒ_ƒŠƒL[
-	* \param inherited_too Œp³Œ³ƒNƒ‰ƒX‚©‚ç‚àƒƒ\ƒbƒhŒŸõ‚ğ‚·‚é‚©‚Ç‚¤‚©
-	* \retval undefined ‚»‚Ìƒƒ“ƒo‚Í‘¶İ‚µ‚È‚¢
-	* \retval ”ñundefined name‚É‘Î‰‚µ‚½ƒƒ“ƒo  
+	* \brief ãƒ¡ãƒ³ãƒã‚’å–å¾—ã™ã‚‹ã€‚
+	* \param primary_key ãƒ¡ãƒ³ãƒå
+	* \param secondary_key ã‚»ã‚«ãƒ³ãƒ€ãƒªã‚­ãƒ¼
+	* \param inherited_too ç¶™æ‰¿å…ƒã‚¯ãƒ©ã‚¹ã‹ã‚‰ã‚‚ãƒ¡ã‚½ãƒƒãƒ‰æ¤œç´¢ã‚’ã™ã‚‹ã‹ã©ã†ã‹
+	* \retval undefined ãã®ãƒ¡ãƒ³ãƒã¯å­˜åœ¨ã—ãªã„
+	* \retval éundefined nameã«å¯¾å¿œã—ãŸãƒ¡ãƒ³ãƒ  
 	*/
 	const AnyPtr& member(const IDPtr& primary_key, const AnyPtr& secondary_key, bool inherited_too, int_t& accessibility) const;
 	const AnyPtr& member(const IDPtr& primary_key) const;
@@ -50,9 +50,9 @@ public:
 	const AnyPtr& member(const IDPtr& primary_key, const AnyPtr& secondary_key, bool inherited_too) const;
 
 	/**
-	* \brief ƒƒ“ƒo‚ğ’è‹`‚·‚éB
-	* \param primary_key ƒƒ“ƒo–¼
-	* \param secondary_key ƒZƒJƒ“ƒ_ƒŠƒL[
+	* \brief ãƒ¡ãƒ³ãƒã‚’å®šç¾©ã™ã‚‹ã€‚
+	* \param primary_key ãƒ¡ãƒ³ãƒå
+	* \param secondary_key ã‚»ã‚«ãƒ³ãƒ€ãƒªã‚­ãƒ¼
 	*/
 	void def(const IDPtr& primary_key, const AnyPtr& value, const AnyPtr& secondary_key, int_t accessibility) const;
 	void def(const IDPtr& primary_key, const AnyPtr& value) const;
@@ -60,77 +60,77 @@ public:
 
 	/**
 	* \xbind
-	* \brief ‚±‚ÌƒIƒuƒWƒFƒNƒg‚ªŠ‘®‚·‚éƒNƒ‰ƒX‚ğ•Ô‚·B
+	* \brief ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒæ‰€å±ã™ã‚‹ã‚¯ãƒ©ã‚¹ã‚’è¿”ã™ã€‚
 	*/
 	const ClassPtr& get_class() const;
 
 	/**
-	* \brief ®”‚É•ÏŠ·‚µ‚Ä•Ô‚·B
+	* \brief æ•´æ•°ã«å¤‰æ›ã—ã¦è¿”ã™ã€‚
 	*/
 	int_t to_i() const;
 	
 	/**
-	* \brief •‚“®¬”“_”‚É•ÏŠ·‚µ‚Ä•Ô‚·B
+	* \brief æµ®å‹•å°æ•°ç‚¹æ•°ã«å¤‰æ›ã—ã¦è¿”ã™ã€‚
 	*/
 	float_t to_f() const;
 	
 	/**
-	* \brief •¶š—ñ‚É•ÏŠ·‚µ‚Ä•Ô‚·B
+	* \brief æ–‡å­—åˆ—ã«å¤‰æ›ã—ã¦è¿”ã™ã€‚
 	*/
 	StringPtr to_s() const;
 
 	/**
-	* \brief ”z—ñ‚É•ÏŠ·‚µ‚Ä•Ô‚·B
+	* \brief é…åˆ—ã«å¤‰æ›ã—ã¦è¿”ã™ã€‚
 	*/
 	ArrayPtr to_a() const;
 
 	/**
-	* \brief ˜A‘z”z—ñ‚É•ÏŠ·‚µ‚Ä•Ô‚·B
+	* \brief é€£æƒ³é…åˆ—ã«å¤‰æ›ã—ã¦è¿”ã™ã€‚
 	*/
 	MapPtr to_m() const;
 
 	/**
-	* \brief klassƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚©’²‚×‚éB
+	* \brief klassã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‹èª¿ã¹ã‚‹ã€‚
 	*/
 	bool is(const AnyPtr& klass) const;
 
 	bool is(CppClassSymbolData* key) const;
 		
 	/**
-	* \brief klassƒNƒ‰ƒX‚ğŒp³‚µ‚Ä‚¢‚é‚©’²‚×‚é
+	* \brief klassã‚¯ãƒ©ã‚¹ã‚’ç¶™æ‰¿ã—ã¦ã„ã‚‹ã‹èª¿ã¹ã‚‹
 	*/
 	bool is_inherited(const AnyPtr& klass) const;
 	
 	/**
-	* \brief ‚±‚ÌƒIƒuƒWƒFƒNƒg‚ªƒƒ“ƒo‚Æ‚È‚Á‚Ä‚¢‚ée‚ÌƒNƒ‰ƒX‚ğ•Ô‚·B
+	* \brief ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒãƒ¡ãƒ³ãƒã¨ãªã£ã¦ã„ã‚‹è¦ªã®ã‚¯ãƒ©ã‚¹ã‚’è¿”ã™ã€‚
 	*/
 	const ClassPtr& object_parent() const;
 	
 	/**
-	* \brief ‚±‚ÌƒIƒuƒWƒFƒNƒg‚Ée‚ğİ’è‚·‚éB
-	* e‚ğ‚Ä‚È‚¢ƒIƒuƒWƒFƒNƒg‚âA‘O‚É•t‚¯‚ç‚ê‚½e‚Ì•û‚ª‹­‚¢ê‡–³‹‚³‚ê‚éB
-	* \param parent e
+	* \brief ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«è¦ªã‚’è¨­å®šã™ã‚‹ã€‚
+	* è¦ªã‚’æŒã¦ãªã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚„ã€å‰ã«ä»˜ã‘ã‚‰ã‚ŒãŸè¦ªã®æ–¹ãŒå¼·ã„å ´åˆç„¡è¦–ã•ã‚Œã‚‹ã€‚
+	* \param parent è¦ª
 	*/
 	void set_object_parent(const ClassPtr& parent) const;
 
 	/**
 	* \xbind
-	* \brief ƒIƒuƒWƒFƒNƒg‚Ì–¼‘O‚ğ•Ô‚·B
+	* \brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åå‰ã‚’è¿”ã™ã€‚
 	*/
 	StringPtr object_name() const;
 
 	/**
 	* \xbind
-	* \brief ƒIƒuƒWƒFƒNƒg‚Ì–¼‘O‚ÌƒŠƒXƒg‚ğ•Ô‚·
-	* ˆê”ÔÅãˆÊ‚Ìe‚©‚ç‚Ì–¼‘O‚ÌƒŠƒXƒg‚ğ•Ô‚·
+	* \brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åå‰ã®ãƒªã‚¹ãƒˆã‚’è¿”ã™
+	* ä¸€ç•ªæœ€ä¸Šä½ã®è¦ªã‹ã‚‰ã®åå‰ã®ãƒªã‚¹ãƒˆã‚’è¿”ã™
 	*/
 	ArrayPtr object_name_list() const;
 
 	/**
 	* \xbind
-	* \brief ©g‚ğ•¶š—ñ‰»‚µ‚Äprintln‚·‚éB
-	* •¶š—ñ‰»‚É‚Íto_sƒƒ\ƒbƒh‚ªŒÄ‚Î‚ê‚éB
-	* \return ©g‚ğ•Ô‚·B
+	* \brief è‡ªèº«ã‚’æ–‡å­—åˆ—åŒ–ã—ã¦printlnã™ã‚‹ã€‚
+	* æ–‡å­—åˆ—åŒ–ã«ã¯to_sãƒ¡ã‚½ãƒƒãƒ‰ãŒå‘¼ã°ã‚Œã‚‹ã€‚
+	* \return è‡ªèº«ã‚’è¿”ã™ã€‚
 	*/
 	const AnyPtr& p() const;
 
@@ -154,195 +154,195 @@ public:
 
 public:
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	AnyPtr send(const IDPtr& primary_key) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	AnyPtr call() const;
 
 //{REPEAT{{
 /*
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 #COMMA_REPEAT#class A`i+1`#>
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  #COMMA_REPEAT#const A`i+1`& a`i+1`#) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 #COMMA_REPEAT#class A`i+1`#>
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  #COMMA_REPEAT#const A`i+1`& a`i+1`#) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 #COMMA_REPEAT#class A`i+1`#>
 	AnyPtr call(const A0& a0  #COMMA_REPEAT#const A`i+1`& a`i+1`#) const;
 */
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 >
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  ) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 >
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  ) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 >
 	AnyPtr call(const A0& a0  ) const;
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1>
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  , const A1& a1) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1>
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1>
 	AnyPtr call(const A0& a0  , const A1& a1) const;
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2>
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2>
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2>
 	AnyPtr call(const A0& a0  , const A1& a1, const A2& a2) const;
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3>
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3>
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3>
 	AnyPtr call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3) const;
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4>
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4>
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4>
 	AnyPtr call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4) const;
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5>
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5>
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5>
 	AnyPtr call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5) const;
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6>
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6>
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6>
 	AnyPtr call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6) const;
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 	AnyPtr call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7) const;
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 	AnyPtr call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8) const;
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 	AnyPtr call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9) const;
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
 	AnyPtr call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10) const;
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
 	AnyPtr call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11) const;
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11, const A12& a12) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11, const A12& a12) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
 	AnyPtr call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11, const A12& a12) const;
 
-	/// \brief primary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, class A13>
 	AnyPtr send(const IDPtr& primary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11, const A12& a12, const A13& a13) const;
 
-	/// \brief primary_key#secondary_keyƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·
+	/// \brief primary_key#secondary_keyãƒ¡ã‚½ãƒƒãƒ‰ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, class A13>
 	AnyPtr send2(const IDPtr& primary_key, const AnyPtr& secondary_key, const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11, const A12& a12, const A13& a13) const;
 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 	template<class A0 , class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, class A13>
 	AnyPtr call(const A0& a0  , const A1& a1, const A2& a2, const A3& a3, const A4& a4, const A5& a5, const A6& a6, const A7& a7, const A8& a8, const A9& a9, const A10& a10, const A11& a11, const A12& a12, const A13& a13) const;
 
@@ -350,7 +350,7 @@ public:
 
 private:
 
-	// call(VMachinePtr)‚ªƒRƒ“ƒpƒCƒ‹ƒGƒ‰[‚Æ‚È‚é‚æ‚¤‚É
+	// call(VMachinePtr)ãŒã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã‚¨ãƒ©ãƒ¼ã¨ãªã‚‹ã‚ˆã†ã«
 	struct cmpitle_error{ cmpitle_error(const VMachinePtr& vm); };
 	void call(cmpitle_error) const;
 
@@ -366,7 +366,7 @@ protected:
 
 	void init(RefCountingBase* p);
 
-public: // «”\Šm•Û‚Ì‚½‚ßpublic‚É‚·‚é‚ªAŠî–{“I‚É’¼ÚG‚é‚±‚Æ‚Í‚æ‚ë‚µ‚­‚È‚¢
+public: // æ€§èƒ½ç¢ºä¿ã®ãŸã‚publicã«ã™ã‚‹ãŒã€åŸºæœ¬çš„ã«ç›´æ¥è§¦ã‚‹ã“ã¨ã¯ã‚ˆã‚ã—ããªã„
 
 	enum{
 		USER_FLAG_SHIFT = TYPE_SHIFT+1,
@@ -480,7 +480,7 @@ public: // «”\Šm•Û‚Ì‚½‚ßpublic‚É‚·‚é‚ªAŠî–{“I‚É’¼ÚG‚é‚±‚Æ‚Í‚æ‚ë‚µ‚­‚È‚¢
 		float_t immediate_second_fvalue() const{ return fvalue; }
 		void* immediate_second_vpvalue() const{ return vpvalue; }
 
-	public: // «”\Šm•Û‚Ì‚½‚ßpublic‚É‚·‚é‚ªAŠî–{“I‚É’¼ÚG‚é‚Ì‚Í‚æ‚ë‚µ‚­‚È‚¢
+	public: // æ€§èƒ½ç¢ºä¿ã®ãŸã‚publicã«ã™ã‚‹ãŒã€åŸºæœ¬çš„ã«ç›´æ¥è§¦ã‚‹ã®ã¯ã‚ˆã‚ã—ããªã„
 
 		union{
 			int_t type;

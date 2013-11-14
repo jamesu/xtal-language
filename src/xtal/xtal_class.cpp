@@ -12,7 +12,7 @@ namespace{
 	
 InstanceVariables* InstanceVariables::create(ClassInfo* class_info){
 	if(info_==&empty_class_info){
-		// ‹óó‘Ô‚©‚çˆê‚Â‚¾‚¯ƒCƒ“ƒXƒg[ƒ‹‚µ‚½ó‘Ô‚ÖˆÚs
+		// ç©ºçŠ¶æ…‹ã‹ã‚‰ä¸€ã¤ã ã‘ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ãŸçŠ¶æ…‹ã¸ç§»è¡Œ
 		InstanceVariables* ret = (InstanceVariables*)xmalloc(sizeof(InstanceVariables)+sizeof(AnyPtr)*class_info->instance_variable_size);
 		ret->info_ = class_info;
 		ret->sum_ = class_info->instance_variable_size;
@@ -22,7 +22,7 @@ InstanceVariables* InstanceVariables::create(ClassInfo* class_info){
 		return ret;
 	}
 	else if(info_){
-		// ˆê‚Â‚¾‚¯ƒCƒ“ƒXƒg[ƒ‹‚µ‚½ó‘Ô‚©‚ç•¡”ƒCƒ“ƒXƒg[ƒ‹‚µ‚½ó‘Ô‚ÖˆÚs
+		// ä¸€ã¤ã ã‘ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ãŸçŠ¶æ…‹ã‹ã‚‰è¤‡æ•°ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ãŸçŠ¶æ…‹ã¸ç§»è¡Œ
 		char* buf = (char*)(this + 1);
 		AnyPtr* values = (AnyPtr*)buf;
 
@@ -76,7 +76,7 @@ void InstanceVariables::destroy(){
 
 	}
 	else if(info_){
-		// ˆê‚Â‚¾‚¯ƒCƒ“ƒXƒg[ƒ‹‚µ‚½ó‘Ô‚ğíœ
+		// ä¸€ã¤ã ã‘ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ãŸçŠ¶æ…‹ã‚’å‰Šé™¤
 		char* buf = (char*)(this + 1);
 		AnyPtr* values = (AnyPtr*)buf;
 		for(int_t i=0, sz=sum_; i<sz; ++i){
@@ -85,7 +85,7 @@ void InstanceVariables::destroy(){
 		xfree(this, sizeof(InstanceVariables)+sizeof(AnyPtr)*sum_);
 	}
 	else{
-		// •¡”ƒCƒ“ƒXƒg[ƒ‹‚µ‚½ó‘Ô‚ğíœ
+		// è¤‡æ•°ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ãŸçŠ¶æ…‹ã‚’å‰Šé™¤
 		char* buf = (char*)(this + 1);
 		int_t install_count = *(int_t*)buf; buf += sizeof(int_t);
 		AnyPtr* values = (AnyPtr*)buf;
@@ -221,15 +221,15 @@ void Class::overwrite_inner(const ClassPtr& p){
 		for(uint_t i=0; i<alive_object_count(); ++i){
 			AnyPtr obj = alive_object(i);
 			if(XTAL_detail_type(obj)==TYPE_BASE){
-				if(obj->is(to_smartptr(this))){ // ƒŠƒ[ƒh‚³‚ê‚½ƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ”­Œ©‚µ‚½
+				if(obj->is(to_smartptr(this))){ // ãƒªãƒ­ãƒ¼ãƒ‰ã•ã‚ŒãŸã‚¯ãƒ©ã‚¹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç™ºè¦‹ã—ãŸ
 
-					// ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìó‘Ô‚ğ•Û‘¶‚·‚é
+					// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®çŠ¶æ…‹ã‚’ä¿å­˜ã™ã‚‹
 					AnyPtr data = obj->save_instance_variables(to_smartptr(this));
 
-					// V‚µ‚¢ClassInfo‚Å‰Šú‰»‚·‚é
+					// æ–°ã—ã„ClassInfoã§åˆæœŸåŒ–ã™ã‚‹
 					XTAL_detail_pvalue(obj)->init_instance_variables(p->info());
 					
-					// ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìó‘Ô‚ğ•œ‹A‚·‚é
+					// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®çŠ¶æ…‹ã‚’å¾©å¸°ã™ã‚‹
 					obj->load_instance_variables(p, data);
 
 					if(Node* it = find_node(Xid(reloaded), undefined)){
@@ -371,7 +371,7 @@ void Class::init_instance(const AnyPtr& self, const VMachinePtr& vm){
 	if(info()->instance_variable_size){
 		XTAL_detail_pvalue(self)->init_instance_variables(info());
 
-		// æ“ª‚Ìƒƒ\ƒbƒh‚ÍƒCƒ“ƒXƒ^ƒ“ƒX•Ï”‰Šú‰»ŠÖ”
+		// å…ˆé ­ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°åˆæœŸåŒ–é–¢æ•°
 		if(member_direct(0)){
 			vm->setup_call(0);
 			vm->set_arg_this(self);

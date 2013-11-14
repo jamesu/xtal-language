@@ -11,7 +11,7 @@ namespace xtal{
 
 /**
 * \xbind lib::builtin
-* \brief ƒkƒ‹’l
+* \brief ãƒŒãƒ«å€¤
 */
 class Null : public Any{
 public:
@@ -22,7 +22,7 @@ public:
 
 /**
 * \xbind lib::builtin
-* \brief –¢’è‹`’l
+* \brief æœªå®šç¾©å€¤
 */
 class Undefined : public Any{ 
 public: 
@@ -33,7 +33,7 @@ public:
 
 /**
 * \xbind lib::builtin
-* \brief ®”’l
+* \brief æ•´æ•°å€¤
 */
 class Int : public Any{
 public:
@@ -74,7 +74,7 @@ public:
 
 /**
 * \xbind lib::builtin
-* \brief •‚“®¬”“_’l
+* \brief æµ®å‹•å°æ•°ç‚¹å€¤
 */
 class Float : public Any{
 public:
@@ -116,7 +116,7 @@ public:
 
 /**
 * \xbind lib::builtin
-* \brief ‘¦’l
+* \brief å³å€¤
 */
 class ImmediateValue : public Any{
 public:
@@ -160,7 +160,7 @@ public:
 
 /**
 * \xbind lib::builtin
-* \brief ^‹U’l
+* \brief çœŸå½å€¤
 */
 class Bool : public Any{
 public: 
@@ -178,7 +178,7 @@ public:
 
 /**
 * \xbind lib::builtin
-* \brief ‹æŠÔ
+* \brief åŒºé–“
 */
 class Range : public Base{
 public:
@@ -188,55 +188,55 @@ public:
 
 	/**
 	* \xbind
-	* \brief ‹æŠÔ‚Ì¶‚Ì—v‘f‚ğ•Ô‚·
+	* \brief åŒºé–“ã®å·¦ã®è¦ç´ ã‚’è¿”ã™
 	*/
 	const AnyPtr& left(){ return left_; }
 
 	/**
 	* \xbind
-	* \brief ‹æŠÔ‚Ì‰E‚Ì—v‘f‚ğ•Ô‚·
+	* \brief åŒºé–“ã®å³ã®è¦ç´ ã‚’è¿”ã™
 	*/
 	const AnyPtr& right(){ return right_; }
 
 	/**
 	* \xbind
-	* \brief ‹æŠÔ‚Ìí—Ş‚ğ•Ô‚·
+	* \brief åŒºé–“ã®ç¨®é¡ã‚’è¿”ã™
 	*/
 	int_t kind(){ return kind_; }
 
 	/**
 	* \xbind
-	* \brief ¶‚ª•Â‚¶‚½‹æŠÔ‚©•Ô‚·
+	* \brief å·¦ãŒé–‰ã˜ãŸåŒºé–“ã‹è¿”ã™
 	*/
 	bool is_left_closed(){ return (kind_&(1<<1))==0; }
 
 	/**
 	* \xbind
-	* \brief ‰E‚ª•Â‚¶‚½‹æŠÔ‚©•Ô‚·
+	* \brief å³ãŒé–‰ã˜ãŸåŒºé–“ã‹è¿”ã™
 	*/
 	bool is_right_closed(){ return (kind_&(1<<0))==0; }
 
 	/**
-	* \brief ‹æŠÔ‚Ìí—Ş
+	* \brief åŒºé–“ã®ç¨®é¡
 	*/
 	enum RangeKind{
 		/**
-		* \brief •Â‹æŠÔ[left, right]
+		* \brief é–‰åŒºé–“[left, right]
 		*/
 		CLOSED = RANGE_CLOSED,
 
 		/**
-		* \brief ¶ŠJ‰E•Â‹æŠÔ [left, right)
+		* \brief å·¦é–‹å³é–‰åŒºé–“ [left, right)
 		*/
 		LEFT_CLOSED_RIGHT_OPEN = RANGE_LEFT_CLOSED_RIGHT_OPEN,
 
 		/**
-		* \brief ¶ŠJ‰E•Â‹æŠÔ (left, right]
+		* \brief å·¦é–‹å³é–‰åŒºé–“ (left, right]
 		*/
 		LEFT_OPEN_RIGHT_CLOSED = RANGE_LEFT_OPEN_RIGHT_CLOSED,
 
 		/**
-		* \brief ŠJ‹æŠÔ (left, right)
+		* \brief é–‹åŒºé–“ (left, right)
 		*/
 		OPEN = RANGE_OPEN
 	};
@@ -255,7 +255,7 @@ protected:
 
 /**
 * \xbind lib::builtin
-* \brief ‹æŠÔ
+* \brief åŒºé–“
 */
 class IntRange : public Range{
 public:
@@ -267,29 +267,29 @@ public:
 
 	/**
 	* \xbind
-	* \brief ”ÍˆÍ‚ÌŠJn‚ğ•Ô‚·
+	* \brief ç¯„å›²ã®é–‹å§‹ã‚’è¿”ã™
 	*
-	* begin‚Í¶•Â‰EŠJ‹æŠÔ [begin, end) ‚Å“¾‚é‚±‚Æ‚ªo—ˆ‚é 
+	* beginã¯å·¦é–‰å³é–‹åŒºé–“ [begin, end) ã§å¾—ã‚‹ã“ã¨ãŒå‡ºæ¥ã‚‹ 
 	*/
 	int_t begin(){ return is_left_closed() ? left() : left()+1; }
 
 	/**
 	* \xbind
-	* \brief ”ÍˆÍ‚ÌI’[‚ğ•Ô‚·
+	* \brief ç¯„å›²ã®çµ‚ç«¯ã‚’è¿”ã™
 	*
-	* end‚Í¶•Â‰EŠJ‹æŠÔ [begin, end) ‚Å“¾‚é‚±‚Æ‚ªo—ˆ‚é 
+	* endã¯å·¦é–‰å³é–‹åŒºé–“ [begin, end) ã§å¾—ã‚‹ã“ã¨ãŒå‡ºæ¥ã‚‹ 
 	*/
 	int_t end(){ return is_right_closed() ? right()+1 : right(); }
 
 	/**
 	* \xbind
-	* \brief ‹æŠÔ‚Ì¶‚Ì—v‘f‚ğ•Ô‚·
+	* \brief åŒºé–“ã®å·¦ã®è¦ç´ ã‚’è¿”ã™
 	*/
 	int_t left(){ return XTAL_detail_ivalue(left_); }
 
 	/**
 	* \xbind
-	* \brief ‹æŠÔ‚Ì¶‚Ì—v‘f‚ğ•Ô‚·
+	* \brief åŒºé–“ã®å·¦ã®è¦ç´ ã‚’è¿”ã™
 	*/
 	int_t right(){ return XTAL_detail_ivalue(right_); }
 
@@ -311,7 +311,7 @@ private:
 
 /**
 * \xbind lib::builtin
-* \brief ‹æŠÔ
+* \brief åŒºé–“
 */
 class FloatRange : public Range{
 public:
@@ -323,13 +323,13 @@ public:
 
 	/**
 	* \xbind
-	* \brief ‹æŠÔ‚Ì¶‚Ì—v‘f‚ğ•Ô‚·
+	* \brief åŒºé–“ã®å·¦ã®è¦ç´ ã‚’è¿”ã™
 	*/
 	float_t left(){ return XTAL_detail_fvalue(left_); }
 
 	/**
 	* \xbind
-	* \brief ‹æŠÔ‚Ì¶‚Ì—v‘f‚ğ•Ô‚·
+	* \brief åŒºé–“ã®å·¦ã®è¦ç´ ã‚’è¿”ã™
 	*/
 	float_t right(){ return XTAL_detail_fvalue(right_); }
 
@@ -337,7 +337,7 @@ public:
 };
 
 /**
-* \brief ‘½’l
+* \brief å¤šå€¤
 */
 class Values : public RefCountingBase{
 public:
@@ -369,7 +369,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ’l‚ª“™‚µ‚¢‚©’²‚×‚é
+	* \brief å€¤ãŒç­‰ã—ã„ã‹èª¿ã¹ã‚‹
 	*/
 	bool op_eq(const ValuesPtr& other);
 
@@ -411,7 +411,7 @@ private:
 };
 
 /**
-* \brief ƒXƒR[ƒv“I‚Èe‚ğ”F¯‚·‚éƒNƒ‰ƒX
+* \brief ã‚¹ã‚³ãƒ¼ãƒ—çš„ãªè¦ªã‚’èªè­˜ã™ã‚‹ã‚¯ãƒ©ã‚¹
 */
 class HaveParentBase : public Base{
 public:
@@ -438,7 +438,7 @@ protected:
 };
 
 /**
-* \brief ƒXƒR[ƒv“I‚Èe‚ğ”F¯‚·‚éƒNƒ‰ƒX
+* \brief ã‚¹ã‚³ãƒ¼ãƒ—çš„ãªè¦ªã‚’èªè­˜ã™ã‚‹ã‚¯ãƒ©ã‚¹
 */
 class HaveParentRefCountingBase : public RefCountingBase{
 public:

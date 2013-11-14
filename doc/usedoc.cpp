@@ -5,15 +5,13 @@
 - \subpage usehelloworld
 - \subpage usestring
 - \subpage useanyptr
-- \subpage usefun
 - \subpage usefuncall
 - \subpage usesend
 - \subpage usenew
 - \subpage userefmember
-- \subpage usedefmember
 - \subpage useat
+- \subpage useiter
 - \subpage usereturn
-- \subpage useimport
 - \subpage usecppclass
 - \subpage usebytecode
 */

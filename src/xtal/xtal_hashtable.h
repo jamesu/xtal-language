@@ -107,7 +107,7 @@ public:
 	OrderedHashtable(no_use_memory_t);
 
 	/**
-	* \brief ‹ó‚ÌƒnƒbƒVƒ…ƒe[ƒuƒ‹‚ğ¶¬‚·‚é 
+	* \brief ç©ºã®ãƒãƒƒã‚·ãƒ¥ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ç”Ÿæˆã™ã‚‹ 
 	*
 	*/
 	OrderedHashtable();
@@ -121,7 +121,7 @@ public:
 	void destroy();
 		
 	/**
-	* \brief i‚É‘Î‰‚·‚é—v‘f‚ğ•Ô‚·
+	* \brief iã«å¯¾å¿œã™ã‚‹è¦ç´ ã‚’è¿”ã™
 	*
 	*/
 	iterator find(const Key& key){
@@ -129,13 +129,13 @@ public:
 	}
 
 	/**
-	* \brief i‚É‘Î‰‚·‚é—v‘f‚ğ•Ô‚·
+	* \brief iã«å¯¾å¿œã™ã‚‹è¦ç´ ã‚’è¿”ã™
 	*
 	*/
 	iterator find(const Key& key, uint_t hash);
 
 	/**
-	* \brief i‚É‘Î‰‚·‚é—v‘f‚ğİ’è‚·‚é
+	* \brief iã«å¯¾å¿œã™ã‚‹è¦ç´ ã‚’è¨­å®šã™ã‚‹
 	*
 	*/	
 	std::pair<iterator, bool> insert(const Key& key, const Val& value){
@@ -143,13 +143,13 @@ public:
 	}
 
 	/**
-	* \brief i‚É‘Î‰‚·‚é—v‘f‚ğİ’è‚·‚é
+	* \brief iã«å¯¾å¿œã™ã‚‹è¦ç´ ã‚’è¨­å®šã™ã‚‹
 	*
 	*/	
 	std::pair<iterator, bool> insert(const Key& key, const Val& value, uint_t hash);
 
 	/**
-	* \brief key‚É‘Î‰‚·‚é’l‚ğíœ‚·‚é
+	* \brief keyã«å¯¾å¿œã™ã‚‹å€¤ã‚’å‰Šé™¤ã™ã‚‹
 	*
 	*/
 	void erase(const Key& key);
@@ -162,7 +162,7 @@ public:
 	}
 
 	/**
-	* \brief ˜A‘z”z—ñ‚Ì—e—Ê‚ğ•Ô‚·
+	* \brief é€£æƒ³é…åˆ—ã®å®¹é‡ã‚’è¿”ã™
 	*
 	*/
 	uint_t size(){
@@ -170,7 +170,7 @@ public:
 	}
 
 	/**
-	* \brief ‹ó‚©’²‚×‚é
+	* \brief ç©ºã‹èª¿ã¹ã‚‹
 	*
 	*/
 	bool empty(){
@@ -526,7 +526,7 @@ public:
 	Hashtable(no_use_memory_t);
 
 	/**
-	* \brief ‹ó‚ÌƒnƒbƒVƒ…ƒe[ƒuƒ‹‚ğ¶¬‚·‚é 
+	* \brief ç©ºã®ãƒãƒƒã‚·ãƒ¥ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ç”Ÿæˆã™ã‚‹ 
 	*
 	*/
 	Hashtable();
@@ -540,7 +540,7 @@ public:
 	void destroy();
 		
 	/**
-	* \brief i‚É‘Î‰‚·‚é—v‘f‚ğ•Ô‚·
+	* \brief iã«å¯¾å¿œã™ã‚‹è¦ç´ ã‚’è¿”ã™
 	*
 	*/
 	Node* find(const Key& key){
@@ -548,7 +548,7 @@ public:
 	}
 
 	/**
-	* \brief i‚É‘Î‰‚·‚é—v‘f‚ğ•Ô‚·
+	* \brief iã«å¯¾å¿œã™ã‚‹è¦ç´ ã‚’è¿”ã™
 	*
 	*/
 	Node* find(const Key& key, uint_t hash);
@@ -572,7 +572,7 @@ public:
 	}
 
 	/**
-	* \brief i‚É‘Î‰‚·‚é—v‘f‚ğİ’è‚·‚é
+	* \brief iã«å¯¾å¿œã™ã‚‹è¦ç´ ã‚’è¨­å®šã™ã‚‹
 	*
 	*/	
 	Node* insert(const Key& key, const Val& value){
@@ -580,19 +580,19 @@ public:
 	}
 
 	/**
-	* \brief i‚É‘Î‰‚·‚é—v‘f‚ğİ’è‚·‚é
+	* \brief iã«å¯¾å¿œã™ã‚‹è¦ç´ ã‚’è¨­å®šã™ã‚‹
 	*
 	*/	
 	Node* insert(const Key& key, const Val& value, uint_t hash);
 
 	/**
-	* \brief key‚É‘Î‰‚·‚é’l‚ğíœ‚·‚é
+	* \brief keyã«å¯¾å¿œã™ã‚‹å€¤ã‚’å‰Šé™¤ã™ã‚‹
 	*
 	*/
 	void erase(const Key& key);
 
 	/**
-	* \brief ˜A‘z”z—ñ‚Ì—e—Ê‚ğ•Ô‚·
+	* \brief é€£æƒ³é…åˆ—ã®å®¹é‡ã‚’è¿”ã™
 	*
 	*/
 	uint_t size(){
@@ -600,7 +600,7 @@ public:
 	}
 
 	/**
-	* \brief ‹ó‚©’²‚×‚é
+	* \brief ç©ºã‹èª¿ã¹ã‚‹
 	*
 	*/
 	bool empty(){

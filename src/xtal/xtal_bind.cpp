@@ -164,10 +164,10 @@ XTAL_BIND(String){
 	Xdef_method(length);
 	Xdef_method(data_size);
 	Xdef_method(intern);
-	Xdef_method(is_interned);	// バインド漏れ修正 by 星くず彼方に
+	Xdef_method(is_interned);	// 繝舌う繝ｳ繝画ｼ上ｌ菫ｮ豁｣ by 譏溘￥縺壼ｽｼ譁ｹ縺ｫ
 	Xdef_method(is_ch);
 	Xdef_method(ascii);
-	Xdef_method(cat);			// バインド漏れ修正 by 星くず彼方に
+	Xdef_method(cat);			// 繝舌う繝ｳ繝画ｼ上ｌ菫ｮ豁｣ by 譏溘￥縺壼ｽｼ譁ｹ縺ｫ
 
 	Xdef_method2(op_range, String);
 	Xdef_method2(op_cat, String);
@@ -330,8 +330,8 @@ XTAL_BIND(Array){
 	Xdef_method(size);
 	Xdef_method(length);
 	Xdef_method(resize);
-	Xdef_method(upsize);	// バインド漏れ修正 by 星くず彼方に
-	Xdef_method(downsize);	// バインド漏れ修正 by 星くず彼方に
+	Xdef_method(upsize);	// 繝舌う繝ｳ繝画ｼ上ｌ菫ｮ豁｣ by 譏溘￥縺壼ｽｼ譁ｹ縺ｫ
+	Xdef_method(downsize);	// 繝舌う繝ｳ繝画ｼ上ｌ菫ｮ豁｣ by 譏溘￥縺壼ｽｼ譁ｹ縺ｫ
 
 	Xdef_method(empty);
 	Xdef_method(is_empty);
@@ -406,8 +406,8 @@ XTAL_BIND(Map){
 	Xdef_method(is_empty);
 	Xdef_method(assign);
 	Xdef_method(append);
-	Xdef_method(default_value);		// バインド漏れ修正 by 星くず彼方に
-	Xdef_method(set_default_value);	// バインド漏れ修正 by 星くず彼方に
+	Xdef_method(default_value);		// 繝舌う繝ｳ繝画ｼ上ｌ菫ｮ豁｣ by 譏溘￥縺壼ｽｼ譁ｹ縺ｫ
+	Xdef_method(set_default_value);	// 繝舌う繝ｳ繝画ｼ上ｌ菫ｮ豁｣ by 譏溘￥縺壼ｽｼ譁ｹ縺ｫ
 
 	Xdef_method(op_to_map);
 	Xdef_method2(op_at, Any);
@@ -760,21 +760,21 @@ XTAL_PREBIND(Debug){
 XTAL_BIND(Debug){
 	Xdef_fun_alias(enable, &enable);
 	Xdef_fun_alias(disable, &disable);
-	Xdef_fun_alias(enable_force, &enable_force);	// バインド漏れ修正 by 星くず彼方に
-	Xdef_fun_alias(disable_force, &disable_force);	// バインド漏れ修正 by 星くず彼方に
+	Xdef_fun_alias(enable_force, &enable_force);	// 繝舌う繝ｳ繝画ｼ上ｌ菫ｮ豁｣ by 譏溘￥縺壼ｽｼ譁ｹ縺ｫ
+	Xdef_fun_alias(disable_force, &disable_force);	// 繝舌う繝ｳ繝画ｼ上ｌ菫ｮ豁｣ by 譏溘￥縺壼ｽｼ譁ｹ縺ｫ
 	Xdef_fun_alias(is_enabled, &is_enabled);
 
 	Xdef_fun_alias(breakpoint_hook, &breakpoint_hook);
 	Xdef_fun_alias(call_hook, &call_hook);
 	Xdef_fun_alias(return_hook, &return_hook);
 	Xdef_fun_alias(throw_hook, &throw_hook);
-	Xdef_fun_alias(assert_hook, &assert_hook);	// バインド漏れ修正 by 星くず彼方に
+	Xdef_fun_alias(assert_hook, &assert_hook);	// 繝舌う繝ｳ繝画ｼ上ｌ菫ｮ豁｣ by 譏溘￥縺壼ｽｼ譁ｹ縺ｫ
 
 	Xdef_fun_alias(set_breakpoint_hook, &set_breakpoint_hook);
 	Xdef_fun_alias(set_call_hook, &set_call_hook);
 	Xdef_fun_alias(set_return_hook, &set_return_hook);
 	Xdef_fun_alias(set_throw_hook, &set_throw_hook);
-	Xdef_fun_alias(set_assert_hook, &set_assert_hook);	// バインド漏れ修正 by 星くず彼方に
+	Xdef_fun_alias(set_assert_hook, &set_assert_hook);	// 繝舌う繝ｳ繝画ｼ上ｌ菫ｮ豁｣ by 譏溘￥縺壼ｽｼ譁ｹ縺ｫ
 }
 
 }
@@ -785,8 +785,8 @@ XTAL_PREBIND(Iterable){
 }
 
 XTAL_BIND(Iterable){
-	// Iterableがバインドされるなら、Iteratorもバインドしてしまう
-	// なぜなら、IterableはIteratorにメンバ取得を委譲するから
+	// Iterable縺後ヰ繧､繝ｳ繝峨＆繧後ｋ縺ｪ繧峨！terator繧ゅヰ繧､繝ｳ繝峨＠縺ｦ縺励∪縺�
+	// 縺ｪ縺懊↑繧峨！terable縺ｯIterator縺ｫ繝｡繝ｳ繝仙叙蠕励ｒ蟋碑ｭｲ縺吶ｋ縺九ｉ
 	cpp_class<Iterator>()->bind();
 }
 

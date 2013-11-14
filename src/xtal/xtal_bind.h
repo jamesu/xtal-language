@@ -660,7 +660,7 @@ template<int Method, class R #COMMA_REPEAT#class A`i`#>
 struct nfun<R (*)(#REPEAT_COMMA#A`i`#), Method>
 	: public nfun_base<`n`, functor<R (*)(#REPEAT_COMMA#A`i`#)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R #COMMA_REPEAT#class A`i`#>
 struct functor<R (*)(#REPEAT_COMMA#A`i`#)>{
 	typedef R result_type; #REPEAT#typedef A`i` arg`i+1`_type; #
@@ -679,7 +679,7 @@ template<int Method, class R, class C #COMMA_REPEAT#class A`i`#>
 struct nfun<R (C::*)(#REPEAT_COMMA#A`i`#), Method>
 	: public nfun_base<`n+1`, functor<R (C::*)(#REPEAT_COMMA#A`i`#)>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C #COMMA_REPEAT#class A`i`#>
 struct functor<R (C::*)(#REPEAT_COMMA#A`i`#)>{
 	typedef R result_type; typedef C* arg1_type; #REPEAT#typedef A`i` arg`i+2`_type; #
@@ -698,7 +698,7 @@ template<int Method, class R, class C #COMMA_REPEAT#class A`i`#>
 struct nfun<R (C::*)(#REPEAT_COMMA#A`i`#) const, Method>
 	: public nfun_base<`n+1`, functor<R (C::*)(#REPEAT_COMMA#A`i`#) const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C #COMMA_REPEAT#class A`i`#>
 struct functor<R (C::*)(#REPEAT_COMMA#A`i`#) const>{
 	typedef R result_type; typedef C* arg1_type; #REPEAT#typedef A`i` arg`i+2`_type; #
@@ -715,7 +715,7 @@ struct functor<R (C::*)(#REPEAT_COMMA#A`i`#) const>{
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R #COMMA_REPEAT#class A`i`#, R (*fun_)(#REPEAT_COMMA#A`i`#)>
 struct static_functor<R (*)(#REPEAT_COMMA#A`i`#), fun_>{
 	typedef R result_type; #REPEAT#typedef A`i` arg`i+1`_type; #
@@ -726,7 +726,7 @@ struct static_functor<R (*)(#REPEAT_COMMA#A`i`#), fun_>{
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C #COMMA_REPEAT#class A`i`#, R (C::*fun_)(#REPEAT_COMMA#A`i`#)>
 struct static_functor<R (C::*)(#REPEAT_COMMA#A`i`#), fun_>{
 	typedef R result_type; typedef C* arg1_type; #REPEAT#typedef A`i` arg`i+2`_type; #
@@ -737,7 +737,7 @@ struct static_functor<R (C::*)(#REPEAT_COMMA#A`i`#), fun_>{
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C #COMMA_REPEAT#class A`i`#, R (C::*fun_)(#REPEAT_COMMA#A`i`#) const>
 struct static_functor<R (C::*)(#REPEAT_COMMA#A`i`#) const, fun_>{
 	typedef R result_type; typedef C* arg1_type; #REPEAT#typedef A`i` arg`i+2`_type; #
@@ -748,7 +748,7 @@ struct static_functor<R (C::*)(#REPEAT_COMMA#A`i`#) const, fun_>{
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T #COMMA_REPEAT#class A`i`#>
 struct ctor_functor<T #COMMA_REPEAT#A`i`#>{
 	typedef SmartPtr<T> R;
@@ -760,14 +760,14 @@ struct ctor_functor<T #COMMA_REPEAT#A`i`#>{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R #COMMA_REPEAT#class A`i`#>
 struct nfun<R (__stdcall *)(#REPEAT_COMMA#A`i`#), Method>
 	: public nfun_base<`n`, functor<R (__stdcall *)(#REPEAT_COMMA#A`i`#)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R #COMMA_REPEAT#class A`i`#>
 struct functor<R (__stdcall *)(#REPEAT_COMMA#A`i`#)>{
 	typedef R result_type; #REPEAT#typedef A`i` arg`i+1`_type; #
@@ -782,7 +782,7 @@ struct functor<R (__stdcall *)(#REPEAT_COMMA#A`i`#)>{
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R #COMMA_REPEAT#class A`i`#, R (__stdcall *fun_)(#REPEAT_COMMA#A`i`#)>
 struct static_functor<R (__stdcall *)(#REPEAT_COMMA#A`i`#), fun_>{
 	typedef R result_type; #REPEAT#typedef A`i` arg`i+1`_type; #
@@ -801,7 +801,7 @@ template<int Method, class R >
 struct nfun<R (*)(), Method>
 	: public nfun_base<0, functor<R (*)()>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R >
 struct functor<R (*)()>{
 	typedef R result_type; 
@@ -820,7 +820,7 @@ template<int Method, class R, class C >
 struct nfun<R (C::*)(), Method>
 	: public nfun_base<1, functor<R (C::*)()>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C >
 struct functor<R (C::*)()>{
 	typedef R result_type; typedef C* arg1_type; 
@@ -839,7 +839,7 @@ template<int Method, class R, class C >
 struct nfun<R (C::*)() const, Method>
 	: public nfun_base<1, functor<R (C::*)() const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C >
 struct functor<R (C::*)() const>{
 	typedef R result_type; typedef C* arg1_type; 
@@ -856,7 +856,7 @@ struct functor<R (C::*)() const>{
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , R (*fun_)()>
 struct static_functor<R (*)(), fun_>{
 	typedef R result_type; 
@@ -867,7 +867,7 @@ struct static_functor<R (*)(), fun_>{
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , R (C::*fun_)()>
 struct static_functor<R (C::*)(), fun_>{
 	typedef R result_type; typedef C* arg1_type; 
@@ -878,7 +878,7 @@ struct static_functor<R (C::*)(), fun_>{
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , R (C::*fun_)() const>
 struct static_functor<R (C::*)() const, fun_>{
 	typedef R result_type; typedef C* arg1_type; 
@@ -889,7 +889,7 @@ struct static_functor<R (C::*)() const, fun_>{
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T >
 struct ctor_functor<T >{
 	typedef SmartPtr<T> R;
@@ -901,14 +901,14 @@ struct ctor_functor<T >{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R >
 struct nfun<R (__stdcall *)(), Method>
 	: public nfun_base<0, functor<R (__stdcall *)()>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R >
 struct functor<R (__stdcall *)()>{
 	typedef R result_type; 
@@ -923,7 +923,7 @@ struct functor<R (__stdcall *)()>{
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , R (__stdcall *fun_)()>
 struct static_functor<R (__stdcall *)(), fun_>{
 	typedef R result_type; 
@@ -941,7 +941,7 @@ template<int Method, class R , class A0>
 struct nfun<R (*)(A0), Method>
 	: public nfun_base<1, functor<R (*)(A0)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0>
 struct functor<R (*)(A0)>{
 	typedef R result_type; typedef A0 arg1_type; 
@@ -960,7 +960,7 @@ template<int Method, class R, class C , class A0>
 struct nfun<R (C::*)(A0), Method>
 	: public nfun_base<2, functor<R (C::*)(A0)>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0>
 struct functor<R (C::*)(A0)>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; 
@@ -979,7 +979,7 @@ template<int Method, class R, class C , class A0>
 struct nfun<R (C::*)(A0) const, Method>
 	: public nfun_base<2, functor<R (C::*)(A0) const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0>
 struct functor<R (C::*)(A0) const>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; 
@@ -996,7 +996,7 @@ struct functor<R (C::*)(A0) const>{
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, R (*fun_)(A0)>
 struct static_functor<R (*)(A0), fun_>{
 	typedef R result_type; typedef A0 arg1_type; 
@@ -1007,7 +1007,7 @@ struct static_functor<R (*)(A0), fun_>{
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, R (C::*fun_)(A0)>
 struct static_functor<R (C::*)(A0), fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; 
@@ -1018,7 +1018,7 @@ struct static_functor<R (C::*)(A0), fun_>{
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, R (C::*fun_)(A0) const>
 struct static_functor<R (C::*)(A0) const, fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; 
@@ -1029,7 +1029,7 @@ struct static_functor<R (C::*)(A0) const, fun_>{
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T , class A0>
 struct ctor_functor<T , A0>{
 	typedef SmartPtr<T> R;
@@ -1041,14 +1041,14 @@ struct ctor_functor<T , A0>{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R , class A0>
 struct nfun<R (__stdcall *)(A0), Method>
 	: public nfun_base<1, functor<R (__stdcall *)(A0)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0>
 struct functor<R (__stdcall *)(A0)>{
 	typedef R result_type; typedef A0 arg1_type; 
@@ -1063,7 +1063,7 @@ struct functor<R (__stdcall *)(A0)>{
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, R (__stdcall *fun_)(A0)>
 struct static_functor<R (__stdcall *)(A0), fun_>{
 	typedef R result_type; typedef A0 arg1_type; 
@@ -1081,7 +1081,7 @@ template<int Method, class R , class A0, class A1>
 struct nfun<R (*)(A0, A1), Method>
 	: public nfun_base<2, functor<R (*)(A0, A1)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1>
 struct functor<R (*)(A0, A1)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; 
@@ -1100,7 +1100,7 @@ template<int Method, class R, class C , class A0, class A1>
 struct nfun<R (C::*)(A0, A1), Method>
 	: public nfun_base<3, functor<R (C::*)(A0, A1)>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1>
 struct functor<R (C::*)(A0, A1)>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; 
@@ -1119,7 +1119,7 @@ template<int Method, class R, class C , class A0, class A1>
 struct nfun<R (C::*)(A0, A1) const, Method>
 	: public nfun_base<3, functor<R (C::*)(A0, A1) const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1>
 struct functor<R (C::*)(A0, A1) const>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; 
@@ -1136,7 +1136,7 @@ struct functor<R (C::*)(A0, A1) const>{
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, R (*fun_)(A0, A1)>
 struct static_functor<R (*)(A0, A1), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; 
@@ -1147,7 +1147,7 @@ struct static_functor<R (*)(A0, A1), fun_>{
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, R (C::*fun_)(A0, A1)>
 struct static_functor<R (C::*)(A0, A1), fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; 
@@ -1158,7 +1158,7 @@ struct static_functor<R (C::*)(A0, A1), fun_>{
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, R (C::*fun_)(A0, A1) const>
 struct static_functor<R (C::*)(A0, A1) const, fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; 
@@ -1169,7 +1169,7 @@ struct static_functor<R (C::*)(A0, A1) const, fun_>{
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T , class A0, class A1>
 struct ctor_functor<T , A0, A1>{
 	typedef SmartPtr<T> R;
@@ -1181,14 +1181,14 @@ struct ctor_functor<T , A0, A1>{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R , class A0, class A1>
 struct nfun<R (__stdcall *)(A0, A1), Method>
 	: public nfun_base<2, functor<R (__stdcall *)(A0, A1)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1>
 struct functor<R (__stdcall *)(A0, A1)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; 
@@ -1203,7 +1203,7 @@ struct functor<R (__stdcall *)(A0, A1)>{
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, R (__stdcall *fun_)(A0, A1)>
 struct static_functor<R (__stdcall *)(A0, A1), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; 
@@ -1221,7 +1221,7 @@ template<int Method, class R , class A0, class A1, class A2>
 struct nfun<R (*)(A0, A1, A2), Method>
 	: public nfun_base<3, functor<R (*)(A0, A1, A2)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2>
 struct functor<R (*)(A0, A1, A2)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; 
@@ -1240,7 +1240,7 @@ template<int Method, class R, class C , class A0, class A1, class A2>
 struct nfun<R (C::*)(A0, A1, A2), Method>
 	: public nfun_base<4, functor<R (C::*)(A0, A1, A2)>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2>
 struct functor<R (C::*)(A0, A1, A2)>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; 
@@ -1259,7 +1259,7 @@ template<int Method, class R, class C , class A0, class A1, class A2>
 struct nfun<R (C::*)(A0, A1, A2) const, Method>
 	: public nfun_base<4, functor<R (C::*)(A0, A1, A2) const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2>
 struct functor<R (C::*)(A0, A1, A2) const>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; 
@@ -1276,7 +1276,7 @@ struct functor<R (C::*)(A0, A1, A2) const>{
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, R (*fun_)(A0, A1, A2)>
 struct static_functor<R (*)(A0, A1, A2), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; 
@@ -1287,7 +1287,7 @@ struct static_functor<R (*)(A0, A1, A2), fun_>{
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, R (C::*fun_)(A0, A1, A2)>
 struct static_functor<R (C::*)(A0, A1, A2), fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; 
@@ -1298,7 +1298,7 @@ struct static_functor<R (C::*)(A0, A1, A2), fun_>{
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, R (C::*fun_)(A0, A1, A2) const>
 struct static_functor<R (C::*)(A0, A1, A2) const, fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; 
@@ -1309,7 +1309,7 @@ struct static_functor<R (C::*)(A0, A1, A2) const, fun_>{
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T , class A0, class A1, class A2>
 struct ctor_functor<T , A0, A1, A2>{
 	typedef SmartPtr<T> R;
@@ -1321,14 +1321,14 @@ struct ctor_functor<T , A0, A1, A2>{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R , class A0, class A1, class A2>
 struct nfun<R (__stdcall *)(A0, A1, A2), Method>
 	: public nfun_base<3, functor<R (__stdcall *)(A0, A1, A2)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2>
 struct functor<R (__stdcall *)(A0, A1, A2)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; 
@@ -1343,7 +1343,7 @@ struct functor<R (__stdcall *)(A0, A1, A2)>{
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, R (__stdcall *fun_)(A0, A1, A2)>
 struct static_functor<R (__stdcall *)(A0, A1, A2), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; 
@@ -1361,7 +1361,7 @@ template<int Method, class R , class A0, class A1, class A2, class A3>
 struct nfun<R (*)(A0, A1, A2, A3), Method>
 	: public nfun_base<4, functor<R (*)(A0, A1, A2, A3)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3>
 struct functor<R (*)(A0, A1, A2, A3)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; 
@@ -1380,7 +1380,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3>
 struct nfun<R (C::*)(A0, A1, A2, A3), Method>
 	: public nfun_base<5, functor<R (C::*)(A0, A1, A2, A3)>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3>
 struct functor<R (C::*)(A0, A1, A2, A3)>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; 
@@ -1399,7 +1399,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3>
 struct nfun<R (C::*)(A0, A1, A2, A3) const, Method>
 	: public nfun_base<5, functor<R (C::*)(A0, A1, A2, A3) const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3>
 struct functor<R (C::*)(A0, A1, A2, A3) const>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; 
@@ -1416,7 +1416,7 @@ struct functor<R (C::*)(A0, A1, A2, A3) const>{
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, R (*fun_)(A0, A1, A2, A3)>
 struct static_functor<R (*)(A0, A1, A2, A3), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; 
@@ -1427,7 +1427,7 @@ struct static_functor<R (*)(A0, A1, A2, A3), fun_>{
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, R (C::*fun_)(A0, A1, A2, A3)>
 struct static_functor<R (C::*)(A0, A1, A2, A3), fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; 
@@ -1438,7 +1438,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3), fun_>{
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, R (C::*fun_)(A0, A1, A2, A3) const>
 struct static_functor<R (C::*)(A0, A1, A2, A3) const, fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; 
@@ -1449,7 +1449,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3) const, fun_>{
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T , class A0, class A1, class A2, class A3>
 struct ctor_functor<T , A0, A1, A2, A3>{
 	typedef SmartPtr<T> R;
@@ -1461,14 +1461,14 @@ struct ctor_functor<T , A0, A1, A2, A3>{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R , class A0, class A1, class A2, class A3>
 struct nfun<R (__stdcall *)(A0, A1, A2, A3), Method>
 	: public nfun_base<4, functor<R (__stdcall *)(A0, A1, A2, A3)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3>
 struct functor<R (__stdcall *)(A0, A1, A2, A3)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; 
@@ -1483,7 +1483,7 @@ struct functor<R (__stdcall *)(A0, A1, A2, A3)>{
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, R (__stdcall *fun_)(A0, A1, A2, A3)>
 struct static_functor<R (__stdcall *)(A0, A1, A2, A3), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; 
@@ -1501,7 +1501,7 @@ template<int Method, class R , class A0, class A1, class A2, class A3, class A4>
 struct nfun<R (*)(A0, A1, A2, A3, A4), Method>
 	: public nfun_base<5, functor<R (*)(A0, A1, A2, A3, A4)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4>
 struct functor<R (*)(A0, A1, A2, A3, A4)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; 
@@ -1520,7 +1520,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4), Method>
 	: public nfun_base<6, functor<R (C::*)(A0, A1, A2, A3, A4)>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4>
 struct functor<R (C::*)(A0, A1, A2, A3, A4)>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; 
@@ -1539,7 +1539,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4) const, Method>
 	: public nfun_base<6, functor<R (C::*)(A0, A1, A2, A3, A4) const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4>
 struct functor<R (C::*)(A0, A1, A2, A3, A4) const>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; 
@@ -1556,7 +1556,7 @@ struct functor<R (C::*)(A0, A1, A2, A3, A4) const>{
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, R (*fun_)(A0, A1, A2, A3, A4)>
 struct static_functor<R (*)(A0, A1, A2, A3, A4), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; 
@@ -1567,7 +1567,7 @@ struct static_functor<R (*)(A0, A1, A2, A3, A4), fun_>{
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, R (C::*fun_)(A0, A1, A2, A3, A4)>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4), fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; 
@@ -1578,7 +1578,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4), fun_>{
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, R (C::*fun_)(A0, A1, A2, A3, A4) const>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4) const, fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; 
@@ -1589,7 +1589,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4) const, fun_>{
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T , class A0, class A1, class A2, class A3, class A4>
 struct ctor_functor<T , A0, A1, A2, A3, A4>{
 	typedef SmartPtr<T> R;
@@ -1601,14 +1601,14 @@ struct ctor_functor<T , A0, A1, A2, A3, A4>{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R , class A0, class A1, class A2, class A3, class A4>
 struct nfun<R (__stdcall *)(A0, A1, A2, A3, A4), Method>
 	: public nfun_base<5, functor<R (__stdcall *)(A0, A1, A2, A3, A4)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4>
 struct functor<R (__stdcall *)(A0, A1, A2, A3, A4)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; 
@@ -1623,7 +1623,7 @@ struct functor<R (__stdcall *)(A0, A1, A2, A3, A4)>{
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, R (__stdcall *fun_)(A0, A1, A2, A3, A4)>
 struct static_functor<R (__stdcall *)(A0, A1, A2, A3, A4), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; 
@@ -1641,7 +1641,7 @@ template<int Method, class R , class A0, class A1, class A2, class A3, class A4,
 struct nfun<R (*)(A0, A1, A2, A3, A4, A5), Method>
 	: public nfun_base<6, functor<R (*)(A0, A1, A2, A3, A4, A5)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5>
 struct functor<R (*)(A0, A1, A2, A3, A4, A5)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; 
@@ -1660,7 +1660,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5), Method>
 	: public nfun_base<7, functor<R (C::*)(A0, A1, A2, A3, A4, A5)>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5)>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; 
@@ -1679,7 +1679,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5) const, Method>
 	: public nfun_base<7, functor<R (C::*)(A0, A1, A2, A3, A4, A5) const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5) const>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; 
@@ -1696,7 +1696,7 @@ struct functor<R (C::*)(A0, A1, A2, A3, A4, A5) const>{
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, R (*fun_)(A0, A1, A2, A3, A4, A5)>
 struct static_functor<R (*)(A0, A1, A2, A3, A4, A5), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; 
@@ -1707,7 +1707,7 @@ struct static_functor<R (*)(A0, A1, A2, A3, A4, A5), fun_>{
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, R (C::*fun_)(A0, A1, A2, A3, A4, A5)>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5), fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; 
@@ -1718,7 +1718,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5), fun_>{
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, R (C::*fun_)(A0, A1, A2, A3, A4, A5) const>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5) const, fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; 
@@ -1729,7 +1729,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5) const, fun_>{
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T , class A0, class A1, class A2, class A3, class A4, class A5>
 struct ctor_functor<T , A0, A1, A2, A3, A4, A5>{
 	typedef SmartPtr<T> R;
@@ -1741,14 +1741,14 @@ struct ctor_functor<T , A0, A1, A2, A3, A4, A5>{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R , class A0, class A1, class A2, class A3, class A4, class A5>
 struct nfun<R (__stdcall *)(A0, A1, A2, A3, A4, A5), Method>
 	: public nfun_base<6, functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5>
 struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; 
@@ -1763,7 +1763,7 @@ struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5)>{
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, R (__stdcall *fun_)(A0, A1, A2, A3, A4, A5)>
 struct static_functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; 
@@ -1781,7 +1781,7 @@ template<int Method, class R , class A0, class A1, class A2, class A3, class A4,
 struct nfun<R (*)(A0, A1, A2, A3, A4, A5, A6), Method>
 	: public nfun_base<7, functor<R (*)(A0, A1, A2, A3, A4, A5, A6)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6>
 struct functor<R (*)(A0, A1, A2, A3, A4, A5, A6)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; 
@@ -1800,7 +1800,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5, A6), Method>
 	: public nfun_base<8, functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6)>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6)>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; 
@@ -1819,7 +1819,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5, A6) const, Method>
 	: public nfun_base<8, functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6) const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6) const>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; 
@@ -1836,7 +1836,7 @@ struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6) const>{
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, R (*fun_)(A0, A1, A2, A3, A4, A5, A6)>
 struct static_functor<R (*)(A0, A1, A2, A3, A4, A5, A6), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; 
@@ -1847,7 +1847,7 @@ struct static_functor<R (*)(A0, A1, A2, A3, A4, A5, A6), fun_>{
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, R (C::*fun_)(A0, A1, A2, A3, A4, A5, A6)>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6), fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; 
@@ -1858,7 +1858,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6), fun_>{
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, R (C::*fun_)(A0, A1, A2, A3, A4, A5, A6) const>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6) const, fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; 
@@ -1869,7 +1869,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6) const, fun_>{
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T , class A0, class A1, class A2, class A3, class A4, class A5, class A6>
 struct ctor_functor<T , A0, A1, A2, A3, A4, A5, A6>{
 	typedef SmartPtr<T> R;
@@ -1881,14 +1881,14 @@ struct ctor_functor<T , A0, A1, A2, A3, A4, A5, A6>{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6>
 struct nfun<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6), Method>
 	: public nfun_base<7, functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6>
 struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; 
@@ -1903,7 +1903,7 @@ struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6)>{
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, R (__stdcall *fun_)(A0, A1, A2, A3, A4, A5, A6)>
 struct static_functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; 
@@ -1921,7 +1921,7 @@ template<int Method, class R , class A0, class A1, class A2, class A3, class A4,
 struct nfun<R (*)(A0, A1, A2, A3, A4, A5, A6, A7), Method>
 	: public nfun_base<8, functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 struct functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; 
@@ -1940,7 +1940,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7), Method>
 	: public nfun_base<9, functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7)>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7)>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; 
@@ -1959,7 +1959,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7) const, Method>
 	: public nfun_base<9, functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7) const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7) const>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; 
@@ -1976,7 +1976,7 @@ struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7) const>{
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, R (*fun_)(A0, A1, A2, A3, A4, A5, A6, A7)>
 struct static_functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; 
@@ -1987,7 +1987,7 @@ struct static_functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7), fun_>{
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, R (C::*fun_)(A0, A1, A2, A3, A4, A5, A6, A7)>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7), fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; 
@@ -1998,7 +1998,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7), fun_>{
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, R (C::*fun_)(A0, A1, A2, A3, A4, A5, A6, A7) const>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7) const, fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; 
@@ -2009,7 +2009,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7) const, fun_>{
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 struct ctor_functor<T , A0, A1, A2, A3, A4, A5, A6, A7>{
 	typedef SmartPtr<T> R;
@@ -2021,14 +2021,14 @@ struct ctor_functor<T , A0, A1, A2, A3, A4, A5, A6, A7>{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 struct nfun<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7), Method>
 	: public nfun_base<8, functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7>
 struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; 
@@ -2043,7 +2043,7 @@ struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7)>{
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, R (__stdcall *fun_)(A0, A1, A2, A3, A4, A5, A6, A7)>
 struct static_functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; 
@@ -2061,7 +2061,7 @@ template<int Method, class R , class A0, class A1, class A2, class A3, class A4,
 struct nfun<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8), Method>
 	: public nfun_base<9, functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 struct functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; 
@@ -2080,7 +2080,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8), Method>
 	: public nfun_base<10, functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8)>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8)>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; 
@@ -2099,7 +2099,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8) const, Method>
 	: public nfun_base<10, functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8) const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8) const>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; 
@@ -2116,7 +2116,7 @@ struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8) const>{
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, R (*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8)>
 struct static_functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; 
@@ -2127,7 +2127,7 @@ struct static_functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8), fun_>{
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, R (C::*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8)>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8), fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; 
@@ -2138,7 +2138,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8), fun_>{
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, R (C::*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8) const>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8) const, fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; 
@@ -2149,7 +2149,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8) const, fun_>{
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 struct ctor_functor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8>{
 	typedef SmartPtr<T> R;
@@ -2161,14 +2161,14 @@ struct ctor_functor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8>{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 struct nfun<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8), Method>
 	: public nfun_base<9, functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8>
 struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; 
@@ -2183,7 +2183,7 @@ struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8)>{
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, R (__stdcall *fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8)>
 struct static_functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; 
@@ -2201,7 +2201,7 @@ template<int Method, class R , class A0, class A1, class A2, class A3, class A4,
 struct nfun<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9), Method>
 	: public nfun_base<10, functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 struct functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; 
@@ -2220,7 +2220,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9), Method>
 	: public nfun_base<11, functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9)>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9)>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; 
@@ -2239,7 +2239,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9) const, Method>
 	: public nfun_base<11, functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9) const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9) const>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; 
@@ -2256,7 +2256,7 @@ struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9) const>{
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, R (*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9)>
 struct static_functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; 
@@ -2267,7 +2267,7 @@ struct static_functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9), fun_>{
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, R (C::*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9)>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9), fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; 
@@ -2278,7 +2278,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9), fun_>{
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, R (C::*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9) const>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9) const, fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; 
@@ -2289,7 +2289,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9) const, fu
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 struct ctor_functor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8, A9>{
 	typedef SmartPtr<T> R;
@@ -2301,14 +2301,14 @@ struct ctor_functor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8, A9>{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 struct nfun<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9), Method>
 	: public nfun_base<10, functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9>
 struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; 
@@ -2323,7 +2323,7 @@ struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9)>{
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, R (__stdcall *fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9)>
 struct static_functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; 
@@ -2341,7 +2341,7 @@ template<int Method, class R , class A0, class A1, class A2, class A3, class A4,
 struct nfun<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), Method>
 	: public nfun_base<11, functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
 struct functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; typedef A10 arg11_type; 
@@ -2360,7 +2360,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), Method>
 	: public nfun_base<12, functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; typedef A10 arg12_type; 
@@ -2379,7 +2379,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) const, Method>
 	: public nfun_base<12, functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) const>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; typedef A10 arg12_type; 
@@ -2396,7 +2396,7 @@ struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) const>{
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, R (*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)>
 struct static_functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; typedef A10 arg11_type; 
@@ -2407,7 +2407,7 @@ struct static_functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), fun_>{
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, R (C::*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; typedef A10 arg12_type; 
@@ -2418,7 +2418,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), fun
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, R (C::*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) const>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) const, fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; typedef A10 arg12_type; 
@@ -2429,7 +2429,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) cons
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
 struct ctor_functor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10>{
 	typedef SmartPtr<T> R;
@@ -2441,14 +2441,14 @@ struct ctor_functor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10>{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
 struct nfun<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), Method>
 	: public nfun_base<11, functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10>
 struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; typedef A10 arg11_type; 
@@ -2463,7 +2463,7 @@ struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)>{
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, R (__stdcall *fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)>
 struct static_functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; typedef A10 arg11_type; 
@@ -2481,7 +2481,7 @@ template<int Method, class R , class A0, class A1, class A2, class A3, class A4,
 struct nfun<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11), Method>
 	: public nfun_base<12, functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
 struct functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; typedef A10 arg11_type; typedef A11 arg12_type; 
@@ -2500,7 +2500,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11), Method>
 	: public nfun_base<13, functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; typedef A10 arg12_type; typedef A11 arg13_type; 
@@ -2519,7 +2519,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) const, Method>
 	: public nfun_base<13, functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) const>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; typedef A10 arg12_type; typedef A11 arg13_type; 
@@ -2536,7 +2536,7 @@ struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) const>
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, R (*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)>
 struct static_functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; typedef A10 arg11_type; typedef A11 arg12_type; 
@@ -2547,7 +2547,7 @@ struct static_functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11), f
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, R (C::*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11), fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; typedef A10 arg12_type; typedef A11 arg13_type; 
@@ -2558,7 +2558,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, R (C::*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) const>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) const, fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; typedef A10 arg12_type; typedef A11 arg13_type; 
@@ -2569,7 +2569,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
 struct ctor_functor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11>{
 	typedef SmartPtr<T> R;
@@ -2581,14 +2581,14 @@ struct ctor_functor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11>{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
 struct nfun<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11), Method>
 	: public nfun_base<12, functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11>
 struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; typedef A10 arg11_type; typedef A11 arg12_type; 
@@ -2603,7 +2603,7 @@ struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, R (__stdcall *fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)>
 struct static_functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; typedef A10 arg11_type; typedef A11 arg12_type; 
@@ -2621,7 +2621,7 @@ template<int Method, class R , class A0, class A1, class A2, class A3, class A4,
 struct nfun<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12), Method>
 	: public nfun_base<13, functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
 struct functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; typedef A10 arg11_type; typedef A11 arg12_type; typedef A12 arg13_type; 
@@ -2640,7 +2640,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12), Method>
 	: public nfun_base<14, functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)>, Method, R>{};
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; typedef A10 arg12_type; typedef A11 arg13_type; typedef A12 arg14_type; 
@@ -2659,7 +2659,7 @@ template<int Method, class R, class C , class A0, class A1, class A2, class A3, 
 struct nfun<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) const, Method>
 	: public nfun_base<14, functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) const>, Method, R>{};
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
 struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) const>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; typedef A10 arg12_type; typedef A11 arg13_type; typedef A12 arg14_type; 
@@ -2676,7 +2676,7 @@ struct functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) c
 
 ////
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, R (*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)>
 struct static_functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; typedef A10 arg11_type; typedef A11 arg12_type; typedef A12 arg13_type; 
@@ -2687,7 +2687,7 @@ struct static_functor<R (*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A1
 	}
 };
 
-// ƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, R (C::*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12), fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; typedef A10 arg12_type; typedef A11 arg13_type; typedef A12 arg14_type; 
@@ -2698,7 +2698,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11,
 	}
 };
 
-// constƒƒ“ƒoŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// constãƒ¡ãƒ³ãƒé–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R, class C , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, R (C::*fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) const>
 struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) const, fun_>{
 	typedef R result_type; typedef C* arg1_type; typedef A0 arg2_type; typedef A1 arg3_type; typedef A2 arg4_type; typedef A3 arg5_type; typedef A4 arg6_type; typedef A5 arg7_type; typedef A6 arg8_type; typedef A7 arg9_type; typedef A8 arg10_type; typedef A9 arg11_type; typedef A10 arg12_type; typedef A11 arg13_type; typedef A12 arg14_type; 
@@ -2709,7 +2709,7 @@ struct static_functor<R (C::*)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11,
 	}
 };
 
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class T , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
 struct ctor_functor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>{
 	typedef SmartPtr<T> R;
@@ -2721,14 +2721,14 @@ struct ctor_functor<T , A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>{
 	}
 };
 
-// stdcall”Å
+// stdcallç‰ˆ
 #if defined(_WIN32) && defined(_M_IX86)
 
 template<int Method, class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
 struct nfun<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12), Method>
 	: public nfun_base<13, functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)>, Method, R>{};
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12>
 struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; typedef A10 arg11_type; typedef A11 arg12_type; typedef A12 arg13_type; 
@@ -2743,7 +2743,7 @@ struct functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11,
 	}
 };
 
-// ŠÖ”‚ğŠÖ”ƒIƒuƒWƒFƒNƒg‰»‚·‚é
+// é–¢æ•°ã‚’é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåŒ–ã™ã‚‹
 template<class R , class A0, class A1, class A2, class A3, class A4, class A5, class A6, class A7, class A8, class A9, class A10, class A11, class A12, R (__stdcall *fun_)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)>
 struct static_functor<R (__stdcall *)(A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12), fun_>{
 	typedef R result_type; typedef A0 arg1_type; typedef A1 arg2_type; typedef A2 arg3_type; typedef A3 arg4_type; typedef A4 arg5_type; typedef A5 arg6_type; typedef A6 arg7_type; typedef A7 arg8_type; typedef A8 arg9_type; typedef A9 arg10_type; typedef A10 arg11_type; typedef A11 arg12_type; typedef A12 arg13_type; 
@@ -2893,100 +2893,100 @@ template<class TFun> inline static_setter_meker<TFun> generate_static_setter(TFu
 #define XTAL_SETTER(fun) ::xtal::generate_static_setter(fun).inner<fun>()
 
 /**
-* \brief ƒƒ\ƒbƒh‚ğƒoƒCƒ“ƒh‚·‚é
-* XTAL_BIND‚Ì’†‚Åg—p‚·‚éB
+* \brief ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
+* XTAL_BINDã®ä¸­ã§ä½¿ç”¨ã™ã‚‹ã€‚
 * \code
 * XTAL_BIND(Vector){
-*   Xdef_method(length); // Vector::lengthƒƒ\ƒbƒh‚ğƒoƒCƒ“ƒh‚·‚é
+*   Xdef_method(length); // Vector::lengthãƒ¡ã‚½ãƒƒãƒ‰ã‚’ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
 * }
 * \endcode
 */
 #define Xdef_method(fun) it->define(XTAL_STRING(#fun), XTAL_METHOD(&Self::fun))
 
 /**
-* \brief ƒƒ\ƒbƒh‚ğƒZƒJƒ“ƒ_ƒŠ[ƒL[•t‚ÅƒoƒCƒ“ƒh‚·‚é
-* XTAL_BIND‚Ì’†‚Åg—p‚·‚éB
+* \brief ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ã‚»ã‚«ãƒ³ãƒ€ãƒªãƒ¼ã‚­ãƒ¼ä»˜ã§ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
+* XTAL_BINDã®ä¸­ã§ä½¿ç”¨ã™ã‚‹ã€‚
 * \code
 * XTAL_BIND(Vector){
-*   Xdef_method2(length, Vector); // Vector::lengthƒƒ\ƒbƒh‚ğƒZƒJƒ“ƒ_ƒŠ[ƒL[‚ğVectorƒNƒ‰ƒX‚ÅƒoƒCƒ“ƒh‚·‚é
+*   Xdef_method2(length, Vector); // Vector::lengthãƒ¡ã‚½ãƒƒãƒ‰ã‚’ã‚»ã‚«ãƒ³ãƒ€ãƒªãƒ¼ã‚­ãƒ¼ã‚’Vectorã‚¯ãƒ©ã‚¹ã§ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
 * }
 * \endcode
 */
 #define Xdef_method2(fun, secondary_key) it->define(XTAL_STRING(#fun), ::xtal::cpp_class< secondary_key >(), XTAL_METHOD(&Self::fun))
 
 /**
-* \brief ƒƒ\ƒbƒh‚ğ•Ê–¼‚ÅƒoƒCƒ“ƒh‚·‚é
-* XTAL_BIND‚Ì’†‚Åg—p‚·‚éB
+* \brief ãƒ¡ã‚½ãƒƒãƒ‰ã‚’åˆ¥åã§ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
+* XTAL_BINDã®ä¸­ã§ä½¿ç”¨ã™ã‚‹ã€‚
 * \code
 * XTAL_BIND(Vector){
-*   Xdef_method_alias(size, &Vector::length); // Vector::lengthƒƒ\ƒbƒh‚ğsize‚Æ‚¢‚¤–¼‘O‚ÅƒoƒCƒ“ƒh‚·‚é
+*   Xdef_method_alias(size, &Vector::length); // Vector::lengthãƒ¡ã‚½ãƒƒãƒ‰ã‚’sizeã¨ã„ã†åå‰ã§ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
 * }
 * \endcode
 */
 #define Xdef_method_alias(fun, impl) it->define(XTAL_STRING(#fun), XTAL_METHOD(impl))
 
 /**
-* \brief ƒƒ\ƒbƒh‚ğ•Ê–¼‚ÅƒZƒJƒ“ƒ_ƒŠ[ƒL[•t‚ÅƒoƒCƒ“ƒh‚·‚é
-* XTAL_BIND‚Ì’†‚Åg—p‚·‚éB
+* \brief ãƒ¡ã‚½ãƒƒãƒ‰ã‚’åˆ¥åã§ã‚»ã‚«ãƒ³ãƒ€ãƒªãƒ¼ã‚­ãƒ¼ä»˜ã§ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
+* XTAL_BINDã®ä¸­ã§ä½¿ç”¨ã™ã‚‹ã€‚
 * \code
 * XTAL_BIND(Vector){
-*   Xdef_method_alias2(size, &Vector::length, Vector); // Vector::lengthƒƒ\ƒbƒh‚ğsize‚Æ‚¢‚¤–¼‘O‚ÅƒZƒJƒ“ƒ_ƒŠ[ƒL[‚ğVectorƒNƒ‰ƒX‚ÅƒoƒCƒ“ƒh‚·‚é
+*   Xdef_method_alias2(size, &Vector::length, Vector); // Vector::lengthãƒ¡ã‚½ãƒƒãƒ‰ã‚’sizeã¨ã„ã†åå‰ã§ã‚»ã‚«ãƒ³ãƒ€ãƒªãƒ¼ã‚­ãƒ¼ã‚’Vectorã‚¯ãƒ©ã‚¹ã§ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
 * }
 * \endcode
 */
 #define Xdef_method_alias2(fun, impl, secondary_key) it->define(XTAL_STRING(#fun), ::xtal::cpp_class< secondary_key >(), XTAL_METHOD(impl))
 
 /**
-* \brief ŠÖ”‚ğƒoƒCƒ“ƒh‚·‚é
-* XTAL_BIND‚Ì’†‚Åg—p‚·‚éB
+* \brief é–¢æ•°ã‚’ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
+* XTAL_BINDã®ä¸­ã§ä½¿ç”¨ã™ã‚‹ã€‚
 * \code
 * XTAL_BIND(Test){
-*   Xdef_fun(fuge); // Test::fugeŠÖ”‚ğƒoƒCƒ“ƒh‚·‚é
+*   Xdef_fun(fuge); // Test::fugeé–¢æ•°ã‚’ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
 * }
 * \endcode
 */
 #define Xdef_fun(fun) it->define(XTAL_STRING(#fun), XTAL_FUN(&Self::fun))
 
 /**
-* \brief ŠÖ”‚ğƒZƒJƒ“ƒ_ƒŠ[ƒL[•t‚ÅƒoƒCƒ“ƒh‚·‚é
-* XTAL_BIND‚Ì’†‚Åg—p‚·‚éB
+* \brief é–¢æ•°ã‚’ã‚»ã‚«ãƒ³ãƒ€ãƒªãƒ¼ã‚­ãƒ¼ä»˜ã§ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
+* XTAL_BINDã®ä¸­ã§ä½¿ç”¨ã™ã‚‹ã€‚
 * \code
 * XTAL_BIND(Test){
-*   Xdef_fun2(fuge, Hoge); // Test::fugeŠÖ”‚ğƒZƒJƒ“ƒ_ƒŠ[ƒL[‚ğHogeƒNƒ‰ƒX‚ÅƒoƒCƒ“ƒh‚·‚é
+*   Xdef_fun2(fuge, Hoge); // Test::fugeé–¢æ•°ã‚’ã‚»ã‚«ãƒ³ãƒ€ãƒªãƒ¼ã‚­ãƒ¼ã‚’Hogeã‚¯ãƒ©ã‚¹ã§ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
 * }
 * \endcode
 */
 #define Xdef_fun2(fun, secondary_key) it->define(XTAL_STRING(#fun), ::xtal::cpp_class< secondary_key >(), XTAL_FUN(&Self::fun))
 
 /**
-* \brief ŠÖ”‚ğ•Ê–¼‚ÅƒoƒCƒ“ƒh‚·‚é
-* XTAL_BIND‚Ì’†‚Åg—p‚·‚éB
+* \brief é–¢æ•°ã‚’åˆ¥åã§ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
+* XTAL_BINDã®ä¸­ã§ä½¿ç”¨ã™ã‚‹ã€‚
 * \code
 * XTAL_BIND(Test){
-*   Xdef_fun_alias(fuge, &hogehogen); // hogehogenŠÖ”‚ğfuga‚Æ‚¢‚¤–¼‘O‚ÅƒoƒCƒ“ƒh‚·‚é
+*   Xdef_fun_alias(fuge, &hogehogen); // hogehogené–¢æ•°ã‚’fugaã¨ã„ã†åå‰ã§ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
 * }
 * \endcode
 */
 #define Xdef_fun_alias(fun, impl) it->define(XTAL_STRING(#fun), XTAL_FUN(impl))
 
 /**
-* \brief ƒƒ\ƒbƒh‚ğ•Ê–¼‚ÅƒZƒJƒ“ƒ_ƒŠ[ƒL[•t‚ÅƒoƒCƒ“ƒh‚·‚é
-* XTAL_BIND‚Ì’†‚Åg—p‚·‚éB
+* \brief ãƒ¡ã‚½ãƒƒãƒ‰ã‚’åˆ¥åã§ã‚»ã‚«ãƒ³ãƒ€ãƒªãƒ¼ã‚­ãƒ¼ä»˜ã§ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
+* XTAL_BINDã®ä¸­ã§ä½¿ç”¨ã™ã‚‹ã€‚
 * \code
 * XTAL_BIND(Test){
-*   Xdef_method_alias2(fuge, &hogehogen, Huga); // hogehogenŠÖ”‚ğfuga‚Æ‚¢‚¤–¼‘O‚ÅƒZƒJƒ“ƒ_ƒŠ[ƒL[‚ğHugaƒNƒ‰ƒX‚ÅƒoƒCƒ“ƒh‚·‚é
+*   Xdef_method_alias2(fuge, &hogehogen, Huga); // hogehogené–¢æ•°ã‚’fugaã¨ã„ã†åå‰ã§ã‚»ã‚«ãƒ³ãƒ€ãƒªãƒ¼ã‚­ãƒ¼ã‚’Hugaã‚¯ãƒ©ã‚¹ã§ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
 * }
 * \endcode
 */
 #define Xdef_fun_alias2(fun, impl, secondary_key) it->define(XTAL_STRING(#fun), ::xtal::cpp_class< secondary_key >(), XTAL_FUN(impl))
 
 /**
-* \brief ƒƒ“ƒo•Ï”‚ÌƒQƒbƒ^[‚ğƒoƒCƒ“ƒh‚·‚é
+* \brief ãƒ¡ãƒ³ãƒå¤‰æ•°ã®ã‚²ãƒƒã‚¿ãƒ¼ã‚’ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
 */
 #define Xdef_getter(var) it->define(XTAL_STRING(#var), XTAL_GETTER(&Self::var))
 
 /**
-* \brief ƒƒ“ƒo•Ï”‚ÌƒZƒbƒ^[‚ğƒoƒCƒ“ƒh‚·‚é
+* \brief ãƒ¡ãƒ³ãƒå¤‰æ•°ã®ã‚»ãƒƒã‚¿ãƒ¼ã‚’ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
 */
 #define Xdef_setter(var) it->define(XTAL_LONG_LIVED_STRING(XTAL_L("set_") XTAL_L(#var)), XTAL_SETTER(&Self::var))
 
@@ -2995,77 +2995,77 @@ template<class TFun> inline static_setter_meker<TFun> generate_static_setter(TFu
 #define Xdef_double_dispatch_method(fun) it->def_double_dispatch_method(XTAL_STRING(#fun))
 
 /**
-* \brief ƒƒ“ƒo•Ï”‚ÌƒQƒbƒ^[‚ÆƒZƒbƒ^[‚ğƒoƒCƒ“ƒh‚·‚é
+* \brief ãƒ¡ãƒ³ãƒå¤‰æ•°ã®ã‚²ãƒƒã‚¿ãƒ¼ã¨ã‚»ãƒƒã‚¿ãƒ¼ã‚’ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
 */
 #define Xdef_var(var) Xdef_getter(var), Xdef_setter(var)
 
 /**
-* \brief Xdef_method‚âXdef_fun‚È‚Ç‚Å’è‹`‚µ‚½ƒƒ\ƒbƒh‚âŠÖ”‚ÌƒIƒvƒVƒ‡ƒiƒ‹ˆø”‚ğ’è‹`‚·‚é
+* \brief Xdef_methodã‚„Xdef_funãªã©ã§å®šç¾©ã—ãŸãƒ¡ã‚½ãƒƒãƒ‰ã‚„é–¢æ•°ã®ã‚ªãƒ—ã‚·ãƒ§ãƒŠãƒ«å¼•æ•°ã‚’å®šç¾©ã™ã‚‹
 */
 #define Xparam(name, default_value) it->define_param(XTAL_STRING(#name), default_value)
 
 /**
-* \brief ƒƒ“ƒo‚ğ’è‹`‚·‚é
+* \brief ãƒ¡ãƒ³ãƒã‚’å®šç¾©ã™ã‚‹
 */
 #define Xdef(name, value) it->define(XTAL_STRING(#name), value)
 
 /**
-* \brief ƒƒ“ƒo‚ğƒZƒJƒ“ƒ_ƒŠƒL[•t‚«‚Å’è‹`‚·‚é
+* \brief ãƒ¡ãƒ³ãƒã‚’ã‚»ã‚«ãƒ³ãƒ€ãƒªã‚­ãƒ¼ä»˜ãã§å®šç¾©ã™ã‚‹
 */
 #define Xdef2(name, value, secondary_key) it->define(XTAL_STRING(#name), value, ::xtal::cpp_class< secondary_key >())
 
 /**
-* \brief ƒNƒ‰ƒX’è”‚ğ’è‹`‚·‚é
+* \brief ã‚¯ãƒ©ã‚¹å®šæ•°ã‚’å®šç¾©ã™ã‚‹
 */
 #define Xdef_const(name) it->define(XTAL_STRING(#name), (int_t)Self::name)
 
 /**
-* \brief ƒNƒ‰ƒX’è”‚ğƒZƒJƒ“ƒ_ƒŠƒL[•t‚«‚Å’è‹`‚·‚é
+* \brief ã‚¯ãƒ©ã‚¹å®šæ•°ã‚’ã‚»ã‚«ãƒ³ãƒ€ãƒªã‚­ãƒ¼ä»˜ãã§å®šç¾©ã™ã‚‹
 */
 #define Xdef_const2(name, secondary_key) it->define(XTAL_STRING(#name), (int_t)Self::name, ::xtal::cpp_class< secondary_key >())
 
 /**
-* \brief ƒNƒ‰ƒX‚ğ‘¼‚ÌƒNƒ‰ƒX‚É“o˜^‚·‚é
+* \brief ã‚¯ãƒ©ã‚¹ã‚’ä»–ã®ã‚¯ãƒ©ã‚¹ã«ç™»éŒ²ã™ã‚‹
 */
 #define Xregister(parent_class) ::xtal::cpp_class< parent_class >()->define(XTAL_LONG_LIVED_STRING(::xtal::CppClassSymbol<Self>::value.name), it)
 
 /**
-* \brief ƒNƒ‰ƒX‚ğ‘¼‚ÌƒNƒ‰ƒX‚É–¼‘O‚ğ•Ï‚¦‚Ä“o˜^‚·‚é
+* \brief ã‚¯ãƒ©ã‚¹ã‚’ä»–ã®ã‚¯ãƒ©ã‚¹ã«åå‰ã‚’å¤‰ãˆã¦ç™»éŒ²ã™ã‚‹
 */
 #define Xregister_alias(parent_class, alias) ::xtal::cpp_class< parent_class >()->define(XTAL_STRING(#alias), it)
 
 #define Xinherit(super_class) it->inherit(::xtal::cpp_class< super_class >())
 
 /**
-* \brief ƒoƒCƒ“ƒh‚·‚éƒNƒ‰ƒX‚ğXtal‚ÌƒNƒ‰ƒX‚©‚çŒp³‚Å‚«‚È‚­‚·‚é
-* Xtal‚ÌƒNƒ‰ƒX‚©‚ç‚Íinherit‚Å‚«‚È‚­‚È‚é‚ªAC++‚©‚ç‚Íinherit‚Å‚«‚éB
+* \brief ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹ã‚¯ãƒ©ã‚¹ã‚’Xtalã®ã‚¯ãƒ©ã‚¹ã‹ã‚‰ç¶™æ‰¿ã§ããªãã™ã‚‹
+* Xtalã®ã‚¯ãƒ©ã‚¹ã‹ã‚‰ã¯inheritã§ããªããªã‚‹ãŒã€C++ã‹ã‚‰ã¯inheritã§ãã‚‹ã€‚
 */
 #define Xfinal() it->set_final()
 
 /**
-* \brief ƒNƒ‰ƒX‚ğC++‚Å’è‹`‚³‚ê‚½ƒNƒ‰ƒX‚Å‚Í‚È‚­AXtal‚Å’è‹`‚³‚ê‚½ƒNƒ‰ƒX‚Æ‚İ‚È‚·‚æ‚¤‚É‚·‚é
-* C++‚ÌƒNƒ‰ƒX‚Í“ñŒÂˆÈãinherit‚Å‚«‚È‚¢A‚È‚Ç‚Ì§ŒÀ‚ª‚ ‚é‚½‚ßA
-* –¼‘O‹óŠÔ“I‚Ég‚¤‚¾‚¯‚ÌƒNƒ‰ƒX‚È‚Ç‚Í‚±‚ê‚ğg‚Á‚ÄXtal‚Å’è‹`‚µ‚½ƒNƒ‰ƒX‚Æ‚İ‚È‚·‚æ‚¤‚É‚·‚é‚±‚Æ‚ª‚Å‚«‚éB
+* \brief ã‚¯ãƒ©ã‚¹ã‚’C++ã§å®šç¾©ã•ã‚ŒãŸã‚¯ãƒ©ã‚¹ã§ã¯ãªãã€Xtalã§å®šç¾©ã•ã‚ŒãŸã‚¯ãƒ©ã‚¹ã¨ã¿ãªã™ã‚ˆã†ã«ã™ã‚‹
+* C++ã®ã‚¯ãƒ©ã‚¹ã¯äºŒå€‹ä»¥ä¸Šinheritã§ããªã„ã€ãªã©ã®åˆ¶é™ãŒã‚ã‚‹ãŸã‚ã€
+* åå‰ç©ºé–“çš„ã«ä½¿ã†ã ã‘ã®ã‚¯ãƒ©ã‚¹ãªã©ã¯ã“ã‚Œã‚’ä½¿ã£ã¦Xtalã§å®šç¾©ã—ãŸã‚¯ãƒ©ã‚¹ã¨ã¿ãªã™ã‚ˆã†ã«ã™ã‚‹ã“ã¨ãŒã§ãã‚‹ã€‚
 */
 #define Xxtal_class() it->set_xtal_class()
 
 /**
-* \brief ƒVƒ“ƒOƒ‹ƒgƒ“ƒ}[ƒN‚ğ‚Â‚¯‚é
+* \brief ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ãƒãƒ¼ã‚¯ã‚’ã¤ã‘ã‚‹
 */
 #define Xsingleton() it->set_singleton()
 
 /**
-* \brief Ÿ‚©‚ç’è‹`‚·‚éƒƒ“ƒo‚ğpublic‚Æ‚·‚é
+* \brief æ¬¡ã‹ã‚‰å®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã‚’publicã¨ã™ã‚‹
 */
 #define Xpublic() it->set_accessibility(::xtal::KIND_PUBLIC)
 
 /**
-* \brief Ÿ‚©‚ç’è‹`‚·‚éƒƒ“ƒo‚ğpublic‚Æ‚·‚é
+* \brief æ¬¡ã‹ã‚‰å®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã‚’publicã¨ã™ã‚‹
 */
 #define Xprotected() it->set_accessibility(::xtal::KIND_PROTECTED)
 
 /**
-* \brief Ÿ‚©‚ç’è‹`‚·‚éƒƒ“ƒo‚ğpublic‚Æ‚·‚é
+* \brief æ¬¡ã‹ã‚‰å®šç¾©ã™ã‚‹ãƒ¡ãƒ³ãƒã‚’publicã¨ã™ã‚‹
 */
 #define Xprivate() it->set_accessibility(::xtal::KIND_PRIVATE)
 

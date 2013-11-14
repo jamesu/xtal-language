@@ -8,34 +8,34 @@
 #pragma once
 
 /**
-* \brief ƒp[ƒTŽg—poff
+* \brief ãƒ‘ãƒ¼ã‚µä½¿ç”¨off
 */
 //#define XTAL_NO_PARSER
 
 /**
-* \brief wchar_tŽg—pon
+* \brief wchar_tä½¿ç”¨on
 */
 //#define XTAL_USE_WCHAR
 
 /**
-* \brief ƒXƒŒƒbƒhŽg—poff
+* \brief ã‚¹ãƒ¬ãƒƒãƒ‰ä½¿ç”¨off
 */
 #define XTAL_NO_THREAD
 
 /**
-* \brief XtalƒXƒŒƒbƒhƒ‚ƒfƒ‹2‚ðŽg—p‚·‚é
-* “¯‚¶Environment‚ÉŠ‘®‚·‚éVMachine“¯Žm‚Å‚à•À—ñ‚ÉŽÀs‚·‚é‚±‚Æ‚ð‰Â”\‚É‚·‚é‚ªA
-* ×‚©‚¢”r‘¼§Œä‚ª“ü‚é‚½‚ß•À—ñ‚ÉŽÀs‚µ‚È‚¢ê‡’x‚­‚È‚éB
+* \brief Xtalã‚¹ãƒ¬ãƒƒãƒ‰ãƒ¢ãƒ‡ãƒ«2ã‚’ä½¿ç”¨ã™ã‚‹
+* åŒã˜Environmentã«æ‰€å±žã™ã‚‹VMachineåŒå£«ã§ã‚‚ä¸¦åˆ—ã«å®Ÿè¡Œã™ã‚‹ã“ã¨ã‚’å¯èƒ½ã«ã™ã‚‹ãŒã€
+* ç´°ã‹ã„æŽ’ä»–åˆ¶å¾¡ãŒå…¥ã‚‹ãŸã‚ä¸¦åˆ—ã«å®Ÿè¡Œã—ãªã„å ´åˆé…ããªã‚‹ã€‚
 */
 //#define XTAL_USE_THREAD_MODEL2
 
 /**
-* \brief pthread‚ÌƒXƒŒƒbƒhƒ[ƒJƒ‹ƒXƒgƒŒ[ƒW‚ðŽg‚¤
+* \brief pthreadã®ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ­ãƒ¼ã‚«ãƒ«ã‚¹ãƒˆãƒ¬ãƒ¼ã‚¸ã‚’ä½¿ã†
 */
 //#define XTAL_USE_PTHREAD_TLS
 
 /**
-* \brief ¬‚³‚¢ƒTƒCƒY‚Ìƒƒ‚ƒŠŠm•Û‚ÉXtal“ÆŽ©‚ÌƒAƒƒP[ƒ^‚ðŽg‚í‚È‚¢
+* \brief å°ã•ã„ã‚µã‚¤ã‚ºã®ãƒ¡ãƒ¢ãƒªç¢ºä¿ã«Xtalç‹¬è‡ªã®ã‚¢ãƒ­ã‚±ãƒ¼ã‚¿ã‚’ä½¿ã‚ãªã„
 */
 //#define XTAL_NO_SMALL_ALLOCATOR
 

@@ -12,7 +12,7 @@ namespace xtal{
 uint_t edit_distance(const void* data1, uint_t size1, const void* data2, uint_t size2);
 
 /**
-* \brief �}���`�o�C�g������g�ݗ��Ă邽�߂̃��[�e�B���e�B�N���X
+* \brief マルチバイト文字を組み立てるためのユーティリティクラス
 */
 class ChMaker{
 public:

@@ -14,30 +14,30 @@ class StringData;
 /**
 * \xbind lib::builtin
 * \xinherit lib::builtin::Any lib::builtin::Iterable
-* \brief •¶š—ñ‚ÌƒNƒ‰ƒX
+* \brief æ–‡å­—åˆ—ã®ã‚¯ãƒ©ã‚¹
 */
 class String : public Any{
 public:
 
 	/**
 	* \xbind
-	* \brief ‹ó•¶š—ñ‚ğ\’z‚·‚é
+	* \brief ç©ºæ–‡å­—åˆ—ã‚’æ§‹ç¯‰ã™ã‚‹
 	*/
 	String();
 
 	/**
-	* \brief NULI’[‚ÌC•¶š—ñ‚©‚ç\’z‚·‚é
-	* \param str NULI’[•¶š—ñ
+	* \brief NULçµ‚ç«¯ã®Cæ–‡å­—åˆ—ã‹ã‚‰æ§‹ç¯‰ã™ã‚‹
+	* \param str NULçµ‚ç«¯æ–‡å­—åˆ—
 	*/
 	String(const char_t* str);
 
 	/**
-	* \brief C•¶š—ñ‚©‚çsize•ª‚Ì’·‚³‚ğæ‚èo‚µ\’z‚·‚é
+	* \brief Cæ–‡å­—åˆ—ã‹ã‚‰sizeåˆ†ã®é•·ã•ã‚’å–ã‚Šå‡ºã—æ§‹ç¯‰ã™ã‚‹
 	*/
 	String(const char_t* str, uint_t size);
 
 	/**
-	* \brief “ñ‚Â‚ÌC•¶š—ñ‚©‚ç\’z‚·‚é
+	* \brief äºŒã¤ã®Cæ–‡å­—åˆ—ã‹ã‚‰æ§‹ç¯‰ã™ã‚‹
 	*/
 	String(const char_t* str1, uint_t size1, const char_t* str2, uint_t size2);
 
@@ -45,14 +45,14 @@ public:
 	struct long_lived_t{};
 
 	/**
-	* \brief õ–½‚ª’·‚­AŠJ•ú‚³‚ê‚È‚¢‚æ‚¤‚È•¶š—ñ‚Å\’z‚·‚é
+	* \brief å¯¿å‘½ãŒé•·ãã€é–‹æ”¾ã•ã‚Œãªã„ã‚ˆã†ãªæ–‡å­—åˆ—ã§æ§‹ç¯‰ã™ã‚‹
 	*/
 	String(const char_t* str, uint_t size, long_lived_t){
 		init_long_lived_string(str, size);
 	}
 
 	/**
-	* \brief õ–½‚ª’·‚­AŠJ•ú‚³‚ê‚È‚¢‚æ‚¤‚È•¶š—ñ‚Å\’z‚·‚é
+	* \brief å¯¿å‘½ãŒé•·ãã€é–‹æ”¾ã•ã‚Œãªã„ã‚ˆã†ãªæ–‡å­—åˆ—ã§æ§‹ç¯‰ã™ã‚‹
 	*/
 	template<int N>
 	String(const LongLivedStringN<N>& str){
@@ -60,7 +60,7 @@ public:
 	}
 
 	/**
-	* \brief õ–½‚ª’·‚­AŠJ•ú‚³‚ê‚È‚¢‚æ‚¤‚È•¶š—ñ‚Å\’z‚·‚é
+	* \brief å¯¿å‘½ãŒé•·ãã€é–‹æ”¾ã•ã‚Œãªã„ã‚ˆã†ãªæ–‡å­—åˆ—ã§æ§‹ç¯‰ã™ã‚‹
 	*/
 	String(const LongLivedString& str){
 		init_long_lived_string(str.str(), str.size());
@@ -77,77 +77,77 @@ protected:
 public:
 
 	/**
-	* \brief 0I’[‚Ì•¶š—ñæ“ª‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‚·B
-	* data()‚Ædata_size()‚Å‘ã—p‰Â”\‚È‚ç‚»‚¿‚ç‚ğg‚Á‚Ä‚­‚¾‚³‚¢B
+	* \brief 0çµ‚ç«¯ã®æ–‡å­—åˆ—å…ˆé ­ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¿”ã™ã€‚
+	* data()ã¨data_size()ã§ä»£ç”¨å¯èƒ½ãªã‚‰ãã¡ã‚‰ã‚’ä½¿ã£ã¦ãã ã•ã„ã€‚
 	*/
 	const char_t* c_str() const;
 
 	/**
-	* \brief •¶š—ñæ“ª‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‚·B
-	* ‚±‚ê‚Í0I’[•¶š—ñ‚ª•Ô‚³‚ê‚é‚Æ‚ÍŒÀ‚ç‚È‚¢B
+	* \brief æ–‡å­—åˆ—å…ˆé ­ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¿”ã™ã€‚
+	* ã“ã‚Œã¯0çµ‚ç«¯æ–‡å­—åˆ—ãŒè¿”ã•ã‚Œã‚‹ã¨ã¯é™ã‚‰ãªã„ã€‚
 	*/
 	const char_t* data() const;
 
 	/**
 	* \xbind
-	* \brief ƒf[ƒ^ƒTƒCƒY‚ğ•Ô‚·B
-	* ƒ}ƒ‹ƒ`ƒoƒCƒg•¶š‚ğl—¶‚µ‚È‚¢B
+	* \brief ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã‚’è¿”ã™ã€‚
+	* ãƒãƒ«ãƒãƒã‚¤ãƒˆæ–‡å­—ã‚’è€ƒæ…®ã—ãªã„ã€‚
 	*/
 	uint_t data_size() const;
 
 	/**
 	* \xbind
-	* \brief •¶š—ñ‚Ì’·‚³‚ğ•Ô‚·B
-	* ƒ}ƒ‹ƒ`ƒoƒCƒg•¶š‚ğl—¶‚·‚éB
+	* \brief æ–‡å­—åˆ—ã®é•·ã•ã‚’è¿”ã™ã€‚
+	* ãƒãƒ«ãƒãƒã‚¤ãƒˆæ–‡å­—ã‚’è€ƒæ…®ã™ã‚‹ã€‚
 	*/
 	uint_t length() const;
 
 	/*
-	* \brief ó‚¢ƒRƒs[‚ğ•Ô‚·B
+	* \brief æµ…ã„ã‚³ãƒ”ãƒ¼ã‚’è¿”ã™ã€‚
 	*/
 	const StringPtr& clone() const;
 
 	/**
 	* \xbind
-	* \brief ˆêˆÓ‰»‚µ‚½•¶š—ñ‚ğ•Ô‚·B
+	* \brief ä¸€æ„åŒ–ã—ãŸæ–‡å­—åˆ—ã‚’è¿”ã™ã€‚
 	*/
 	IDPtr intern() const;
 
 	/**
 	* \xbind
-	* \brief ˆêˆÓ‰»‚³‚ê‚Ä‚¢‚é‚©•Ô‚·B
+	* \brief ä¸€æ„åŒ–ã•ã‚Œã¦ã„ã‚‹ã‹è¿”ã™ã€‚
 	*/
 	bool is_interned() const;
 
 	/**
 	* \xbind
-	* \brief ®”‚É•ÏŠ·‚µ‚½Œ‹‰Ê‚ğ•Ô‚·B
+	* \brief æ•´æ•°ã«å¤‰æ›ã—ãŸçµæœã‚’è¿”ã™ã€‚
 	*/ 
 	int_t to_i() const;
 	
 	/**
 	* \xbind
-	* \brief •‚“®¬”“_”‚É•ÏŠ·‚µ‚½Œ‹‰Ê‚ğ•Ô‚·B
+	* \brief æµ®å‹•å°æ•°ç‚¹æ•°ã«å¤‰æ›ã—ãŸçµæœã‚’è¿”ã™ã€‚
 	*/ 
 	float_t to_f() const;
 	
 	/**
 	* \xbind
-	* \brief ©•ª©g‚ğ•Ô‚·B
+	* \brief è‡ªåˆ†è‡ªèº«ã‚’è¿”ã™ã€‚
 	*/
 	const StringPtr& to_s() const;
 
 	/**
 	* \xbind
-	* \brief ˆê•¶š‚Ã‚Â‚Ì•¶š—ñ‚ğ—v‘f‚Æ‚·‚éIterator‚ğ•Ô‚·B
-	* \return ˆê•¶š‚Ã‚Â‚Ì•¶š—ñ‚ğ—v‘f‚Æ‚·‚éIterator
+	* \brief ä¸€æ–‡å­—ã¥ã¤ã®æ–‡å­—åˆ—ã‚’è¦ç´ ã¨ã™ã‚‹Iteratorã‚’è¿”ã™ã€‚
+	* \return ä¸€æ–‡å­—ã¥ã¤ã®æ–‡å­—åˆ—ã‚’è¦ç´ ã¨ã™ã‚‹Iterator
 	*/
 	AnyPtr each() const;
 
 	/**
 	* \xbind
-	* \brief ˜AŒ‹‚·‚é
-	* \return ˜AŒ‹‚³‚ê‚½V‚µ‚¢ƒIƒuƒWƒFƒNƒg
+	* \brief é€£çµã™ã‚‹
+	* \return é€£çµã•ã‚ŒãŸæ–°ã—ã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	*/
 	StringPtr cat(const StringPtr& v) const;
 
@@ -155,26 +155,26 @@ public:
 
 	/**
 	* \xbind
-	* \brief ˆê•¶š‚Ì•¶š—ñ‚©‚Ç‚¤‚©
+	* \brief ä¸€æ–‡å­—ã®æ–‡å­—åˆ—ã‹ã©ã†ã‹
 	*/
 	bool is_ch() const;
 
 	/**
 	* \xbind
-	* \brief ‹ó‚Ì•¶š—ñ‚©‚Ç‚¤‚©
+	* \brief ç©ºã®æ–‡å­—åˆ—ã‹ã©ã†ã‹
 	*/
 	bool is_empty() const;
 	bool empty() const{ return is_empty(); }
 
 	/**
 	* \xbind
-	* \brief ˆê•¶š‚Ì•¶š—ñ‚Ìê‡A‚»‚ÌasciiƒR[ƒh‚ğ•Ô‚·
+	* \brief ä¸€æ–‡å­—ã®æ–‡å­—åˆ—ã®å ´åˆã€ãã®asciiã‚³ãƒ¼ãƒ‰ã‚’è¿”ã™
 	*/
 	int_t ascii() const;
 
 	/**
 	* \xbind
-	* \brief •¶š‚Ì”ÍˆÍƒIƒuƒWƒFƒNƒg‚Ì”ÍˆÍ“à‚©‚Ç‚¤‚©
+	* \brief æ–‡å­—ã®ç¯„å›²ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¯„å›²å†…ã‹ã©ã†ã‹
 	*/
 	bool op_in(const ChRangePtr& range) const;
 
@@ -182,25 +182,25 @@ public:
 
 	/**
 	* \xbind
-	* \brief ”ÍˆÍƒIƒuƒWƒFƒNƒg‚ğ¶¬‚·‚é
+	* \brief ç¯„å›²ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã™ã‚‹
 	*/
 	ChRangePtr op_range(const StringPtr& right, int_t kind) const;
 	
 	/**
 	* \xbind
-	* \brief ˜AŒ‹‚·‚é
+	* \brief é€£çµã™ã‚‹
 	*/
 	StringPtr op_cat(const StringPtr& v) const;
 	
 	/**
 	* \xbind
-	* \brief ’l‚ª“™‚µ‚¢‚©”ä‚×‚é
+	* \brief å€¤ãŒç­‰ã—ã„ã‹æ¯”ã¹ã‚‹
 	*/
 	bool op_eq(const StringPtr& v) const;
 
 	/**
 	* \xbind
-	* \brief ‚æ‚è¬‚³‚¢‚©”ä‚×‚é
+	* \brief ã‚ˆã‚Šå°ã•ã„ã‹æ¯”ã¹ã‚‹
 	*/
 	bool op_lt(const StringPtr& v) const;
 
@@ -208,31 +208,31 @@ public:
 
 	/**
 	* \xbind
-	* \brief •¶š—ñ‚ğƒXƒLƒƒƒ“‚·‚é
+	* \brief æ–‡å­—åˆ—ã‚’ã‚¹ã‚­ãƒ£ãƒ³ã™ã‚‹
 	*/
 	AnyPtr scan(const AnyPtr& pattern) const;
 
 	/**
 	* \xbind
-	* \brief •¶š—ñ‚ğ•ªŠ„‚µA‚»‚Ì•”•ª•¶š—ñ‚ğ—v‘f‚Æ‚·‚éIterator‚ğ•Ô‚·
+	* \brief æ–‡å­—åˆ—ã‚’åˆ†å‰²ã—ã€ãã®éƒ¨åˆ†æ–‡å­—åˆ—ã‚’è¦ç´ ã¨ã™ã‚‹Iteratorã‚’è¿”ã™
 	*/
 	AnyPtr split(const AnyPtr& pattern) const;
 
 	/**
 	* \xbind
-	* \brief •¶š—ñ‚ğ•ªŠ„‚µA‚»‚Ì•”•ª•¶š—ñ‚ğ—v‘f‚Æ‚·‚éIterator‚ğ•Ô‚·
+	* \brief æ–‡å­—åˆ—ã‚’åˆ†å‰²ã—ã€ãã®éƒ¨åˆ†æ–‡å­—åˆ—ã‚’è¦ç´ ã¨ã™ã‚‹Iteratorã‚’è¿”ã™
 	*/	
 	bool match(const AnyPtr& pattern) const;
 
 	/**
 	* \xbind
-	* \brief ƒ}ƒbƒ`‚·‚é•”•ª‚ğ’u‚«Š·‚¦‚½V‚µ‚¢•¶š—ñ‚ğ•Ô‚·
+	* \brief ãƒãƒƒãƒã™ã‚‹éƒ¨åˆ†ã‚’ç½®ãæ›ãˆãŸæ–°ã—ã„æ–‡å­—åˆ—ã‚’è¿”ã™
 	*/	
 	StringPtr gsub(const AnyPtr& pattern, const AnyPtr& fn) const;
 
 	/**
 	* \xbind
-	* \brief Å‰‚Éƒ}ƒbƒ`‚·‚é•”•ª‚ğ’u‚«Š·‚¦‚½V‚µ‚¢•¶š—ñ‚ğ•Ô‚·
+	* \brief æœ€åˆã«ãƒãƒƒãƒã™ã‚‹éƒ¨åˆ†ã‚’ç½®ãæ›ãˆãŸæ–°ã—ã„æ–‡å­—åˆ—ã‚’è¿”ã™
 	*/	
 	StringPtr sub(const AnyPtr& pattern, const AnyPtr& fn) const;
 
@@ -316,37 +316,37 @@ IDPtr intern(const LongLivedString& str);
 IDPtr intern(const StringPtr& name);		
 
 /**
-* \brief InternÏ‚İ‚ÌString
+* \brief Internæ¸ˆã¿ã®String
 *
-* ‚±‚ê‚ÍC++‚ÌŒ^ƒVƒXƒeƒ€‚Ì‚½‚ß‚É‘¶İ‚·‚éB
-* Xtal‚É‚¨‚¢‚ÄInternÏ‚İString‚ÍStringŒ^‚Å‚ ‚éB
+* ã“ã‚Œã¯C++ã®å‹ã‚·ã‚¹ãƒ†ãƒ ã®ãŸã‚ã«å­˜åœ¨ã™ã‚‹ã€‚
+* Xtalã«ãŠã„ã¦Internæ¸ˆã¿Stringã¯Stringå‹ã§ã‚ã‚‹ã€‚
 */
 class ID : public String{
 public:
 	/**
-	* \brief NULI’[‚ÌC•¶š—ñ‚©‚ç\’z‚·‚é
+	* \brief NULçµ‚ç«¯ã®Cæ–‡å­—åˆ—ã‹ã‚‰æ§‹ç¯‰ã™ã‚‹
 	*
-	* \param str NULLI’[•¶š—ñ
+	* \param str NULLçµ‚ç«¯æ–‡å­—åˆ—
 	*/
 	ID(const char_t* str)
 		:String(*xtal::intern(str)){}
 
 	/**
-	* \brief C•¶š—ñ‚©‚çsize•ª‚Ì’·‚³‚ğæ‚èo‚µ\’z‚·‚é
+	* \brief Cæ–‡å­—åˆ—ã‹ã‚‰sizeåˆ†ã®é•·ã•ã‚’å–ã‚Šå‡ºã—æ§‹ç¯‰ã™ã‚‹
 	*
 	*/
 	ID(const char_t* str, uint_t size)
 		:String(*xtal::intern(str, size)){}
 
 	/**
-	* \brief õ–½‚ª’·‚­AŠJ•ú‚³‚ê‚È‚¢‚æ‚¤‚È•¶š—ñ‚Å\’z‚·‚é
+	* \brief å¯¿å‘½ãŒé•·ãã€é–‹æ”¾ã•ã‚Œãªã„ã‚ˆã†ãªæ–‡å­—åˆ—ã§æ§‹ç¯‰ã™ã‚‹
 	*
 	*/
 	ID(const char_t* str, uint_t size, String::long_lived_t)
 		:String(*xtal::intern(str, size, String::long_lived_t())){}
 
 	/**
-	* \brief õ–½‚ª’·‚­AŠJ•ú‚³‚ê‚È‚¢‚æ‚¤‚È•¶š—ñ‚Å\’z‚·‚é
+	* \brief å¯¿å‘½ãŒé•·ãã€é–‹æ”¾ã•ã‚Œãªã„ã‚ˆã†ãªæ–‡å­—åˆ—ã§æ§‹ç¯‰ã™ã‚‹
 	*
 	*/
 	template<int N>
@@ -354,14 +354,14 @@ public:
 		:String(*xtal::intern(str.str(), str.size(), String::long_lived_t())){}
 
 	/**
-	* \brief õ–½‚ª’·‚­AŠJ•ú‚³‚ê‚È‚¢‚æ‚¤‚È•¶š—ñ‚Å\’z‚·‚é
+	* \brief å¯¿å‘½ãŒé•·ãã€é–‹æ”¾ã•ã‚Œãªã„ã‚ˆã†ãªæ–‡å­—åˆ—ã§æ§‹ç¯‰ã™ã‚‹
 	*
 	*/
 	ID(const LongLivedString& str)
 		:String(*xtal::intern(str.str(), str.size(), String::long_lived_t())){}
 
 	/**
-	* \brief String‚©‚ç\’z‚·‚é
+	* \brief Stringã‹ã‚‰æ§‹ç¯‰ã™ã‚‹
 	*
 	*/
 	ID(const StringPtr& name)	

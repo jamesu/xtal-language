@@ -68,7 +68,7 @@ static void debug_stacktrace(std::vector<std::string>& result){
 
 	PIMAGEHLP_SYMBOL pSym = symInitializer.pSym;
 
-	//ƒXƒ^ƒbƒNƒtƒŒ[ƒ€‚Ì‰Šú‰»
+	//ã‚¹ã‚¿ãƒƒã‚¯ãƒ•ãƒ¬ãƒ¼ãƒ ã®åˆæœŸåŒ–
 	ZeroMemory(&sf, sizeof(sf));
 	sf.AddrPC.Offset = eip;
 	sf.AddrStack.Offset = esp;
@@ -77,9 +77,9 @@ static void debug_stacktrace(std::vector<std::string>& result){
 	sf.AddrStack.Mode = AddrModeFlat;
 	sf.AddrFrame.Mode = AddrModeFlat;
 
-	//ƒXƒ^ƒbƒNƒtƒŒ[ƒ€‚ğ‡‚É•\¦‚µ‚Ä‚¢‚­
+	//ã‚¹ã‚¿ãƒƒã‚¯ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’é †ã«è¡¨ç¤ºã—ã¦ã„ã
 	for(int n=0;; ++n) {
-		//Ÿ‚ÌƒXƒ^ƒbƒNƒtƒŒ[ƒ€‚Ìæ“¾
+		//æ¬¡ã®ã‚¹ã‚¿ãƒƒã‚¯ãƒ•ãƒ¬ãƒ¼ãƒ ã®å–å¾—
 		bResult = StackWalk(
 			IMAGE_FILE_MACHINE_I386,
 			GetCurrentProcess(),
@@ -91,10 +91,10 @@ static void debug_stacktrace(std::vector<std::string>& result){
 			SymGetModuleBase,
 			NULL);
 
-		//¸”s‚È‚ç‚ÎAƒ‹[ƒv‚ğ”²‚¯‚é
+		//å¤±æ•—ãªã‚‰ã°ã€ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹
 		if(!bResult || sf.AddrFrame.Offset == 0) break;
 
-		//ƒvƒƒOƒ‰ƒ€ƒJƒEƒ“ƒ^‚©‚çŠÖ”–¼‚ğæ“¾
+		//ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚«ã‚¦ãƒ³ã‚¿ã‹ã‚‰é–¢æ•°åã‚’å–å¾—
 		std::string& ret = memo[sf.AddrPC.Offset];
 		if(ret.empty()){
 			bResult = SymGetSymFromAddr(GetCurrentProcess(), sf.AddrPC.Offset, &Disp, pSym);
@@ -260,7 +260,7 @@ public:
 			}
 		}
 
-		XTAL_ASSERT(notfree==0); // ‘S•”ŠJ•ú‚Å‚«‚Ä‚È‚¢
+		XTAL_ASSERT(notfree==0); // å…¨éƒ¨é–‹æ”¾ã§ãã¦ãªã„
 		XTAL_ASSERT(used_memory_==0);
 	}
 
@@ -398,10 +398,10 @@ void* xmalloc(size_t size){
 			ret = env->setting_.allocator_lib->malloc(size);
 
 			if(!ret){
-				// ‚¾‚ß‚¾Bƒƒ‚ƒŠ‚ªŠm•Û‚Å‚«‚È‚¢B
-				// XTAL_MEMORY‚Ü‚ÅƒWƒƒƒ“ƒv‚µ‚æ‚¤B
+				// ã ã‚ã ã€‚ãƒ¡ãƒ¢ãƒªãŒç¢ºä¿ã§ããªã„ã€‚
+				// XTAL_MEMORYã¾ã§ã‚¸ãƒ£ãƒ³ãƒ—ã—ã‚ˆã†ã€‚
 
-				// XTAL_MEMORY‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚È‚¢I‚à‚¤‚Ç‚¤‚µ‚æ‚¤‚à‚È‚¢I
+				// XTAL_MEMORYã§å›²ã¾ã‚Œã¦ã„ãªã„ï¼ã‚‚ã†ã©ã†ã—ã‚ˆã†ã‚‚ãªã„ï¼
 				XTAL_ASSERT(env->set_jmp_buf_);
 				
 				env->object_space_.print_all_objects();
@@ -457,10 +457,10 @@ void* xmalloc_align(size_t size, size_t alignment){
 			ret = env->setting_.allocator_lib->malloc_align(size, alignment);
 
 			if(!ret){
-				// ‚¾‚ß‚¾Bƒƒ‚ƒŠ‚ªŠm•Û‚Å‚«‚È‚¢B
-				// XTAL_MEMORY‚Ü‚ÅƒWƒƒƒ“ƒv‚µ‚æ‚¤B
+				// ã ã‚ã ã€‚ãƒ¡ãƒ¢ãƒªãŒç¢ºä¿ã§ããªã„ã€‚
+				// XTAL_MEMORYã¾ã§ã‚¸ãƒ£ãƒ³ãƒ—ã—ã‚ˆã†ã€‚
 
-				// XTAL_MEMORY‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚È‚¢I‚à‚¤‚Ç‚¤‚µ‚æ‚¤‚à‚È‚¢I
+				// XTAL_MEMORYã§å›²ã¾ã‚Œã¦ã„ãªã„ï¼ã‚‚ã†ã©ã†ã—ã‚ˆã†ã‚‚ãªã„ï¼
 				XTAL_ASSERT(env->set_jmp_buf_);
 				
 				env->ignore_memory_assert_= true;
@@ -489,7 +489,7 @@ void xfree_align(void* p, size_t size, size_t alignment){
 }
 
 JmpBuf& protect(){
-	// XTAL_PROTECT‚ª“ü‚êq‚É‚È‚Á‚Ä‚¢‚éê‡assert‚Éˆø‚Á‚©‚©‚é
+	// XTAL_PROTECTãŒå…¥ã‚Œå­ã«ãªã£ã¦ã„ã‚‹å ´åˆassertã«å¼•ã£ã‹ã‹ã‚‹
 	XTAL_ASSERT(!environment_->set_jmp_buf_);
 
 	environment_->set_jmp_buf_ = true;
@@ -596,7 +596,7 @@ void Environment::initialize(const Setting& setting){
 void Environment::uninitialize(){
 	thread_space_.join_all_threads();
 
-	object_space_.halt_fibers(); // ƒtƒ@ƒCƒo[‚ğI‚í‚ç‚¹‚é
+	object_space_.halt_fibers(); // ãƒ•ã‚¡ã‚¤ãƒãƒ¼ã‚’çµ‚ã‚ã‚‰ã›ã‚‹
 
 	clear_cache();
 	full_gc();
@@ -799,7 +799,7 @@ void xunlock(){
 }
 
 bool register_thread(Environment* env){
-	if(vmachine_){ // Šù‚É“o˜^Ï‚İ‚ÌƒXƒŒƒbƒh‚Å‚ ‚é‚È‚ç–ß‚é
+	if(vmachine_){ // æ—¢ã«ç™»éŒ²æ¸ˆã¿ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã§ã‚ã‚‹ãªã‚‰æˆ»ã‚‹
 		return false;
 	}
 	env->thread_space_.register_thread(env);
@@ -811,7 +811,7 @@ void unregister_thread(Environment* env){
 }
 
 bool register_thread(){
-	if(vmachine_){ // Šù‚É“o˜^Ï‚İ‚ÌƒXƒŒƒbƒh‚Å‚ ‚é‚È‚ç–ß‚é
+	if(vmachine_){ // æ—¢ã«ç™»éŒ²æ¸ˆã¿ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã§ã‚ã‚‹ãªã‚‰æˆ»ã‚‹
 		return false;
 	}
 

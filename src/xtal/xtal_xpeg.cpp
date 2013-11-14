@@ -213,13 +213,13 @@ bool Executor::match_inner(const ElementPtr& e){
 
 	const NFAPtr& nfa = e->nfa;
 
-	// ƒƒ‚‰»‚µ‚½‚¢
-	// (ƒXƒLƒƒƒi[‚ÌˆÊ’uANFA‚Ìƒ|ƒCƒ“ƒ^’l) ‚ªƒL[
+	// ãƒ¡ãƒ¢åŒ–ã—ãŸã„
+	// (ã‚¹ã‚­ãƒ£ãƒŠãƒ¼ã®ä½ç½®ã€NFAã®ãƒã‚¤ãƒ³ã‚¿å€¤) ãŒã‚­ãƒ¼
 	Key key;
 	key.pos = pos();
 	key.ptr = nfa.get();
 
-	// ‚·‚Å‚Éƒƒ‚‰»‚µ‚Ä‚È‚¢‚©ƒ`ƒFƒbƒN
+	// ã™ã§ã«ãƒ¡ãƒ¢åŒ–ã—ã¦ãªã„ã‹ãƒã‚§ãƒƒã‚¯
 	if(memotable_t::Node* it=memotable_.find(key)){
 		load(it->value().state);
 		tree_->op_cat_assign(it->value().tree);
@@ -786,25 +786,25 @@ void NFA::gen_nfa(int entry, const AnyPtr& a, int exit, int depth){
 			int after = gen_state();
 			
 			if(t->param3==1){
-				// exit‚ÉŒü‚©‚¤•û‚ª—Dæ
+				// exitã«å‘ã‹ã†æ–¹ãŒå„ªå…ˆ
 				if(t->type == Element::TYPE_MORE0){ add_transition(entry, e_, exit); }
 				add_transition(entry, e_, before);
 
-				// exit‚ÉŒü‚©‚¤•û‚ª—Dæ
+				// exitã«å‘ã‹ã†æ–¹ãŒå„ªå…ˆ
 				add_transition(after, e_, exit);
 				add_transition(after, e_, before);
 			}
 			else{
-				// before‚ÉŒü‚©‚¤•û‚ª—Dæ
+				// beforeã«å‘ã‹ã†æ–¹ãŒå„ªå…ˆ
 				add_transition(entry, e_, before);
 				if(t->type == Element::TYPE_MORE0){ add_transition(entry, e_, exit); }
 
-				// before‚ÉŒü‚©‚¤•û‚ª—Dæ
+				// beforeã«å‘ã‹ã†æ–¹ãŒå„ªå…ˆ
 				add_transition(after, e_, before);
 				add_transition(after, e_, exit);
 			}
 
-			// before‚©‚çafter‚Ö‚Ì‘JˆÚ 
+			// beforeã‹ã‚‰afterã¸ã®é·ç§» 
 			gen_nfa(before, t->param1, after, depth+1);
 		}
 
@@ -814,12 +814,12 @@ void NFA::gen_nfa(int entry, const AnyPtr& a, int exit, int depth){
 			//  entry ------> exit
 			//         left
 			if(t->param3==1){
-				// e‚ðŒo—R‚·‚é•û‚ª—Dæ
+				// eã‚’çµŒç”±ã™ã‚‹æ–¹ãŒå„ªå…ˆ
 				add_transition(entry, e_, exit);
 				gen_nfa(entry, t->param1, exit, depth+1);
 			}
 			else{
-				// left‚ðŒo—R‚·‚é•û‚ª—Dæ
+				// leftã‚’çµŒç”±ã™ã‚‹æ–¹ãŒå„ªå…ˆ
 				gen_nfa(entry, t->param1, exit, depth+1);
 				add_transition(entry, e_, exit);
 			}

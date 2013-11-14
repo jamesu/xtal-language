@@ -10,14 +10,14 @@
 namespace xtal{ 
 
 /**
-* @brief PEGƒ‰ƒCƒuƒ‰ƒŠ
+* @brief PEGãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 */
 namespace xpeg{
 
 /**
 * \xbind lib::builtin::xpeg
 * \xinherit lib::builtin::Any
-* \brief PEG‚ğÀs‚·‚é
+* \brief PEGã‚’å®Ÿè¡Œã™ã‚‹
 */
 class Executor : public Base{
 public:
@@ -27,63 +27,63 @@ public:
 
 public:
 	/**
-	* \brief “n‚³‚ê‚½ƒpƒ^[ƒ“‚ªƒ}ƒbƒ`‚·‚é‚©’²‚×‚éB
+	* \brief æ¸¡ã•ã‚ŒãŸãƒ‘ã‚¿ãƒ¼ãƒ³ãŒãƒãƒƒãƒã™ã‚‹ã‹èª¿ã¹ã‚‹ã€‚
 	*/
 	bool match(const AnyPtr& pattern);
 
 	/**
-	* \brief “n‚³‚ê‚½ƒpƒ^[ƒ“‚Åƒp[ƒX‚·‚éB
+	* \brief æ¸¡ã•ã‚ŒãŸãƒ‘ã‚¿ãƒ¼ãƒ³ã§ãƒ‘ãƒ¼ã‚¹ã™ã‚‹ã€‚
 	*/
 	bool parse(const AnyPtr& pattern);
 
 public:
 
 	/**
-	* \brief ƒLƒƒƒvƒ`ƒƒ‚³‚ê‚½•¶š—ñ‚ğ—ñ‹“‚·‚éƒCƒeƒŒ[ƒ^‚ğæ“¾‚·‚éB
+	* \brief ã‚­ãƒ£ãƒ—ãƒãƒ£ã•ã‚ŒãŸæ–‡å­—åˆ—ã‚’åˆ—æŒ™ã™ã‚‹ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ã€‚
 	*/
 	AnyPtr captures();
 
 	/**
-	* \brief ƒLƒƒƒvƒ`ƒƒ‚³‚ê‚½•¶š—ñ‚ğ“¾‚éB
+	* \brief ã‚­ãƒ£ãƒ—ãƒãƒ£ã•ã‚ŒãŸæ–‡å­—åˆ—ã‚’å¾—ã‚‹ã€‚
 	*/
 	StringPtr at(const StringPtr& key);
 	
 	/**
-	* \brief ƒ}ƒbƒ`‚µ‚½•”•ª‚©‚ç‘O‚Ì•¶š—ñ‚ğæ“¾‚·‚éB
+	* \brief ãƒãƒƒãƒã—ãŸéƒ¨åˆ†ã‹ã‚‰å‰ã®æ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹ã€‚
 	*/
 	StringPtr prefix();
 
 	/**
-	* \brief ƒ}ƒbƒ`‚µ‚½•”•ª‚©‚çŒã‚Ì•¶š—ñ‚ğæ“¾‚·‚éB
+	* \brief ãƒãƒƒãƒã—ãŸéƒ¨åˆ†ã‹ã‚‰å¾Œã®æ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹ã€‚
 	*/
 	StringPtr suffix();
 	
 public:
 
 	/**
-	* \brief ƒLƒƒƒvƒ`ƒƒ‚³‚ê‚½’l‚Ì”z—ñ‚ÌƒCƒeƒŒ[ƒ^‚ğæ“¾‚·‚éB
+	* \brief ã‚­ãƒ£ãƒ—ãƒãƒ£ã•ã‚ŒãŸå€¤ã®é…åˆ—ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ã€‚
 	*/
 	AnyPtr captures_values();
 
 	/**
-	* \brief ƒLƒƒƒvƒ`ƒƒ‚³‚ê‚½’l‚Ì”z—ñ‚ğ“¾‚éB
+	* \brief ã‚­ãƒ£ãƒ—ãƒãƒ£ã•ã‚ŒãŸå€¤ã®é…åˆ—ã‚’å¾—ã‚‹ã€‚
 	*/
 	AnyPtr call(const StringPtr& key);
 
 	/**
-	* \brief ƒ}ƒbƒ`‚µ‚½•”•ª‚©‚ç‘O‚Ì’l‚Ì”z—ñ‚ÌƒCƒeƒŒ[ƒ^‚ğæ“¾‚·‚éB
+	* \brief ãƒãƒƒãƒã—ãŸéƒ¨åˆ†ã‹ã‚‰å‰ã®å€¤ã®é…åˆ—ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ã€‚
 	*/
 	AnyPtr prefix_values();
 
 	/**
-	* \brief ƒ}ƒbƒ`‚µ‚½•”•ª‚©‚çŒã‚Ì’l‚Ì”z—ñ‚ÌƒCƒeƒŒ[ƒ^‚ğæ“¾‚·‚éB
+	* \brief ãƒãƒƒãƒã—ãŸéƒ¨åˆ†ã‹ã‚‰å¾Œã®å€¤ã®é…åˆ—ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ã€‚
 	*/
 	AnyPtr suffix_values();
 
 public:
 
 	/**
-	* \brief ”­¶‚µ‚½ƒGƒ‰[‚ÌƒCƒeƒŒ[ƒ^‚ğæ“¾‚·‚éB
+	* \brief ç™ºç”Ÿã—ãŸã‚¨ãƒ©ãƒ¼ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ã€‚
 	*/
 	AnyPtr errors();
 
@@ -96,21 +96,21 @@ public:
 public:
 
 	/**
-	* \brief ¶¬‚µ‚½\•¶–Ø‚ğæ“¾‚·‚éB
+	* \brief ç”Ÿæˆã—ãŸæ§‹æ–‡æœ¨ã‚’å–å¾—ã™ã‚‹ã€‚
 	*/
 	const TreeNodePtr& tree(){
 		return tree_;
 	}
 
 	/**
-	* \brief \•¶–Ø‚É—v‘f‚ğˆê‚Â’Ç‰Á‚·‚é
+	* \brief æ§‹æ–‡æœ¨ã«è¦ç´ ã‚’ä¸€ã¤è¿½åŠ ã™ã‚‹
 	*/
 	void tree_push_back(const AnyPtr& a){
 		tree_->push_back(a);
 	}
 
 	/**
-	* \brief \•¶–Ø‚©‚ç—v‘f‚ğˆê‚Âæ‚èœ‚­
+	* \brief æ§‹æ–‡æœ¨ã‹ã‚‰è¦ç´ ã‚’ä¸€ã¤å–ã‚Šé™¤ã
 	*/
 	AnyPtr tree_pop_back(){
 		AnyPtr ret = tree_->back();
@@ -119,7 +119,7 @@ public:
 	}
 
 	/**
-	* \brief \•¶–Ø‚ÌÅŒã‚Ì—v‘f‚ğæ“¾‚·‚é
+	* \brief æ§‹æ–‡æœ¨ã®æœ€å¾Œã®è¦ç´ ã‚’å–å¾—ã™ã‚‹
 	*/
 	const AnyPtr& tree_back(){
 		if(tree_->empty()){ return undefined; }
@@ -153,7 +153,7 @@ public:
 public:
 
 	/**
-	* \brief ˆê•¶šæ“¾‚·‚éB
+	* \brief ä¸€æ–‡å­—å–å¾—ã™ã‚‹ã€‚
 	*/
 	const AnyPtr& read();
 
@@ -162,7 +162,7 @@ public:
 	int_t read_ascii();
 
 	/**
-	* \brief n•¶šæ‚ğ‚Ì‚¼‚«Œ©‚éB
+	* \brief næ–‡å­—å…ˆã‚’ã®ããè¦‹ã‚‹ã€‚
 	*/
 	const AnyPtr& peek(int_t n = 0);
 
@@ -171,7 +171,7 @@ public:
 	int_t peek_ascii(int_t n = 0);
 
 	/**
-	* \brief ÅŒã‚Éread‚µ‚½’l‚ğæ“¾‚·‚é
+	* \brief æœ€å¾Œã«readã—ãŸå€¤ã‚’å–å¾—ã™ã‚‹
 	*/
 	const AnyPtr& last(){
 		return last_;
@@ -185,62 +185,62 @@ public:
 	};
 
 	/**
-	* \brief Œ»İ‚ÌˆÊ’uó‘Ô‚ğæ“¾‚·‚é
+	* \brief ç¾åœ¨ã®ä½ç½®çŠ¶æ…‹ã‚’å–å¾—ã™ã‚‹
 	*/
 	State save();
 
 	/**
-	* \brief w’è‚µ‚½ˆÊ’uó‘Ô‚É–ß‚é
+	* \brief æŒ‡å®šã—ãŸä½ç½®çŠ¶æ…‹ã«æˆ»ã‚‹
 	*/
 	void load(const State& state);
 
 	/**
-	* \brief Œ»İ‚ÌˆÊ’u‚ğ•Ô‚·
+	* \brief ç¾åœ¨ã®ä½ç½®ã‚’è¿”ã™
 	*/
 	uint_t pos(){
 		return pos_;
 	}
 
 	/**
-	* \brief Œ»İ‚Ìs”‚ğ•Ô‚·
+	* \brief ç¾åœ¨ã®è¡Œæ•°ã‚’è¿”ã™
 	*/
 	uint_t lineno(){
 		return lineno_;
 	}
 
 	/**
-	* \brief ˆê”ÔÅ‰‚ÌˆÊ’u‚É‚ ‚é‚©’²‚×‚é
+	* \brief ä¸€ç•ªæœ€åˆã®ä½ç½®ã«ã‚ã‚‹ã‹èª¿ã¹ã‚‹
 	*/
 	bool bos(){
 		return pos()==0;
 	}
 
 	/**
-	* \brief I—¹‚µ‚Ä‚¢‚é‚©’²‚×‚é
+	* \brief çµ‚äº†ã—ã¦ã„ã‚‹ã‹èª¿ã¹ã‚‹
 	*/
 	bool eos(){
 		return XTAL_detail_is_undefined(peek());
 	}
 
 	/**
-	* \brief s“ª‚©’²‚×‚é
+	* \brief è¡Œé ­ã‹èª¿ã¹ã‚‹
 	*/
 	bool bol();
 
 	/**
-	* \brief s––‚©’²‚×‚é
+	* \brief è¡Œæœ«ã‹èª¿ã¹ã‚‹
 	*/
 	bool eol();
 
 	/**
-	* \brief n—v‘f“Ç‚İ”ò‚Î‚·
+	* \brief nè¦ç´ èª­ã¿é£›ã°ã™
 	*/
 	void skip(uint_t n);
 
 	void skip();
 
 	/**
-	* \brief s––‚ğ“Ç‚İ”ò‚Î‚·
+	* \brief è¡Œæœ«ã‚’èª­ã¿é£›ã°ã™
 	*/
 	void skip_eol();
 
@@ -352,12 +352,12 @@ public:
 public:
 
 	/**
-	* \brief •¶š—ñ‚Ì‹L˜^‚ğŠJn‚·‚é
+	* \brief æ–‡å­—åˆ—ã®è¨˜éŒ²ã‚’é–‹å§‹ã™ã‚‹
 	*/
 	void begin_record();
 
 	/**
-	* \brief •¶š—ñ‚Ì‹L˜^‚ğI—¹‚µ‚ÄA‚»‚ê‚ğ•Ô‚·B
+	* \brief æ–‡å­—åˆ—ã®è¨˜éŒ²ã‚’çµ‚äº†ã—ã¦ã€ãã‚Œã‚’è¿”ã™ã€‚
 	*/
 	StringPtr end_record();
 
@@ -436,15 +436,15 @@ private:
 struct Element : public Base{
 
 	enum Type{
-		TYPE_INVALID, // ‹ó
-		TYPE_ANY, // I—¹•¶šˆÈŠO
+		TYPE_INVALID, // ç©º
+		TYPE_ANY, // çµ‚äº†æ–‡å­—ä»¥å¤–
 		TYPE_BOS, // beginning of stream
 		TYPE_EOS, // end of stream
 		TYPE_BOL, // beginning of line
 		TYPE_EOL, // end of line
-		TYPE_BACKREF, // Œã•ûQÆ
+		TYPE_BACKREF, // å¾Œæ–¹å‚ç…§
 
-		// ˆÈ‰ºparam1‚ÍAny
+		// ä»¥ä¸‹param1ã¯Any
 		TYPE_EQL,
 		TYPE_PRED,
 		TYPE_CALL,
@@ -452,10 +452,10 @@ struct Element : public Base{
 		TYPE_FLOAT_RANGE,
 		TYPE_CH_RANGE,
 
-		// ˆÈ‰ºparam1‚ÍSet‚Å‚ ‚éí—Ş
+		// ä»¥ä¸‹param1ã¯Setã§ã‚ã‚‹ç¨®é¡
 		TYPE_CH_SET,
 
-		// ˆÈ‰ºparam1‚ÍElement‚Å‚ ‚éí—Ş
+		// ä»¥ä¸‹param1ã¯Elementã§ã‚ã‚‹ç¨®é¡
 		TYPE_GREED,
 		TYPE_LOOKAHEAD,
 		TYPE_LOOKBEHIND,
@@ -470,9 +470,9 @@ struct Element : public Base{
 		TYPE_MORE0, // *0
 		TYPE_MORE1, // *1
 		TYPE_01,  // *-1
-		TYPE_EMPTY, // ‹ó
-		TYPE_CAP, // ƒLƒƒƒvƒ`ƒƒ
-		TYPE_DECL // éŒ¾
+		TYPE_EMPTY, // ç©º
+		TYPE_CAP, // ã‚­ãƒ£ãƒ—ãƒãƒ£
+		TYPE_DECL // å®£è¨€
 	};
 
 	u8 type;

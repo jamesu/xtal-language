@@ -12,29 +12,29 @@ namespace xtal{
 /**
 * \xbind lib::builtin
 * \xinherit lib::builtin::Any lib::builtin::Iterable
-* \brief ˜A‘z”z—ñ
+* \brief é€£æƒ³é…åˆ—
 */
 class Map : public Base{
 public:
 
 	/**
 	* \xbind
-	* \brief ‹ó‚Ì˜A‘z”z—ñƒIƒuƒWƒFƒNƒg‚ğ¶¬
+	* \brief ç©ºã®é€£æƒ³é…åˆ—ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
 	*/
 	Map();
 
 	~Map();
 	
 	/**
-	* \brief key‚É‘Î‰‚·‚é—v‘f‚ğ•Ô‚·
-	* \param key ŒŸõ‚Ì‚½‚ß‚ÌƒL[ 
+	* \brief keyã«å¯¾å¿œã™ã‚‹è¦ç´ ã‚’è¿”ã™
+	* \param key æ¤œç´¢ã®ãŸã‚ã®ã‚­ãƒ¼ 
 	*/
 	const AnyPtr& at(const AnyPtr& key);
 	
 	/**
-	* \brief key‚É‘Î‰‚·‚é—v‘f‚ğİ’è‚·‚é
-	* \param key ŒŸõ‚Ì‚½‚ß‚ÌƒL[ 
-	* \param value key‚É‘Î‰‚·‚é’l
+	* \brief keyã«å¯¾å¿œã™ã‚‹è¦ç´ ã‚’è¨­å®šã™ã‚‹
+	* \param key æ¤œç´¢ã®ãŸã‚ã®ã‚­ãƒ¼ 
+	* \param value keyã«å¯¾å¿œã™ã‚‹å€¤
 	*/	
 	void set_at(const AnyPtr& key, const AnyPtr& value){
 		insert(key, value);
@@ -42,16 +42,16 @@ public:
 
 	/**
 	* \xbind
-	* \brief key‚É‘Î‰‚·‚é—v‘f‚ğ•Ô‚·
-	* \param key ŒŸõ‚Ì‚½‚ß‚ÌƒL[ 
+	* \brief keyã«å¯¾å¿œã™ã‚‹è¦ç´ ã‚’è¿”ã™
+	* \param key æ¤œç´¢ã®ãŸã‚ã®ã‚­ãƒ¼ 
 	*/
 	const AnyPtr& op_at(const AnyPtr& key);
 	
 	/**
 	* \xbind
-	* \brief key‚É‘Î‰‚·‚é—v‘f‚ğİ’è‚·‚é
-	* \param key ŒŸõ‚Ì‚½‚ß‚ÌƒL[ 
-	* \param value key‚É‘Î‰‚·‚é’l
+	* \brief keyã«å¯¾å¿œã™ã‚‹è¦ç´ ã‚’è¨­å®šã™ã‚‹
+	* \param key æ¤œç´¢ã®ãŸã‚ã®ã‚­ãƒ¼ 
+	* \param value keyã«å¯¾å¿œã™ã‚‹å€¤
 	*/	
 	void op_set_at(const AnyPtr& key, const AnyPtr& value){
 		insert(key, value);
@@ -59,23 +59,23 @@ public:
 
 	/**
 	* \xbind
-	* \brief key‚É‘Î‰‚·‚é—v‘f‚ğİ’è‚·‚é
-	* \param key ŒŸõ‚Ì‚½‚ß‚ÌƒL[ 
-	* \param value key‚É‘Î‰‚·‚é’l
+	* \brief keyã«å¯¾å¿œã™ã‚‹è¦ç´ ã‚’è¨­å®šã™ã‚‹
+	* \param key æ¤œç´¢ã®ãŸã‚ã®ã‚­ãƒ¼ 
+	* \param value keyã«å¯¾å¿œã™ã‚‹å€¤
 	*/	
 	void insert(const AnyPtr& key, const AnyPtr& value);
 
 	/**
 	* \xbind
-	* \brief key‚É‘Î‰‚·‚é’l‚ğíœ‚·‚é
-	* \param key ŒŸõ‚Ì‚½‚ß‚ÌƒL[ 
+	* \brief keyã«å¯¾å¿œã™ã‚‹å€¤ã‚’å‰Šé™¤ã™ã‚‹
+	* \param key æ¤œç´¢ã®ãŸã‚ã®ã‚­ãƒ¼ 
 	*/
 	void erase(const AnyPtr& key);
 
 	/**
 	* \xbind
-	* \brief ˜A‘z”z—ñ‚É“o˜^‚³‚ê‚½—v‘f‚Ì”‚ğ•Ô‚·
-	* \return ˜A‘z”z—ñ‚É“o˜^‚³‚ê‚½—v‘f‚Ì”
+	* \brief é€£æƒ³é…åˆ—ã«ç™»éŒ²ã•ã‚ŒãŸè¦ç´ ã®æ•°ã‚’è¿”ã™
+	* \return é€£æƒ³é…åˆ—ã«ç™»éŒ²ã•ã‚ŒãŸè¦ç´ ã®æ•°
 	*/
 	uint_t size(){
 		return table_.size();
@@ -83,8 +83,8 @@ public:
 	
 	/**
 	* \xbind
-	* \brief ˜A‘z”z—ñ‚É“o˜^‚³‚ê‚½—v‘f‚Ì”‚ğ•Ô‚·
-	* \return ˜A‘z”z—ñ‚É“o˜^‚³‚ê‚½—v‘f‚Ì”
+	* \brief é€£æƒ³é…åˆ—ã«ç™»éŒ²ã•ã‚ŒãŸè¦ç´ ã®æ•°ã‚’è¿”ã™
+	* \return é€£æƒ³é…åˆ—ã«ç™»éŒ²ã•ã‚ŒãŸè¦ç´ ã®æ•°
 	*/
 	uint_t length(){
 		return table_.size();
@@ -92,9 +92,9 @@ public:
 
 	/**
 	* \xbind
-	* \brief ‹ó‚©’²‚×‚é
-	* \retval true ‹ó
-	* \retval false ”ñ‹ó
+	* \brief ç©ºã‹èª¿ã¹ã‚‹
+	* \retval true ç©º
+	* \retval false éç©º
 	*/
 	bool empty(){
 		return table_.empty();
@@ -102,9 +102,9 @@ public:
 
 	/**
 	* \xbind
-	* \brief ‹ó‚©’²‚×‚é
-	* \retval true ‹ó
-	* \retval false ”ñ‹ó
+	* \brief ç©ºã‹èª¿ã¹ã‚‹
+	* \retval true ç©º
+	* \retval false éç©º
 	*/
 	bool is_empty(){
 		return table_.empty();
@@ -112,38 +112,38 @@ public:
 
 	/**
 	* \xbind
-	* \brief ˜AŒ‹‚µ‚½˜A‘z”z—ñ‚ğ•Ô‚·
+	* \brief é€£çµã—ãŸé€£æƒ³é…åˆ—ã‚’è¿”ã™
 	*/
 	MapPtr op_cat(const MapPtr& a);
 
 	/**
 	* \xbind
-	* \brief ©g‚Æ˜AŒ‹‚µA©g‚ğ•Ô‚·
+	* \brief è‡ªèº«ã¨é€£çµã—ã€è‡ªèº«ã‚’è¿”ã™
 	*/
 	const MapPtr& op_cat_assign(const MapPtr& a);
 		
 	/**
 	* \xbind
-	* \brief (key, value)‚ğ—v‘f‚Æ‚·‚éAIterator‚ğ•Ô‚·
+	* \brief (key, value)ã‚’è¦ç´ ã¨ã™ã‚‹ã€Iteratorã‚’è¿”ã™
 	*/
 	AnyPtr pairs();
 	
 	/**
 	* \xbind
-	* \brief key‚ğ—v‘f‚Æ‚·‚éAIterator‚ğ•Ô‚·
+	* \brief keyã‚’è¦ç´ ã¨ã™ã‚‹ã€Iteratorã‚’è¿”ã™
 	*/
 	AnyPtr keys();
 	
 	/**
 	* \xbind
-	* \brief value‚ğ—v‘f‚Æ‚·‚éAIterator‚ğ•Ô‚·
+	* \brief valueã‚’è¦ç´ ã¨ã™ã‚‹ã€Iteratorã‚’è¿”ã™
 	*/
 	AnyPtr values();
 
 	/**
 	* \xbind
-	* \brief (key, value)‚ğ—v‘f‚Æ‚·‚éAIterator‚ğ•Ô‚·
-	* pairs‚Æ“¯‚¶
+	* \brief (key, value)ã‚’è¦ç´ ã¨ã™ã‚‹ã€Iteratorã‚’è¿”ã™
+	* pairsã¨åŒã˜
 	*/
 	AnyPtr each(){
 		return pairs();
@@ -151,19 +151,19 @@ public:
 	
 	/**
 	* \xbind
-	* \brief ó‚¢ƒRƒs[‚ğ•Ô‚·
+	* \brief æµ…ã„ã‚³ãƒ”ãƒ¼ã‚’è¿”ã™
 	*/
 	MapPtr clone();
 
 	/**
 	* \xbind
-	* \brief —v‘f‚ğ‘S‚Äíœ‚·‚é
+	* \brief è¦ç´ ã‚’å…¨ã¦å‰Šé™¤ã™ã‚‹
 	*/
 	void clear();
 
 	/**
 	* \xbind
-	* \brief ©g‚ğ•Ô‚·
+	* \brief è‡ªèº«ã‚’è¿”ã™
 	*/
 	const MapPtr& op_to_map(){
 		return to_smartptr(this);
@@ -171,13 +171,13 @@ public:
 
 	/**
 	* \xbind
-	* \brief ’†g‚ğiterator‚Åæ“¾‚Å‚«‚é—v‘f‚É’u‚«Š·‚¦‚é
+	* \brief ä¸­èº«ã‚’iteratorã§å–å¾—ã§ãã‚‹è¦ç´ ã«ç½®ãæ›ãˆã‚‹
 	*/
 	void assign(const AnyPtr& iterator);
 
 	/**
 	* \xbind
-	* \brief iterator‚Åæ“¾‚Å‚«‚é—v‘f‚ğ’Ç‰Á‚·‚é
+	* \brief iteratorã§å–å¾—ã§ãã‚‹è¦ç´ ã‚’è¿½åŠ ã™ã‚‹
 	*/
 	void append(const AnyPtr& iterator);
 
@@ -185,8 +185,8 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒfƒtƒHƒ‹ƒg’l‚Æ‚µ‚Äİ’è‚³‚ê‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚ğæ‚èo‚·
-	* \return ƒfƒtƒHƒ‹ƒg’l
+	* \brief ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã¨ã—ã¦è¨­å®šã•ã‚Œã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–ã‚Šå‡ºã™
+	* \return ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤
 	*/
 	const AnyPtr& default_value(){
 		return default_value_;
@@ -194,8 +194,8 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒfƒtƒHƒ‹ƒg’l‚ğİ’è‚·‚é
-	* \param default_value ƒfƒtƒHƒ‹ƒg’l
+	* \brief ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã‚’è¨­å®šã™ã‚‹
+	* \param default_value ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤
 	*/
 	void set_default_value(const AnyPtr& default_value){
 		default_value_ = default_value;
@@ -273,7 +273,7 @@ class Set : public Map{
 public:
 
 	/**
-	* \brief value‚ª^‚Èkey‚ğ—v‘f‚Æ‚·‚éIterator‚ğ•Ô‚·
+	* \brief valueãŒçœŸãªkeyã‚’è¦ç´ ã¨ã™ã‚‹Iteratorã‚’è¿”ã™
 	*
 	*/
 	AnyPtr each();

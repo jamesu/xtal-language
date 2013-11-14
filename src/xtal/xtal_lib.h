@@ -11,7 +11,7 @@ namespace xtal{
 
 /**
 * \xbind lib::builtin
-* \brief メンバにアクセスすると、名前に対応したライブラリファイルを読み込む機能をもったクラスの一種
+* \brief 繝｡繝ｳ繝舌↓繧｢繧ｯ繧ｻ繧ｹ縺吶ｋ縺ｨ縲∝錐蜑阪↓蟇ｾ蠢懊＠縺溘Λ繧､繝悶Λ繝ｪ繝輔ぃ繧､繝ｫ繧定ｪｭ縺ｿ霎ｼ繧讖溯�ｽ繧偵ｂ縺｣縺溘け繝ｩ繧ｹ縺ｮ荳遞ｮ
 */
 class AutoLoader : public Class{
 public:
@@ -22,7 +22,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ロードパスを追加する
+	* \brief 繝ｭ繝ｼ繝峨ヱ繧ｹ繧定ｿｽ蜉縺吶ｋ
 	*/
 	void append_load_path(const StringPtr& path){
 		load_path_list_->push_back(path);
@@ -40,7 +40,7 @@ private:
 
 /**
 * \xbind lib::builtin
-* \brief ライブラリの登録などに使うクラスの一種
+* \brief 繝ｩ繧､繝悶Λ繝ｪ縺ｮ逋ｻ骭ｲ縺ｪ縺ｩ縺ｫ菴ｿ縺�繧ｯ繝ｩ繧ｹ縺ｮ荳遞ｮ
 */
 class Lib : public AutoLoader{
 public:

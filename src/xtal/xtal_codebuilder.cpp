@@ -146,10 +146,10 @@ CodePtr CodeBuilder::compile_toplevel(const ExprPtr& ae, const StringPtr& source
 
 	linenos_.push(0);
 
-	// ŠÖ”ƒtƒŒ[ƒ€‚ðì¬‚·‚é
+	// é–¢æ•°ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’ä½œæˆã™ã‚‹
 	push_ff();
 
-	// ŠÖ”ƒRƒA‚ðì¬
+	// é–¢æ•°ã‚³ã‚¢ã‚’ä½œæˆ
 	FunInfo info;
 	info.pc = 0;
 	info.kind = KIND_FUN;
@@ -168,7 +168,7 @@ CodePtr CodeBuilder::compile_toplevel(const ExprPtr& ae, const StringPtr& source
 	int_t fun_info_table_number = 0;
 	result_->xfun_info_table_.push_back(info);
 
-	// ŠÖ”–{‘Ì‚ðˆ—‚·‚é
+	// é–¢æ•°æœ¬ä½“ã‚’å‡¦ç†ã™ã‚‹
 	compile_stmt(e);
 	
 	break_off(ff().var_frame_count+1);
@@ -195,7 +195,7 @@ CodePtr CodeBuilder::compile_toplevel(const ExprPtr& ae, const StringPtr& source
 
 	XTAL_ASSERT(scope_stack_.empty());
 
-	// ŠÖ”ƒtƒŒ[ƒ€‚ðƒ|ƒbƒv‚·‚é
+	// é–¢æ•°ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’ãƒãƒƒãƒ—ã™ã‚‹
 	pop_ff();
 
 	if(debug::is_debug_compile_enabled()){
@@ -945,7 +945,7 @@ void CodeBuilder::normalize(const AnyPtr& a){
 						auto_initialize = true;
 					}
 
-					// ‰ÂG«‚ª•t‚¢‚Ä‚¢‚é‚Ì‚ÅAƒAƒNƒZƒbƒT‚ð’è‹`‚·‚é
+					// å¯è§¦æ€§ãŒä»˜ã„ã¦ã„ã‚‹ã®ã§ã€ã‚¢ã‚¯ã‚»ãƒƒã‚µã‚’å®šç¾©ã™ã‚‹
 					if(v->cdefine_ivar_accessibility()){ 
 						IDPtr var = v->cdefine_ivar_name();
 						eb_->tree_push_back(v->cdefine_ivar_accessibility());
@@ -1595,7 +1595,7 @@ void CodeBuilder::compile_loop_control_statement(const ExprPtr& e){
 void CodeBuilder::compile_class(const ExprPtr& e, int_t stack_top, int_t result){
 	push_ff();
 
-	// Œp³
+	// ç¶™æ‰¿
 	int_t mixins = 0;
 	int_t mixin_base = stack_top;
 	XTAL_FOR_EXPR(v, e->class_mixins()){
@@ -1634,6 +1634,12 @@ void CodeBuilder::compile_class(const ExprPtr& e, int_t stack_top, int_t result)
 	
 	info.variable_offset = 0;
 	info.variable_identifier_offset = (u16)result_->identifier_table_.size();
+
+	Xfor_cast(ExprPtr v, e->class_stmts()){
+		if(v->itag()==EXPR_CDEFINE_MEMBER){
+			result_->identifier_table_.push_back(v->cdefine_member_name());
+		}
+	}
 
 	//for(uint_t i=0; i<current_scope().entries.size(); ++i){
 	//	result_->identifier_table_.push_back(intern(Xid(_)->op_cat(current_scope().entries[i].name)));
@@ -1702,11 +1708,11 @@ int_t CodeBuilder::compile_fun(const ExprPtr& e, int_t stack_top, int_t result){
 	int_t minv = ordered;
 	int_t maxv = ordered + named;
 
-	// ƒQƒbƒ^[A‚Ü‚½‚ÍƒZƒbƒ^[—p‚ÌÅ“K‰»‚ðs‚¤
+	// ã‚²ãƒƒã‚¿ãƒ¼ã€ã¾ãŸã¯ã‚»ãƒƒã‚¿ãƒ¼ç”¨ã®æœ€é©åŒ–ã‚’è¡Œã†
 	//if(e->fun_kind()==KIND_METHOD)
 	{
 
-		// ƒQƒbƒ^‚©H
+		// ã‚²ãƒƒã‚¿ã‹ï¼Ÿ
 		if(ordered==0 && named==0){
 			ExprPtr body = e->fun_body();
 			if(body->itag()==EXPR_SCOPE && body->scope_stmts() && body->scope_stmts()->size()==1){
@@ -1725,7 +1731,7 @@ int_t CodeBuilder::compile_fun(const ExprPtr& e, int_t stack_top, int_t result){
 			}
 		}
 
-		// ƒZƒbƒ^‚©H
+		// ã‚»ãƒƒã‚¿ã‹ï¼Ÿ
 		if(ordered==1 && named==0){
 			ExprPtr body = e->fun_body();
 			if(body->itag()==EXPR_SCOPE && body->scope_stmts() && body->scope_stmts()->size()==1){
@@ -1758,10 +1764,10 @@ int_t CodeBuilder::compile_fun(const ExprPtr& e, int_t stack_top, int_t result){
 		}
 	}
 
-	// ŠÖ”ƒtƒŒ[ƒ€‚ðì¬‚·‚é
+	// é–¢æ•°ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’ä½œæˆã™ã‚‹
 	push_ff();
 
-	// ŠÖ”ƒRƒA‚ðì¬
+	// é–¢æ•°ã‚³ã‚¢ã‚’ä½œæˆ
 	FunInfo fun;
 	fun.pc = code_size() + InstMakeFun::ISIZE;
 	fun.kind = (u8)e->fun_kind();
@@ -1774,7 +1780,7 @@ int_t CodeBuilder::compile_fun(const ExprPtr& e, int_t stack_top, int_t result){
 
 	fun.max_variable = (u16)current_scope().register_max;
 
-	// ˆø”‚Ì–¼‘O‚ðŽ¯•ÊŽqƒe[ƒuƒ‹‚É‡”Ô‚Éæ‚¹‚é
+	// å¼•æ•°ã®åå‰ã‚’è­˜åˆ¥å­ãƒ†ãƒ¼ãƒ–ãƒ«ã«é †ç•ªã«ä¹—ã›ã‚‹
 	fun.variable_offset = (u16)calc_variable_offset(current_scope());
 	fun.variable_size = (u16)current_scope().entries.size();
 	fun.variable_identifier_offset = (u16)result_->identifier_table_.size();
@@ -1789,7 +1795,7 @@ int_t CodeBuilder::compile_fun(const ExprPtr& e, int_t stack_top, int_t result){
 	set_jump(InstMakeFun::OFFSET_address, fun_end_label);
 	put_inst<InstMakeFun>(result, fun_info_table_number, 0);
 
-	// ƒfƒtƒHƒ‹ƒg’l‚ðŽ‚Âˆø”‚ðˆ—‚·‚é
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã‚’æŒã¤å¼•æ•°ã‚’å‡¦ç†ã™ã‚‹
 	{
 		int_t i = 0;
 		Xfor_cast(ExprPtr v1, e->fun_params()){
@@ -1816,7 +1822,7 @@ int_t CodeBuilder::compile_fun(const ExprPtr& e, int_t stack_top, int_t result){
 		}
 	}
 
-	// ˆø”‚ÉƒCƒ“ƒXƒ^ƒ“ƒX•Ï”‚ª‚ ‚éê‡‚ÉA“Á•Ê‚Èˆ—‚ð“ü‚ê‚é
+	// å¼•æ•°ã«ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°ãŒã‚ã‚‹å ´åˆã«ã€ç‰¹åˆ¥ãªå‡¦ç†ã‚’å…¥ã‚Œã‚‹
 	Xfor_cast(ExprPtr v1, e->fun_params()){
 		const ExprPtr& v = ep(v1->at(0));
 		if(v->itag()==EXPR_IVAR){
@@ -1828,7 +1834,7 @@ int_t CodeBuilder::compile_fun(const ExprPtr& e, int_t stack_top, int_t result){
 		}
 	}
 
-	// ŠÖ”–{‘Ì‚ðˆ—‚·‚é
+	// é–¢æ•°æœ¬ä½“ã‚’å‡¦ç†ã™ã‚‹
 	compile_stmt(e->fun_body());
 	
 	break_off(ff().var_frame_count+1);

@@ -11,7 +11,7 @@ namespace xtal{
 
 /**
 * \xbind lib::builtin
-* \brief ƒfƒoƒbƒO
+* \brief ãƒ‡ãƒãƒƒã‚°
 */
 namespace debug{
 
@@ -20,7 +20,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ŒÄ‚Ño‚µêŠ‚Ìs”‚ğ•Ô‚·
+	* \brief å‘¼ã³å‡ºã—å ´æ‰€ã®è¡Œæ•°ã‚’è¿”ã™
 	*/
 	int_t lineno(){ return line_; }
 
@@ -28,19 +28,19 @@ public:
 
 	/**
 	* \xbind
-	* \brief ŒÄ‚Ño‚µêŠ‚Ìƒtƒ@ƒCƒ‹–¼‚ğ•Ô‚·
+	* \brief å‘¼ã³å‡ºã—å ´æ‰€ã®ãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¿”ã™
 	*/
 	StringPtr file_name();
 
 	/**
 	* \xbind
-	* \brief ŒÄ‚Ño‚µêŠ‚ÌŠÖ”–¼‚ğ•Ô‚·
+	* \brief å‘¼ã³å‡ºã—å ´æ‰€ã®é–¢æ•°åã‚’è¿”ã™
 	*/
 	StringPtr fun_name();
 
 	/**
 	* \xbind
-	* \brief ŒÄ‚Ño‚µêŠ‚Ì•Ï”ƒtƒŒ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
+	* \brief å‘¼ã³å‡ºã—å ´æ‰€ã®å¤‰æ•°ãƒ•ãƒ¬ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 	*/
 	const FramePtr& variables_frame(){ return variables_frame_; }
 
@@ -61,61 +61,61 @@ typedef SmartPtr<CallerInfo> CallerInfoPtr;
 /**
 * \xbind lib::builtin::debug
 * \xinherit lib::builtin::Any
-* \brief ƒfƒoƒbƒOƒtƒbƒNŠÖ”‚Å“n‚³‚ê‚éƒIƒuƒWƒFƒNƒg
+* \brief ãƒ‡ãƒãƒƒã‚°ãƒ•ãƒƒã‚¯é–¢æ•°ã§æ¸¡ã•ã‚Œã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 */
 class HookInfo : public Base{
 public:
 	
 	/**
 	* \xbind
-	* \brief ƒtƒbƒN‚Ìí—Ş‚ğ•Ô‚·
+	* \brief ãƒ•ãƒƒã‚¯ã®ç¨®é¡ã‚’è¿”ã™
 	*/
 	int_t kind(){ return kind_; } 
 
 	/**
 	* \xbind
-	* \brief ƒtƒbƒN‚³‚ê‚½êŠ‚ÌŠÖ”‚ğ•Ô‚·
+	* \brief ãƒ•ãƒƒã‚¯ã•ã‚ŒãŸå ´æ‰€ã®é–¢æ•°ã‚’è¿”ã™
 	*/
 	const MethodPtr& fun(){ return fun_; }
 
 	/**
 	* \xbind
-	* \brief ƒtƒbƒN‚³‚ê‚½êŠ‚Ìs”‚ğ•Ô‚·
+	* \brief ãƒ•ãƒƒã‚¯ã•ã‚ŒãŸå ´æ‰€ã®è¡Œæ•°ã‚’è¿”ã™
 	*/
 	int_t lineno();
 
 	/**
 	* \xbind
-	* \brief ƒtƒbƒN‚³‚ê‚½êŠ‚ÌCodeƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
+	* \brief ãƒ•ãƒƒã‚¯ã•ã‚ŒãŸå ´æ‰€ã®Codeã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 	*/
 	CodePtr code();
 
 	/**
 	* \xbind
-	* \brief ƒtƒbƒN‚³‚ê‚½êŠ‚Ìƒtƒ@ƒCƒ‹–¼‚ğ•Ô‚·
+	* \brief ãƒ•ãƒƒã‚¯ã•ã‚ŒãŸå ´æ‰€ã®ãƒ•ã‚¡ã‚¤ãƒ«åã‚’è¿”ã™
 	*/
 	StringPtr file_name();
 
 	/**
 	* \xbind
-	* \brief ƒtƒbƒN‚³‚ê‚½êŠ‚ÌŠÖ”–¼‚ğ•Ô‚·
+	* \brief ãƒ•ãƒƒã‚¯ã•ã‚ŒãŸå ´æ‰€ã®é–¢æ•°åã‚’è¿”ã™
 	*/
 	StringPtr fun_name();
 
 	/**
 	* \xbind
-	* \brief —áŠOƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
+	* \brief ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 	*/
 	const AnyPtr& exception(){ return exception_; }
 
 	/**
 	* \xbind
-	* \brief ƒtƒbƒN‚³‚ê‚½êŠ‚Ì•Ï”ƒtƒŒ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·
+	* \brief ãƒ•ãƒƒã‚¯ã•ã‚ŒãŸå ´æ‰€ã®å¤‰æ•°ãƒ•ãƒ¬ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿”ã™
 	*/
 	const FramePtr& variables_frame(){ return variables_frame_; }
 
 	/**
-	* \brief ŒÄ‚Ño‚µŒ³‚Ìî•ñ‚ğ•Ô‚·
+	* \brief å‘¼ã³å‡ºã—å…ƒã®æƒ…å ±ã‚’è¿”ã™
 	*/
 	CallerInfoPtr caller(uint_t n);
 
@@ -128,8 +128,8 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒNƒ[ƒ“‚ğì‚é
-	* HookInfoƒIƒuƒWƒFƒNƒg‚Íg‚¢‚Ü‚í‚³‚ê‚é‚½‚ßAî•ñ‚ğ•Û‚µ‚½‚¢ê‡AƒNƒ[ƒ“‚ğì‚é•K—v‚ª‚ ‚éB
+	* \brief ã‚¯ãƒ­ãƒ¼ãƒ³ã‚’ä½œã‚‹
+	* HookInfoã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ä½¿ã„ã¾ã‚ã•ã‚Œã‚‹ãŸã‚ã€æƒ…å ±ã‚’ä¿æŒã—ãŸã„å ´åˆã€ã‚¯ãƒ­ãƒ¼ãƒ³ã‚’ä½œã‚‹å¿…è¦ãŒã‚ã‚‹ã€‚
 	*/
 	SmartPtr<HookInfo> clone();
 
@@ -157,51 +157,51 @@ class Debug{};
 
 /**
 * \xbind lib::builtin::debug
-* \brief ƒfƒoƒbƒO‹@”\‚ğ—LŒø‚É‚·‚é
-* ƒfƒoƒbƒO‹@”\‚ÍƒfƒtƒHƒ‹ƒg‚Å‚Í–³Œø‚É‚È‚Á‚Ä‚¢‚éB
+* \brief ãƒ‡ãƒãƒƒã‚°æ©Ÿèƒ½ã‚’æœ‰åŠ¹ã«ã™ã‚‹
+* ãƒ‡ãƒãƒƒã‚°æ©Ÿèƒ½ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã¯ç„¡åŠ¹ã«ãªã£ã¦ã„ã‚‹ã€‚
 */
 void enable();
 
 /**
 * \xbind lib::builtin::debug
-* \brief ƒfƒoƒbƒO‹@”\‚ğ–³Œø‚É‚·‚é
+* \brief ãƒ‡ãƒãƒƒã‚°æ©Ÿèƒ½ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 */
 void disable();
 
 /**
 * \xbind lib::builtin::debug
-* \brief ƒfƒoƒbƒO‹@”\‚ğ‹­§“I‚É—LŒø‚É‚·‚é
-* ƒfƒoƒbƒO‹@”\‚ÍƒfƒtƒHƒ‹ƒg‚Å‚Í–³Œø‚É‚È‚Á‚Ä‚¢‚éB
+* \brief ãƒ‡ãƒãƒƒã‚°æ©Ÿèƒ½ã‚’å¼·åˆ¶çš„ã«æœ‰åŠ¹ã«ã™ã‚‹
+* ãƒ‡ãƒãƒƒã‚°æ©Ÿèƒ½ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã¯ç„¡åŠ¹ã«ãªã£ã¦ã„ã‚‹ã€‚
 */
 void enable_force(uint_t count);
 
 /**
 * \xbind lib::builtin::debug
-* \brief ƒfƒoƒbƒO‹@”\‚ğ‹­§“I‚É–³Œø‚É‚·‚é
+* \brief ãƒ‡ãƒãƒƒã‚°æ©Ÿèƒ½ã‚’å¼·åˆ¶çš„ã«ç„¡åŠ¹ã«ã™ã‚‹
 */
 uint_t disable_force();
 
 /**
 * \xbind lib::builtin::debug
-* \brief ƒfƒoƒbƒO‹@”\‚ª—LŒø‚©‚Ç‚¤‚©
+* \brief ãƒ‡ãƒãƒƒã‚°æ©Ÿèƒ½ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
 */
 bool is_enabled();
 
 /**
 * \xbind lib::builtin::debug
-* \brief ƒfƒoƒbƒOƒRƒ“ƒpƒCƒ‹‚ª—LŒø‚©‚Ç‚¤‚©
+* \brief ãƒ‡ãƒãƒƒã‚°ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
 */
 bool is_debug_compile_enabled();
 
 /**
 * \xbind lib::builtin::debug
-* \brief ƒfƒoƒbƒOƒRƒ“ƒpƒCƒ‹‚ğ—LŒø‚É‚·‚é
+* \brief ãƒ‡ãƒãƒƒã‚°ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã‚’æœ‰åŠ¹ã«ã™ã‚‹
 */
 void enable_debug_compile();
 
 /**
 * \xbind lib::builtin::debug
-* \brief ƒfƒoƒbƒOƒRƒ“ƒpƒCƒ‹‚ğ–³Œø‚É‚·‚é
+* \brief ãƒ‡ãƒãƒƒã‚°ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 */
 void disable_debug_compile();
 
@@ -215,84 +215,84 @@ const AnyPtr& hook(int_t hooktype);
 
 /**
 * \xbind lib::builtin::debug
-* \brief ƒuƒŒ[ƒNƒ|ƒCƒ“ƒg‚É’B‚·‚é‚½‚Ñ‚ÉŒÄ‚Ño‚³‚ê‚éƒtƒbƒNŠÖ”‚ğ“o˜^‚·‚é
-* \param hook “o˜^‚·‚éƒtƒbƒNŠÖ”
+* \brief ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆã«é”ã™ã‚‹ãŸã³ã«å‘¼ã³å‡ºã•ã‚Œã‚‹ãƒ•ãƒƒã‚¯é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
+* \param hook ç™»éŒ²ã™ã‚‹ãƒ•ãƒƒã‚¯é–¢æ•°
 */
 void set_breakpoint_hook(const AnyPtr& hook);
 
 /**
 * \xbind lib::builtin::debug
-* \brief ŠÖ”ŒÄ‚Ño‚µ‚³‚ê‚é“x‚ÉŒÄ‚Ño‚³‚ê‚éƒtƒbƒNŠÖ”‚ğ“o˜^‚·‚é
-* \param hook “o˜^‚·‚éƒtƒbƒNŠÖ”
+* \brief é–¢æ•°å‘¼ã³å‡ºã—ã•ã‚Œã‚‹åº¦ã«å‘¼ã³å‡ºã•ã‚Œã‚‹ãƒ•ãƒƒã‚¯é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
+* \param hook ç™»éŒ²ã™ã‚‹ãƒ•ãƒƒã‚¯é–¢æ•°
 */
 void set_call_hook(const AnyPtr& hook);
 
 /**
 * \xbind lib::builtin::debug
-* \brief ŠÖ”‚©‚çreturn‚³‚ê‚é“x‚ÉŒÄ‚Ño‚³‚ê‚éƒtƒbƒNŠÖ”‚ğ“o˜^‚·‚é
-* \param hook “o˜^‚·‚éƒtƒbƒNŠÖ”
+* \brief é–¢æ•°ã‹ã‚‰returnã•ã‚Œã‚‹åº¦ã«å‘¼ã³å‡ºã•ã‚Œã‚‹ãƒ•ãƒƒã‚¯é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
+* \param hook ç™»éŒ²ã™ã‚‹ãƒ•ãƒƒã‚¯é–¢æ•°
 */
 void set_return_hook(const AnyPtr& hook);
 
 /**
 * \xbind lib::builtin::debug
-* \brief —áŠO‚©throw‚³‚ê‚é“x‚ÉŒÄ‚Ño‚³‚ê‚éƒtƒbƒNŠÖ”‚ğ“o˜^‚·‚é
-* \param hook “o˜^‚·‚éƒtƒbƒNŠÖ”
+* \brief ä¾‹å¤–ã‹throwã•ã‚Œã‚‹åº¦ã«å‘¼ã³å‡ºã•ã‚Œã‚‹ãƒ•ãƒƒã‚¯é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
+* \param hook ç™»éŒ²ã™ã‚‹ãƒ•ãƒƒã‚¯é–¢æ•°
 */
 void set_throw_hook(const AnyPtr& hook);
 
 /**
 * \xbind lib::builtin::debug
-* \brief ƒAƒT[ƒg‚ª¸”s‚³‚ê‚é“x‚ÉŒÄ‚Ño‚³‚ê‚éƒtƒbƒNŠÖ”‚ğ“o˜^‚·‚é
-* \param hook “o˜^‚·‚éƒtƒbƒNŠÖ”
+* \brief ã‚¢ã‚µãƒ¼ãƒˆãŒå¤±æ•—ã•ã‚Œã‚‹åº¦ã«å‘¼ã³å‡ºã•ã‚Œã‚‹ãƒ•ãƒƒã‚¯é–¢æ•°ã‚’ç™»éŒ²ã™ã‚‹
+* \param hook ç™»éŒ²ã™ã‚‹ãƒ•ãƒƒã‚¯é–¢æ•°
 */
 void set_assert_hook(const AnyPtr& hook);
 
 /**
 * \xbind lib::builtin::debug
-* \brief set_breakpoint_hookŠÖ”‚Å“o˜^‚µ‚½ŠÖ”‚ğæ“¾‚·‚é
+* \brief set_breakpoint_hooké–¢æ•°ã§ç™»éŒ²ã—ãŸé–¢æ•°ã‚’å–å¾—ã™ã‚‹
 */
 const AnyPtr& breakpoint_hook();
 
 /**
 * \xbind lib::builtin::debug
-* \brief set_call_hookŠÖ”‚Å“o˜^‚µ‚½ŠÖ”‚ğæ“¾‚·‚é
+* \brief set_call_hooké–¢æ•°ã§ç™»éŒ²ã—ãŸé–¢æ•°ã‚’å–å¾—ã™ã‚‹
 */
 const AnyPtr& call_hook();
 
 /**
 * \xbind lib::builtin::debug
-* \brief set_return_hookŠÖ”‚Å“o˜^‚µ‚½ŠÖ”‚ğæ“¾‚·‚é
+* \brief set_return_hooké–¢æ•°ã§ç™»éŒ²ã—ãŸé–¢æ•°ã‚’å–å¾—ã™ã‚‹
 */
 const AnyPtr& return_hook();
 
 /**
 * \xbind lib::builtin::debug
-* \brief set_throw_hookŠÖ”‚Å“o˜^‚µ‚½ŠÖ”‚ğæ“¾‚·‚é
+* \brief set_throw_hooké–¢æ•°ã§ç™»éŒ²ã—ãŸé–¢æ•°ã‚’å–å¾—ã™ã‚‹
 */
 const AnyPtr& throw_hook();
 
 /**
 * \xbind lib::builtin::debug
-* \brief set_assert_hookŠÖ”‚Å“o˜^‚µ‚½ŠÖ”‚ğæ“¾‚·‚é
+* \brief set_assert_hooké–¢æ•°ã§ç™»éŒ²ã—ãŸé–¢æ•°ã‚’å–å¾—ã™ã‚‹
 */
 const AnyPtr& assert_hook();
 
 /**
 * \xbind lib::builtin::debug
-* \brief Ä’è‹`‚ª—LŒø‚©‚Ç‚¤‚©
+* \brief å†å®šç¾©ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
 */
 bool is_redefine_enabled();
 
 /**
 * \xbind lib::builtin::debug
-* \brief Ä’è‹`‚ğ—LŒø‚É‚·‚é
+* \brief å†å®šç¾©ã‚’æœ‰åŠ¹ã«ã™ã‚‹
 */
 void enable_redefine();
 
 /**
 * \xbind lib::builtin::debug
-* \brief Ä’è‹`‚ğ–³Œø‚É‚·‚é
+* \brief å†å®šç¾©ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 */
 void disable_redefine();
 
@@ -311,7 +311,7 @@ void call_breakpoint_hook(int_t kind, HookInfoPtr info);
 ////////////////////////////////////////////////////////////////////////////////////
 
 /**
-* \brief ƒfƒoƒbƒK‚ÌóM‘¤
+* \brief ãƒ‡ãƒãƒƒã‚¬ã®å—ä¿¡å´
 */
 class CommandReceiver{
 public:
@@ -319,13 +319,13 @@ public:
 	~CommandReceiver();
 
 	/**
-	* \brief ƒfƒoƒbƒK‚ğƒXƒ^[ƒg‚·‚é
-	* \param stream ƒfƒoƒbƒK‚Æ’ÊM‚·‚é‚½‚ß‚ÌƒXƒgƒŠ[ƒ€
+	* \brief ãƒ‡ãƒãƒƒã‚¬ã‚’ã‚¹ã‚¿ãƒ¼ãƒˆã™ã‚‹
+	* \param stream ãƒ‡ãƒãƒƒã‚¬ã¨é€šä¿¡ã™ã‚‹ãŸã‚ã®ã‚¹ãƒˆãƒªãƒ¼ãƒ 
 	*/
 	bool start(const StreamPtr& stream);
 
 	/**
-	* ƒfƒoƒbƒK‚ğXV‚·‚é
+	* ãƒ‡ãƒãƒƒã‚¬ã‚’æ›´æ–°ã™ã‚‹
 	* 
 	*/
 	void update();
@@ -361,7 +361,7 @@ private:
 ////////////////////////////////////////////////////////////////////////////////////
 
 /**
-* \brief ƒfƒoƒbƒK‚Ì‘—M‘¤
+* \brief ãƒ‡ãƒãƒƒã‚¬ã®é€ä¿¡å´
 */
 class CommandSender{
 public:
@@ -371,19 +371,19 @@ public:
 	virtual ~CommandSender(){}
 
 	/**
-	* \brief ƒfƒoƒbƒK‚ğƒXƒ^[ƒg‚·‚é
-	* \param stream ƒfƒoƒbƒK‚Æ’ÊM‚·‚é‚½‚ß‚ÌƒXƒgƒŠ[ƒ€
+	* \brief ãƒ‡ãƒãƒƒã‚¬ã‚’ã‚¹ã‚¿ãƒ¼ãƒˆã™ã‚‹
+	* \param stream ãƒ‡ãƒãƒƒã‚¬ã¨é€šä¿¡ã™ã‚‹ãŸã‚ã®ã‚¹ãƒˆãƒªãƒ¼ãƒ 
 	*/
 	void start(const StreamPtr& stream);
 
 	/**
-	* ƒfƒoƒbƒK‚ğXV‚·‚é
+	* ãƒ‡ãƒãƒƒã‚¬ã‚’æ›´æ–°ã™ã‚‹
 	* 
 	*/
 	void update();
 
 public:
-	// •]‰¿®‚ÉŠÖ‚·‚éİ’è‚Ææ“¾
+	// è©•ä¾¡å¼ã«é–¢ã™ã‚‹è¨­å®šã¨å–å¾—
 
 	void add_eval_expr(const StringPtr& expr);
 
@@ -392,7 +392,7 @@ public:
 	ArrayPtr eval_expr_result(const StringPtr& expr);
 
 public:
-	// ƒR[ƒ‹ƒXƒ^ƒbƒN‚ÉŠÖ‚·‚éİ’è‚Ææ“¾
+	// ã‚³ãƒ¼ãƒ«ã‚¹ã‚¿ãƒƒã‚¯ã«é–¢ã™ã‚‹è¨­å®šã¨å–å¾—
 
 	int call_stack_size();
 
@@ -408,7 +408,7 @@ public:
 	void move_call_stack(int n);
 
 public:
-	// —v‹‚³‚ê‚½ƒXƒNƒŠƒvƒgƒtƒ@ƒCƒ‹‚ÉŠÖ‚·‚éİ’è‚Ææ“¾
+	// è¦æ±‚ã•ã‚ŒãŸã‚¹ã‚¯ãƒªãƒ—ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã«é–¢ã™ã‚‹è¨­å®šã¨å–å¾—
 
 	StringPtr required_file();
 
@@ -417,7 +417,7 @@ public:
 	int level(){ return level_;	}
 
 public:
-	// ƒuƒŒ[ƒNƒ|ƒCƒ“ƒg‚ÉŠÖ‚·‚éİ’è‚Ææ“¾
+	// ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆã«é–¢ã™ã‚‹è¨­å®šã¨å–å¾—
 
 	void add_breakpoint(const StringPtr& path, int n, const StringPtr& cond);
 	void remove_breakpoint(const StringPtr& path, int n);
@@ -440,16 +440,16 @@ public:
 
 protected:
 
-	// ƒuƒŒ[ƒN‚µ‚½Û‚ÌƒVƒOƒiƒ‹
+	// ãƒ–ãƒ¬ãƒ¼ã‚¯ã—ãŸéš›ã®ã‚·ã‚°ãƒŠãƒ«
 	virtual void on_breaked(){}
 
-	// ƒuƒŒ[ƒN‚µ‚½Û‚ÌƒVƒOƒiƒ‹
+	// ãƒ–ãƒ¬ãƒ¼ã‚¯ã—ãŸéš›ã®ã‚·ã‚°ãƒŠãƒ«
 	virtual void on_required(){}
 
-	// ƒRƒ“ƒpƒCƒ‹ƒGƒ‰[‚ª‹N‚±‚Á‚½Û‚ÌƒVƒOƒiƒ‹
+	// ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã‚¨ãƒ©ãƒ¼ãŒèµ·ã“ã£ãŸéš›ã®ã‚·ã‚°ãƒŠãƒ«
 	virtual void on_compile_error(){}
 
-	// ƒLƒƒƒbƒ`‚³‚ê‚È‚¢—áŠO‚ª‹N‚±‚Á‚½Û‚ÌƒVƒOƒiƒ‹
+	// ã‚­ãƒ£ãƒƒãƒã•ã‚Œãªã„ä¾‹å¤–ãŒèµ·ã“ã£ãŸéš›ã®ã‚·ã‚°ãƒŠãƒ«
 	virtual void on_uncatched_exception(){}
 
 protected:

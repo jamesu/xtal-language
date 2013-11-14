@@ -73,10 +73,10 @@ public:
 	}
 
 	void register_thread(Environment* environment){
-		// ‚Ü‚¸ƒƒbƒN‚ğŠl“¾‚·‚é
+		// ã¾ãšãƒ­ãƒƒã‚¯ã‚’ç²å¾—ã™ã‚‹
 		thread_lib_->lock_mutex(mutex_->impl());
 
-		set_environment(environment); // ŠÂ‹«‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğƒXƒŒƒbƒhƒ[ƒJƒ‹•Ï”‚ÉƒRƒs[‚·‚é
+		set_environment(environment); // ç’°å¢ƒã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹
 
 		registered_thread_ = true;
 		thread_count_++;

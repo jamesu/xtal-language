@@ -166,12 +166,12 @@ static const char_t* id_list[] = {
 namespace xtal{
 
 /*
-* \brief •¶š—ñ‚ğŠÇ—‚·‚éƒNƒ‰ƒX
+* \brief æ–‡å­—åˆ—ã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
 */
 class StringSpace{
 public:
 
-	// ƒfƒtƒHƒ‹ƒg‚Å‚ÍAƒm[ƒh‚Ì”A•¶š—ñ‚Ì’·‚³‚É16bit§ŒÀ‚ğ‚©‚¯‚é
+	// ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã¯ã€ãƒãƒ¼ãƒ‰ã®æ•°ã€æ–‡å­—åˆ—ã®é•·ã•ã«16bitåˆ¶é™ã‚’ã‹ã‘ã‚‹
 	typedef u16 node_t;
 	typedef u16 strsize_t;
 

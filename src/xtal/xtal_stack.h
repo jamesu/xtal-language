@@ -22,20 +22,20 @@ struct FastStackDefaultValue{
 
 /**
 * \internal
-* VMachine�N���X���g���F�X�ȃX�^�b�N�p�ɁA����̑���̎��s���x���d�����Ď��������X�^�b�N�R���e�i�B
+* VMachineクラスが使う色々なスタック用に、特定の操作の実行速度を重視して実装したスタックコンテナ。
 *
-* ���x���҂����߁Acapacity���̃I�u�W�F�N�g�͏�ɐ������ꂽ��ԂƂȂ��Ă���B
-* size���������葝�����肵������Ƃ����āA�R���X�g���N�^�A�f�X�g���N�^���Ă񂾂�͂��Ȃ��B
-* ���̂��߁Apop�֐��̓|�b�v���ꂽ�I�u�W�F�N�g�̎Q�Ƃ�Ԃ��Ă��邪�A����͈��S�ł���B
+* 速度を稼ぐため、capacity分のオブジェクトは常に生成された状態となっている。
+* sizeが減ったり増えたりしたからといって、コンストラクタ、デストラクタを呼んだりはしない。
+* そのため、pop関数はポップされたオブジェクトの参照を返しているが、これは安全である。
 */
 template<class T>
 class FastStack{
-	T* begin_; // �m�ۂ����������̐擪�̎����w���B
-	T* end_; // �m�ۂ����������̈�ԍŌ�̎����w��
+	T* begin_; // 確保したメモリの先頭の次を指す。
+	T* end_; // 確保したメモリの一番最後の次を指す
 
 public:
 
-	T* current_; // �X�^�b�N�g�b�v�̗v�f���w��
+	T* current_; // スタックトップの要素を指す
 
 private:
 
@@ -378,9 +378,9 @@ void visit_members(Visitor& m, const FastStack<T>& value){
 
 template<class T>
 class PODStack{
-	T* begin_; // �m�ۂ����������̐擪�̎����w���B
-	T* end_; // �m�ۂ����������̈�ԍŌ�̎����w��
-	T* current_; // �X�^�b�N�g�b�v�̗v�f���w��
+	T* begin_; // 確保したメモリの先頭の次を指す。
+	T* end_; // 確保したメモリの一番最後の次を指す
+	T* current_; // スタックトップの要素を指す
 
 private:
 
@@ -733,7 +733,7 @@ protected:
 };
 
 /**
-* \brief �z��
+* \brief 配列
 */
 template<class T>
 class PODArray{
@@ -768,7 +768,7 @@ protected:
 };
 
 /**
-* \brief �z��
+* \brief 配列
 */
 template<class T>
 class TArray{
@@ -864,7 +864,7 @@ void TArray<T>::upsize(uint_t sz){
 			capa_ = newcapa;
 		}
 		else{
-			// ��ԍŏ��̃��T�C�Y�́A��������Ɏ��
+			// 一番最初のリサイズは、きっかりに取る
 			uint_t newcapa = sz;
 			values_ = (T*)xmalloc(sizeof(T)*newcapa);
 			for(uint_t i=0; i<sz; ++i){

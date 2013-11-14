@@ -44,66 +44,66 @@ class xarray{
 public:
 
 	/**
-	* \brief size‚Ì’·‚³‚Ì”z—ñ‚ğ¶¬‚·‚é 
+	* \brief sizeã®é•·ã•ã®é…åˆ—ã‚’ç”Ÿæˆã™ã‚‹ 
 	*/
 	xarray(uint_t size = 0);
 
 	xarray(const AnyPtr* first, const AnyPtr* end);
 
 	/**
-	* \brief ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğ”õ‚¦‚é
+	* \brief ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’å‚™ãˆã‚‹
 	*/
 	xarray(const xarray& v);
 
 	/**
-	* \brief ‘ã“ü‰‰Zq‚ğ”õ‚¦‚é
+	* \brief ä»£å…¥æ¼”ç®—å­ã‚’å‚™ãˆã‚‹
 	*/
 	xarray& operator =(const xarray& v);
 
 	/**
-	* \brief ƒfƒXƒgƒ‰ƒNƒ^
+	* \brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	*/
 	~xarray();
 
 	/**
-	* \brief ”z—ñ‚Ì’·‚³‚ğ•Ô‚·
+	* \brief é…åˆ—ã®é•·ã•ã‚’è¿”ã™
 	*/
 	uint_t length() const{
 		return size_;
 	}
 
 	/**
-	* \brief ”z—ñ‚Ì’·‚³‚ğ•Ô‚·
+	* \brief é…åˆ—ã®é•·ã•ã‚’è¿”ã™
 	*/
 	uint_t size() const{
 		return size_;
 	}
 
 	/**
-	* \brief ”z—ñ‚ÌƒLƒƒƒpƒVƒeƒB‚ğ•Ô‚·
+	* \brief é…åˆ—ã®ã‚­ãƒ£ãƒ‘ã‚·ãƒ†ã‚£ã‚’è¿”ã™
 	*/
 	uint_t capacity() const{
 		return capa_;
 	}
 
 	/**
-	* \brief ”z—ñ‚Ì’·‚³‚ğ•ÏX‚·‚é
+	* \brief é…åˆ—ã®é•·ã•ã‚’å¤‰æ›´ã™ã‚‹
 	*/
 	void resize(uint_t sz);
 
 	/**
 	* \xbind
-	* \brief ”z—ñ‚ğsz•ª’·‚­‚·‚é
+	* \brief é…åˆ—ã‚’szåˆ†é•·ãã™ã‚‹
 	*/
 	void upsize(uint_t sz);
 
 	/**
-	* \brief ”z—ñ‚ğsz•ª’Z‚­‚·‚é
+	* \brief é…åˆ—ã‚’szåˆ†çŸ­ãã™ã‚‹
 	*/
 	void downsize(uint_t sz);
 
 	/**
-	* \brief i”Ô–Ú‚Ì—v‘f‚ğ•Ô‚·
+	* \brief iç•ªç›®ã®è¦ç´ ã‚’è¿”ã™
 	*/
 	const AnyPtr& at(int_t i) const{
 		XTAL_ASSERT(0<=i && (uint_t)i<size_);
@@ -111,7 +111,7 @@ public:
 	}
 
 	/**
-	* \brief i”Ô–Ú‚Ì—v‘f‚ğİ’è‚·‚é
+	* \brief iç•ªç›®ã®è¦ç´ ã‚’è¨­å®šã™ã‚‹
 	*/
 	void set_at(int_t i, const AnyPtr& v){
 		XTAL_ASSERT(0<=i && (uint_t)i<size_);
@@ -119,70 +119,70 @@ public:
 	}
 
 	/**
-	* \brief æ“ª‚É—v‘f‚ğ’Ç‰Á‚·‚é
+	* \brief å…ˆé ­ã«è¦ç´ ã‚’è¿½åŠ ã™ã‚‹
 	*/
 	void push_front(const AnyPtr& v){
 		insert(0, v);
 	}
 
 	/**
-	* \brief æ“ª‚Ì—v‘f‚ğíœ‚·‚é
+	* \brief å…ˆé ­ã®è¦ç´ ã‚’å‰Šé™¤ã™ã‚‹
 	*/
 	void pop_front(){
 		erase(0);
 	}
 
 	/**
-	* \brief ––”ö‚É—v‘f‚ğ’Ç‰Á‚·‚é
+	* \brief æœ«å°¾ã«è¦ç´ ã‚’è¿½åŠ ã™ã‚‹
 	*/
 	void push_back(const AnyPtr& v);
 
 	/**
-	* \brief ––”ö‚Ì—v‘f‚ğíœ‚·‚é
+	* \brief æœ«å°¾ã®è¦ç´ ã‚’å‰Šé™¤ã™ã‚‹
 	*/
 	void pop_back();
 
 	/**
-	* \brief æ“ª‚Ì—v‘f‚ğ•Ô‚·
+	* \brief å…ˆé ­ã®è¦ç´ ã‚’è¿”ã™
 	*/
 	const AnyPtr& front() const{
 		return at(0);
 	}
 
 	/**
-	* \brief ––”ö‚Ì—v‘f‚ğ•Ô‚·
+	* \brief æœ«å°¾ã®è¦ç´ ã‚’è¿”ã™
 	*/
 	const AnyPtr& back() const{
 		return at(size()-1);
 	}
 
 	/**
-	* \brief i”Ô–Ú‚ÌnŒÂ‚Ì—v‘f‚ğíœ‚·‚é
+	* \brief iç•ªç›®ã®nå€‹ã®è¦ç´ ã‚’å‰Šé™¤ã™ã‚‹
 	*/
 	void erase(int_t i, int_t n = 1);
 
 	/**
 	* \xbind
-	* \brief i”Ô–Ú‚É—v‘f‚ğ’Ç‰Á‚·‚é
+	* \brief iç•ªç›®ã«è¦ç´ ã‚’è¿½åŠ ã™ã‚‹
 	*/
 	void insert(int_t i, const AnyPtr& v);
 
 	/**
-	* \brief ‹ó‚©’²‚×‚é
+	* \brief ç©ºã‹èª¿ã¹ã‚‹
 	*/
 	bool empty() const{
 		return size_ == 0;
 	}
 
 	/**
-	* \brief ‹ó‚©’²‚×‚é
+	* \brief ç©ºã‹èª¿ã¹ã‚‹
 	*/
 	bool is_empty() const{
 		return size_ == 0;
 	}
 
 	/**
-	* \brief —v‘f‚ğ‘S‚Äíœ‚·‚é
+	* \brief è¦ç´ ã‚’å…¨ã¦å‰Šé™¤ã™ã‚‹
 	*/
 	void clear();
 
@@ -192,7 +192,7 @@ public:
 
 	void on_visit_members(Visitor& m);
 
-	class iterator{
+	class iterator : public std::iterator<std::random_access_iterator_tag, AnyPtr>{
 	public:
 		
 		iterator(AnyPtr* p = 0)
@@ -215,6 +215,18 @@ public:
 			iterator temp(*this);
 			++p_;
 			return temp;
+		}
+
+		friend iterator operator +(iterator a, int b){
+			return a.p_ + b;
+		}
+
+		friend iterator operator +(int a, iterator b){
+			return a + b.p_;
+		}
+
+		friend int operator -(iterator a, iterator b){
+			return a.p_ - b.p_;
 		}
 
 		friend bool operator ==(iterator a, iterator b){
@@ -279,7 +291,7 @@ void visit_members(Visitor& m, const xarray& values);
 /**
 * \xbind lib::builtin
 * \xinherit lib::builtin::Any lib::builtin::Iterable
-* \brief ”z—ñ
+* \brief é…åˆ—
 */
 class Array : public RefCountingBase{
 public:
@@ -287,7 +299,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief size‚Ì’·‚³‚Ì”z—ñ‚ğ¶¬‚·‚é 
+	* \brief sizeã®é•·ã•ã®é…åˆ—ã‚’ç”Ÿæˆã™ã‚‹ 
 	*/
 	Array(uint_t size = 0);
 
@@ -297,7 +309,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ”z—ñ‚Ì’·‚³‚ğ•Ô‚·
+	* \brief é…åˆ—ã®é•·ã•ã‚’è¿”ã™
 	*/
 	uint_t length(){
 		return values_.length();
@@ -305,7 +317,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ”z—ñ‚Ì’·‚³‚ğ•Ô‚·
+	* \brief é…åˆ—ã®é•·ã•ã‚’è¿”ã™
 	*/
 	uint_t size(){
 		return values_.size();
@@ -313,7 +325,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ”z—ñ‚Ì’·‚³‚ğ•ÏX‚·‚é
+	* \brief é…åˆ—ã®é•·ã•ã‚’å¤‰æ›´ã™ã‚‹
 	*/
 	void resize(uint_t sz){
 		values_.resize(sz);
@@ -321,7 +333,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ”z—ñ‚ğsz•ª’·‚­‚·‚é
+	* \brief é…åˆ—ã‚’szåˆ†é•·ãã™ã‚‹
 	*/
 	void upsize(uint_t sz){
 		values_.upsize(sz);
@@ -329,21 +341,21 @@ public:
 
 	/**
 	* \xbind
-	* \brief ”z—ñ‚ğsz•ª’Z‚­‚·‚é
+	* \brief é…åˆ—ã‚’szåˆ†çŸ­ãã™ã‚‹
 	*/
 	void downsize(uint_t sz){
 		values_.downsize(sz);
 	}
 
 	/**
-	* \brief i”Ô–Ú‚Ì—v‘f‚ğ•Ô‚·
+	* \brief iç•ªç›®ã®è¦ç´ ã‚’è¿”ã™
 	*/
 	const AnyPtr& at(int_t i){
 		return values_.at(i);
 	}
 
 	/**
-	* \brief i”Ô–Ú‚Ì—v‘f‚ğİ’è‚·‚é
+	* \brief iç•ªç›®ã®è¦ç´ ã‚’è¨­å®šã™ã‚‹
 	*/
 	void set_at(int_t i, const AnyPtr& v){
 		values_.set_at(i, v);
@@ -351,19 +363,19 @@ public:
 
 	/**
 	* \xbind
-	* \brief i”Ô–Ú‚Ì—v‘f‚ğ•Ô‚·
+	* \brief iç•ªç›®ã®è¦ç´ ã‚’è¿”ã™
 	*/
 	const AnyPtr& op_at(int_t i);
 
 	/**
 	* \xbind
-	* \brief i”Ô–Ú‚Ì—v‘f‚ğİ’è‚·‚é
+	* \brief iç•ªç›®ã®è¦ç´ ã‚’è¨­å®šã™ã‚‹
 	*/
 	void op_set_at(int_t i, const AnyPtr& v);
 
 	/**
 	* \xbind
-	* \brief æ“ª‚É—v‘f‚ğ’Ç‰Á‚·‚é
+	* \brief å…ˆé ­ã«è¦ç´ ã‚’è¿½åŠ ã™ã‚‹
 	*/
 	void push_front(const AnyPtr& v){
 		insert(0, v);
@@ -371,7 +383,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief æ“ª‚Ì—v‘f‚ğíœ‚·‚é
+	* \brief å…ˆé ­ã®è¦ç´ ã‚’å‰Šé™¤ã™ã‚‹
 	*/
 	void pop_front(){
 		erase(0);
@@ -379,19 +391,19 @@ public:
 
 	/**
 	* \xbind
-	* \brief ––”ö‚É—v‘f‚ğ’Ç‰Á‚·‚é
+	* \brief æœ«å°¾ã«è¦ç´ ã‚’è¿½åŠ ã™ã‚‹
 	*/
 	void push_back(const AnyPtr& v);
 
 	/**
 	* \xbind
-	* \brief ––”ö‚Ì—v‘f‚ğíœ‚·‚é
+	* \brief æœ«å°¾ã®è¦ç´ ã‚’å‰Šé™¤ã™ã‚‹
 	*/
 	void pop_back();
 
 	/**
 	* \xbind
-	* \brief æ“ª‚Ì—v‘f‚ğ•Ô‚·
+	* \brief å…ˆé ­ã®è¦ç´ ã‚’è¿”ã™
 	*/
 	const AnyPtr& front(){
 		return op_at(0);
@@ -399,7 +411,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ––”ö‚Ì—v‘f‚ğ•Ô‚·
+	* \brief æœ«å°¾ã®è¦ç´ ã‚’è¿”ã™
 	*/
 	const AnyPtr& back(){
 		return op_at(size()-1);
@@ -407,60 +419,60 @@ public:
 
 	/**
 	* \xbind
-	* \brief i”Ô–Ú‚©‚çnŒÂ‚Ì•”•ª”z—ñ‚ğ•Ô‚·
+	* \brief iç•ªç›®ã‹ã‚‰nå€‹ã®éƒ¨åˆ†é…åˆ—ã‚’è¿”ã™
 	*/
 	ArrayPtr slice(int_t i, int_t n = 1);
 	
 	/**
 	* \xbind
-	* \brief index‚©‚çnŒÂ‚Ì•”•ª”z—ñ‚ğíœ‚µA‚»‚Ì•”•ª”z—ñ‚ğ•Ô‚·
+	* \brief indexã‹ã‚‰nå€‹ã®éƒ¨åˆ†é…åˆ—ã‚’å‰Šé™¤ã—ã€ãã®éƒ¨åˆ†é…åˆ—ã‚’è¿”ã™
 	*/
 	ArrayPtr splice(int_t i, int_t n = 1);
 
 	/**
 	* \xbind
-	* \brief i”Ô–Ú‚ÌnŒÂ‚Ì—v‘f‚ğíœ‚·‚é
+	* \brief iç•ªç›®ã®nå€‹ã®è¦ç´ ã‚’å‰Šé™¤ã™ã‚‹
 	*/
 	void erase(int_t i, int_t n = 1);
 
 	/**
 	* \xbind
-	* \brief i”Ô–Ú‚É—v‘f‚ğ’Ç‰Á‚·‚é
+	* \brief iç•ªç›®ã«è¦ç´ ã‚’è¿½åŠ ã™ã‚‹
 	*/
 	void insert(int_t i, const AnyPtr& v);
 
 	/**
 	* \xbind
-	* \brief ”z—ñ‚Ì—v‘f‚ğ‹t‡‚É‚·‚éƒCƒeƒŒ[ƒ^‚ğ•Ô‚·
+	* \brief é…åˆ—ã®è¦ç´ ã‚’é€†é †ã«ã™ã‚‹ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã‚’è¿”ã™
 	*/
 	AnyPtr reverse();
 	
 	/**
 	* \xbind
-	* \brief ó‚¢ƒRƒs[‚ğ•Ô‚·
+	* \brief æµ…ã„ã‚³ãƒ”ãƒ¼ã‚’è¿”ã™
 	*/
 	ArrayPtr clone();
 
 	/**
-	* \brief ˜AŒ‹‚µ‚½”z—ñ‚ğ•Ô‚·
+	* \brief é€£çµã—ãŸé…åˆ—ã‚’è¿”ã™
 	*/
 	ArrayPtr op_cat(const ArrayPtr& a);
 
 	/**
-	* \brief ©g‚ğ˜AŒ‹‚µA©g‚ğ•Ô‚·
+	* \brief è‡ªèº«ã‚’é€£çµã—ã€è‡ªèº«ã‚’è¿”ã™
 	*/
 	const ArrayPtr& op_cat_assign(const ArrayPtr& a);
 	
 	/**
 	* \xbind
-	* \brief —v‘f‚ğ•¶š—ñ‚Æ‚µ‚Ä˜AŒ‹‚µ‚½Œ‹‰Ê‚ğ•Ô‚·
-	* \param sep —v‘f‚Æ—v‘f‚Ì‹æØ‚è•¶š—ñ
+	* \brief è¦ç´ ã‚’æ–‡å­—åˆ—ã¨ã—ã¦é€£çµã—ãŸçµæœã‚’è¿”ã™
+	* \param sep è¦ç´ ã¨è¦ç´ ã®åŒºåˆ‡ã‚Šæ–‡å­—åˆ—
 	*/
 	StringPtr join(const StringPtr& sep);
 
 	/**
 	* \xbind
-	* \brief ©g‚ğ•Ô‚·
+	* \brief è‡ªèº«ã‚’è¿”ã™
 	*/
 	const ArrayPtr& op_to_array(){
 		return to_smartptr(this);
@@ -468,13 +480,13 @@ public:
 
 	/**
 	* \xbind
-	* \brief ’l‚ª“™‚µ‚¢‚©’²‚×‚é
+	* \brief å€¤ãŒç­‰ã—ã„ã‹èª¿ã¹ã‚‹
 	*/
 	bool op_eq(const ArrayPtr& other);
 
 	/**
 	* \xbind
-	* \brief ‹ó‚©’²‚×‚é
+	* \brief ç©ºã‹èª¿ã¹ã‚‹
 	*/
 	bool empty(){
 		return values_.empty();
@@ -482,7 +494,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ‹ó‚©’²‚×‚é
+	* \brief ç©ºã‹èª¿ã¹ã‚‹
 	*/
 	bool is_empty(){
 		return values_.is_empty();
@@ -490,7 +502,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief —v‘f‚ğ‘S‚Äíœ‚·‚é
+	* \brief è¦ç´ ã‚’å…¨ã¦å‰Šé™¤ã™ã‚‹
 	*/
 	void clear(){
 		values_.clear();
@@ -498,19 +510,19 @@ public:
 
 	/**
 	* \xbind
-	* \brief —v‘f‚ğÅ‰‚©‚ç”½•œ‚Å‚«‚éIterator‚ğ•Ô‚·
+	* \brief è¦ç´ ã‚’æœ€åˆã‹ã‚‰åå¾©ã§ãã‚‹Iteratorã‚’è¿”ã™
 	*/
 	AnyPtr each();
 
 	/**
 	* \xbind
-	* \brief ’†g‚ğiterator‚Åæ“¾‚Å‚«‚é—v‘f‚É’u‚«Š·‚¦‚é
+	* \brief ä¸­èº«ã‚’iteratorã§å–å¾—ã§ãã‚‹è¦ç´ ã«ç½®ãæ›ãˆã‚‹
 	*/
 	void assign(const AnyPtr& iterator);
 
 	/**
 	* \xbind
-	* \brief iterator‚Åæ“¾‚Å‚«‚é—v‘f‚ğ’Ç‰Á‚·‚é
+	* \brief iteratorã§å–å¾—ã§ãã‚‹è¦ç´ ã‚’è¿½åŠ ã™ã‚‹
 	*/
 	void append(const AnyPtr& iterator);
 

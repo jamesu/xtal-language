@@ -130,33 +130,33 @@ struct XNew;
 /////////////////////////////////////////
 
 /**
-* \brief ‰½‚ÌŒ^‚ÌƒIƒuƒWƒFƒNƒg‚Å‚à•Û‚·‚é“Áê‰»‚³‚ê‚½ƒXƒ}[ƒgƒ|ƒCƒ“ƒ^
+* \brief ä½•ã®å‹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã§ã‚‚ä¿æŒã™ã‚‹ç‰¹æ®ŠåŒ–ã•ã‚ŒãŸã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿
 */
 template<>
 class SmartPtr<Any> : public Any{
 public:
 	
 	/**
-	* \brief null‚Å\’z‚·‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	* \brief nullã§æ§‹ç¯‰ã™ã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	*/
 	SmartPtr(){
 		value_.init_primitive(TYPE_NULL);
 	}
 
-	// ƒfƒXƒgƒ‰ƒNƒ^
+	// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~SmartPtr();
 
 public:
 
-	// ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	SmartPtr(const SmartPtr<Any>& p);
 
-	// ‘ã“ü‰‰Zq
+	// ä»£å…¥æ¼”ç®—å­
 	SmartPtr<Any>& operator =(const SmartPtr<Any>& p);
 
 public:
 
-	// ”CˆÓ‚Ìƒ|ƒCƒ“ƒ^Œ^‚ğó‚¯æ‚Á‚Äxtal‚ÅQÆ‚Å‚«‚é‚æ‚¤‚É‚·‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// ä»»æ„ã®ãƒã‚¤ãƒ³ã‚¿å‹ã‚’å—ã‘å–ã£ã¦xtalã§å‚ç…§ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	template<class T>
 	SmartPtr(const T* p){
 		set_unknown_pointer(InheritedCast<T>::cast(p));
@@ -172,7 +172,7 @@ public:
 public:
 
 	/**
-	* \brief T‚Ìƒ|ƒCƒ“ƒ^‚ÆA‚»‚ê‚ğ”jŠü‚·‚é‚½‚ß‚ÌŠÖ”ƒIƒuƒWƒFƒNƒg‚ğó‚¯æ‚Á‚Ä\’z‚·‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	* \brief Tã®ãƒã‚¤ãƒ³ã‚¿ã¨ã€ãã‚Œã‚’ç ´æ£„ã™ã‚‹ãŸã‚ã®é–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å—ã‘å–ã£ã¦æ§‹ç¯‰ã™ã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	*/
 	template<class T, class Deleter>
 	SmartPtr(const T* p, const Deleter& deleter){
@@ -245,7 +245,7 @@ public:
 public:
 
 	/**
-	* \brief boolean‚©‚ç\’z‚·‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^B
+	* \brief booleanã‹ã‚‰æ§‹ç¯‰ã™ã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
 	*
 	*/
 	SmartPtr(bool v){
@@ -253,18 +253,18 @@ public:
 	}
 
 	/**
-	* \brief •¶š—ñ‚©‚ç\’z‚·‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^B
+	* \brief æ–‡å­—åˆ—ã‹ã‚‰æ§‹ç¯‰ã™ã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
 	*
 	*/
 	SmartPtr(const char_t* str);
 
 	/**
-	* \brief •¶š—ñ‚©‚ç\’z‚·‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^B
+	* \brief æ–‡å­—åˆ—ã‹ã‚‰æ§‹ç¯‰ã™ã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
 	*
 	*/
 	SmartPtr(const LongLivedString& str);
 
-	// Šî–{Œ^‚Ì®”A•‚“®¬”“_”‚©‚ç\’z‚·‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	// åŸºæœ¬å‹ã®æ•´æ•°ã€æµ®å‹•å°æ•°ç‚¹æ•°ã‹ã‚‰æ§‹ç¯‰ã™ã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	SmartPtr(char v){ value_.init_int(v); }
 	SmartPtr(signed char v){ value_.init_int(v); }
 	SmartPtr(unsigned char v){ value_.init_int(v); }
@@ -284,19 +284,19 @@ public:
 public:
 
 	/**
-	* \brief AnyŒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğæ“¾‚·‚éB
+	* \brief Anyå‹ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—ã™ã‚‹ã€‚
 	*/
 	Any* get() const{ return (Any*)this; }
 
 	/**
-	* \brief ->‰‰Zq
-	* ƒXƒ}[ƒgƒ|ƒCƒ“ƒ^‚Æ‚µ‚Äˆµ‚¤‚½‚ß‚ÉƒI[ƒo[ƒ[ƒh‚·‚éB
+	* \brief ->æ¼”ç®—å­
+	* ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿ã¨ã—ã¦æ‰±ã†ãŸã‚ã«ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã€‚
 	*/
 	Any* operator ->() const{ return get(); }
 	
 	/**
-	* \brief *‰‰Zq
-	* ƒXƒ}[ƒgƒ|ƒCƒ“ƒ^‚Æ‚µ‚Äˆµ‚¤‚½‚ß‚ÉƒI[ƒo[ƒ[ƒh‚·‚éB
+	* \brief *æ¼”ç®—å­
+	* ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿ã¨ã—ã¦æ‰±ã†ãŸã‚ã«ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ã€‚
 	*/
 	Any& operator *() const{ return *get(); }
 	
@@ -314,7 +314,7 @@ public:
 #else
 
 	/**
-	* \brief boolean‚Ö‚Ì©“®•ÏŠ·
+	* \brief booleanã¸ã®è‡ªå‹•å¤‰æ›
 	*/
 	operator bool() const{
 		return XTAL_detail_is_true(*this);
@@ -323,7 +323,7 @@ public:
 #endif
 
 	/**
-	* \biref !‰‰Zq
+	* \biref !æ¼”ç®—å­
 	*/
 	bool operator !() const{
 		return !XTAL_detail_is_true(*this);
@@ -332,14 +332,14 @@ public:
 private:
 
 	/**
-	* \brief ˆÃ–Ù‚Ì•ÏŠ·‚ğ—}‚¦‚é‚½‚ß‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^B
-	* “¾‘Ì‚Ì’m‚ê‚È‚¢ƒ|ƒCƒ“ƒ^‚©‚ç‚Ì\’z‚ğ‹‘”Û‚·‚é‚½‚ßA‚±‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Íprivate‚ÅÀ‘•‚à‘¶İ‚µ‚È‚¢B
+	* \brief æš—é»™ã®å¤‰æ›ã‚’æŠ‘ãˆã‚‹ãŸã‚ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
+	* å¾—ä½“ã®çŸ¥ã‚Œãªã„ãƒã‚¤ãƒ³ã‚¿ã‹ã‚‰ã®æ§‹ç¯‰ã‚’æ‹’å¦ã™ã‚‹ãŸã‚ã€ã“ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯privateã§å®Ÿè£…ã‚‚å­˜åœ¨ã—ãªã„ã€‚
 	*/
 	SmartPtr(void*);
 
 	/**
-	* \brief ˆÃ–Ù‚Ì•ÏŠ·‚ğ—}‚¦‚é‚½‚ß‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^B
-	* “¾‘Ì‚Ì’m‚ê‚È‚¢ŠÖ”ƒ|ƒCƒ“ƒ^‚©‚ç‚Ì\’z‚ğ‹‘”Û‚·‚é‚½‚ßA‚±‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Íprivate‚ÅÀ‘•‚à‘¶İ‚µ‚È‚¢B
+	* \brief æš—é»™ã®å¤‰æ›ã‚’æŠ‘ãˆã‚‹ãŸã‚ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€‚
+	* å¾—ä½“ã®çŸ¥ã‚Œãªã„é–¢æ•°ãƒã‚¤ãƒ³ã‚¿ã‹ã‚‰ã®æ§‹ç¯‰ã‚’æ‹’å¦ã™ã‚‹ãŸã‚ã€ã“ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯privateã§å®Ÿè£…ã‚‚å­˜åœ¨ã—ãªã„ã€‚
 	*/
 	template<class R> SmartPtr(R (*a)());
 	template<class R, class A1> SmartPtr(R (*a)(A1));
@@ -542,7 +542,7 @@ CppClassSymbolData CppClassSymbolBase<T>::value = {0};
 template<class T>
 struct CppClassSymbol : public CppClassSymbolBase<T>{};
 
-// CppClassSymbol‚ÌCüq‚ğ‚Í‚¸‚·‚½‚ß‚Ì’è‹`
+// CppClassSymbolã®ä¿®é£¾å­ã‚’ã¯ãšã™ãŸã‚ã®å®šç¾©
 template<class T> struct CppClassSymbol<T&> : public CppClassSymbol<T>{};
 template<class T> struct CppClassSymbol<T*> : public CppClassSymbol<T>{};
 template<class T> struct CppClassSymbol<const T> : public CppClassSymbol<T>{};

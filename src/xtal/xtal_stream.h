@@ -12,8 +12,8 @@ namespace xtal{
 /**
 * \xbind lib::builtin
 * \xinherit lib::builtin::Any
-* \brief ƒXƒgƒŠ[ƒ€
-* Šeƒƒ“ƒo‚Ì’†‚ÅƒGƒ‰[‚ª‹N‚±‚Á‚½ê‡Axtal‚Ì—áŠO‚ªİ’è‚³‚ê‚é
+* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ 
+* å„ãƒ¡ãƒ³ãƒã®ä¸­ã§ã‚¨ãƒ©ãƒ¼ãŒèµ·ã“ã£ãŸå ´åˆã€xtalã®ä¾‹å¤–ãŒè¨­å®šã•ã‚Œã‚‹
 */
 class Stream : public Base{
 public:
@@ -22,33 +22,33 @@ public:
 
 	/**
 	* \xbind
-	* \brief •¶š—ñstr‚ğƒXƒgƒŠ[ƒ€‚É—¬‚·
+	* \brief æ–‡å­—åˆ—strã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æµã™
 	*/
 	void put_s(const StringPtr& str){
 		put_s(str->data(), str->data_size());
 	}
 
 	/**
-	* \brief •¶š—ñstr‚ğƒXƒgƒŠ[ƒ€‚É—¬‚·
+	* \brief æ–‡å­—åˆ—strã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æµã™
 	*/
 	void put_s(const char_t* str){
 		put_s(str, string_data_size(str));
 	}
 	
 	/**
-	* \brief •¶š—ñstr‚ğƒXƒgƒŠ[ƒ€‚É—¬‚·
+	* \brief æ–‡å­—åˆ—strã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æµã™
 	*/
 	void put_s(const char_t* str, const char_t* end){
 		put_s(str, end-str);
 	}
 
 	/*
-	* \brief •¶š—ñstr‚ğƒXƒgƒŠ[ƒ€‚É—¬‚·
+	* \brief æ–‡å­—åˆ—strã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æµã™
 	*/
 	void put_s(const char_t* str, uint_t length);
 
 	/**
-	* \brief •¶š—ñstr‚ğƒXƒgƒŠ[ƒ€‚É—¬‚·
+	* \brief æ–‡å­—åˆ—strã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æµã™
 	*/
 	template<int N>
 	void put_s(const LongLivedStringN<N>& str){
@@ -56,20 +56,20 @@ public:
 	}
 
 	/**
-	* \brief •¶š—ñstr‚ğƒXƒgƒŠ[ƒ€‚É—¬‚·
+	* \brief æ–‡å­—åˆ—strã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æµã™
 	*/
 	void put_s(const LongLivedString& str){
 		put_s(str.str(), str.size());
 	}
 
 	/**
-	* \brief •¶š—ñstr‚ğƒXƒgƒŠ[ƒ€‚É—¬‚·
+	* \brief æ–‡å­—åˆ—strã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æµã™
 	*/
 	void put_s(const AnyPtr& str);
 	
 	/**
 	* \xbind
-	* \brief length•¶š•ªƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚µA•¶š—ñ‚Æ‚µ‚Ä•Ô‚·B
+	* \brief lengthæ–‡å­—åˆ†ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã—ã€æ–‡å­—åˆ—ã¨ã—ã¦è¿”ã™ã€‚
 	*/
 	StringPtr get_s(uint_t length){
 		return on_get_s(length);
@@ -79,7 +79,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚©‚ç‚·‚×‚Ä‚Ì•¶š‚ğæ‚èo‚µA•¶š—ñ‚Æ‚µ‚Ä•Ô‚·
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰ã™ã¹ã¦ã®æ–‡å­—ã‚’å–ã‚Šå‡ºã—ã€æ–‡å­—åˆ—ã¨ã—ã¦è¿”ã™
 	*/
 	StringPtr get_s_all(){
 		return on_get_s_all();
@@ -91,13 +91,13 @@ public:
 
 	/**
 	* \xbind
-	* \brief value‚ğ•¶š—ñ‰»‚µ‚ÄƒvƒŠƒ“ƒg‚·‚é
+	* \brief valueã‚’æ–‡å­—åˆ—åŒ–ã—ã¦ãƒ—ãƒªãƒ³ãƒˆã™ã‚‹
 	*/
 	void print(const AnyPtr& value);
 
 	/**
 	* \xbind
-	* \brief value‚ğ•¶š—ñ‰»‚µA‰üs‚ğ‰Á‚¦‚ÄƒvƒŠƒ“ƒg‚·‚é
+	* \brief valueã‚’æ–‡å­—åˆ—åŒ–ã—ã€æ”¹è¡Œã‚’åŠ ãˆã¦ãƒ—ãƒªãƒ³ãƒˆã™ã‚‹
 	*/
 	void println(const AnyPtr& value);
 
@@ -119,7 +119,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚Ìæ“ª‚©‚ç‚ÌˆÊ’u‚ğ•Ô‚·
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®å…ˆé ­ã‹ã‚‰ã®ä½ç½®ã‚’è¿”ã™
 	*/
 	uint_t tell(){
 		return on_tell();
@@ -127,8 +127,8 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚Ìæ“ª‚©‚çoffset‚ÌˆÊ’u‚ÉˆÚ“®‚·‚é
-	* ƒXƒgƒŠ[ƒ€‚Ìí—Ş‚É‚æ‚Á‚Ä‚ÍƒV[ƒN‚Å‚«‚È‚¢ê‡‚à‚ ‚éB
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®å…ˆé ­ã‹ã‚‰offsetã®ä½ç½®ã«ç§»å‹•ã™ã‚‹
+	* ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®ç¨®é¡ã«ã‚ˆã£ã¦ã¯ã‚·ãƒ¼ã‚¯ã§ããªã„å ´åˆã‚‚ã‚ã‚‹ã€‚
 	*/
 	void seek(uint_t offset){
 		on_seek(offset);
@@ -136,8 +136,8 @@ public:
 	
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚Å—˜—p‰Â”\‚ÈƒoƒCƒg”‚ğæ“¾‚·‚é
-	* ƒXƒgƒŠ[ƒ€‚Ìí—Ş‚É‚æ‚Á‚Ä‚Í—˜—p‚Å‚«‚È‚¢‰Â”\«‚ª‚ ‚é
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã§åˆ©ç”¨å¯èƒ½ãªãƒã‚¤ãƒˆæ•°ã‚’å–å¾—ã™ã‚‹
+	* ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®ç¨®é¡ã«ã‚ˆã£ã¦ã¯åˆ©ç”¨ã§ããªã„å¯èƒ½æ€§ãŒã‚ã‚‹
 	*/
 	uint_t available(){
 		return on_available();
@@ -145,7 +145,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚ğƒNƒ[ƒY‚·‚é
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’ã‚¯ãƒ­ãƒ¼ã‚ºã™ã‚‹
 	*/
 	void close(){
 		on_close();
@@ -153,7 +153,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚ğƒtƒ‰ƒbƒVƒ…‚·‚é
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’ãƒ•ãƒ©ãƒƒã‚·ãƒ¥ã™ã‚‹
 	*/
 	void flush(){
 		on_flush();
@@ -161,7 +161,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚©‚çƒXƒgƒŠ[ƒ€‚ÉsizeƒoƒCƒg—¬‚µ‚Ş 
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«sizeãƒã‚¤ãƒˆæµã—è¾¼ã‚€ 
 	*/
 	uint_t pour(const StreamPtr& in_stream, uint_t size){
 		return on_pour(in_stream, size);
@@ -169,7 +169,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚©‚çƒXƒgƒŠ[ƒ€‚É‚·‚×‚Ä—¬‚µ‚Ş 
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«ã™ã¹ã¦æµã—è¾¼ã‚€ 
 	*/
 	uint_t pour_all(const StreamPtr& in_stream){
 		return on_pour_all(in_stream);
@@ -177,8 +177,8 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚Ì‘SƒTƒCƒY‚ğ•Ô‚·
-	* ƒXƒgƒŠ[ƒ€‚Ìí—Ş‚É‚æ‚Á‚Ä‚ÍAƒTƒCƒY‚ğ“¾‚é‚±‚Æ‚Í•s‰Â”\‚Å‚ ‚éB
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®å…¨ã‚µã‚¤ã‚ºã‚’è¿”ã™
+	* ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®ç¨®é¡ã«ã‚ˆã£ã¦ã¯ã€ã‚µã‚¤ã‚ºã‚’å¾—ã‚‹ã“ã¨ã¯ä¸å¯èƒ½ã§ã‚ã‚‹ã€‚
 	*/
 	virtual uint_t size(){
 		return on_size();
@@ -186,7 +186,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚ªI‚í‚Á‚Ä‚¢‚é‚©•Ô‚·
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ãŒçµ‚ã‚ã£ã¦ã„ã‚‹ã‹è¿”ã™
 	*/
 	bool eos(){
 		return on_eos();
@@ -200,17 +200,17 @@ public:
 
 	/**
 	* \xbind
-	* \brief ƒIƒuƒWƒFƒNƒg‚ğ’¼—ñ‰»‚µ‚ÄƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç›´åˆ—åŒ–ã—ã¦ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*
-	* \param obj ’¼—ñ‰»‚µ‚Ä•Û‘¶‚µ‚½‚¢ƒIƒuƒWƒFƒNƒg
+	* \param obj ç›´åˆ—åŒ–ã—ã¦ä¿å­˜ã—ãŸã„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	*/
 	void serialize(const AnyPtr& obj);
 
 	/**
 	* \xbind
-	* \brief ’¼—ñ‰»‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚ğƒXƒgƒŠ[ƒ€‚©‚ç“Ç‚İo‚·
+	* \brief ç›´åˆ—åŒ–ã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰èª­ã¿å‡ºã™
 	*
-	* \return •œŒ³‚³‚ê‚½ƒIƒuƒWƒFƒNƒg
+	* \return å¾©å…ƒã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	*/	
 	AnyPtr deserialize();
 
@@ -220,7 +220,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief •„†•t®”8-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ç¬¦å·ä»˜æ•´æ•°8-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_i8(i8 v){
 		put_u8(v);
@@ -228,7 +228,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief •„†•t®”16-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ç¬¦å·ä»˜æ•´æ•°16-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_i16be(i16 v){
 		put_u16be(v);
@@ -236,7 +236,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief •„†•t®”16-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ç¬¦å·ä»˜æ•´æ•°16-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_i16le(i16 v){
 		put_u16le(v);
@@ -244,7 +244,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief •„†•t®”32-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ç¬¦å·ä»˜æ•´æ•°32-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_i32be(i32 v){
 		put_u32be(v);
@@ -252,7 +252,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief •„†•t®”32-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ç¬¦å·ä»˜æ•´æ•°32-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_i32le(i32 v){
 		put_u32le(v);
@@ -260,14 +260,14 @@ public:
 
 	/**
 	* \xbind
-	* \brief •„†•t®”64-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ç¬¦å·ä»˜æ•´æ•°64-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_i64be(i64 v){
 		put_u64be(v);
 	}
 
 	/**
-	* \brief •„†•t®”64-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ç¬¦å·ä»˜æ•´æ•°64-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_i64le(i64 v){
 		put_u64le(v);
@@ -275,7 +275,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief •„†–³®”8-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ç¬¦å·ç„¡æ•´æ•°8-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_u8(u8 v){
 		write(&v, 1);
@@ -283,41 +283,41 @@ public:
 
 	/**
 	* \xbind
-	* \brief •„†–³®”16-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ç¬¦å·ç„¡æ•´æ•°16-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_u16be(u16 v);
 
 	/**
 	* \xbind
-	* \brief •„†–³®”16-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ç¬¦å·ç„¡æ•´æ•°16-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_u16le(u16 v);
 
 	/**
 	* \xbind
-	* \brief •„†–³®”32-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ç¬¦å·ç„¡æ•´æ•°32-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_u32be(u32 v);
 
 	/**
 	* \xbind
-	* \brief •„†–³®”32-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ç¬¦å·ç„¡æ•´æ•°32-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_u32le(u32 v);
 
 	/**
-	* \brief •„†–³®”64-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ç¬¦å·ç„¡æ•´æ•°64-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_u64be(u64 v);
 
 	/**
-	* \brief •„†–³®”64-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief ç¬¦å·ç„¡æ•´æ•°64-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_u64le(u64 v);
 
 	/**
 	* \xbind
-	* \brief •„†•t®”8-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief ç¬¦å·ä»˜æ•´æ•°8-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	i8 get_i8(){
 		return (i8)get_u8();
@@ -325,7 +325,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief •„†•t®”16-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief ç¬¦å·ä»˜æ•´æ•°16-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	i16 get_i16be(){
 		return (i16)get_u16be();
@@ -333,7 +333,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief •„†•t®”16-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief ç¬¦å·ä»˜æ•´æ•°16-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	i16 get_i16le(){
 		return (i16)get_u16le();
@@ -341,7 +341,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief •„†•t®”32-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief ç¬¦å·ä»˜æ•´æ•°32-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	i32 get_i32be(){
 		return (i32)get_u32be();
@@ -349,21 +349,21 @@ public:
 
 	/**
 	* \xbind
-	* \brief •„†•t®”32-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief ç¬¦å·ä»˜æ•´æ•°32-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	i32 get_i32le(){
 		return (i32)get_u32le();
 	}
 
 	/**
-	* \brief •„†•t®”64-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief ç¬¦å·ä»˜æ•´æ•°64-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	i64 get_i64be(){
 		return (i64)get_u64be();
 	}
 
 	/**
-	* \brief •„†•t®”64-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief ç¬¦å·ä»˜æ•´æ•°64-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	i64 get_i64le(){
 		return (i64)get_u64le();
@@ -371,47 +371,47 @@ public:
 
 	/**
 	* \xbind
-	* \brief •„†–³®”8-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief ç¬¦å·ç„¡æ•´æ•°8-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	u8 get_u8();
 
 	/**
 	* \xbind
-	* \brief •„†–³®”16-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief ç¬¦å·ç„¡æ•´æ•°16-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	u16 get_u16be();
 
 	/**
 	* \xbind
-	* \brief •„†–³®”16-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief ç¬¦å·ç„¡æ•´æ•°16-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	u16 get_u16le();
 
 	/**
 	* \xbind
-	* \brief •„†–³®”32-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief ç¬¦å·ç„¡æ•´æ•°32-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	u32 get_u32be();
 
 	/**
 	* \xbind
-	* \brief •„†–³®”32-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief ç¬¦å·ç„¡æ•´æ•°32-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	u32 get_u32le();
 
 	/**
-	* \brief •„†–³®”64-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief ç¬¦å·ç„¡æ•´æ•°64-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	u64 get_u64be();
 
 	/**
-	* \brief •„†–³®”64-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief ç¬¦å·ç„¡æ•´æ•°64-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	u64 get_u64le();
 
 	/**
 	* \xbind
-	* \brief •‚“®¬”“_”32-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief æµ®å‹•å°æ•°ç‚¹æ•°32-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_f32be(f32 v){
 		union{ u32 u; f32 f; } u;
@@ -421,7 +421,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief •‚“®¬”“_”32-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief æµ®å‹•å°æ•°ç‚¹æ•°32-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_f32le(f32 v){
 		union{ u32 u; f32 f; } u;
@@ -430,7 +430,7 @@ public:
 	}
 
 	/**
-	* \brief •‚“®¬”“_”64-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief æµ®å‹•å°æ•°ç‚¹æ•°64-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_f64be(f64 v){
 		union{ u64 u; f64 f; } u;
@@ -439,7 +439,7 @@ public:
 	}
 
 	/**
-	* \brief •‚“®¬”“_”64-bit‚ğƒXƒgƒŠ[ƒ€‚É‘‚«‚Ş
+	* \brief æµ®å‹•å°æ•°ç‚¹æ•°64-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«æ›¸ãè¾¼ã‚€
 	*/
 	void put_f64le(f64 v){
 		union{ u64 u; f64 f; } u;
@@ -449,7 +449,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief •‚“®¬”“_”32-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief æµ®å‹•å°æ•°ç‚¹æ•°32-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	f32 get_f32be(){
 		union{ u32 u; f32 f; } u;
@@ -459,7 +459,7 @@ public:
 
 	/**
 	* \xbind
-	* \brief •‚“®¬”“_”32-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief æµ®å‹•å°æ•°ç‚¹æ•°32-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	f32 get_f32le(){
 		union{ u32 u; f32 f; } u;
@@ -468,7 +468,7 @@ public:
 	}
 
 	/**
-	* \brief •‚“®¬”“_”64-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief æµ®å‹•å°æ•°ç‚¹æ•°64-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	f64 get_f64be(){
 		union{ u64 u; f64 f; } u;
@@ -477,7 +477,7 @@ public:
 	}
 
 	/**
-	* \brief •‚“®¬”“_”64-bit‚ğƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚·
+	* \brief æµ®å‹•å°æ•°ç‚¹æ•°64-bitã‚’ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã™
 	*/
 	f64 get_f64le(){
 		union{ u64 u; f64 f; } u;
@@ -519,13 +519,13 @@ public:
 protected:
 	/**
 	* \xbind
-	* \brief length•¶š•ªƒXƒgƒŠ[ƒ€‚©‚çæ‚èo‚µA•¶š—ñ‚Æ‚µ‚Ä•Ô‚·B
+	* \brief lengthæ–‡å­—åˆ†ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰å–ã‚Šå‡ºã—ã€æ–‡å­—åˆ—ã¨ã—ã¦è¿”ã™ã€‚
 	*/
 	virtual StringPtr on_get_s(uint_t length);
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚©‚ç‚·‚×‚Ä‚Ì•¶š‚ğæ‚èo‚µA•¶š—ñ‚Æ‚µ‚Ä•Ô‚·
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰ã™ã¹ã¦ã®æ–‡å­—ã‚’å–ã‚Šå‡ºã—ã€æ–‡å­—åˆ—ã¨ã—ã¦è¿”ã™
 	*/
 	virtual StringPtr on_get_s_all();
 
@@ -537,58 +537,58 @@ protected:
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚Ìæ“ª‚©‚ç‚ÌˆÊ’u‚ğ•Ô‚·
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®å…ˆé ­ã‹ã‚‰ã®ä½ç½®ã‚’è¿”ã™
 	*/
 	virtual uint_t on_tell();
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚Ìæ“ª‚©‚çoffset‚ÌˆÊ’u‚ÉˆÚ“®‚·‚é
-	* ƒXƒgƒŠ[ƒ€‚Ìí—Ş‚É‚æ‚Á‚Ä‚ÍƒV[ƒN‚Å‚«‚È‚¢ê‡‚à‚ ‚éB
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®å…ˆé ­ã‹ã‚‰offsetã®ä½ç½®ã«ç§»å‹•ã™ã‚‹
+	* ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®ç¨®é¡ã«ã‚ˆã£ã¦ã¯ã‚·ãƒ¼ã‚¯ã§ããªã„å ´åˆã‚‚ã‚ã‚‹ã€‚
 	*/
 	virtual void on_seek(uint_t offset);
 	
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚Å—˜—p‰Â”\‚ÈƒoƒCƒg”‚ğæ“¾‚·‚é
-	* ƒXƒgƒŠ[ƒ€‚Ìí—Ş‚É‚æ‚Á‚Ä‚Í—˜—p‚Å‚«‚È‚¢‰Â”\«‚ª‚ ‚é
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã§åˆ©ç”¨å¯èƒ½ãªãƒã‚¤ãƒˆæ•°ã‚’å–å¾—ã™ã‚‹
+	* ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®ç¨®é¡ã«ã‚ˆã£ã¦ã¯åˆ©ç”¨ã§ããªã„å¯èƒ½æ€§ãŒã‚ã‚‹
 	*/
 	virtual uint_t on_available();
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚ğƒNƒ[ƒY‚·‚é
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’ã‚¯ãƒ­ãƒ¼ã‚ºã™ã‚‹
 	*/
 	virtual void on_close(){}
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚ğƒtƒ‰ƒbƒVƒ…‚·‚é
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’ãƒ•ãƒ©ãƒƒã‚·ãƒ¥ã™ã‚‹
 	*/
 	virtual void on_flush(){}
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚©‚çƒXƒgƒŠ[ƒ€‚ÉsizeƒoƒCƒg—¬‚µ‚Ş 
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«sizeãƒã‚¤ãƒˆæµã—è¾¼ã‚€ 
 	*/
 	virtual uint_t on_pour(const StreamPtr& in_stream, uint_t size);
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚©‚çƒXƒgƒŠ[ƒ€‚É‚·‚×‚Ä—¬‚µ‚Ş 
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰ã‚¹ãƒˆãƒªãƒ¼ãƒ ã«ã™ã¹ã¦æµã—è¾¼ã‚€ 
 	*/
 	virtual uint_t on_pour_all(const StreamPtr& in_stream);
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚Ì‘SƒTƒCƒY‚ğ•Ô‚·
-	* ƒXƒgƒŠ[ƒ€‚Ìí—Ş‚É‚æ‚Á‚Ä‚ÍAƒTƒCƒY‚ğ“¾‚é‚±‚Æ‚Í•s‰Â”\‚Å‚ ‚éB
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®å…¨ã‚µã‚¤ã‚ºã‚’è¿”ã™
+	* ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®ç¨®é¡ã«ã‚ˆã£ã¦ã¯ã€ã‚µã‚¤ã‚ºã‚’å¾—ã‚‹ã“ã¨ã¯ä¸å¯èƒ½ã§ã‚ã‚‹ã€‚
 	*/
 	virtual uint_t on_size();
 
 	/**
 	* \xbind
-	* \brief ƒXƒgƒŠ[ƒ€‚ªI‚í‚Á‚Ä‚¢‚é‚©•Ô‚·
+	* \brief ã‚¹ãƒˆãƒªãƒ¼ãƒ ãŒçµ‚ã‚ã£ã¦ã„ã‚‹ã‹è¿”ã™
 	*/
 	virtual bool on_eos(){ return false; }
 
@@ -640,8 +640,8 @@ private:
 };
 
 /**
-* \brief ƒ|ƒCƒ“ƒ^“Ç‚İæ‚èƒXƒgƒŠ[ƒ€
-* ‚±‚ÌƒXƒgƒŠ[ƒ€‚Í“Ç‚İæ‚èê—p‚Å‚ ‚é
+* \brief ãƒã‚¤ãƒ³ã‚¿èª­ã¿å–ã‚Šã‚¹ãƒˆãƒªãƒ¼ãƒ 
+* ã“ã®ã‚¹ãƒˆãƒªãƒ¼ãƒ ã¯èª­ã¿å–ã‚Šå°‚ç”¨ã§ã‚ã‚‹
 */
 class PointerStream : public Stream{
 public:
@@ -685,7 +685,7 @@ protected:
 /**
 * \xbind lib::builtin
 * \xinherit lib::builtin::Stream
-* \brief ƒƒ‚ƒŠ[ƒXƒgƒŠ[ƒ€
+* \brief ãƒ¡ãƒ¢ãƒªãƒ¼ã‚¹ãƒˆãƒªãƒ¼ãƒ 
 */
 class MemoryStream : public PointerStream{
 public:
@@ -718,8 +718,8 @@ protected:
 /**
 * \xbind lib::builtin
 * \xinherit lib::builtin::Stream
-* \brief •¶š—ñƒXƒgƒŠ[ƒ€
-* •¶š—ñ‚ğ“Ç‚İæ‚é‚½‚ß‚ÌƒXƒgƒŠ[ƒ€B‘‚«‚İ•s‰ÂB
+* \brief æ–‡å­—åˆ—ã‚¹ãƒˆãƒªãƒ¼ãƒ 
+* æ–‡å­—åˆ—ã‚’èª­ã¿å–ã‚‹ãŸã‚ã®ã‚¹ãƒˆãƒªãƒ¼ãƒ ã€‚æ›¸ãè¾¼ã¿ä¸å¯ã€‚
 */
 class StringStream : public PointerStream{
 public:
@@ -783,7 +783,7 @@ private:
 /**
 * \xbind lib::builtin
 * \xinherit lib::builtin::Stream
-* \brief ƒtƒ@ƒCƒ‹ƒXƒgƒŠ[ƒ€
+* \brief ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ãƒˆãƒªãƒ¼ãƒ 
 */
 class FileStream : public Stream{
 public:
@@ -793,7 +793,7 @@ public:
 	}
 
 	/**
-	* \brief ƒtƒ@ƒCƒ‹ŠJ‚«‚ğƒtƒ@ƒCƒ‹ƒXƒgƒŠ[ƒ€‚ğ\’z‚·‚é
+	* \brief ãƒ•ã‚¡ã‚¤ãƒ«é–‹ãã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã‚¹ãƒˆãƒªãƒ¼ãƒ ã‚’æ§‹ç¯‰ã™ã‚‹
 	*/
 	FileStream(const StringPtr& path, const StringPtr& flags){
 		impl_ = 0;

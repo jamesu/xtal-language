@@ -63,14 +63,14 @@ void VMachine::reset(){
 }
 
 void VMachine::push_arg(const AnyPtr& value){
-	XTAL_ASSERT(XTAL_VM_ff().named_arg_count==0); //‡”Ôw’èˆø”‚Í –¼‘Ow’èˆø”‚Ì‘O‚¾‚¯
+	XTAL_ASSERT(XTAL_VM_ff().named_arg_count==0); //é †ç•ªæŒ‡å®šå¼•æ•°ã¯ åå‰æŒ‡å®šå¼•æ•°ã®å‰ã ã‘
 
 	set_local_variable(XTAL_VM_ff().ordered_arg_count, value);
 	XTAL_VM_ff().ordered_arg_count++;
 }
 	
 void VMachine::push_arg(const IDPtr& name, const AnyPtr& value){
-	XTAL_ASSERT(XTAL_VM_ff().ordered_arg_count==0); // –¼‘Ow’èˆø”‚Í‡”Ôw’èˆø”‚ÌŒã‚¾‚¯
+	XTAL_ASSERT(XTAL_VM_ff().ordered_arg_count==0); // åå‰æŒ‡å®šå¼•æ•°ã¯é †ç•ªæŒ‡å®šå¼•æ•°ã®å¾Œã ã‘
 
 	int_t offset = XTAL_VM_ff().ordered_arg_count + XTAL_VM_ff().named_arg_count*2;
 	set_local_variable(offset+0, name);
@@ -193,17 +193,17 @@ void VMachine::execute(Method* fun, const inst_t* start_pc){
 void VMachine::execute(){
 	FunFrame& f = XTAL_VM_ff();
 
-	// Šù‚ÉÀs‚³‚ê‚Ä‚¢‚é
+	// æ—¢ã«å®Ÿè¡Œã•ã‚Œã¦ã„ã‚‹
 	if(f.is_executed==2){
 		return;
 	}
 
-	// ŠÖ”‚à–ß‚è’l‚àİ’è‚³‚ê‚Ä‚¢‚È‚¢
+	// é–¢æ•°ã‚‚æˆ»ã‚Šå€¤ã‚‚è¨­å®šã•ã‚Œã¦ã„ãªã„
 	if(f.is_executed==0){
 		return;
 	}
 
-	// —áŠO‚ªƒNƒŠƒA‚³‚ê‚Ä‚¢‚È‚¢‚È‚çÀs‚Å‚«‚È‚¢
+	// ä¾‹å¤–ãŒã‚¯ãƒªã‚¢ã•ã‚Œã¦ã„ãªã„ãªã‚‰å®Ÿè¡Œã§ããªã„
 	if(except_[0]){
 		return;
 	}
@@ -273,7 +273,7 @@ bool VMachine::adjust_args(const NamedParam* params, int_t num){
 	int_t base = f.ordered_arg_count + f.named_arg_count*2;
 	int_t offset = base;
 	
-	char argcheck[138]; // ƒoƒCƒgƒR[ƒh‚Ìd—l‚©‚ç‚¢‚Á‚Ä128‚ğ’´‚¦‚é‚±‚Æ‚Í‚ ‚è‚¦‚È‚¢
+	char argcheck[138]; // ãƒã‚¤ãƒˆã‚³ãƒ¼ãƒ‰ã®ä»•æ§˜ã‹ã‚‰ã„ã£ã¦128ã‚’è¶…ãˆã‚‹ã“ã¨ã¯ã‚ã‚Šãˆãªã„
 	for(int_t i=0, sz=f.named_arg_count; i<sz; ++i){
 		argcheck[i] = 0;
 	}
@@ -281,7 +281,7 @@ bool VMachine::adjust_args(const NamedParam* params, int_t num){
 	for(int_t j=f.ordered_arg_count; j<num; ++j){
 		bool hit = false;
 		for(int_t i = 0, sz = f.named_arg_count; i<sz; ++i){
-			// –¼‘O•t‚«ˆø”‚É“¯‚¶–¼‘O‚Ì‚à‚Ì‚ª‚ ‚Á‚½
+			// åå‰ä»˜ãå¼•æ•°ã«åŒã˜åå‰ã®ã‚‚ã®ãŒã‚ã£ãŸ
 			if(XTAL_detail_raweq(XTAL_VM_local_variable(f.ordered_arg_count + i*2 + 0), params[j].name)){
 				argcheck[i] = 1;
 				set_local_variable(offset++, XTAL_VM_local_variable(f.ordered_arg_count + i*2 + 1));
@@ -318,7 +318,7 @@ bool VMachine::adjust_args(Method* names){
 	int_t base = f.ordered_arg_count + f.named_arg_count*2;
 	int_t offset = base;
 
-	char argcheck[138]; // ƒoƒCƒgƒR[ƒh‚Ìd—l‚©‚ç‚¢‚Á‚Ä128‚ğ’´‚¦‚é‚±‚Æ‚Í‚ ‚è‚¦‚È‚¢
+	char argcheck[138]; // ãƒã‚¤ãƒˆã‚³ãƒ¼ãƒ‰ã®ä»•æ§˜ã‹ã‚‰ã„ã£ã¦128ã‚’è¶…ãˆã‚‹ã“ã¨ã¯ã‚ã‚Šãˆãªã„
 	for(int_t i=0, sz=f.named_arg_count; i<sz; ++i){
 		argcheck[i] = 0;
 	}
@@ -435,7 +435,7 @@ void VMachine::present_for_vm(Fiber* fun, VMachine* vm, bool add_succ_or_fail_re
 		return;
 	}
 
-	// Œ‹‰Ê‚ğvm‚É“n‚·
+	// çµæœã‚’vmã«æ¸¡ã™
 	int_t base;
 	if(add_succ_or_fail_result){
 		if(resume_pc_!=0){
@@ -889,7 +889,7 @@ const inst_t* VMachine::catch_body(const inst_t* pc, const ExceptFrame& nef){
 		ef = except_frames_.top();
 	}
 
-	// Xtal‚ÌŠÖ”‚ğ’Eo‚µ‚Ä‚¢‚­
+	// Xtalã®é–¢æ•°ã‚’è„±å‡ºã—ã¦ã„ã
 	while((size_t)ef.fun_frame_size<fun_frame_stack_.size()){
 		while(scopes_.size()>XTAL_VM_ff().scope_lower){
 			pop_scope();
@@ -900,7 +900,7 @@ const inst_t* VMachine::catch_body(const inst_t* pc, const ExceptFrame& nef){
 		pc = XTAL_VM_ff().next_pc;
 		e = append_backtrace(pc, e);
 
-		// C‚ÌŠÖ”‚É‚Ô‚Â‚©‚Á‚½
+		// Cã®é–¢æ•°ã«ã¶ã¤ã‹ã£ãŸ
 		if(pc==&end_code_){
 			ef.info = 0;
 			break;
@@ -962,7 +962,7 @@ void VMachine::set_except(const AnyPtr& e){
 		except_[0] = e;
 	}
 	else{
-		//XTAL_ASSERT(false); // —áŠO‚ğƒnƒ“ƒhƒ‹‚¹‚¸‚ÉŸ‚Ì—áŠO‚ğİ’è‚µ‚½
+		//XTAL_ASSERT(false); // ä¾‹å¤–ã‚’ãƒãƒ³ãƒ‰ãƒ«ã›ãšã«æ¬¡ã®ä¾‹å¤–ã‚’è¨­å®šã—ãŸ
 	}
 }
 
@@ -1036,13 +1036,13 @@ AnyPtr VMachine::eval(const CodePtr& code, uint_t n){
 
 	AnyPtr self = fun_frame_stack_[n]->self;
 
-	// eval’†‚Ì—áŠO‚Ì”­¶‚É‚æ‚é‰e‹¿”ÍˆÍ—}§‚Ì‚½‚ßAŠÖ”ŒÄ‚Ño‚µ‚ğˆê’i‚Í‚³‚Ş
+	// evalä¸­ã®ä¾‹å¤–ã®ç™ºç”Ÿã«ã‚ˆã‚‹å½±éŸ¿ç¯„å›²æŠ‘åˆ¶ã®ãŸã‚ã€é–¢æ•°å‘¼ã³å‡ºã—ã‚’ä¸€æ®µã¯ã•ã‚€
 	setup_call(1); 
 	n += 1;
 
 	setup_call(1);
 	set_arg_this(self);
-	code->first_fun()->rawcall(to_smartptr(this)); //evalƒRƒ“ƒpƒCƒ‹‚³‚ê‚½Code‚ğÀs
+	code->first_fun()->rawcall(to_smartptr(this)); //evalã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã•ã‚ŒãŸCodeã‚’å®Ÿè¡Œ
 
 	execute_inner(XTAL_VM_ff().next_pc, n+1);
 

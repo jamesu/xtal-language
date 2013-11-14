@@ -12,7 +12,7 @@
 namespace xtal{
 
 /**
-* \brief ŠÖ”ŒÄ‚Ño‚µ‚ÅA–¼‘O•t‚«ˆø”‚Æ‚µ‚Ä“n‚·‚½‚ß‚ÌƒNƒ‰ƒX
+* \brief é–¢æ•°å‘¼ã³å‡ºã—ã§ã€åå‰ä»˜ãå¼•æ•°ã¨ã—ã¦æ¸¡ã™ãŸã‚ã®ã‚¯ãƒ©ã‚¹
 *
 */
 struct Named{
@@ -20,13 +20,13 @@ struct Named{
 	const AnyPtr& value;
 
 	/**
-	* \brief –¼‘O‚Æ’l‚ğw’è‚µ‚Ä\’z‚·‚éB
+	* \brief åå‰ã¨å€¤ã‚’æŒ‡å®šã—ã¦æ§‹ç¯‰ã™ã‚‹ã€‚
 	*/
 	Named(const IDPtr& name, const AnyPtr& value)
 		:name(name), value(value){}
 
 	/**
-	* \brief ‹ó‚Èó‘Ô‚Å¶¬‚·‚é
+	* \brief ç©ºãªçŠ¶æ…‹ã§ç”Ÿæˆã™ã‚‹
 	*/
 	Named()
 		:name(nul<ID>()), value(undefined){}
@@ -78,7 +78,7 @@ struct FastStackDefaultValue<AnyPtr>{
 #define XTAL_VM_prev_ff() (**(fun_frame_stack_.current_-1))
 #define XTAL_VM_identifier(n) (identifier_[n])
 
-// XTAL‰¼‘zƒ}ƒVƒ“
+// XTALä»®æƒ³ãƒã‚·ãƒ³
 class VMachine : public Base{
 public:
 
@@ -88,58 +88,58 @@ public:
 
 public:
 
-	// ŠÖ”ŒÄ‚Ño‚µ‘¤‚ªg‚¤‚½‚ß‚ÌŠÖ”ŒQ
+	// é–¢æ•°å‘¼ã³å‡ºã—å´ãŒä½¿ã†ãŸã‚ã®é–¢æ•°ç¾¤
 
 	/**
-	* \brief ˆø”‚ğ1ŒÂÏ‚ŞB
+	* \brief å¼•æ•°ã‚’1å€‹ç©ã‚€ã€‚
 	*
 	*/
 	void push_arg(const AnyPtr& value);
 	
 	/**
-	* \brief –¼‘O•t‚«ˆø”‚ğ1ŒÂÏ‚ŞB
+	* \brief åå‰ä»˜ãå¼•æ•°ã‚’1å€‹ç©ã‚€ã€‚
 	*
 	*/
 	void push_arg(const IDPtr& name, const AnyPtr& value);
 	
 	/**
-	* \brief –¼‘O•t‚«ˆø”‚ğ1ŒÂÏ‚ŞB
+	* \brief åå‰ä»˜ãå¼•æ•°ã‚’1å€‹ç©ã‚€ã€‚
 	*
 	*/
 	void push_arg(const Named& p){ push_arg(p.name, p.value); }
 
 	/**
-	* \brief ˆø”‚ğ”z—ñ‚Ì—v‘f”Ï‚ŞB
+	* \brief å¼•æ•°ã‚’é…åˆ—ã®è¦ç´ æ•°ç©ã‚€ã€‚
 	*
 	*/
 	void push_ordered_args(const ArrayPtr& p);
 
 	/**
-	* \brief –¼‘O‚Â‚«ˆø”‚ğ˜A‘z”z—ñ‚Ì—v‘f”Ï‚ŞB
+	* \brief åå‰ã¤ãå¼•æ•°ã‚’é€£æƒ³é…åˆ—ã®è¦ç´ æ•°ç©ã‚€ã€‚
 	*
 	*/
 	void push_named_args(const MapPtr& p);
 
 	/**
-	* \brief pos”Ô–Ú‚Ì–ß‚è’l‚ğ“¾‚éB
+	* \brief posç•ªç›®ã®æˆ»ã‚Šå€¤ã‚’å¾—ã‚‹ã€‚
 	*
 	*/
 	const AnyPtr& result(int_t pos = 0);
 
 	/**
-	* \brief ŒÄ‚Ño‚µ‚ÌŒãn––‚ğ‚·‚éB
+	* \brief å‘¼ã³å‡ºã—ã®å¾Œå§‹æœ«ã‚’ã™ã‚‹ã€‚
 	*
 	*/
 	void cleanup_call();	
 
 	/**
-	* \brief pos”Ô–Ú‚Ì–ß‚è’l‚ğ•Ô‚µAŒÄ‚Ño‚µ‚ÌŒãn––‚ğ‚·‚éB
+	* \brief posç•ªç›®ã®æˆ»ã‚Šå€¤ã‚’è¿”ã—ã€å‘¼ã³å‡ºã—ã®å¾Œå§‹æœ«ã‚’ã™ã‚‹ã€‚
 	*
 	*/
 	const AnyPtr& result_and_cleanup_call(int_t pos = 0);
 		
 	/**
-	* \brief this‚ğ·‚µ‘Ö‚¦‚éB
+	* \brief thisã‚’å·®ã—æ›¿ãˆã‚‹ã€‚
 	*
 	*/	
 	void set_arg_this(const AnyPtr& self){ 
@@ -149,7 +149,7 @@ public:
 	void insert_arg(int_t index, const AnyPtr& value);
 
 // 
-	/// \brief ŠÖ”‚ğŒÄ‚Ño‚·—pˆÓ‚ğ‚·‚é
+	/// \brief é–¢æ•°ã‚’å‘¼ã³å‡ºã™ç”¨æ„ã‚’ã™ã‚‹
 	void setup_call(int_t need_result_count = 1);
 
 public:
@@ -181,16 +181,16 @@ public:
 
 public:
 
-	// ŠÖ”ŒÄ‚Ño‚³‚ê‘¤‚ªg‚¤‚½‚ß‚ÌŠÖ”ŒQ
+	// é–¢æ•°å‘¼ã³å‡ºã•ã‚Œå´ãŒä½¿ã†ãŸã‚ã®é–¢æ•°ç¾¤
 
 	/**
-	* \brief pos”Ô–Ú‚Ìˆø”‚ğ“¾‚éB
+	* \brief posç•ªç›®ã®å¼•æ•°ã‚’å¾—ã‚‹ã€‚
 	*
 	*/
 	const AnyPtr& arg(int_t pos);
 
 	/**
-	* \brief name‚É‘Î‰‚·‚éˆø”‚ğ“¾‚éB
+	* \brief nameã«å¯¾å¿œã™ã‚‹å¼•æ•°ã‚’å¾—ã‚‹ã€‚
 	*
 	*/
 	const AnyPtr& arg(const IDPtr& name){
@@ -198,43 +198,43 @@ public:
 	}
 
 	/**
-	* \brief pos”Ô–Ú‚Ìˆø”‚ğ“¾‚éB‚à‚µpos”Ô–Ú‚Ìˆø”‚ª‚È‚¯‚ê‚Îname‚É‘Î‰‚·‚éˆø”‚ğ“¾‚éB
+	* \brief posç•ªç›®ã®å¼•æ•°ã‚’å¾—ã‚‹ã€‚ã‚‚ã—posç•ªç›®ã®å¼•æ•°ãŒãªã‘ã‚Œã°nameã«å¯¾å¿œã™ã‚‹å¼•æ•°ã‚’å¾—ã‚‹ã€‚
 	*
 	*/
 	const AnyPtr& arg(int_t pos, const IDPtr& name);
 	
 	/**
-	* \brief pos”Ô–Ú‚Ìˆø”‚ğ“¾‚éB
+	* \brief posç•ªç›®ã®å¼•æ•°ã‚’å¾—ã‚‹ã€‚
 	*
-	* ‚à‚µpos”Ô–Ú‚Ìˆø”‚ª–³‚¯‚ê‚Îdef‚Ì’l‚ğ•Ô‚·B
+	* ã‚‚ã—posç•ªç›®ã®å¼•æ•°ãŒç„¡ã‘ã‚Œã°defã®å€¤ã‚’è¿”ã™ã€‚
 	*/
 	const AnyPtr& arg_default(int_t pos, const AnyPtr& def);
 
 	/**
-	* \brief name‚É‘Î‰‚·‚éˆø”‚ğ“¾‚éB
+	* \brief nameã«å¯¾å¿œã™ã‚‹å¼•æ•°ã‚’å¾—ã‚‹ã€‚
 	*
-	* ‚à‚µname‚É‘Î‰‚·‚éˆø”‚ª–³‚¯‚ê‚Îdef‚Ì’l‚ğ•Ô‚·B
+	* ã‚‚ã—nameã«å¯¾å¿œã™ã‚‹å¼•æ•°ãŒç„¡ã‘ã‚Œã°defã®å€¤ã‚’è¿”ã™ã€‚
 	*/
 	const AnyPtr& arg_default(const IDPtr& name, const AnyPtr& def);
 
 	/**
-	* \brief pos”Ô–Ú‚Ìˆø”‚ğ“¾‚éB‚à‚µpos”Ô–Ú‚Ìˆø”‚ª‚È‚¯‚ê‚Îname‚É‘Î‰‚·‚éˆø”‚ğ“¾‚éB
+	* \brief posç•ªç›®ã®å¼•æ•°ã‚’å¾—ã‚‹ã€‚ã‚‚ã—posç•ªç›®ã®å¼•æ•°ãŒãªã‘ã‚Œã°nameã«å¯¾å¿œã™ã‚‹å¼•æ•°ã‚’å¾—ã‚‹ã€‚
 	*
-	* ‚à‚µname‚É‘Î‰‚·‚éˆø”‚ª–³‚¯‚ê‚Îdef‚Ì’l‚ğ•Ô‚·B
+	* ã‚‚ã—nameã«å¯¾å¿œã™ã‚‹å¼•æ•°ãŒç„¡ã‘ã‚Œã°defã®å€¤ã‚’è¿”ã™ã€‚
 	*/
 	const AnyPtr& arg_default(int_t pos, const IDPtr& name, const AnyPtr& def);
 
 	/**
-	* \brief pos”Ô–Ú‚Ì–¼‘Ow’èˆø”‚Ì–¼‘O‚ğæ“¾B
+	* \brief posç•ªç›®ã®åå‰æŒ‡å®šå¼•æ•°ã®åå‰ã‚’å–å¾—ã€‚
 	*
-	* \param pos 0‚©‚çnamed_arg_count()-1‚Ü‚Å
+	* \param pos 0ã‹ã‚‰named_arg_count()-1ã¾ã§
 	*/
 	const IDPtr& arg_name(int_t pos){
 		return unchecked_ptr_cast<ID>(XTAL_VM_local_variable(ordered_arg_count()+pos*2));
 	}
 
 	/**
-	* \brief this‚ğæ“¾B
+	* \brief thisã‚’å–å¾—ã€‚
 	*
 	*/
 	const AnyPtr& arg_this(){ 
@@ -242,7 +242,7 @@ public:
 	}
 
 	/**
-	* \brief ˆÊ’uw’èˆø”‚Ì”‚ğæ“¾B
+	* \brief ä½ç½®æŒ‡å®šå¼•æ•°ã®æ•°ã‚’å–å¾—ã€‚
 	*
 	*/
 	int_t ordered_arg_count(){ 
@@ -250,7 +250,7 @@ public:
 	}
 	
 	/**
-	* \brief –¼‘Ow’èˆø”‚Ì”‚ğæ“¾
+	* \brief åå‰æŒ‡å®šå¼•æ•°ã®æ•°ã‚’å–å¾—
 	*
 	*/
 	int_t named_arg_count(){ 
@@ -258,7 +258,7 @@ public:
 	}
 	
 	/**
-	* \brief ŒÄ‚Ño‚µŒ³‚ª•K—v‚Æ‚µ‚Ä‚¢‚é–ß‚è’l‚Ì”B
+	* \brief å‘¼ã³å‡ºã—å…ƒãŒå¿…è¦ã¨ã—ã¦ã„ã‚‹æˆ»ã‚Šå€¤ã®æ•°ã€‚
 	*
 	*/
 	int_t need_result_count(){ 
@@ -266,7 +266,7 @@ public:
 	}
 	
 	/**
-	* \brief ŒÄ‚Ño‚µŒ³‚ª–ß‚è’l‚ğ•K—v‚Æ‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©B
+	* \brief å‘¼ã³å‡ºã—å…ƒãŒæˆ»ã‚Šå€¤ã‚’å¿…è¦ã¨ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹ã€‚
 	*
 	*/
 	bool need_result(){ 
@@ -274,17 +274,17 @@ public:
 	}
 	
 	/*
-	* ArgumentsƒIƒuƒWƒFƒNƒg‚ğ¶¬‚·‚éB
-	* return_result()‚ğŒÄ‚ñ‚¾Œã‚Í³í‚È’l‚Í“¾‚ç‚ê‚È‚¢B
+	* Argumentsã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã™ã‚‹ã€‚
+	* return_result()ã‚’å‘¼ã‚“ã å¾Œã¯æ­£å¸¸ãªå€¤ã¯å¾—ã‚‰ã‚Œãªã„ã€‚
 	*/
 	ArgumentsPtr make_arguments(int_t lower = 0);
 	bool has_arguments();
 	
 	/**
-	* \brief ŒÄ‚Ño‚µŒ³‚Éˆø”‚Ì”‚¾‚¯‚Ì–ß‚è’l‚ğ•Ô‚·B
+	* \brief å‘¼ã³å‡ºã—å…ƒã«å¼•æ•°ã®æ•°ã ã‘ã®æˆ»ã‚Šå€¤ã‚’è¿”ã™ã€‚
 	*
-	* need_result_count‚Ì•û‚ª”‚ª‘½‚¢ê‡‚Í‚»‚Ì•ªnull‚ª•Ô‚³‚ê‚éB
-	* need_result_count‚Ì•û‚ª”‚ª­‚È‚¢ê‡‚Í•Ô‚µ‚½’l‚ÍÌ‚Ä‚ç‚ê‚éB
+	* need_result_countã®æ–¹ãŒæ•°ãŒå¤šã„å ´åˆã¯ãã®åˆ†nullãŒè¿”ã•ã‚Œã‚‹ã€‚
+	* need_result_countã®æ–¹ãŒæ•°ãŒå°‘ãªã„å ´åˆã¯è¿”ã—ãŸå€¤ã¯æ¨ã¦ã‚‰ã‚Œã‚‹ã€‚
 	*/
 	void return_result();
 	void return_result(const AnyPtr& value1);
@@ -293,12 +293,12 @@ public:
 	void return_result(const AnyPtr& value1, const AnyPtr& value2, const AnyPtr& value3, const AnyPtr& value4);
 
 	/**
-	* \brief ‘½’l‚ğ•Ô‚·B
+	* \brief å¤šå€¤ã‚’è¿”ã™ã€‚
 	*/
 	void return_result_mv(const ValuesPtr& values);
 
 	/**
-	* \brief return_result‚âcarry_over‚ğŠù‚ÉŒÄ‚Ño‚µ‚½‚È‚çtrue‚ğA‚»‚¤‚Å‚È‚¢‚È‚çfalse‚ğ•Ô‚·B
+	* \brief return_resultã‚„carry_overã‚’æ—¢ã«å‘¼ã³å‡ºã—ãŸãªã‚‰trueã‚’ã€ãã†ã§ãªã„ãªã‚‰falseã‚’è¿”ã™ã€‚
 	*
 	*/
 	int_t is_executed(){
@@ -401,7 +401,7 @@ public:
 
 	void replace_result(const AnyPtr& result);
 
-public: // evalŒn
+public: // evalç³»
 	debug::CallerInfoPtr caller(uint_t n);
 	int_t call_stack_size();
 
@@ -459,53 +459,53 @@ public:
 
 	struct FunFrame{
 
-		// call‚µ‚½‚Æ‚«‚Í‚±‚Ìpc‚©‚çÀs‚·‚é
+		// callã—ãŸã¨ãã¯ã“ã®pcã‹ã‚‰å®Ÿè¡Œã™ã‚‹
 		const inst_t* next_pc;
 
-		// pop_ff‚µ‚½‚Æ‚«‚Í‚±‚Ìpc‚©‚çÀs‚·‚é
+		// pop_ffã—ãŸã¨ãã¯ã“ã®pcã‹ã‚‰å®Ÿè¡Œã™ã‚‹
 		const inst_t* poped_pc;
 
-		// ŠÖ”ŒÄ‚Ño‚µ‘¤‚ª•K—v‚Æ‚·‚é–ß‚è’l‚Ì”
+		// é–¢æ•°å‘¼ã³å‡ºã—å´ãŒå¿…è¦ã¨ã™ã‚‹æˆ»ã‚Šå€¤ã®æ•°
 		int_t need_result_count;
 
-		// ŠÖ”‚ªŒÄ‚Î‚ê‚½‚Æ‚«‚Ì‡”Ôw’èˆø”‚Ì”
+		// é–¢æ•°ãŒå‘¼ã°ã‚ŒãŸã¨ãã®é †ç•ªæŒ‡å®šå¼•æ•°ã®æ•°
 		int_t ordered_arg_count;
 		
-		// ŠÖ”‚ªŒÄ‚Î‚ê‚½‚Æ‚«‚Ì–¼‘Ow’èˆø”‚Ì”
+		// é–¢æ•°ãŒå‘¼ã°ã‚ŒãŸã¨ãã®åå‰æŒ‡å®šå¼•æ•°ã®æ•°
 		int_t named_arg_count;
 
-		// yield‚ª‰Â”\‚©ƒtƒ‰ƒOB‚±‚Ìƒtƒ‰ƒO‚ÍŒÄ‚Ño‚µ‚ğŒ×‚¢‚Å“`”d‚·‚éB
+		// yieldãŒå¯èƒ½ã‹ãƒ•ãƒ©ã‚°ã€‚ã“ã®ãƒ•ãƒ©ã‚°ã¯å‘¼ã³å‡ºã—ã‚’è·¨ã„ã§ä¼æ’­ã™ã‚‹ã€‚
 		int_t yieldable;
 
-		// ‚±‚ÌŠÖ”‚ªg‚Á‚Ä‚¢‚éƒXƒR[ƒv‚Ì‰ºŒÀ
+		// ã“ã®é–¢æ•°ãŒä½¿ã£ã¦ã„ã‚‹ã‚¹ã‚³ãƒ¼ãƒ—ã®ä¸‹é™
 		uint_t scope_lower;
 
-		// Às’†‚©ƒtƒ‰ƒO
+		// å®Ÿè¡Œä¸­ã‹ãƒ•ãƒ©ã‚°
 		int_t is_executed;
 
-		// –ß‚è’l‚ğ•Ô‚·ˆÊ’u
+		// æˆ»ã‚Šå€¤ã‚’è¿”ã™ä½ç½®
 		int_t result;
 
-		// ‚±‚ê‚ª‹l‚Ü‚ê‚é‘O‚ÌƒXƒ^ƒbƒNƒy[ƒX
+		// ã“ã‚ŒãŒè©°ã¾ã‚Œã‚‹å‰ã®ã‚¹ã‚¿ãƒƒã‚¯ãƒšãƒ¼ã‚¹
 		uint_t prev_stack_base;
 
-		// ŒÄ‚Ño‚³‚ê‚½ŠÖ”ƒIƒuƒWƒFƒNƒg
+		// å‘¼ã³å‡ºã•ã‚ŒãŸé–¢æ•°ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		BasePtr<Method> fun; 
 
 		const IDPtr* identifiers;
 		const AnyPtr* values;
 		Code* code;
 
-		// ŠÖ”‚ÌŠO‘¤‚ÌƒtƒŒ[ƒ€ƒIƒuƒWƒFƒNƒg
+		// é–¢æ•°ã®å¤–å´ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		BasePtr<Frame> outer;
 
-		// ŠÖ”‚ªŒÄ‚Î‚ê‚½‚Æ‚«‚ÌthisƒIƒuƒWƒFƒNƒg
+		// é–¢æ•°ãŒå‘¼ã°ã‚ŒãŸã¨ãã®thisã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		AnyPtr self;
 	};
 
 	friend void visit_members(Visitor& m, FunFrame& v);
 	
-	// —áŠO‚ğˆ—‚·‚é‚½‚ß‚ÌƒtƒŒ[ƒ€
+	// ä¾‹å¤–ã‚’å‡¦ç†ã™ã‚‹ãŸã‚ã®ãƒ•ãƒ¬ãƒ¼ãƒ 
 	struct ExceptFrame{
 		ExceptInfo* info;
 		uint_t stack_size;
@@ -547,20 +547,20 @@ private:
 
 	void ready();
 
-public: // ƒ[ƒJƒ‹•Ï”Œn
+public: // ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ç³»
 	void set_local_variable_out_of_fun(uint_t pos, uint_t depth, const AnyPtr& value);
 	AnyPtr& local_variable_out_of_fun(uint_t pos, uint_t depth);
 
 	void set_local_variable(int_t pos, const AnyPtr& value){ XTAL_VM_set_local_variable(pos, value); }
 	AnyPtr& local_variable(int_t pos){ return XTAL_VM_local_variable(pos); }
 
-private: // —áŠOŒn
+private: // ä¾‹å¤–ç³»
 	const inst_t* push_except(const inst_t* pc);
 	const inst_t* push_except(const inst_t* pc, const AnyPtr& e);
 
 	const inst_t* catch_body(const inst_t* pc, const ExceptFrame& cur);
 
-private: // ƒuƒŒ[ƒNƒ|ƒCƒ“ƒgŒn
+private: // ãƒ–ãƒ¬ãƒ¼ã‚¯ãƒã‚¤ãƒ³ãƒˆç³»
 	void breakpoint_hook(const inst_t* pc, const MethodPtr& fun, int_t kind);
 
 	void check_breakpoint_hook(const inst_t* pc, const MethodPtr& fun, int_t kind){
@@ -694,10 +694,10 @@ private:
 	const inst_t* throw_pc_;
 	bool exit_fiber_;
 
-	// ’l•Û—pƒXƒ^ƒbƒN
+	// å€¤ä¿æŒç”¨ã‚¹ã‚¿ãƒƒã‚¯
 	FastStack<AnyPtr> stack_;
 
-	// ŠÖ”ŒÄ‚Ño‚µ‚Ì“x‚ÉÏ‚Ü‚ê‚éƒtƒŒ[ƒ€
+	// é–¢æ•°å‘¼ã³å‡ºã—ã®åº¦ã«ç©ã¾ã‚Œã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ 
 	FastStack<FunFrame*> fun_frame_stack_;
 	FunFrame* current_fun_frame_;
 
@@ -731,13 +731,13 @@ private:
 		};
 	};
 
-	// ƒXƒR[ƒvî•ñ
+	// ã‚¹ã‚³ãƒ¼ãƒ—æƒ…å ±
 	FastStack<Scope> scopes_;
 
 	AnyPtr* variables_top_;
 	xarray variables_;
 
-	// try‚Ì“x‚ÉÏ‚Ü‚ê‚éƒtƒŒ[ƒ€
+	// tryã®åº¦ã«ç©ã¾ã‚Œã‚‹ãƒ•ãƒ¬ãƒ¼ãƒ 
 	FastStack<ExceptFrame> except_frames_;
 	
 	AnyPtr except_[3];

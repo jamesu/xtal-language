@@ -635,11 +635,11 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 
 			put_inst<InstTryEnd>();
 
-			// catchß‚ÌƒR[ƒh‚ğ–„‚ß‚Ş
+			// catchç¯€ã®ã‚³ãƒ¼ãƒ‰ã‚’åŸ‹ã‚è¾¼ã‚€
 			{
 				result_->except_info_table_[n].catch_pc = code_size();
 
-				// —áŠO‚ğó‚¯æ‚é‚½‚ß‚É•Ï”ƒXƒR[ƒv‚ğ\’z
+				// ä¾‹å¤–ã‚’å—ã‘å–ã‚‹ãŸã‚ã«å¤‰æ•°ã‚¹ã‚³ãƒ¼ãƒ—ã‚’æ§‹ç¯‰
 				scope_begin(e);
 
 				put_inst<InstPop>(stack_top);
@@ -1012,11 +1012,11 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 			put_inst<InstPushGoto>(0);
 			put_inst<InstTryEnd>();
 
-			// catchß‚ÌƒR[ƒh‚ğ–„‚ß‚Ş
+			// catchç¯€ã®ã‚³ãƒ¼ãƒ‰ã‚’åŸ‹ã‚è¾¼ã‚€
 			if(e->try_catch()){
 				result_->except_info_table_[n].catch_pc = code_size();
 				
-				// catchß‚Ì’†‚Å‚Ì—áŠO‚É”õ‚¦A—áŠOƒtƒŒ[ƒ€‚ğ\’zB
+				// catchç¯€ã®ä¸­ã§ã®ä¾‹å¤–ã«å‚™ãˆã€ä¾‹å¤–ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’æ§‹ç¯‰ã€‚
 
 				int_t n2 = result_->except_info_table_.size();
 				result_->except_info_table_.push_back(ExceptInfo());
@@ -1027,7 +1027,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 				exc.finally_label = finally_label;
 				ff().finallies.push(exc);
 
-				// —áŠO‚ğó‚¯æ‚é‚½‚ß‚É•Ï”ƒXƒR[ƒv‚ğ\’z
+				// ä¾‹å¤–ã‚’å—ã‘å–ã‚‹ãŸã‚ã«å¤‰æ•°ã‚¹ã‚³ãƒ¼ãƒ—ã‚’æ§‹ç¯‰
 				scope_begin(e);
 				scope_chain(1);
 
@@ -1048,7 +1048,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 
 			result_->except_info_table_[n].finally_pc = code_size();
 
-			// finallyß‚ÌƒR[ƒh‚ğ–„‚ß‚Ş
+			// finallyç¯€ã®ã‚³ãƒ¼ãƒ‰ã‚’åŸ‹ã‚è¾¼ã‚€
 			compile_stmt(e->try_finally());
 			
 			ff().finallies.pop();
@@ -1075,7 +1075,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 						XTAL_ASSERT(false);
 					}
 
-					// •Ï”QÆ‚ğğŒ®‚Æ‚·‚é
+					// å¤‰æ•°å‚ç…§ã‚’æ¡ä»¶å¼ã¨ã™ã‚‹
 					cond = cond->bin_lhs();
 				}
 				else{
@@ -1138,7 +1138,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 
 			compile_stmt(e->for_init());
 
-			// ğŒ®‚ğƒRƒ“ƒpƒCƒ‹
+			// æ¡ä»¶å¼ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«
 			if(e->for_cond()){
 				if(first_step_info.found){
 					put_inst<InstLoadValue>(first_step_info.register_number, LOAD_TRUE);
@@ -1148,19 +1148,19 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 
 			set_label(label_body);
 
-			// ƒ‹[ƒv–{‘Ì‚ğƒRƒ“ƒpƒCƒ‹
+			// ãƒ«ãƒ¼ãƒ—æœ¬ä½“ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«
 			compile_stmt(e->for_body());
 
 			set_label(label_continue);
 
-			// next•”‚ğƒRƒ“ƒpƒCƒ‹
+			// nextéƒ¨ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«
 			if(e->for_next()){
 				compile_stmt(e->for_next());
 			}
 
 			set_label(label_cond);
 
-			// ğŒ®‚ğƒRƒ“ƒpƒCƒ‹ 2‰ñ–Ú
+			// æ¡ä»¶å¼ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ« 2å›ç›®
 			if(e->for_cond()){
 				if(first_step_info.found){
 					put_inst<InstLoadValue>(first_step_info.register_number, LOAD_FALSE);
@@ -1169,15 +1169,15 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 			}
 
 			/*if(referenced_first_step){
-				// ƒ‹[ƒv–{‘Ì‚ğƒRƒ“ƒpƒCƒ‹ 2‰ñ–Ú
+				// ãƒ«ãƒ¼ãƒ—æœ¬ä½“ã‚’ã‚³ãƒ³ãƒ‘ã‚¤ãƒ« 2å›ç›®
 				compile_stmt(e->for_body());
 
-				// label_continue•”•ª‚ÉƒWƒƒƒ“ƒv
+				// label_continueéƒ¨åˆ†ã«ã‚¸ãƒ£ãƒ³ãƒ—
 				set_jump(InstGoto::OFFSET_address, label_continue);
 				put_inst<InstGoto>(0);
 			}
 			else*/{
-				// label_body•”•ª‚ÉƒWƒƒƒ“ƒv
+				// label_bodyéƒ¨åˆ†ã«ã‚¸ãƒ£ãƒ³ãƒ—
 				set_jump(InstGoto::OFFSET_address, label_body);
 				put_inst<InstGoto>(0);
 			}
@@ -1206,7 +1206,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 
 			int_t lhs_stack_base = stack_top;
 
-			// ¶•Ó‚ğ‚·‚×‚Ä•]‰¿‚·‚é
+			// å·¦è¾ºã‚’ã™ã¹ã¦è©•ä¾¡ã™ã‚‹
 			for(uint_t i=0; i<lhs->size(); ++i){
 				ExprPtr term = ep(lhs->at(i));
 
@@ -1242,19 +1242,19 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 				}
 			}
 
-			// ƒXƒ^ƒbƒNƒgƒbƒv‚ğ•Û‘¶
+			// ã‚¹ã‚¿ãƒƒã‚¯ãƒˆãƒƒãƒ—ã‚’ä¿å­˜
 			int_t rhs_stack_base = stack_top;
 
-			// ‰E•Ó‚ğ‚·‚×‚Ä•]‰¿‚·‚é
+			// å³è¾ºã‚’ã™ã¹ã¦è©•ä¾¡ã™ã‚‹
 			for(uint_t i=0; i<lhs->size(); ++i){
-				// ‰E•ÓÅŒã‚Ì—v‘f
+				// å³è¾ºæœ€å¾Œã®è¦ç´ 
 				if(i==rhs->size()-1){
 					int_t rrc = lhs->size() - i;
 					compile_expr(rhs->at(i), stack_top+1, stack_top, rrc);
 					stack_top += rrc;
 					break;
 				}
-				// ¶•ÓÅŒã‚Ì—v‘f
+				// å·¦è¾ºæœ€å¾Œã®è¦ç´ 
 				else if(i==lhs->size()-1){
 					int_t stack_base2 = stack_top;
 					for(; i<rhs->size(); ++i){
@@ -1274,7 +1274,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 			}
 
 
-			// ¶•Ó‚É‘ã“ü‚·‚é
+			// å·¦è¾ºã«ä»£å…¥ã™ã‚‹
 			for(uint_t i=0; i<lhs->size(); ++i){
 				ExprPtr term = ep(lhs->at(i));
 
@@ -1318,7 +1318,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 
 			int_t lhs_stack_base = stack_top;
 
-			// ¶•Ó‚ğ‚·‚×‚Ä•]‰¿‚·‚é
+			// å·¦è¾ºã‚’ã™ã¹ã¦è©•ä¾¡ã™ã‚‹
 			for(uint_t i=0; i<lhs->size(); ++i){
 				ExprPtr term = ep(lhs->at(i));
 
@@ -1346,19 +1346,19 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 				}
 			}
 
-			// ƒXƒ^ƒbƒNƒgƒbƒv‚ğ•Û‘¶
+			// ã‚¹ã‚¿ãƒƒã‚¯ãƒˆãƒƒãƒ—ã‚’ä¿å­˜
 			int_t rhs_stack_base = stack_top;
 
-			// ‰E•Ó‚ğ‚·‚×‚Ä•]‰¿‚·‚é
+			// å³è¾ºã‚’ã™ã¹ã¦è©•ä¾¡ã™ã‚‹
 			for(uint_t i=0; i<lhs->size(); ++i){
-				// ‰E•ÓÅŒã‚Ì—v‘f
+				// å³è¾ºæœ€å¾Œã®è¦ç´ 
 				if(i==rhs->size()-1){
 					int_t rrc = lhs->size() - i;
 					compile_expr(rhs->at(i), stack_top+1, stack_top, rrc);
 					stack_top += rrc;
 					break;
 				}
-				// ¶•ÓÅŒã‚Ì—v‘f
+				// å·¦è¾ºæœ€å¾Œã®è¦ç´ 
 				else if(i==lhs->size()-1){
 					int_t stack_base2 = stack_top;
 					for(; i<rhs->size(); ++i){
@@ -1377,7 +1377,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 				}
 			}
 
-			// ¶•Ó‚É‘ã“ü‚·‚é
+			// å·¦è¾ºã«ä»£å…¥ã™ã‚‹
 			for(uint_t i=0; i<lhs->size(); ++i){
 				ExprPtr term = ep(lhs->at(i));
 
@@ -1569,7 +1569,7 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 						XTAL_ASSERT(false);
 					}
 
-					// •Ï”QÆ‚ğğŒ®‚Æ‚·‚é
+					// å¤‰æ•°å‚ç…§ã‚’æ¡ä»¶å¼ã¨ã™ã‚‹
 					cond = cond->bin_lhs();
 				}
 				else{
@@ -1593,9 +1593,9 @@ int_t CodeBuilder::compile_e(const ExprPtr& e, int_t stack_top, int_t result, in
 			ArrayPtr jump_array = xnew<Array>();
 			ExprPtr default_case = e->switch_default();
 			Xfor_cast(ExprPtr v, e->switch_cases()){
-				// v‚Ícase ‚Ğ‚Æ‚Â‚ª“ü‚Á‚Ä‚¢‚é
-				// v->at(0) ‚É‚ÍğŒ‚ÌƒŠƒXƒg
-				// v->at(1) ‚É‚ÍğŒ‚ªƒ}ƒbƒ`‚µ‚½ê‡‚ÌÀs•¶‚ª“ü‚Á‚Ä‚¢‚é
+				// vã¯case ã²ã¨ã¤ãŒå…¥ã£ã¦ã„ã‚‹
+				// v->at(0) ã«ã¯æ¡ä»¶ã®ãƒªã‚¹ãƒˆ
+				// v->at(1) ã«ã¯æ¡ä»¶ãŒãƒãƒƒãƒã—ãŸå ´åˆã®å®Ÿè¡Œæ–‡ãŒå…¥ã£ã¦ã„ã‚‹
 
 				case_array->push_back(v->at(1));
 				jump_array->push_back(reserve_label());

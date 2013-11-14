@@ -150,16 +150,16 @@ private:
 		TArray<Label> labels;
 		
 		struct Loop{
-			// ƒ‰ƒxƒ‹–¼
+			// ãƒ©ãƒ™ãƒ«å
 			IDPtr label;
 
-			// ƒtƒŒ[ƒ€‚Ì”
+			// ãƒ•ãƒ¬ãƒ¼ãƒ ã®æ•°
 			int_t frame_count;
 
-			// break‚Æcontinue‚Ìƒ‰ƒxƒ‹”Ô†
+			// breakã¨continueã®ãƒ©ãƒ™ãƒ«ç•ªå·
 			int_t control_statement_label[2];
 
-			// ‘Î‰‚·‚éƒ‰ƒxƒ‹‚ğ‚Á‚Ä‚¢‚é‚©
+			// å¯¾å¿œã™ã‚‹ãƒ©ãƒ™ãƒ«ã‚’æŒã£ã¦ã„ã‚‹ã‹
 			bool have_label;
 		};
 		
@@ -209,80 +209,80 @@ private:
 		};
 
 		struct Entry{
-			// •Ï”‚Ì–¼‘O
+			// å¤‰æ•°ã®åå‰
 			IDPtr name;
 
-			// Ã“I‚É’l‚ªŒˆ‚Ü‚é‚È‚ç”ñundefined‚È’l‚ª“ü‚Á‚Ä‚¢‚é
+			// é™çš„ã«å€¤ãŒæ±ºã¾ã‚‹ãªã‚‰éundefinedãªå€¤ãŒå…¥ã£ã¦ã„ã‚‹
 			AnyPtr value;
 
-			// ‘ã“ü‚ª‚ ‚é‚©‚Ç‚¤‚©
+			// ä»£å…¥ãŒã‚ã‚‹ã‹ã©ã†ã‹
 			bool assigned;
 
-			// ’è”‘®«‚ª‚ ‚é‚©‚Ç‚¤‚©
+			// å®šæ•°å±æ€§ãŒã‚ã‚‹ã‹ã©ã†ã‹
 			bool constant;
 
-			// ‰Â‹‚©‚Ç‚¤‚©
+			// å¯è¦–ã‹ã©ã†ã‹
 			bool visible;
 			bool visible2;
 
-			// QÆ‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+			// å‚ç…§ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹
 			bool refered;
 
 			// public, prentriesotected, private
 			int_t accessibility;
 		};
 
-		// ‚±‚ÌƒXƒR[ƒv‚Ìí—Ş
+		// ã“ã®ã‚¹ã‚³ãƒ¼ãƒ—ã®ç¨®é¡
 		int_t kind;
 
-		// •Ï”‚ÌƒGƒ“ƒgƒŠ
+		// å¤‰æ•°ã®ã‚¨ãƒ³ãƒˆãƒª
 		TArray<Entry> entries;
 
-		// ‘Î‰‚·‚éScopeInfo‚ÌƒCƒ“ƒfƒbƒNƒX
+		// å¯¾å¿œã™ã‚‹ScopeInfoã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		int_t scope_info_num;
 
-		// •Ï”‚ÌƒŒƒWƒXƒ^”Ô†Zo‚Ìƒx[ƒX‚Æ‚È‚é”Ô†
+		// å¤‰æ•°ã®ãƒ¬ã‚¸ã‚¹ã‚¿ç•ªå·ç®—å‡ºã®ãƒ™ãƒ¼ã‚¹ã¨ãªã‚‹ç•ªå·
 		int_t register_base;
 		int_t register_max;
 
-		// ’¼‹ß‚ÌŠÖ”ƒXƒR[ƒv‚Ö‚Ìƒ|ƒCƒ“ƒ^
+		// ç›´è¿‘ã®é–¢æ•°ã‚¹ã‚³ãƒ¼ãƒ—ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 		Scope* fun_scope;
 
-		// e‚ÌƒXƒR[ƒv‚Æƒ`ƒFƒCƒ“‚·‚é‚©‚Ç‚¤‚©
+		// è¦ªã®ã‚¹ã‚³ãƒ¼ãƒ—ã¨ãƒã‚§ã‚¤ãƒ³ã™ã‚‹ã‹ã©ã†ã‹
 		bool scope_chain;
 
 		bool scope_chain_have_possibilities;
 
-		// q‹Ÿ‚ÌƒXƒR[ƒv
+		// å­ä¾›ã®ã‚¹ã‚³ãƒ¼ãƒ—
 		PODArray<Scope*> children;
 
-		// Œ»İw‚µ‚Ä‚¢‚éq‹Ÿ‚ÌˆÊ’u
+		// ç¾åœ¨æŒ‡ã—ã¦ã„ã‚‹å­ä¾›ã®ä½ç½®
 		int_t children_pos;
 
-		// ‘Î‰‚·‚é®
+		// å¯¾å¿œã™ã‚‹å¼
 		ExprPtr expr;
 	};
 
 	struct VariableInfo{
-		// ƒXƒR[ƒv‚Ì[‚³
+		// ã‚¹ã‚³ãƒ¼ãƒ—ã®æ·±ã•
 		int_t depth;
 
-		// ‚»‚ÌƒXƒR[ƒv‚Ìƒƒ“ƒo[”Ô†
+		// ãã®ã‚¹ã‚³ãƒ¼ãƒ—ã®ãƒ¡ãƒ³ãƒãƒ¼ç•ªå·
 		int_t member_number;
 
-		// ƒŒƒWƒXƒ^”Ô†
+		// ãƒ¬ã‚¸ã‚¹ã‚¿ç•ªå·
 		int_t register_number;
 
-		// Œ©‚Â‚©‚Á‚½‚©‚Ç‚¤‚©
+		// è¦‹ã¤ã‹ã£ãŸã‹ã©ã†ã‹
 		bool found;
 
-		// ŠÖ”‚ÌŠO‘¤‚Ü‚Å’T‚µ‚½‚©‚Ç‚¤‚©
+		// é–¢æ•°ã®å¤–å´ã¾ã§æ¢ã—ãŸã‹ã©ã†ã‹
 		bool out_of_fun;
 
-		// ƒgƒbƒvƒŒƒxƒ‹‚ÅŒ©‚Â‚©‚Á‚½‚©‚Ç‚¤‚©
+		// ãƒˆãƒƒãƒ—ãƒ¬ãƒ™ãƒ«ã§è¦‹ã¤ã‹ã£ãŸã‹ã©ã†ã‹
 		bool toplevel;
 
-		// ’è”‚©‚Ç‚¤‚©
+		// å®šæ•°ã‹ã©ã†ã‹
 		bool constant;
 
 		Scope::Entry* entry;

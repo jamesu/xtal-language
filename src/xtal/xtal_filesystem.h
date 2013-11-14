@@ -13,25 +13,25 @@ class FilesystemLib;
 
 /**
 * \xbind lib::builtin
-* \brief ƒtƒ@ƒCƒ‹ƒVƒXƒeƒ€
+* \brief ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ 
 */
 namespace filesystem{
 
 /**
 * \xbind lib::builtin::filesystem
-* \brief ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“
+* \brief ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³
 */
 StreamPtr open(const StringPtr& file_name, const StringPtr& flags);
 
 /**
 * \xbind lib::builtin::filesystem
-* \brief ƒfƒBƒŒƒNƒgƒŠ‚©‚Ç‚¤‚©
+* \brief ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‹ã©ã†ã‹
 */
 bool is_directory(const StringPtr& path);
 
 /**
 * \xbind lib::builtin::filesystem
-* \brief pathˆÈ‰º‚ÌƒGƒ“ƒgƒŠ‚ğ—ñ‹“‚·‚éIterator‚ğ•Ô‚·
+* \brief pathä»¥ä¸‹ã®ã‚¨ãƒ³ãƒˆãƒªã‚’åˆ—æŒ™ã™ã‚‹Iteratorã‚’è¿”ã™
 */
 AnyPtr entries(const StringPtr& path);
 
